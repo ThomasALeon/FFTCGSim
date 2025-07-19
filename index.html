@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Final Fantasy Trading Card Game Simulator</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components/modals.css">
+    <link rel="stylesheet" href="css/components/deck-builder.css">
+    <link rel="stylesheet" href="css/components/lobby.css">
+    <link rel="stylesheet" href="css/components/game-board.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Application Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-logo">⚡</div>
+            <div class="loading-text">Loading Final Fantasy TCG Simulator...</div>
+            <div class="loading-bar">
+                <div class="loading-progress" id="loadingProgress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application Container -->
+    <div id="app" class="app-container hidden">
+        <!-- Navigation Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <h1 class="app-title">
+                    <span class="title-icon">⚡</span>
+                    Final Fantasy TCG Simulator
+                </h1>
+                <nav class="header-nav">
+                    <button class="nav-btn" id="homeBtn" data-view="home">Home</button>
+                    <button class="nav-btn" id="gameBtn" data-view="game" disabled>Game</button>
+                    <button class="nav-btn" id="deckBuilderBtn" data-view="deck-builder">Deck Builder</button>
+                    <button class="nav-btn" id="profileBtn" data-view="profile">Profile</button>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="app-main">
+            <!-- Home View -->
+            <section id="homeView" class="view active">
+                <!-- User Profile Section -->
+                <div class="profile-section">
+                    <div class="profile-card">
+                        <div class="profile-avatar" id="profileAvatar">⚡</div>
+                        <div class="profile-info">
+                            <h3 class="profile-name" id="profileName">Guest Player</h3>
+                            <p class="profile-stats" id="profileStats">Games: 0 | Wins: 0 | Win Rate: 0%</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="openModal('profileModal')">
+                            Edit Profile
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Main Menu Grid -->
+                <div class="menu-grid">
+                    <!-- Multiplayer Lobby -->
+                    <div class="menu-card" onclick="openModal('lobbyModal')">
+                        <div class="menu-icon">🌐</div>
+                        <h3 class="menu-title">Multiplayer</h3>
+                        <p class="menu-description">
+                            Join or create game rooms to play against other players worldwide.
+                        </p>
+                        <div class="menu-stats">
+                            <span id="onlineCount">0</span> players online
+                        </div>
+                    </div>
+
+                    <!-- Deck Builder -->
+                    <div class="menu-card" onclick="AppController.switchView('deck-builder')">
+                        <div class="menu-icon">📚</div>
+                        <h3 class="menu-title">Deck Builder</h3>
+                        <p class="menu-description">
+                            Create and manage your card decks with our comprehensive database.
+                        </p>
+                        <div class="menu-stats">
+                            <span id="deckCount">0</span> decks saved
+                        </div>
+                    </div>
+
+                    <!-- Practice vs AI -->
+                    <div class="menu-card" onclick="startPracticeGame()">
+                        <div class="menu-icon">🤖</div>
+                        <h3 class="menu-title">Practice vs AI</h3>
+                        <p class="menu-description">
+                            Test your decks against AI opponents of varying difficulty levels.
+                        </p>
+                        <div class="menu-stats">
+                            Coming Soon
+                        </div>
+                    </div>
+
+                    <!-- Tournament -->
+                    <div class="menu-card" onclick="openModal('tournamentModal')">
+                        <div class="menu-icon">🏆</div>
+                        <h3 class="menu-title">Tournament</h3>
+                        <p class="menu-description">
+                            Participate in structured tournaments and climb the rankings.
+                        </p>
+                        <div class="menu-stats">
+                            No active tournaments
+                        </div>
+                    </div>
+
+                    <!-- Game Rules -->
+                    <div class="menu-card" onclick="openModal('rulesModal')">
+                        <div class="menu-icon">📋</div>
+                        <h3 class="menu-title">Game Rules</h3>
+                        <p class="menu-description">
+                            Learn the comprehensive rules and mechanics of Final Fantasy TCG.
+                        </p>
+                    </div>
+
+                    <!-- Settings -->
+                    <div class="menu-card" onclick="openModal('settingsModal')">
+                        <div class="menu-icon">⚙️</div>
+                        <h3 class="menu-title">Settings</h3>
+                        <p class="menu-description">
+                            Customize your experience with accessibility and preference options.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Deck Builder View -->
+            <section id="deckBuilderView" class="view">
+                <div class="deck-builder-container">
+                    <!-- Deck Builder Header -->
+                    <div class="deck-builder-header">
+                        <h2>Deck Builder</h2>
+                        <div class="deck-actions">
+                            <button class="btn btn-secondary" onclick="createNewDeck()">New Deck</button>
+                            <button class="btn btn-secondary" onclick="loadDeck()">Load Deck</button>
+                            <button class="btn btn-primary" onclick="saveDeck()" id="saveDeckBtn" disabled>Save Deck</button>
+                        </div>
+                    </div>
+
+                    <!-- Deck Builder Content -->
+                    <div class="deck-builder-content">
+                        <!-- Card Database Panel -->
+                        <div class="card-database-panel">
+                            <div class="database-header">
+                                <h3>Card Database</h3>
+                                <div class="search-controls">
+                                    <input type="text" id="cardSearch" placeholder="Search cards..." class="search-input">
+                                    <select id="elementFilter" class="filter-select">
+                                        <option value="">All Elements</option>
+                                        <option value="fire">Fire</option>
+                                        <option value="ice">Ice</option>
+                                        <option value="wind">Wind</option>
+                                        <option value="lightning">Lightning</option>
+                                        <option value="water">Water</option>
+                                        <option value="earth">Earth</option>
+                                        <option value="light">Light</option>
+                                        <option value="dark">Dark</option>
+                                    </select>
+                                    <select id="typeFilter" class="filter-select">
+                                        <option value="">All Types</option>
+                                        <option value="forward">Forward</option>
+                                        <option value="backup">Backup</option>
+                                        <option value="summon">Summon</option>
+                                        <option value="monster">Monster</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="card-grid" id="cardDatabase">
+                                <!-- Cards will be populated here -->
+                            </div>
+                        </div>
+
+                        <!-- Current Deck Panel -->
+                        <div class="current-deck-panel">
+                            <div class="deck-header">
+                                <h3>Current Deck</h3>
+                                <div class="deck-info">
+                                    <span id="deckCardCount">0</span>/50 cards
+                                </div>
+                            </div>
+                            <div class="deck-content">
+                                <div class="deck-name-input">
+                                    <input type="text" id="deckName" placeholder="Deck Name" class="deck-name-field">
+                                </div>
+                                <div class="deck-list" id="currentDeck">
+                                    <!-- Current deck cards will be shown here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Game View -->
+            <section id="gameView" class="view">
+                <div class="game-container">
+                    <!-- Game will be rendered here -->
+                    <div id="gameBoard"></div>
+                </div>
+            </section>
+
+            <!-- Profile View -->
+            <section id="profileView" class="view">
+                <div class="profile-container">
+                    <h2>Player Profile</h2>
+                    <!-- Profile management interface -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal Container -->
+    <div id="modalContainer"></div>
+
+    <!-- Notification Container -->
+    <div id="notificationContainer" class="notification-container"></div>
+
+    <!-- JavaScript Modules -->
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>

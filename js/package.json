@@ -1,0 +1,17 @@
+{
+  "name": "fftcg-simulator",
+  "version": "1.0.0",
+  "description": "Final Fantasy Trading Card Game Simulator",
+  "main": "index.html",
+  "scripts": {
+    "start": "serve .",
+    "dev": "live-server ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ThomasALeon/FFTCGSim"
+  },
+  "keywords": ["final-fantasy", "tcg", "card-game", "simulator"],
+  "author": "Your Name",
+  "license": "MIT"
+}
