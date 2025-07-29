@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FFTCG Simulator - Test Suite</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background: #1a1a2e;
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .test-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .test-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+        
+        .test-btn {
+            padding: 10px 20px;
+            background: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        
+        .test-btn:hover {
+            background: #0052a3;
+        }
+        
+        .test-btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+        }
+        
+        .test-results {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #444;
+            border-radius: 5px;
+            padding: 20px;
+            margin-top: 20px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        
+        .test-summary {
+            background: rgba(0, 100, 200, 0.2);
+            border: 1px solid #0066cc;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .test-summary h3 {
+            margin: 0 0 10px 0;
+            color: #ffd700;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        
+        .status-running { background: #ffaa00; }
+        .status-passed { background: #00ff00; }
+        .status-failed { background: #ff0000; }
+        .status-idle { background: #666; }
+        
+        #testOutput {
+            font-size: 12px;
+            line-height: 1.4;
+        }
+        
+        .test-progress {
+            width: 100%;
+            height: 20px;
+            background: #333;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        
+        .test-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff00, #ffd700);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-header">
+        <h1>🧪 FFTCG Simulator Test Suite</h1>
+        <p>Comprehensive testing and validation for all game components</p>
+    </div>
+
+    <div class="test-controls">
+        <button class="test-btn" id="runAllBtn">Run All Tests</button>
+        <button class="test-btn" id="runUtilsBtn">Test Utilities</button>
+        <button class="test-btn" id="runCoreBtn">Test Core Systems</button>
+        <button class="test-btn" id="clearLogsBtn">Clear Logs</button>
+        <button class="test-btn" id="exportResultsBtn">Export Results</button>
+    </div>
+
+    <div class="test-summary" id="testSummary">
+        <h3><span class="status-indicator status-idle"></span>Test Status: Ready</h3>
+        <div class="test-progress">
+            <div class="test-progress-bar" id="progressBar"></div>
+        </div>
+        <p id="summaryText">Click "Run All Tests" to begin comprehensive testing</p>
+    </div>
+
+    <div class="test-results">
+        <div id="testOutput">
+            <p>🎯 Test output will appear here...</p>
+        </div>
+    </div>
+
+    <script type="module">
+        import { runAllTests } from './js/tests/AllTests.js';
+        import { logger } from './js/utils/Logger.js';
+        import { testFramework } from './js/utils/TestFramework.js';
+
+        // DOM elements
+        const runAllBtn = document.getElementById('runAllBtn');
+        const runUtilsBtn = document.getElementById('runUtilsBtn');
+        const runCoreBtn = document.getElementById('runCoreBtn');
+        const clearLogsBtn = document.getElementById('clearLogsBtn');
+        const exportResultsBtn = document.getElementById('exportResultsBtn');
+        const testSummary = document.getElementById('testSummary');
+        const summaryText = document.getElementById('summaryText');
+        const progressBar = document.getElementById('progressBar');
+        const testOutput = document.getElementById('testOutput');
+
+        let currentResults = null;
+
+        // Configure logger to also output to our test page
+        const originalAddLogEntry = logger.addLogEntry;
+        logger.addLogEntry = function(level, message, data) {
+            originalAddLogEntry.call(this, level, message, data);
+            addToTestOutput(level, message, data);
+        };
+
+        function addToTestOutput(level, message, data) {
+            const colors = {
+                'ERROR': '#ff4444',
+                'WARN': '#ffaa44',
+                'INFO': '#4488ff',
+                'DEBUG': '#44ff44',
+                'TRACE': '#aaaaaa'
+            };
+
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.style.color = colors[level] || '#ffffff';
+            logEntry.style.marginBottom = '2px';
+            
+            let content = `[${timestamp}] ${level}: ${message}`;
+            if (data) {
+                content += `\n${typeof data === 'object' ? JSON.stringify(data, null, 2) : data}`;
+            }
+            
+            logEntry.textContent = content;
+            testOutput.appendChild(logEntry);
+            
+            // Auto-scroll to bottom
+            testOutput.scrollTop = testOutput.scrollHeight;
+            
+            // Limit output entries
+            while (testOutput.children.length > 500) {
+                testOutput.removeChild(testOutput.firstChild);
+            }
+        }
+
+        function updateTestStatus(status, message, progress = null) {
+            const indicator = testSummary.querySelector('.status-indicator');
+            const statusText = testSummary.querySelector('h3');
+            
+            indicator.className = `status-indicator status-${status}`;
+            statusText.innerHTML = `<span class="status-indicator status-${status}"></span>Test Status: ${message}`;
+            summaryText.textContent = message;
+            
+            if (progress !== null) {
+                progressBar.style.width = `${progress}%`;
+            }
+        }
+
+        function disableButtons(disabled = true) {
+            runAllBtn.disabled = disabled;
+            runUtilsBtn.disabled = disabled;
+            runCoreBtn.disabled = disabled;
+        }
+
+        // Event listeners
+        runAllBtn.addEventListener('click', async () => {
+            logger.info('🚀 Starting comprehensive test suite...');
+            updateTestStatus('running', 'Running all tests...', 0);
+            disableButtons(true);
+            
+            try {
+                currentResults = await runAllTests();
+                
+                const { total, passed, failed, skipped } = currentResults;
+                const passRate = total > 0 ? ((passed / total) * 100).toFixed(1) : 0;
+                
+                if (failed === 0) {
+                    updateTestStatus('passed', `All tests passed! (${passed}/${total}) - ${passRate}%`, 100);
+                } else {
+                    updateTestStatus('failed', `${failed} test(s) failed. ${passed} passed, ${skipped} skipped.`, 100);
+                }
+                
+                logger.info(`🏁 Test suite completed: ${passed}/${total} passed (${passRate}%)`);
+                
+            } catch (error) {
+                updateTestStatus('failed', 'Test suite encountered an error');
+                logger.error('Test suite error:', error);
+            }
+            
+            disableButtons(false);
+        });
+
+        runUtilsBtn.addEventListener('click', async () => {
+            logger.info('🔧 Running utility tests only...');
+            updateTestStatus('running', 'Testing utilities...', 0);
+            disableButtons(true);
+            
+            try {
+                // Configure test framework to run only utility tests
+                testFramework.configure({ 
+                    filter: (testName) => testName.includes('Logger') || 
+                                          testName.includes('LocalStorage') || 
+                                          testName.includes('Notifications') || 
+                                          testName.includes('Validation')
+                });
+                
+                currentResults = await testFramework.run();
+                updateTestStatus('passed', 'Utility tests completed', 100);
+                
+            } catch (error) {
+                updateTestStatus('failed', 'Utility tests failed');
+                logger.error('Utility test error:', error);
+            }
+            
+            disableButtons(false);
+        });
+
+        runCoreBtn.addEventListener('click', async () => {
+            logger.info('⚙️ Running core system tests only...');
+            updateTestStatus('running', 'Testing core systems...', 0);
+            disableButtons(true);
+            
+            try {
+                // Configure test framework to run only core tests
+                testFramework.configure({ 
+                    filter: (testName) => testName.includes('Card Database') || 
+                                          testName.includes('Deck Manager') || 
+                                          testName.includes('Game Engine')
+                });
+                
+                currentResults = await testFramework.run();
+                updateTestStatus('passed', 'Core system tests completed', 100);
+                
+            } catch (error) {
+                updateTestStatus('failed', 'Core system tests failed');
+                logger.error('Core system test error:', error);
+            }
+            
+            disableButtons(false);
+        });
+
+        clearLogsBtn.addEventListener('click', () => {
+            testOutput.innerHTML = '<p>🧹 Logs cleared...</p>';
+            logger.clearLogs();
+            updateTestStatus('idle', 'Ready to run tests', 0);
+        });
+
+        exportResultsBtn.addEventListener('click', () => {
+            if (!currentResults) {
+                logger.warn('No test results to export');
+                return;
+            }
+            
+            const exportData = {
+                timestamp: new Date().toISOString(),
+                results: currentResults,
+                systemInfo: logger.getSystemInfo(),
+                logs: logger.logs.slice(-100) // Last 100 log entries
+            };
+            
+            const blob = new Blob([JSON.stringify(exportData, null, 2)], { 
+                type: 'application/json' 
+            });
+            
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `fftcg-test-results-${new Date().toISOString().slice(0, 19).replace(/:/g, '-')}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            logger.info('📁 Test results exported');
+        });
+
+        // Initialize
+        logger.info('🧪 Test suite interface ready');
+        logger.showUI(); // Show debug overlay
+        
+        // Add keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey || e.metaKey) {
+                switch (e.key) {
+                    case 't':
+                        e.preventDefault();
+                        runAllBtn.click();
+                        break;
+                    case 'u':
+                        e.preventDefault();
+                        runUtilsBtn.click();
+                        break;
+                    case 'c':
+                        e.preventDefault();
+                        runCoreBtn.click();
+                        break;
+                    case 'l':
+                        e.preventDefault();
+                        clearLogsBtn.click();
+                        break;
+                }
+            }
+        });
+
+        // Show keyboard shortcuts
+        logger.info('⌨️ Keyboard shortcuts: Ctrl+T (All Tests), Ctrl+U (Utils), Ctrl+C (Core), Ctrl+L (Clear)');
+    </script>
+</body>
+</html>

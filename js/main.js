@@ -10,16 +10,25 @@
  */
 
 // Import core modules
-import { PlayerManager } from './core/PlayerManager.js';
 import { DeckManager } from './core/DeckManager.js';
 import { CardDatabase } from './core/CardDatabase.js';
 import { GameEngine } from './core/GameEngine.js';
+
+// Import utilities
+import { logger } from './utils/Logger.js';
 import { LocalStorage } from './utils/LocalStorage.js';
-import { Notifications } from './utils/Notifications.js';
-import { Modal } from './components/Modal.js';
-import { DeckBuilder } from './components/DeckBuilder.js';
-import { Lobby } from './components/Lobby.js';
-import { SocketClient } from './network/SocketClient.js';
+import { notifications } from './utils/Notifications.js';
+import { validate, validateCard, validateDeck } from './utils/Validation.js';
+
+// Import extended card data
+import { EXTENDED_CARD_DATA, generateCardImages } from './data/ExtendedCardDatabase.js';
+
+// TODO: Import these when implemented
+// import { PlayerManager } from './core/PlayerManager.js';
+// import { Modal } from './components/Modal.js';
+// import { DeckBuilder } from './components/DeckBuilder.js';
+// import { Lobby } from './components/Lobby.js';
+// import { SocketClient } from './network/SocketClient.js';
 
 /**
  * Main Application Controller Class
@@ -27,20 +36,24 @@ import { SocketClient } from './network/SocketClient.js';
  */
 class AppController {
     constructor() {
+        // Initialize logging first
+        logger.info('🚀 Initializing FFTCG Simulator...');
+        logger.time('app-initialization');
+        
         // Core managers
-        this.playerManager = new PlayerManager();
         this.deckManager = new DeckManager();
         this.cardDatabase = new CardDatabase();
         this.gameEngine = new GameEngine();
         
-        // UI components
-        this.modal = new Modal();
-        this.deckBuilder = new DeckBuilder(this.cardDatabase, this.deckManager);
-        this.lobby = new Lobby();
-        this.notifications = new Notifications();
+        // UI components (using global instances)
+        this.notifications = notifications;
         
-        // Network
-        this.socketClient = new SocketClient();
+        // TODO: Initialize these when implemented
+        // this.playerManager = new PlayerManager();
+        // this.modal = new Modal();
+        // this.deckBuilder = new DeckBuilder(this.cardDatabase, this.deckManager);
+        // this.lobby = new Lobby();
+        // this.socketClient = new SocketClient();
         
         // Application state
         this.currentView = 'home';
@@ -61,7 +74,7 @@ class AppController {
      */
     async init() {
         try {
-            console.log('🎮 Initializing Final Fantasy TCG Simulator...');
+            logger.info('🎮 Initializing Final Fantasy TCG Simulator...');
             
             // Set up error handling
             this.setupErrorHandling();
@@ -69,8 +82,14 @@ class AppController {
             // Initialize loading screen
             this.setupLoadingScreen();
             
+            // Load extended card data
+            await this.loadExtendedCardData();
+            
             // Load application data
             await this.loadApplicationData();
+            
+            // Connect deck manager to card database
+            this.deckManager.setCardDatabase(this.cardDatabase);
             
             // Set up event listeners
             this.setupEventListeners();
@@ -84,10 +103,38 @@ class AppController {
             // Show main application
             this.showMainApplication();
             
-            console.log('✅ Application initialized successfully');
+            const initDuration = logger.timeEnd('app-initialization');
+            logger.info(`✅ Application initialized successfully in ${initDuration?.toFixed(2)}ms`);
             
         } catch (error) {
             this.handleError('Failed to initialize application', error);
+        }
+    }
+
+    /**
+     * Load extended card data into the database
+     */
+    async loadExtendedCardData() {
+        logger.time('card-data-loading');
+        logger.info('📚 Loading extended card database...');
+        
+        try {
+            // Load extended card data into the card database
+            this.cardDatabase.loadCards(EXTENDED_CARD_DATA);
+            
+            // Generate placeholder images
+            logger.info('🖼️ Generating card images...');
+            const cardImages = generateCardImages();
+            
+            // Store images for later use
+            this.cardImages = cardImages;
+            
+            const loadDuration = logger.timeEnd('card-data-loading');
+            logger.info(`✅ Loaded ${EXTENDED_CARD_DATA.length} cards with images in ${loadDuration?.toFixed(2)}ms`);
+            
+        } catch (error) {
+            logger.error('Failed to load extended card data:', error);
+            throw error;
         }
     }
 
@@ -102,6 +149,9 @@ class AppController {
         window.addEventListener('unhandledrejection', (event) => {
             this.handleError('Unhandled promise rejection', event.reason);
         });
+        
+        // Log system information for debugging
+        logger.logSystemInfo();
     }
 
     /**
@@ -441,25 +491,60 @@ class AppController {
      * Handle application errors
      */
     handleError(message, error) {
-        console.error(`💥 ${message}:`, error);
+        logger.error(`💥 ${message}:`, error);
         
         // Show user-friendly error message
-        this.notifications.show(
+        this.notifications.error(
             message || 'An unexpected error occurred',
-            'error'
+            {
+                title: 'Application Error',
+                persistent: true,
+                actions: [
+                    {
+                        id: 'reload',
+                        label: 'Reload App',
+                        handler: () => window.location.reload()
+                    },
+                    {
+                        id: 'report',
+                        label: 'Report Issue',
+                        handler: () => this.showErrorReport(message, error)
+                    }
+                ]
+            }
         );
         
-        // Log error for debugging (in production, this would go to a logging service)
+        // Log comprehensive error information
         const errorLog = {
             message,
             error: error?.message || error,
             stack: error?.stack,
             timestamp: new Date().toISOString(),
-            userAgent: navigator.userAgent,
-            currentView: this.currentView
+            currentView: this.currentView,
+            systemInfo: logger.getSystemInfo(),
+            gameState: this.gameEngine?.getPublicGameState() || null
         };
         
-        localStorage.setItem('lastError', JSON.stringify(errorLog));
+        LocalStorage.set('lastError', errorLog);
+        logger.inspect(errorLog, 'Error Details');
+    }
+
+    /**
+     * Show detailed error report
+     */
+    showErrorReport(message, error) {
+        const errorDetails = {
+            message,
+            error: error?.message || error,
+            stack: error?.stack,
+            timestamp: new Date().toISOString(),
+            url: window.location.href,
+            userAgent: navigator.userAgent,
+            systemInfo: logger.getSystemInfo()
+        };
+
+        logger.info('📋 Error report generated:', errorDetails);
+        this.notifications.info('Error details logged to console. Please check the developer console for more information.');
     }
 
     /**
@@ -497,39 +582,122 @@ class AppController {
 // Global functions for backward compatibility and easy access
 window.AppController = AppController;
 
-// Global helper functions
+// Global helper functions (updated to use new notification system)
 window.openModal = function(modalId) {
-    app.modal.open(modalId);
+    // TODO: Implement when Modal component is created
+    logger.warn('Modal system not yet implemented');
+    notifications.warning('Modal system coming soon!');
 };
 
 window.closeModal = function(modalId) {
-    app.modal.close(modalId);
+    // TODO: Implement when Modal component is created
+    logger.warn('Modal system not yet implemented');
 };
 
 window.showNotification = function(message, type = 'info') {
-    app.notifications.show(message, type);
+    notifications.show(message, type);
 };
 
 window.startPracticeGame = function() {
-    showNotification('Practice mode coming soon!', 'info');
+    notifications.info('Practice mode coming soon!');
+};
+
+// Enhanced debugging functions
+window.debug = {
+    app: null, // Will be set when app is created
+    logger: logger,
+    notifications: notifications,
+    LocalStorage: LocalStorage,
+    validate: validate,
+    validateCard: validateCard,
+    validateDeck: validateDeck,
+    
+    // Utility functions
+    testCard: (cardId) => {
+        const card = window.debug.app?.cardDatabase?.getCard(cardId);
+        if (card) {
+            logger.info('Card found:', card);
+            return card;
+        } else {
+            logger.warn(`Card not found: ${cardId}`);
+            return null;
+        }
+    },
+    
+    testDeck: () => {
+        const deck = window.debug.app?.deckManager?.createNewDeck('Debug Test Deck');
+        logger.info('Created test deck:', deck);
+        return deck;
+    },
+    
+    showStats: () => {
+        const stats = {
+            cardDatabase: window.debug.app?.cardDatabase?.getStats(),
+            deckManager: window.debug.app?.deckManager?.getManagerStats(),
+            localStorage: LocalStorage.getUsage(),
+            logger: logger.getStats()
+        };
+        logger.info('Application Statistics:', stats);
+        return stats;
+    },
+    
+    clearData: () => {
+        if (confirm('Clear all application data? This cannot be undone.')) {
+            LocalStorage.clear();
+            logger.info('Application data cleared');
+            notifications.success('Application data cleared');
+        }
+    },
+    
+    exportData: () => {
+        const backup = LocalStorage.backup();
+        const blob = new Blob([backup], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `fftcg-backup-${new Date().toISOString().slice(0, 10)}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        logger.info('Data exported');
+    }
 };
 
 // Initialize application when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('🚀 Starting Final Fantasy TCG Simulator...');
+    logger.info('🚀 Starting Final Fantasy TCG Simulator...');
     
     // Create global app instance
     window.app = new AppController();
     
+    // Connect debug object to app
+    window.debug.app = window.app;
+    
     // Development helpers
     if (window.location.hostname === 'localhost') {
-        window.debug = {
-            app: window.app,
-            state: () => window.app.getState(),
-            logs: () => console.table(window.app.getState())
-        };
+        logger.info('🔧 Development mode active. Available debugging tools:');
+        logger.info('  • window.debug - Debugging utilities');
+        logger.info('  • window.log - Logger instance');
+        logger.info('  • window.notifications - Notifications system');
+        logger.info('  • window.app - Main application controller');
         
-        console.log('🔧 Development mode active. Use `debug` object for debugging.');
+        // Show debug UI
+        logger.showUI();
+        
+        // Test notification
+        setTimeout(() => {
+            notifications.info('Development mode active! Check console for debugging tools.', {
+                title: 'Debug Mode',
+                actions: [
+                    {
+                        id: 'test-suite',
+                        label: 'Run Tests',
+                        handler: () => window.open('/test.html', '_blank')
+                    }
+                ]
+            });
+        }, 2000);
     }
 });
 
