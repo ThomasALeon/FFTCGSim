@@ -1,0 +1,417 @@
+/**
+ * ACCESSIBILITY STYLES - Comprehensive accessibility enhancements
+ * 
+ * Provides styling for:
+ * - High contrast mode
+ * - Color blind support
+ * - Focus indicators
+ * - Keyboard navigation
+ * - Font and sizing options
+ * - Reduced motion support
+ */
+
+/* === SCREEN READER ONLY === */
+.sr-only {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+}
+
+/* === HIGH CONTRAST MODE === */
+.high-contrast {
+    filter: contrast(150%);
+}
+
+.high-contrast * {
+    text-shadow: none !important;
+    box-shadow: none !important;
+}
+
+.high-contrast .card-item {
+    border: 2px solid #ffffff !important;
+    background: #000000 !important;
+    color: #ffffff !important;
+}
+
+.high-contrast .notification {
+    border: 2px solid #ffffff !important;
+    background: #000000 !important;
+    color: #ffffff !important;
+}
+
+.high-contrast button {
+    border: 2px solid #ffffff !important;
+    background: #000000 !important;
+    color: #ffffff !important;
+}
+
+.high-contrast button:hover,
+.high-contrast button:focus {
+    background: #ffffff !important;
+    color: #000000 !important;
+}
+
+/* === FOCUS INDICATORS === */
+*:focus {
+    outline: 3px solid var(--focus-color, #4a90e2) !important;
+    outline-offset: 2px !important;
+}
+
+.hide-focus-indicators *:focus {
+    outline: none !important;
+}
+
+/* Enhanced focus for interactive elements */
+button:focus,
+input:focus,
+select:focus,
+textarea:focus,
+[tabindex]:focus,
+.card-item:focus,
+.notification:focus {
+    outline: 3px solid var(--focus-color, #4a90e2) !important;
+    outline-offset: 2px !important;
+    box-shadow: 0 0 0 1px rgba(74, 144, 226, 0.3) !important;
+}
+
+/* Special focus for grid items */
+.card-item:focus,
+.deck-card-item:focus {
+    transform: scale(1.02);
+    z-index: 10;
+    transition: transform 0.2s ease;
+}
+
+/* Skip animations preference */
+.skip-animations *,
+.skip-animations *::before,
+.skip-animations *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+}
+
+/* === KEYBOARD NAVIGATION === */
+.keyboard-only .card-item:hover {
+    transform: none;
+}
+
+.using-keyboard .card-item:focus {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Navigation hints */
+[role="grid"]::before {
+    content: attr(aria-label);
+    position: absolute;
+    top: -30px;
+    left: 0;
+    font-size: 0.875rem;
+    color: var(--text-secondary, #666);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+[role="grid"]:focus::before {
+    opacity: 1;
+}
+
+/* === LARGER CLICK TARGETS === */
+.larger-click-targets button,
+.larger-click-targets .card-item,
+.larger-click-targets .notification-close,
+.larger-click-targets .notification-action {
+    min-height: 44px !important;
+    min-width: 44px !important;
+    padding: 12px !important;
+}
+
+.larger-click-targets .card-item {
+    padding: 16px !important;
+}
+
+/* === FONT SETTINGS === */
+body {
+    font-size: var(--base-font-size, 1rem);
+    font-family: var(--base-font-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+    line-height: var(--base-line-height, 1.5);
+}
+
+/* Dyslexic-friendly fonts */
+.font-dyslexic-friendly {
+    font-family: "OpenDyslexic", "Comic Sans MS", sans-serif !important;
+}
+
+.font-high-readability {
+    font-family: "Verdana", "Tahoma", sans-serif !important;
+}
+
+/* === SIMPLIFIED UI === */
+.simplified-ui .card-preview {
+    box-shadow: none !important;
+    border: 1px solid #ccc !important;
+}
+
+.simplified-ui .notification {
+    box-shadow: none !important;
+    border: 1px solid #ccc !important;
+}
+
+.simplified-ui .complex-animation {
+    display: none !important;
+}
+
+.simplified-ui .decorative-element {
+    display: none !important;
+}
+
+/* === COLOR BLIND SUPPORT === */
+/* Base patterns for color coding alternatives */
+.element-fire.use-patterns {
+    background-image: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 10px,
+        rgba(255, 255, 255, 0.1) 10px,
+        rgba(255, 255, 255, 0.1) 20px
+    ) !important;
+}
+
+.element-ice.use-patterns {
+    background-image: repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 5px,
+        rgba(255, 255, 255, 0.1) 5px,
+        rgba(255, 255, 255, 0.1) 10px
+    ) !important;
+}
+
+.element-wind.use-patterns {
+    background-image: repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 8px,
+        rgba(255, 255, 255, 0.1) 8px,
+        rgba(255, 255, 255, 0.1) 16px
+    ) !important;
+}
+
+.element-lightning.use-patterns {
+    background-image: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 3px,
+        rgba(255, 255, 255, 0.1) 3px,
+        rgba(255, 255, 255, 0.1) 6px
+    ) !important;
+}
+
+.element-water.use-patterns {
+    background-image: radial-gradient(
+        circle at 50% 50%,
+        rgba(255, 255, 255, 0.1) 2px,
+        transparent 2px
+    ) !important;
+    background-size: 15px 15px !important;
+}
+
+.element-earth.use-patterns {
+    background-image: repeating-conic-gradient(
+        from 0deg at 50% 50%,
+        rgba(255, 255, 255, 0.1) 0deg 90deg,
+        transparent 90deg 180deg
+    ) !important;
+}
+
+/* === MOTION PREFERENCES === */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    
+    .card-item:hover,
+    .card-item:focus {
+        transform: none !important;
+    }
+}
+
+/* === PRINT STYLES === */
+@media print {
+    .notification-container,
+    .sr-only,
+    [aria-hidden="true"] {
+        display: none !important;
+    }
+    
+    .card-item,
+    .deck-card-item {
+        break-inside: avoid;
+        border: 1px solid #000 !important;
+        background: white !important;
+        color: black !important;
+    }
+}
+
+/* === CARD ACCESSIBILITY ENHANCEMENTS === */
+.card-item[aria-selected="true"] {
+    border-color: var(--focus-color, #4a90e2) !important;
+    background-color: rgba(74, 144, 226, 0.1) !important;
+}
+
+.card-item:focus .card-name {
+    font-weight: bold;
+}
+
+/* Deck list accessibility */
+.deck-card-item {
+    position: relative;
+}
+
+.deck-card-item:focus::after {
+    content: "Press Delete to remove";
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+    font-size: 0.75rem;
+    color: var(--text-secondary, #666);
+    background: var(--bg-secondary, #f5f5f5);
+    padding: 2px 6px;
+    border-radius: 3px;
+    white-space: nowrap;
+}
+
+/* === NOTIFICATION ACCESSIBILITY === */
+.notification[role="alert"] {
+    position: relative;
+}
+
+.notification[aria-live="assertive"] {
+    border-left-width: 5px !important;
+}
+
+.notification-actions button:focus {
+    background-color: var(--focus-bg, #e3f2fd) !important;
+    color: var(--focus-text, #1976d2) !important;
+}
+
+/* === FORM ACCESSIBILITY === */
+input[aria-invalid="true"],
+select[aria-invalid="true"],
+textarea[aria-invalid="true"] {
+    border-color: #d32f2f !important;
+    box-shadow: 0 0 0 1px rgba(211, 47, 47, 0.3) !important;
+}
+
+label[for] {
+    cursor: pointer;
+}
+
+/* Required field indicators */
+[required]::after,
+[aria-required="true"]::after {
+    content: " *";
+    color: #d32f2f;
+}
+
+/* === LOADING AND STATUS INDICATORS === */
+.loading-spinner[aria-live] {
+    position: relative;
+}
+
+.loading-spinner[aria-live]::after {
+    content: attr(aria-label);
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+/* === ERROR AND SUCCESS STATES === */
+.error-state {
+    border-color: #d32f2f !important;
+    background-color: rgba(211, 47, 47, 0.05) !important;
+}
+
+.success-state {
+    border-color: #388e3c !important;
+    background-color: rgba(56, 142, 60, 0.05) !important;
+}
+
+/* === RESPONSIVE ACCESSIBILITY === */
+@media (max-width: 768px) {
+    .larger-click-targets button,
+    .larger-click-targets .card-item {
+        min-height: 48px !important;
+        min-width: 48px !important;
+    }
+    
+    /* Larger text on mobile for readability */
+    body {
+        font-size: calc(var(--base-font-size, 1rem) * 1.1);
+    }
+}
+
+/* === DARK MODE ACCESSIBILITY === */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --focus-color: #64b5f6;
+        --focus-bg: #1565c0;
+        --focus-text: #ffffff;
+        --bg-secondary: #333333;
+        --text-secondary: #cccccc;
+    }
+}
+
+/* === UTILITY CLASSES === */
+.visually-hidden {
+    position: absolute !important;
+    clip: rect(1px, 1px, 1px, 1px) !important;
+    padding: 0 !important;
+    border: 0 !important;
+    height: 1px !important;
+    width: 1px !important;
+    overflow: hidden !important;
+}
+
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 6px;
+    background: var(--focus-color, #4a90e2);
+    color: white;
+    padding: 8px;
+    text-decoration: none;
+    border-radius: 0 0 4px 4px;
+    z-index: 9999;
+    transition: top 0.3s ease;
+}
+
+.skip-link:focus {
+    top: 0;
+}
+
+/* === ANIMATION CONTROL === */
+.respect-motion-preference {
+    animation: none;
+    transition: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .respect-motion-preference {
+        animation: inherit;
+        transition: inherit;
+    }
+}

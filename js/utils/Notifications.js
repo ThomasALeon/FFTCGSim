@@ -343,6 +343,21 @@ export class Notifications {
         element.className = `notification type-${notification.type}`;
         element.style.borderLeftColor = typeConfig.color;
         
+        // Add ARIA attributes for accessibility
+        element.setAttribute('role', 'alert');
+        element.setAttribute('aria-live', notification.type === 'error' ? 'assertive' : 'polite');
+        element.setAttribute('aria-atomic', 'true');
+        element.setAttribute('tabindex', '0');
+        
+        // Add screen reader friendly label
+        const typeLabel = notification.type.charAt(0).toUpperCase() + notification.type.slice(1);
+        element.setAttribute('aria-label', `${typeLabel} notification: ${notification.message}${notification.title ? '. ' + notification.title : ''}`);
+        
+        // Focus management for keyboard navigation
+        if (notification.persistent || notification.actions.length > 0) {
+            element.setAttribute('aria-describedby', `notification-${notification.id}-description`);
+        }
+        
         // Icon
         let icon = typeConfig.icon;
         if (notification.type === 'loading') {
@@ -351,25 +366,25 @@ export class Notifications {
 
         // Content
         let content = `
-            <div class="notification-icon">${icon}</div>
-            <div class="notification-content">
-                ${notification.title ? `<div class="notification-title">${this.escapeHtml(notification.title)}</div>` : ''}
+            <div class="notification-icon" aria-hidden="true">${icon}</div>
+            <div class="notification-content" id="notification-${notification.id}-description">
+                ${notification.title ? `<div class="notification-title" role="heading" aria-level="3">${this.escapeHtml(notification.title)}</div>` : ''}
                 <div class="notification-message">${this.escapeHtml(notification.message)}</div>
             </div>
         `;
 
         // Actions
         if (notification.actions.length > 0) {
-            content += '<div class="notification-actions">';
+            content += '<div class="notification-actions" role="group" aria-label="Notification actions">';
             notification.actions.forEach(action => {
-                content += `<button class="notification-action" data-action="${action.id}">${this.escapeHtml(action.label)}</button>`;
+                content += `<button class="notification-action" data-action="${action.id}" aria-describedby="notification-${notification.id}-description">${this.escapeHtml(action.label)}</button>`;
             });
             content += '</div>';
         }
 
         // Close button
         if (!notification.persistent) {
-            content += '<div class="notification-close" title="Close">×</div>';
+            content += `<button class="notification-close" aria-label="Close ${notification.type} notification" title="Close">×</button>`;
         }
 
         element.innerHTML = content;
@@ -384,6 +399,9 @@ export class Notifications {
 
         // Event listeners
         this.attachNotificationListeners(element, notification);
+        
+        // Keyboard navigation support
+        this.setupKeyboardNavigation(element, notification);
 
         return element;
     }
@@ -423,6 +441,92 @@ export class Notifications {
                 this.dismiss(notification.id);
             });
         }
+    }
+
+    /**
+     * Setup keyboard navigation for notification
+     */
+    setupKeyboardNavigation(element, notification) {
+        element.addEventListener('keydown', (e) => {
+            switch (e.key) {
+                case 'Escape':
+                    e.preventDefault();
+                    if (!notification.persistent) {
+                        this.dismiss(notification.id);
+                    }
+                    break;
+                    
+                case 'Enter':
+                case ' ':
+                    e.preventDefault();
+                    // If notification has a primary action, trigger it
+                    const primaryAction = element.querySelector('.notification-action');
+                    if (primaryAction) {
+                        primaryAction.click();
+                    } else if (!notification.persistent) {
+                        this.dismiss(notification.id);
+                    }
+                    break;
+                    
+                case 'Tab':
+                    // Allow natural tab navigation through actions
+                    break;
+                    
+                case 'ArrowLeft':
+                case 'ArrowRight':
+                    e.preventDefault();
+                    this.navigateActions(element, e.key === 'ArrowRight' ? 1 : -1);
+                    break;
+            }
+        });
+        
+        // Auto-focus persistent notifications or those with actions
+        if (notification.persistent || notification.actions.length > 0) {
+            setTimeout(() => {
+                element.focus();
+                this.announceToScreenReader(element, notification);
+            }, 100);
+        }
+    }
+
+    /**
+     * Navigate between action buttons
+     */
+    navigateActions(element, direction) {
+        const actions = element.querySelectorAll('.notification-action, .notification-close');
+        const currentFocus = document.activeElement;
+        const currentIndex = Array.from(actions).indexOf(currentFocus);
+        
+        if (currentIndex >= 0) {
+            const nextIndex = (currentIndex + direction + actions.length) % actions.length;
+            actions[nextIndex].focus();
+        } else if (actions.length > 0) {
+            actions[0].focus();
+        }
+    }
+
+    /**
+     * Announce notification to screen readers
+     */
+    announceToScreenReader(element, notification) {
+        // Create temporary announcement element for screen readers
+        const announcement = document.createElement('div');
+        announcement.setAttribute('aria-live', 'assertive');
+        announcement.setAttribute('aria-atomic', 'true');
+        announcement.className = 'sr-only';
+        announcement.style.cssText = 'position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden;';
+        
+        const typeLabel = notification.type.charAt(0).toUpperCase() + notification.type.slice(1);
+        announcement.textContent = `${typeLabel} notification: ${notification.message}${notification.title ? '. ' + notification.title : ''}`;
+        
+        document.body.appendChild(announcement);
+        
+        // Remove after announcement
+        setTimeout(() => {
+            if (announcement.parentNode) {
+                announcement.parentNode.removeChild(announcement);
+            }
+        }, 1000);
     }
 
     /**

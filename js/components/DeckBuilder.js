@@ -97,6 +97,9 @@ export class DeckBuilder {
 
         // Set up drag and drop for deck list
         this.setupDragAndDrop();
+        
+        // Set up keyboard navigation
+        this.setupKeyboardNavigation();
     }
 
     /**
@@ -201,6 +204,14 @@ export class DeckBuilder {
         cardDiv.className = 'card-item';
         cardDiv.dataset.cardId = card.id;
         cardDiv.draggable = true;
+        
+        // Add accessibility attributes
+        cardDiv.setAttribute('tabindex', '0');
+        cardDiv.setAttribute('role', 'gridcell');
+        cardDiv.setAttribute('aria-selected', 'false');
+        const cardDescription = `${card.name}, ${card.element} ${card.type}, cost ${card.cost}${card.power ? `, power ${card.power}` : ''}${card.text ? `. ${card.text}` : ''}`;
+        cardDiv.setAttribute('aria-label', cardDescription);
+        cardDiv.setAttribute('title', cardDescription);
 
         // Get element color for styling
         const elementClass = `element-${card.element}`;
@@ -721,6 +732,266 @@ export class DeckBuilder {
      */
     getCurrentDeck() {
         return this.currentDeck;
+    }
+
+    /**
+     * Setup keyboard navigation for deck builder
+     */
+    setupKeyboardNavigation() {
+        // Card grid navigation
+        if (this.cardGrid) {
+            this.cardGrid.addEventListener('keydown', (e) => {
+                const focusedCard = document.activeElement;
+                if (!focusedCard || !focusedCard.classList.contains('card-item')) {
+                    return;
+                }
+                
+                this.handleCardGridKeyboard(e, focusedCard);
+            });
+            
+            // Make card grid focusable
+            this.cardGrid.setAttribute('tabindex', '0');
+            this.cardGrid.setAttribute('role', 'grid');
+            this.cardGrid.setAttribute('aria-label', 'Card database - use arrow keys to navigate, Enter to add card to deck');
+        }
+        
+        // Deck list navigation
+        if (this.deckList) {
+            this.deckList.addEventListener('keydown', (e) => {
+                const focusedCard = document.activeElement;
+                if (!focusedCard || !focusedCard.classList.contains('deck-card-item')) {
+                    return;
+                }
+                
+                this.handleDeckListKeyboard(e, focusedCard);
+            });
+            
+            // Make deck list focusable
+            this.deckList.setAttribute('tabindex', '0');
+            this.deckList.setAttribute('role', 'grid');
+            this.deckList.setAttribute('aria-label', 'Current deck - use arrow keys to navigate, Delete to remove card');
+        }
+        
+        // Global keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Only handle if we're in the deck builder view
+            const deckBuilderView = document.getElementById('deckBuilderView');
+            if (!deckBuilderView || !deckBuilderView.classList.contains('active')) {
+                return;
+            }
+            
+            this.handleGlobalKeyboard(e);
+        });
+    }
+
+    /**
+     * Handle keyboard navigation in card grid
+     */
+    handleCardGridKeyboard(e, focusedCard) {
+        const cardElements = Array.from(this.cardGrid.querySelectorAll('.card-item'));
+        const currentIndex = cardElements.indexOf(focusedCard);
+        const cardsPerRow = this.getCardsPerRow();
+        
+        let nextIndex = currentIndex;
+        
+        switch (e.key) {
+            case 'ArrowRight':
+                e.preventDefault();
+                nextIndex = Math.min(currentIndex + 1, cardElements.length - 1);
+                break;
+                
+            case 'ArrowLeft':
+                e.preventDefault();
+                nextIndex = Math.max(currentIndex - 1, 0);
+                break;
+                
+            case 'ArrowDown':
+                e.preventDefault();
+                nextIndex = Math.min(currentIndex + cardsPerRow, cardElements.length - 1);
+                break;
+                
+            case 'ArrowUp':
+                e.preventDefault();
+                nextIndex = Math.max(currentIndex - cardsPerRow, 0);
+                break;
+                
+            case 'Enter':
+            case ' ':
+                e.preventDefault();
+                const cardId = focusedCard.dataset.cardId;
+                if (cardId) {
+                    this.addCardToDeck(cardId);
+                    this.announceCardAction(cardId, 'added to deck');
+                }
+                break;
+                
+            case 'Home':
+                e.preventDefault();
+                nextIndex = 0;
+                break;
+                
+            case 'End':
+                e.preventDefault();
+                nextIndex = cardElements.length - 1;
+                break;
+        }
+        
+        if (nextIndex !== currentIndex && cardElements[nextIndex]) {
+            cardElements[nextIndex].focus();
+            this.announceCardSelection(cardElements[nextIndex]);
+        }
+    }
+
+    /**
+     * Handle keyboard navigation in deck list
+     */
+    handleDeckListKeyboard(e, focusedCard) {
+        const deckElements = Array.from(this.deckList.querySelectorAll('.deck-card-item'));
+        const currentIndex = deckElements.indexOf(focusedCard);
+        
+        let nextIndex = currentIndex;
+        
+        switch (e.key) {
+            case 'ArrowDown':
+                e.preventDefault();
+                nextIndex = Math.min(currentIndex + 1, deckElements.length - 1);
+                break;
+                
+            case 'ArrowUp':
+                e.preventDefault();
+                nextIndex = Math.max(currentIndex - 1, 0);
+                break;
+                
+            case 'Delete':
+            case 'Backspace':
+                e.preventDefault();
+                const cardId = focusedCard.dataset.cardId;
+                if (cardId) {
+                    this.removeCardFromDeck(cardId);
+                    this.announceCardAction(cardId, 'removed from deck');
+                    
+                    // Focus next card or previous if at end
+                    const remainingElements = Array.from(this.deckList.querySelectorAll('.deck-card-item'));
+                    if (remainingElements.length > 0) {
+                        const focusIndex = Math.min(currentIndex, remainingElements.length - 1);
+                        remainingElements[focusIndex].focus();
+                    } else {
+                        this.deckList.focus();
+                    }
+                }
+                break;
+                
+            case 'Home':
+                e.preventDefault();
+                nextIndex = 0;
+                break;
+                
+            case 'End':
+                e.preventDefault();
+                nextIndex = deckElements.length - 1;
+                break;
+        }
+        
+        if (nextIndex !== currentIndex && deckElements[nextIndex]) {
+            deckElements[nextIndex].focus();
+            this.announceCardSelection(deckElements[nextIndex]);
+        }
+    }
+
+    /**
+     * Handle global keyboard shortcuts
+     */
+    handleGlobalKeyboard(e) {
+        if (e.ctrlKey || e.metaKey) {
+            switch (e.key) {
+                case 's':
+                    e.preventDefault();
+                    this.saveDeck();
+                    break;
+                    
+                case 'n':
+                    e.preventDefault();
+                    this.createNewDeck();
+                    break;
+                    
+                case 'f':
+                    e.preventDefault();
+                    if (this.searchInput) {
+                        this.searchInput.focus();
+                    }
+                    break;
+            }
+        }
+        
+        switch (e.key) {
+            case 'F3':
+                e.preventDefault();
+                if (this.searchInput) {
+                    this.searchInput.focus();
+                }
+                break;
+        }
+    }
+
+    /**
+     * Get number of cards per row for grid navigation
+     */
+    getCardsPerRow() {
+        if (!this.cardGrid) return 1;
+        
+        const gridStyle = getComputedStyle(this.cardGrid);
+        const gridTemplateColumns = gridStyle.gridTemplateColumns;
+        
+        if (gridTemplateColumns && gridTemplateColumns !== 'none') {
+            return gridTemplateColumns.split(' ').length;
+        }
+        
+        // Fallback: estimate based on card width and container width
+        const cardElements = this.cardGrid.querySelectorAll('.card-item');
+        if (cardElements.length === 0) return 1;
+        
+        const containerWidth = this.cardGrid.clientWidth;
+        const cardWidth = cardElements[0].offsetWidth;
+        return Math.floor(containerWidth / cardWidth) || 1;
+    }
+
+    /**
+     * Announce card selection to screen readers
+     */
+    announceCardSelection(cardElement) {
+        const cardId = cardElement.dataset.cardId;
+        const card = this.cardDatabase.getCard(cardId);
+        
+        if (card && window.app && window.app.notifications) {
+            const announcement = `${card.name}, ${card.element} ${card.type}, cost ${card.cost}${card.power ? `, power ${card.power}` : ''}`;
+            
+            // Create a temporary announcement element
+            const announcer = document.createElement('div');
+            announcer.setAttribute('aria-live', 'polite');
+            announcer.setAttribute('aria-atomic', 'true');
+            announcer.className = 'sr-only';
+            announcer.style.cssText = 'position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden;';
+            announcer.textContent = announcement;
+            
+            document.body.appendChild(announcer);
+            setTimeout(() => {
+                if (announcer.parentNode) {
+                    announcer.parentNode.removeChild(announcer);
+                }
+            }, 1000);
+        }
+    }
+
+    /**
+     * Announce card actions to screen readers
+     */
+    announceCardAction(cardId, action) {
+        const card = this.cardDatabase.getCard(cardId);
+        
+        if (card && window.app && window.app.notifications) {
+            const message = `${card.name} ${action}`;
+            window.app.notifications.info(message, { duration: 2000 });
+        }
     }
 
     /**

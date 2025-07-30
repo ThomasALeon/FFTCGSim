@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FFTCG Simulator - Accessibility Test Suite</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/accessibility.css">
+    <style>
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .test-controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 15px 0;
+        }
+        .test-controls button {
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+        .accessibility-panel {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .setting-group {
+            margin: 15px 0;
+        }
+        .setting-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        .card-demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .card-demo {
+            padding: 15px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            tabindex: 0;
+        }
+        .card-demo:hover,
+        .card-demo:focus {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .element-fire { background-color: #ff4444; color: white; }
+        .element-ice { background-color: #44ddff; color: black; }
+        .element-wind { background-color: #44ff44; color: black; }
+        .element-lightning { background-color: #aa44ff; color: white; }
+        .element-water { background-color: #4488ff; color: white; }
+        .element-earth { background-color: #ffaa44; color: black; }
+        
+        .status-indicator {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin: 2px;
+            display: inline-block;
+        }
+        .status-pass { background: #4caf50; color: white; }
+        .status-warn { background: #ff9800; color: white; }
+        .status-info { background: #2196f3; color: white; }
+        .status-fail { background: #f44336; color: white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔧 FFTCG Simulator - Accessibility Test Suite</h1>
+            <p>Test and configure accessibility features for better user experience.</p>
+        </header>
+
+        <!-- Skip link for keyboard navigation -->
+        <a href="#main-content" class="skip-link">Skip to main content</a>
+
+        <main id="main-content">
+            <!-- Accessibility Controls -->
+            <section class="test-section">
+                <h2>♿ Accessibility Settings</h2>
+                <div class="accessibility-panel">
+                    
+                    <div class="setting-group">
+                        <label for="colorBlindMode">Color Blind Support:</label>
+                        <select id="colorBlindMode" onchange="updateSetting('colorBlindMode', this.value)">
+                            <option value="none">None</option>
+                            <option value="protanopia">Protanopia (Red-blind)</option>
+                            <option value="deuteranopia">Deuteranopia (Green-blind)</option>
+                            <option value="tritanopia">Tritanopia (Blue-blind)</option>
+                        </select>
+                    </div>
+
+                    <div class="setting-group">
+                        <label>
+                            <input type="checkbox" id="highContrast" onchange="updateSetting('highContrast', this.checked)">
+                            High Contrast Mode
+                        </label>
+                    </div>
+
+                    <div class="setting-group">
+                        <label>
+                            <input type="checkbox" id="announceActions" onchange="updateSetting('announceActions', this.checked)" checked>
+                            Announce Actions (Screen Reader)
+                        </label>
+                    </div>
+
+                    <div class="setting-group">
+                        <label>
+                            <input type="checkbox" id="showFocusIndicators" onchange="updateSetting('showFocusIndicators', this.checked)" checked>
+                            Show Focus Indicators
+                        </label>
+                    </div>
+
+                    <div class="setting-group">
+                        <label>
+                            <input type="checkbox" id="skipAnimations" onchange="updateSetting('skipAnimations', this.checked)">
+                            Reduce Motion/Animations
+                        </label>
+                    </div>
+
+                    <div class="setting-group">
+                        <label for="fontSize">Font Size:</label>
+                        <select id="fontSize" onchange="updateSetting('fontSize', this.value)">
+                            <option value="small">Small</option>
+                            <option value="normal" selected>Normal</option>
+                            <option value="large">Large</option>
+                            <option value="extra-large">Extra Large</option>
+                        </select>
+                    </div>
+
+                    <div class="setting-group">
+                        <label>
+                            <input type="checkbox" id="largerClickTargets" onchange="updateSetting('largerClickTargets', this.checked)">
+                            Larger Click Targets
+                        </label>
+                    </div>
+
+                    <div class="test-controls">
+                        <button onclick="resetSettings()">Reset to Defaults</button>
+                        <button onclick="runAccessibilityTests()">Run Tests</button>
+                        <button onclick="generateReport()">Generate Report</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Card Element Testing -->
+            <section class="test-section">
+                <h2>🃏 Card Accessibility Testing</h2>
+                <p>Use arrow keys to navigate, Enter to select, Tab to move between sections.</p>
+                
+                <div class="card-demo-grid" role="grid" aria-label="Card demonstration grid - use arrow keys to navigate">
+                    <div class="card-demo element-fire" tabindex="0" role="gridcell" aria-label="Fire card: Ifrit, cost 4, power 8000">
+                        <h3>🔥 Ifrit</h3>
+                        <p>Fire • Cost 4</p>
+                        <p>Power: 8000</p>
+                    </div>
+                    <div class="card-demo element-ice" tabindex="0" role="gridcell" aria-label="Ice card: Shiva, cost 3, power 6000">
+                        <h3>❄️ Shiva</h3>
+                        <p>Ice • Cost 3</p>
+                        <p>Power: 6000</p>
+                    </div>
+                    <div class="card-demo element-wind" tabindex="0" role="gridcell" aria-label="Wind card: Chocobo, cost 1, power 2000">
+                        <h3>💨 Chocobo</h3>
+                        <p>Wind • Cost 1</p>
+                        <p>Power: 2000</p>
+                    </div>
+                    <div class="card-demo element-lightning" tabindex="0" role="gridcell" aria-label="Lightning card: Ramuh, cost 5, summon">
+                        <h3>⚡ Ramuh</h3>
+                        <p>Lightning • Cost 5</p>
+                        <p>Summon</p>
+                    </div>
+                    <div class="card-demo element-water" tabindex="0" role="gridcell" aria-label="Water card: Leviathan, cost 6, summon">
+                        <h3>🌊 Leviathan</h3>
+                        <p>Water • Cost 6</p>
+                        <p>Summon</p>
+                    </div>
+                    <div class="card-demo element-earth" tabindex="0" role="gridcell" aria-label="Earth card: Titan, cost 4, power 7000">
+                        <h3>🏔️ Titan</h3>
+                        <p>Earth • Cost 4</p>
+                        <p>Power: 7000</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Notification Testing -->
+            <section class="test-section">
+                <h2>🔔 Notification Accessibility</h2>
+                <div class="test-controls">
+                    <button onclick="testNotification('success', 'Success notification with proper ARIA labels')">Test Success</button>
+                    <button onclick="testNotification('error', 'Error notification with assertive announcement')">Test Error</button>
+                    <button onclick="testNotification('warning', 'Warning notification with actions', true)">Test Warning with Actions</button>
+                    <button onclick="testNotification('info', 'Info notification with keyboard navigation')">Test Info</button>
+                </div>
+            </section>
+
+            <!-- Test Results -->
+            <section class="test-section">
+                <h2>📊 Test Results</h2>
+                <div id="testResults">
+                    <p>Click "Run Tests" to check accessibility compliance.</p>
+                </div>
+            </section>
+
+            <!-- Accessibility Report -->
+            <section class="test-section">
+                <h2>📋 Accessibility Report</h2>
+                <div id="accessibilityReport">
+                    <p>Click "Generate Report" to see current accessibility status.</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script type="module">
+        import { accessibilitySettings } from './js/utils/AccessibilitySettings.js';
+        import { notifications } from './js/utils/Notifications.js';
+
+        // Make available globally for testing
+        window.accessibilitySettings = accessibilitySettings;
+        window.notifications = notifications;
+
+        // Initialize notifications
+        notifications.initialize();
+
+        // Update setting function
+        window.updateSetting = function(key, value) {
+            accessibilitySettings.setSetting(key, value);
+            console.log(`Updated ${key} to:`, value);
+        };
+
+        // Reset settings
+        window.resetSettings = function() {
+            accessibilitySettings.resetSettings();
+            updateUIControls();
+            notifications.success('Settings reset to defaults');
+        };
+
+        // Update UI controls to match current settings
+        function updateUIControls() {
+            const settings = accessibilitySettings.getSettings();
+            
+            document.getElementById('colorBlindMode').value = settings.colorBlindMode;
+            document.getElementById('highContrast').checked = settings.highContrast;
+            document.getElementById('announceActions').checked = settings.announceActions;
+            document.getElementById('showFocusIndicators').checked = settings.showFocusIndicators;
+            document.getElementById('skipAnimations').checked = settings.skipAnimations;
+            document.getElementById('fontSize').value = settings.fontSize;
+            document.getElementById('largerClickTargets').checked = settings.largerClickTargets;
+        }
+
+        // Test notification function
+        window.testNotification = function(type, message, withActions = false) {
+            const options = {};
+            
+            if (withActions) {
+                options.actions = [
+                    {
+                        id: 'confirm',
+                        label: 'Confirm',
+                        handler: () => notifications.success('Action confirmed!')
+                    },
+                    {
+                        id: 'cancel',
+                        label: 'Cancel',
+                        handler: () => notifications.info('Action cancelled')
+                    }
+                ];
+                options.persistent = true;
+            }
+
+            notifications[type](message, options);
+        };
+
+        // Run accessibility tests
+        window.runAccessibilityTests = function() {
+            const tests = accessibilitySettings.testAccessibility();
+            const resultsDiv = document.getElementById('testResults');
+            
+            let html = '<h3>Test Results:</h3>';
+            tests.forEach(test => {
+                html += `
+                    <div>
+                        <span class="status-indicator status-${test.status}">${test.status.toUpperCase()}</span>
+                        <strong>${test.name}:</strong> ${test.message}
+                    </div>
+                `;
+            });
+            
+            resultsDiv.innerHTML = html;
+            notifications.info('Accessibility tests completed');
+        };
+
+        // Generate accessibility report
+        window.generateReport = function() {
+            const report = accessibilitySettings.getAccessibilityReport();
+            const reportDiv = document.getElementById('accessibilityReport');
+            
+            let html = '<h3>Accessibility Status Report:</h3>';
+            
+            html += '<h4>Enabled Features:</h4><ul>';
+            report.enabledFeatures.forEach(feature => {
+                html += `<li>${feature}</li>`;
+            });
+            html += '</ul>';
+            
+            if (report.recommendations.length > 0) {
+                html += '<h4>Recommendations:</h4><ul>';
+                report.recommendations.forEach(rec => {
+                    html += `<li>${rec}</li>`;
+                });
+                html += '</ul>';
+            }
+            
+            html += '<h4>Current Settings:</h4><pre>' + JSON.stringify(report.settings, null, 2) + '</pre>';
+            
+            reportDiv.innerHTML = html;
+            notifications.success('Accessibility report generated');
+        };
+
+        // Setup keyboard navigation for card demo
+        function setupCardNavigation() {
+            const cardGrid = document.querySelector('.card-demo-grid');
+            if (!cardGrid) return;
+
+            cardGrid.addEventListener('keydown', (e) => {
+                const focusedCard = document.activeElement;
+                if (!focusedCard || !focusedCard.classList.contains('card-demo')) {
+                    return;
+                }
+
+                const cards = Array.from(cardGrid.querySelectorAll('.card-demo'));
+                const currentIndex = cards.indexOf(focusedCard);
+                const cardsPerRow = 3; // Adjust based on grid layout
+                
+                let nextIndex = currentIndex;
+                
+                switch (e.key) {
+                    case 'ArrowRight':
+                        e.preventDefault();
+                        nextIndex = Math.min(currentIndex + 1, cards.length - 1);
+                        break;
+                    case 'ArrowLeft':
+                        e.preventDefault();
+                        nextIndex = Math.max(currentIndex - 1, 0);
+                        break;
+                    case 'ArrowDown':
+                        e.preventDefault();
+                        nextIndex = Math.min(currentIndex + cardsPerRow, cards.length - 1);
+                        break;
+                    case 'ArrowUp':
+                        e.preventDefault();
+                        nextIndex = Math.max(currentIndex - cardsPerRow, 0);
+                        break;
+                    case 'Enter':
+                    case ' ':
+                        e.preventDefault();
+                        // Simulate card selection
+                        const cardName = focusedCard.querySelector('h3').textContent;
+                        notifications.info(`Selected card: ${cardName}`);
+                        break;
+                }
+                
+                if (nextIndex !== currentIndex && cards[nextIndex]) {
+                    cards[nextIndex].focus();
+                }
+            });
+        }
+
+        // Initialize on page load
+        setTimeout(() => {
+            updateUIControls();
+            setupCardNavigation();
+            notifications.info('Accessibility test suite ready', {
+                title: 'Welcome',
+                actions: [
+                    {
+                        id: 'tour',
+                        label: 'Take Tour',
+                        handler: () => notifications.info('Tour feature coming soon!')
+                    }
+                ]
+            });
+        }, 500);
+    </script>
+</body>
+</html>

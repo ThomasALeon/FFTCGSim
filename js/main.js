@@ -20,6 +20,7 @@ import { LocalStorage } from './utils/LocalStorage.js';
 import { notifications } from './utils/Notifications.js';
 import { validate, validateCard, validateDeck } from './utils/Validation.js';
 import { security } from './utils/Security.js';
+import { accessibilitySettings } from './utils/AccessibilitySettings.js';
 
 // Import extended card data
 import { EXTENDED_CARD_DATA, generateCardImages, getEnhancedCardDatabase, getOpus1CardDatabase } from './data/ExtendedCardDatabase.js';
@@ -47,6 +48,7 @@ class AppController {
         this.cardDatabase = new CardDatabase();
         this.gameEngine = new GameEngine();
         this.security = security;
+        this.accessibilitySettings = accessibilitySettings;
         
         // UI components (using global instances)
         this.notifications = notifications;
@@ -712,6 +714,7 @@ window.debug = {
     validateCard: validateCard,
     validateDeck: validateDeck,
     security: security,
+    accessibility: accessibilitySettings,
     
     // Utility functions
     testCard: (cardId) => {
