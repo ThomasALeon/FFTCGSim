@@ -168,7 +168,7 @@
         <main>
             <!-- API Status Section -->
             <section class="test-section">
-                <h2>📡 API Status</h2>
+                <h2>📡 API Status & Health Monitoring</h2>
                 <div id="apiStatus" class="api-status">
                     <div class="status-card unknown">
                         <h3>Checking...</h3>
@@ -179,6 +179,13 @@
                 <div class="controls">
                     <button onclick="checkAPIStatus()" class="primary">Check Status</button>
                     <button onclick="refreshAPIs()">Refresh All</button>
+                    <button onclick="showHealthDetails()">Health Details</button>
+                    <button onclick="exportDebugInfo()">Export Debug Info</button>
+                </div>
+                
+                <div id="healthDetails" style="display: none; margin-top: 20px; padding: 15px; background: #f0f0f0; border-radius: 8px;">
+                    <h4>Detailed Health Information</h4>
+                    <div id="healthDetailsContent"></div>
                 </div>
             </section>
 
@@ -245,13 +252,22 @@
 
             <!-- Debug Log Section -->
             <section class="test-section">
-                <h2>📋 Debug Log</h2>
+                <h2>📋 Enhanced Debug Log</h2>
                 <div class="controls">
                     <button onclick="clearLog()">Clear Log</button>
                     <button onclick="toggleAutoScroll()">Toggle Auto-scroll</button>
+                    <button onclick="showAPILogs()">Show API Logs</button>
+                    <button onclick="filterLogLevel('error')">Errors Only</button>
+                    <button onclick="filterLogLevel('warn')">Warnings Only</button>
+                    <button onclick="filterLogLevel('')">All Logs</button>
                 </div>
                 <div id="debugLog" class="log-output">
                     External database integration test started...<br>
+                </div>
+                
+                <div id="apiDebugLog" style="display: none; margin-top: 20px;">
+                    <h4>API Debug Logs</h4>
+                    <div id="apiLogContent" class="log-output" style="max-height: 200px;"></div>
                 </div>
             </section>
         </main>
@@ -288,95 +304,144 @@
             }
         }
 
-        // API Status Check
+        // Enhanced API Status Check
         window.checkAPIStatus = async function() {
-            log('Checking API status...', 'info');
+            log('Checking API status using health monitoring...', 'info');
             
             const statusDiv = document.getElementById('apiStatus');
-            statusDiv.innerHTML = '';
+            statusDiv.innerHTML = '<div class="status-card unknown"><h3>Refreshing...</h3><p>Running health checks...</p></div>';
             
-            const apis = [
-                { name: 'FFDecks', url: 'https://ffdecks.com/api/cards/basic' },
-                { name: 'FFTCGDB', url: 'https://fftcgdb.com/api/cards' },
-                { name: 'Square Enix', url: 'https://fftcg.square-enix-games.com' }
-            ];
-
-            for (const api of apis) {
-                const statusCard = document.createElement('div');
-                statusCard.className = 'status-card unknown';
-                statusCard.innerHTML = `
-                    <h3>${api.name}</h3>
-                    <p>Testing connection...</p>
-                `;
-                statusDiv.appendChild(statusCard);
-
-                try {
-                    // Test connection (simplified)
-                    const isOnline = Math.random() > 0.5; // Simulated for demo
-                    
-                    if (isOnline) {
-                        statusCard.className = 'status-card online';
+            try {
+                // Force a health check
+                await externalAPI.refreshHealthStatus();
+                
+                // Get health status
+                const healthStatus = externalAPI.getHealthStatus();
+                
+                log(`Health check completed. ${healthStatus.summary.online}/${healthStatus.summary.total} APIs online`, 'info');
+                
+                statusDiv.innerHTML = '';
+                
+                if (healthStatus.apis && healthStatus.apis.length > 0) {
+                    healthStatus.apis.forEach(api => {
+                        const statusCard = document.createElement('div');
+                        statusCard.className = `status-card ${api.isOnline ? 'online' : 'offline'}`;
+                        
+                        let statusText = api.isOnline ? '✅ Online and accessible' : '❌ Offline or inaccessible';
+                        let details = '';
+                        
+                        if (api.isOnline && api.responseTime) {
+                            details = `<small>Response time: ${api.responseTime}ms</small>`;
+                        } else if (!api.isOnline && api.error) {
+                            details = `<small>Error: ${api.error}</small>`;
+                        }
+                        
                         statusCard.innerHTML = `
                             <h3>${api.name}</h3>
-                            <p>✅ Online and accessible</p>
-                            <small>Response time: ${Math.floor(Math.random() * 500 + 100)}ms</small>
+                            <p>${statusText}</p>
+                            ${details}
+                            <small>Last checked: ${new Date(api.lastChecked).toLocaleTimeString()}</small>
                         `;
-                        log(`${api.name} API is online`, 'success');
-                    } else {
-                        statusCard.className = 'status-card offline';
-                        statusCard.innerHTML = `
-                            <h3>${api.name}</h3>
-                            <p>❌ Offline or inaccessible</p>
-                            <small>CORS or network error</small>
-                        `;
-                        log(`${api.name} API is offline`, 'warn');
-                    }
-                } catch (error) {
-                    statusCard.className = 'status-card offline';
-                    statusCard.innerHTML = `
-                        <h3>${api.name}</h3>
-                        <p>❌ Error: ${error.message}</p>
-                    `;
-                    log(`${api.name} API error: ${error.message}`, 'error');
+                        
+                        statusDiv.appendChild(statusCard);
+                        
+                        log(`${api.name} API: ${api.isOnline ? 'online' : 'offline'}`, 
+                            api.isOnline ? 'success' : 'warn');
+                    });
+                } else {
+                    statusDiv.innerHTML = '<div class="status-card unknown"><h3>No APIs</h3><p>No API status available</p></div>';
                 }
-
-                await new Promise(resolve => setTimeout(resolve, 500)); // Simulate delay
+                
+            } catch (error) {
+                log(`Error checking API status: ${error.message}`, 'error');
+                statusDiv.innerHTML = `
+                    <div class="status-card offline">
+                        <h3>Error</h3>
+                        <p>❌ Failed to check API status</p>
+                        <small>${error.message}</small>
+                    </div>
+                `;
             }
         };
 
-        // Sync with external databases
+        // Enhanced sync with external databases
         window.syncWithExternal = async function() {
-            log('Starting sync with external databases...', 'info');
+            log('Starting enhanced sync with external databases...', 'info');
             
             try {
+                // Clear API logs to track this sync session
+                externalAPI.clearDebugLogs();
+                
+                log('Sync process started - check API logs for detailed progress', 'info');
+                
                 const result = await cardDB.syncWithExternal();
                 
                 if (result.success) {
                     log(`Sync successful: ${result.cardsAdded} cards added, ${result.totalCards} total`, 'success');
                     updateStats();
+                    
+                    // Show some API debug info
+                    const apiLogs = externalAPI.getDebugLogs('info', 10);
+                    log(`API operations completed: ${apiLogs.length} debug entries logged`, 'info');
                 } else {
                     log(`Sync failed: ${result.error}`, 'error');
+                    
+                    // Show error logs for debugging
+                    const errorLogs = externalAPI.getDebugLogs('error', 5);
+                    if (errorLogs.length > 0) {
+                        log(`Recent API errors: ${errorLogs.length} errors logged`, 'warn');
+                    }
                 }
             } catch (error) {
                 log(`Sync error: ${error.message}`, 'error');
+                
+                // Export debug info on error
+                log('Exporting debug information due to sync error...', 'info');
+                setTimeout(() => exportDebugInfo(), 1000);
             }
         };
 
-        // Load cards from external APIs
+        // Enhanced load cards from external APIs
         window.loadFromExternal = async function() {
-            log('Loading cards from external APIs...', 'info');
+            log('Loading cards from external APIs with detailed tracking...', 'info');
             
             try {
+                // Clear logs to track this operation
+                externalAPI.clearDebugLogs();
+                
+                const startTime = Date.now();
                 const success = await cardDB.loadFromExternalAPIs(true);
+                const duration = Date.now() - startTime;
                 
                 if (success) {
-                    log('Successfully loaded cards from external APIs', 'success');
+                    log(`Successfully loaded cards from external APIs in ${duration}ms`, 'success');
                     updateStats();
+                    
+                    // Show operation summary
+                    const debugLogs = externalAPI.getDebugLogs(null, 20);
+                    log(`Operation completed with ${debugLogs.length} debug entries`, 'info');
+                    
+                    // Show breakdown by source
+                    const healthStatus = externalAPI.getHealthStatus();
+                    const onlineAPIs = healthStatus.apis.filter(api => api.isOnline).length;
+                    log(`Used ${onlineAPIs} healthy APIs out of ${healthStatus.apis.length} total`, 'info');
                 } else {
                     log('Failed to load cards from external APIs', 'error');
+                    
+                    // Show error details
+                    const errorLogs = externalAPI.getDebugLogs('error');
+                    if (errorLogs.length > 0) {
+                        log(`${errorLogs.length} errors encountered during load`, 'warn');
+                    }
                 }
             } catch (error) {
                 log(`Error loading external cards: ${error.message}`, 'error');
+                
+                // Auto-show debug info on errors
+                setTimeout(() => {
+                    showAPILogs();
+                    log('Debug logs shown automatically due to error', 'info');
+                }, 500);
             }
         };
 
@@ -534,16 +599,30 @@
         }
 
         // Utility functions
-        window.refreshAPIs = function() {
-            log('Refreshing all APIs...', 'info');
-            checkAPIStatus();
-            loadAvailableSets();
-            updateStats();
+        window.refreshAPIs = async function() {
+            log('Refreshing all APIs with health monitoring...', 'info');
+            
+            try {
+                // Force health check
+                await externalAPI.performHealthCheck();
+                
+                // Update UI
+                await checkAPIStatus();
+                loadAvailableSets();
+                updateStats();
+                
+                // Show summary
+                const healthStatus = externalAPI.getHealthStatus();
+                log(`API refresh completed: ${healthStatus.summary.online}/${healthStatus.summary.total} APIs healthy`, 'success');
+            } catch (error) {
+                log(`Error refreshing APIs: ${error.message}`, 'error');
+            }
         };
 
         window.clearCache = function() {
             cardDB.clearCache();
-            log('Cache cleared', 'info');
+            externalAPI.clearDebugLogs();
+            log('Cache and debug logs cleared', 'info');
             updateStats();
         };
 
@@ -576,12 +655,116 @@
             log(`Auto-scroll ${autoScroll ? 'enabled' : 'disabled'}`, 'info');
         };
 
+        // New debug and health monitoring functions
+        window.showHealthDetails = function() {
+            const healthDiv = document.getElementById('healthDetails');
+            const contentDiv = document.getElementById('healthDetailsContent');
+            
+            if (healthDiv.style.display === 'none') {
+                const healthStatus = externalAPI.getHealthStatus();
+                const apiStatus = externalAPI.getAPIStatus();
+                
+                let html = `
+                    <h5>Health Summary</h5>
+                    <p>Total APIs: ${healthStatus.summary.total} | Online: ${healthStatus.summary.online} | Offline: ${healthStatus.summary.offline}</p>
+                    <p>Last Check: ${healthStatus.lastCheck ? new Date(healthStatus.lastCheck).toLocaleString() : 'Never'}</p>
+                    
+                    <h5>CORS Configuration</h5>
+                    <p>Proxy: ${apiStatus.corsProxy}</p>
+                    
+                    <h5>Recent Debug Logs</h5>
+                    <div style="max-height: 150px; overflow-y: auto; background: #fff; padding: 10px; font-family: monospace; font-size: 12px;">
+                `;
+                
+                const recentLogs = externalAPI.getDebugLogs(null, 20);
+                recentLogs.forEach(log => {
+                    html += `<div>[${log.timestamp}] ${log.level.toUpperCase()}: ${log.message}</div>`;
+                });
+                
+                html += '</div>';
+                
+                contentDiv.innerHTML = html;
+                healthDiv.style.display = 'block';
+            } else {
+                healthDiv.style.display = 'none';
+            }
+        };
+        
+        window.showAPILogs = function() {
+            const apiLogDiv = document.getElementById('apiDebugLog');
+            const contentDiv = document.getElementById('apiLogContent');
+            
+            if (apiLogDiv.style.display === 'none') {
+                const logs = externalAPI.getDebugLogs(null, 50);
+                
+                let html = '';
+                logs.forEach(log => {
+                    const color = {
+                        error: '#ff4444',
+                        warn: '#ffaa00',
+                        info: '#00ff00'
+                    }[log.level] || '#00ff00';
+                    
+                    html += `<span style="color: ${color}">[${new Date(log.timestamp).toLocaleTimeString()}] ${log.level.toUpperCase()}: ${log.message}</span><br>`;
+                });
+                
+                contentDiv.innerHTML = html || 'No API logs available';
+                apiLogDiv.style.display = 'block';
+            } else {
+                apiLogDiv.style.display = 'none';
+            }
+        };
+        
+        window.filterLogLevel = function(level) {
+            const logs = level ? externalAPI.getDebugLogs(level, 100) : externalAPI.getDebugLogs(null, 100);
+            const contentDiv = document.getElementById('apiLogContent');
+            
+            let html = '';
+            logs.forEach(log => {
+                const color = {
+                    error: '#ff4444',
+                    warn: '#ffaa00',
+                    info: '#00ff00'
+                }[log.level] || '#00ff00';
+                
+                html += `<span style="color: ${color}">[${new Date(log.timestamp).toLocaleTimeString()}] ${log.level.toUpperCase()}: ${log.message}</span><br>`;
+            });
+            
+            contentDiv.innerHTML = html || `No ${level || 'debug'} logs available`;
+            
+            if (html) {
+                document.getElementById('apiDebugLog').style.display = 'block';
+            }
+            
+            log(`Filtered logs to show: ${level || 'all levels'} (${logs.length} entries)`, 'info');
+        };
+        
+        window.exportDebugInfo = function() {
+            const debugInfo = externalAPI.exportDebugInfo();
+            
+            const blob = new Blob([JSON.stringify(debugInfo, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `fftcg-debug-info-${new Date().toISOString().slice(0, 16).replace(':', '-')}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            log('Debug information exported successfully', 'success');
+        };
+        
         // Initialize on page load
         setTimeout(() => {
-            log('External database integration test initialized', 'success');
-            checkAPIStatus();
-            updateStats();
-            loadAvailableSets();
+            log('External database integration test initialized with enhanced monitoring', 'success');
+            
+            // Wait a moment for the API to initialize
+            setTimeout(() => {
+                checkAPIStatus();
+                updateStats();
+                loadAvailableSets();
+            }, 2000);
         }, 1000);
     </script>
 </body>
