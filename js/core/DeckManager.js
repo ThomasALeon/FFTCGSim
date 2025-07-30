@@ -11,7 +11,7 @@
  */
 
 import { LocalStorage } from '../utils/LocalStorage.js';
-import { Validation } from '../utils/Validation.js';
+import { validate } from '../utils/Validation.js';
 
 /**
  * DeckManager Class

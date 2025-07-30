@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Final Fantasy Trading Card Game Simulator</title>
     <link rel="stylesheet" href="css/main.css">
+    <!-- Component CSS files -->
     <link rel="stylesheet" href="css/components/modals.css">
     <link rel="stylesheet" href="css/components/deck-builder.css">
-    <link rel="stylesheet" href="css/components/lobby.css">
-    <link rel="stylesheet" href="css/components/game-board.css">
+    <!-- <link rel="stylesheet" href="css/components/lobby.css"> -->
+    <!-- <link rel="stylesheet" href="css/components/game-board.css"> -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -76,7 +77,7 @@
                     </div>
 
                     <!-- Deck Builder -->
-                    <div class="menu-card" onclick="AppController.switchView('deck-builder')">
+                    <div class="menu-card" onclick="window.app.switchView('deck-builder')">
                         <div class="menu-icon">📚</div>
                         <h3 class="menu-title">Deck Builder</h3>
                         <p class="menu-description">
@@ -132,7 +133,7 @@
             </section>
 
             <!-- Deck Builder View -->
-            <section id="deckBuilderView" class="view">
+            <section id="deck-builderView" class="view">
                 <div class="deck-builder-container">
                     <!-- Deck Builder Header -->
                     <div class="deck-builder-header">

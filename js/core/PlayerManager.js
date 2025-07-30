@@ -10,7 +10,8 @@
  */
 
 import { LocalStorage } from '../utils/LocalStorage.js';
-import { Validation } from '../utils/Validation.js';
+import { validate } from '../utils/Validation.js';
+import { logger } from '../utils/Logger.js';
 
 /**
  * PlayerManager Class
@@ -89,13 +90,13 @@ export class PlayerManager {
         this.achievements = [];
 
         // Initialize
-        this.loadProfile();
+        logger.debug('👤 PlayerManager initializing...');
     }
 
     /**
      * Load player profile from local storage
      */
-    loadProfile() {
+    async loadProfile() {
         try {
             // Load profile
             const savedProfile = LocalStorage.get(this.STORAGE_KEYS.PROFILE);
@@ -128,11 +129,13 @@ export class PlayerManager {
             this.profile.lastActive = new Date().toISOString();
             this.saveProfile();
 
-            console.log('👤 Player profile loaded:', this.profile.name);
+            logger.info('👤 Player profile loaded:', this.profile.name);
+            return this.profile;
 
         } catch (error) {
-            console.error('Failed to load player profile:', error);
+            logger.error('Failed to load player profile:', error);
             this.createNewProfile();
+            return this.profile;
         }
     }
 
@@ -155,7 +158,7 @@ export class PlayerManager {
         this.saveProfile();
         this.emit('profileCreated', this.profile);
 
-        console.log('🆕 New player profile created');
+        logger.info('🆕 New player profile created');
     }
 
     /**
@@ -186,7 +189,7 @@ export class PlayerManager {
         // Emit event
         this.emit('profileUpdated', { old: oldProfile, new: this.profile });
 
-        console.log('✏️ Player profile updated');
+        logger.info('✏️ Player profile updated');
         return this.profile;
     }
 
@@ -198,7 +201,14 @@ export class PlayerManager {
 
         // Validate name
         if (updates.name !== undefined) {
-            if (!Validation.isValidPlayerName(updates.name)) {
+            const nameValidation = validate(updates.name, [
+                'required',
+                { type: 'minLength', min: 2 },
+                { type: 'maxLength', max: 20 },
+                { type: 'pattern', regex: /^[a-zA-Z0-9\s\-_.!?]+$/, message: 'Name contains invalid characters' }
+            ]);
+            
+            if (!nameValidation.isValid) {
                 errors.push('Name must be 2-20 characters and contain only letters, numbers, spaces, and basic punctuation');
             }
         }
@@ -226,7 +236,7 @@ export class PlayerManager {
             LocalStorage.set(this.STORAGE_KEYS.SETTINGS, this.settings);
             LocalStorage.set(this.STORAGE_KEYS.ACHIEVEMENTS, this.achievements);
         } catch (error) {
-            console.error('Failed to save player profile:', error);
+            logger.error('Failed to save player profile:', error);
             throw error;
         }
     }
@@ -277,7 +287,7 @@ export class PlayerManager {
         // Emit event
         this.emit('gameResultRecorded', { result, stats: this.stats });
 
-        console.log(`📊 Game result recorded: ${outcome}`);
+        logger.info(`📊 Game result recorded: ${outcome}`);
     }
 
     /**
@@ -305,7 +315,7 @@ export class PlayerManager {
             const oldRank = this.profile.rank;
             this.profile.rank = newRank;
             this.emit('rankUpdated', { old: oldRank, new: newRank });
-            console.log(`🎖️ Rank updated: ${oldRank} → ${newRank}`);
+            logger.info(`🎖️ Rank updated: ${oldRank} → ${newRank}`);
         }
     }
 
@@ -372,7 +382,7 @@ export class PlayerManager {
         // Emit events for new achievements
         newAchievements.forEach(achievement => {
             this.emit('achievementUnlocked', achievement);
-            console.log(`🏅 Achievement unlocked: ${achievement.name}`);
+            logger.info(`🏅 Achievement unlocked: ${achievement.name}`);
         });
 
         return newAchievements;
@@ -388,7 +398,7 @@ export class PlayerManager {
         this.saveProfile();
         this.emit('settingsUpdated', { old: oldSettings, new: this.settings });
         
-        console.log('⚙️ Settings updated');
+        logger.info('⚙️ Settings updated');
         return this.settings;
     }
 
@@ -456,7 +466,7 @@ export class PlayerManager {
             this.createNewProfile();
             
             this.emit('profileReset');
-            console.log('🔄 Player profile reset');
+            logger.info('🔄 Player profile reset');
         }
     }
 
@@ -494,11 +504,11 @@ export class PlayerManager {
             this.saveProfile();
             
             this.emit('dataImported', data);
-            console.log('📥 Player data imported successfully');
+            logger.info('📥 Player data imported successfully');
             
             return true;
         } catch (error) {
-            console.error('Failed to import player data:', error);
+            logger.error('Failed to import player data:', error);
             throw error;
         }
     }
@@ -535,7 +545,7 @@ export class PlayerManager {
                 try {
                     callback(data);
                 } catch (error) {
-                    console.error(`Error in event listener for ${eventName}:`, error);
+                    logger.error(`Error in event listener for ${eventName}:`, error);
                 }
             });
         }

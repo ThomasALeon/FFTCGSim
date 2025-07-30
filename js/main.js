@@ -23,10 +23,10 @@ import { validate, validateCard, validateDeck } from './utils/Validation.js';
 // Import extended card data
 import { EXTENDED_CARD_DATA, generateCardImages } from './data/ExtendedCardDatabase.js';
 
-// TODO: Import these when implemented
-// import { PlayerManager } from './core/PlayerManager.js';
-// import { Modal } from './components/Modal.js';
-// import { DeckBuilder } from './components/DeckBuilder.js';
+// Import player management
+import { PlayerManager } from './core/PlayerManager.js';
+import { Modal } from './components/Modal.js';
+import { DeckBuilder } from './components/DeckBuilder.js';
 // import { Lobby } from './components/Lobby.js';
 // import { SocketClient } from './network/SocketClient.js';
 
@@ -48,10 +48,10 @@ class AppController {
         // UI components (using global instances)
         this.notifications = notifications;
         
-        // TODO: Initialize these when implemented
-        // this.playerManager = new PlayerManager();
-        // this.modal = new Modal();
-        // this.deckBuilder = new DeckBuilder(this.cardDatabase, this.deckManager);
+        // Initialize player manager
+        this.playerManager = new PlayerManager();
+        this.modal = new Modal();
+        this.deckBuilder = null; // Will be initialized after card database loads
         // this.lobby = new Lobby();
         // this.socketClient = new SocketClient();
         
@@ -76,37 +76,47 @@ class AppController {
         try {
             logger.info('🎮 Initializing Final Fantasy TCG Simulator...');
             
-            // Set up error handling
+            // Set up error handling first
+            logger.info('📋 Step 1: Setting up error handling...');
             this.setupErrorHandling();
             
             // Initialize loading screen
+            logger.info('📋 Step 2: Setting up loading screen...');
             this.setupLoadingScreen();
             
             // Load extended card data
+            logger.info('📋 Step 3: Loading extended card data...');
             await this.loadExtendedCardData();
             
             // Load application data
+            logger.info('📋 Step 4: Loading application data...');
             await this.loadApplicationData();
             
             // Connect deck manager to card database
+            logger.info('📋 Step 5: Connecting deck manager to card database...');
             this.deckManager.setCardDatabase(this.cardDatabase);
             
             // Set up event listeners
+            logger.info('📋 Step 6: Setting up event listeners...');
             this.setupEventListeners();
             
             // Initialize UI components
+            logger.info('📋 Step 7: Initializing UI components...');
             this.setupUIComponents();
             
             // Connect to server (if available)
+            logger.info('📋 Step 8: Connecting to server...');
             await this.connectToServer();
             
             // Show main application
+            logger.info('📋 Step 9: Showing main application...');
             this.showMainApplication();
             
             const initDuration = logger.timeEnd('app-initialization');
             logger.info(`✅ Application initialized successfully in ${initDuration?.toFixed(2)}ms`);
             
         } catch (error) {
+            logger.error('💥 Initialization failed at step:', error);
             this.handleError('Failed to initialize application', error);
         }
     }
@@ -132,6 +142,10 @@ class AppController {
             const loadDuration = logger.timeEnd('card-data-loading');
             logger.info(`✅ Loaded ${EXTENDED_CARD_DATA.length} cards with images in ${loadDuration?.toFixed(2)}ms`);
             
+            // Initialize deck builder after card database is loaded
+            logger.info('🔨 Initializing Deck Builder...');
+            this.deckBuilder = new DeckBuilder(this.cardDatabase, this.deckManager);
+            
         } catch (error) {
             logger.error('Failed to load extended card data:', error);
             throw error;
@@ -143,7 +157,14 @@ class AppController {
      */
     setupErrorHandling() {
         window.addEventListener('error', (event) => {
-            this.handleError('Uncaught error', event.error);
+            const errorInfo = {
+                message: event.message,
+                filename: event.filename,
+                lineno: event.lineno,
+                colno: event.colno,
+                error: event.error
+            };
+            this.handleError('Uncaught error', errorInfo);
         });
 
         window.addEventListener('unhandledrejection', (event) => {
@@ -159,7 +180,9 @@ class AppController {
      */
     setupLoadingScreen() {
         this.loadingElement = document.getElementById('loadingProgress');
-        this.updateLoadingProgress(0);
+        if (this.loadingElement) {
+            this.updateLoadingProgress(0);
+        }
     }
 
     /**
@@ -168,7 +191,8 @@ class AppController {
     async loadApplicationData() {
         const loadSteps = [
             { name: 'Loading user profile', action: () => this.playerManager.loadProfile() },
-            { name: 'Loading card database', action: () => this.cardDatabase.initialize() },
+            // Skip card database initialization - already loaded in loadExtendedCardData()
+            // { name: 'Loading card database', action: () => this.cardDatabase.initialize() },
             { name: 'Loading saved decks', action: () => this.deckManager.loadDecks() },
             { name: 'Initializing game engine', action: () => this.gameEngine.initialize() },
             { name: 'Setting up UI components', action: () => this.setupInitialUI() }
@@ -256,20 +280,20 @@ class AppController {
             this.notifications.show('Deck deleted!', 'warning');
         });
 
-        // Socket events
-        this.socketClient.on('connected', () => {
-            this.notifications.show('Connected to server!', 'success');
-            this.updateOnlineStatus(true);
-        });
+        // TODO: Socket events (when SocketClient is implemented)
+        // this.socketClient.on('connected', () => {
+        //     this.notifications.show('Connected to server!', 'success');
+        //     this.updateOnlineStatus(true);
+        // });
 
-        this.socketClient.on('disconnected', () => {
-            this.notifications.show('Disconnected from server', 'warning');
-            this.updateOnlineStatus(false);
-        });
+        // this.socketClient.on('disconnected', () => {
+        //     this.notifications.show('Disconnected from server', 'warning');
+        //     this.updateOnlineStatus(false);
+        // });
 
-        this.socketClient.on('error', (error) => {
-            this.handleError('Network error', error);
-        });
+        // this.socketClient.on('error', (error) => {
+        //     this.handleError('Network error', error);
+        // });
     }
 
     /**
@@ -279,11 +303,11 @@ class AppController {
         // Initialize modals
         this.modal.initialize();
         
-        // Initialize deck builder
-        this.deckBuilder.initialize();
+        // TODO: Initialize deck builder when implemented
+        // this.deckBuilder.initialize();
         
-        // Initialize lobby
-        this.lobby.initialize();
+        // TODO: Initialize lobby when implemented
+        // this.lobby.initialize();
         
         // Initialize notifications
         this.notifications.initialize();
@@ -294,14 +318,14 @@ class AppController {
      */
     async connectToServer() {
         try {
-            // Only attempt connection in production or if explicitly enabled
-            if (window.location.hostname !== 'localhost' || localStorage.getItem('enableSocket') === 'true') {
-                await this.socketClient.connect();
-            } else {
-                console.log('🔌 Skipping server connection in development mode');
-            }
+            // TODO: Only attempt connection when SocketClient is implemented
+            // if (window.location.hostname !== 'localhost' || localStorage.getItem('enableSocket') === 'true') {
+            //     await this.socketClient.connect();
+            // } else {
+                logger.info('🔌 Skipping server connection - running in offline mode');
+            // }
         } catch (error) {
-            console.warn('⚠️ Could not connect to server:', error.message);
+            logger.warn('⚠️ Could not connect to server:', error.message);
             // Continue without server connection for offline play
         }
     }
@@ -314,10 +338,14 @@ class AppController {
         const appContainer = document.getElementById('app');
         
         // Hide loading screen
-        loadingScreen.classList.add('hidden');
+        if (loadingScreen) {
+            loadingScreen.classList.add('hidden');
+        }
         
         // Show main app
-        appContainer.classList.remove('hidden');
+        if (appContainer) {
+            appContainer.classList.remove('hidden');
+        }
         
         // Set loading flag
         this.isLoading = false;
@@ -372,7 +400,12 @@ class AppController {
     handleViewActivation(viewName) {
         switch (viewName) {
             case 'deck-builder':
-                this.deckBuilder.activate();
+                if (this.deckBuilder) {
+                    this.deckBuilder.refreshCardDisplay();
+                    logger.info('Deck builder activated');
+                } else {
+                    logger.warn('Deck builder not yet initialized');
+                }
                 break;
             case 'game':
                 this.gameEngine.activate();
@@ -405,7 +438,9 @@ class AppController {
                 case 's':
                     event.preventDefault();
                     if (this.currentView === 'deck-builder') {
-                        this.deckBuilder.saveDeck();
+                        // TODO: Save deck when deck builder is implemented
+                        // this.deckBuilder.saveDeck();
+                        logger.info('Deck saving coming soon!');
                     }
                     break;
             }
@@ -414,6 +449,7 @@ class AppController {
         // Escape key
         if (event.key === 'Escape') {
             this.modal.closeAll();
+            logger.debug('ESC pressed - closing all modals');
         }
     }
 
@@ -461,7 +497,9 @@ class AppController {
         
         if (onlineCountElement) {
             if (isOnline) {
-                onlineCountElement.textContent = this.socketClient.getOnlineCount() || '?';
+                // TODO: Get online count when SocketClient is implemented
+                // onlineCountElement.textContent = this.socketClient.getOnlineCount() || '?';
+                onlineCountElement.textContent = 'Online';
             } else {
                 onlineCountElement.textContent = 'Offline';
             }
@@ -491,7 +529,18 @@ class AppController {
      * Handle application errors
      */
     handleError(message, error) {
-        logger.error(`💥 ${message}:`, error);
+        // Enhanced error logging with more context
+        const errorDetails = {
+            message: message,
+            error: error,
+            timestamp: new Date().toISOString(),
+            location: window.location.href,
+            userAgent: navigator.userAgent,
+            currentView: this.currentView || 'unknown',
+            isLoading: this.isLoading
+        };
+        
+        logger.error(`💥 ${message}:`, errorDetails);
         
         // Show user-friendly error message
         this.notifications.error(
@@ -557,8 +606,8 @@ class AppController {
         this.playerManager.saveProfile();
         this.deckManager.saveDecks();
         
-        // Disconnect from server
-        this.socketClient.disconnect();
+        // TODO: Disconnect from server when SocketClient is implemented
+        // this.socketClient.disconnect();
         
         // Clear any intervals or timeouts
         // (Would be implemented as needed)
@@ -574,7 +623,7 @@ class AppController {
             loadingProgress: this.loadingProgress,
             playerProfile: this.playerManager.getProfile(),
             deckCount: this.deckManager.getDeckCount(),
-            isConnected: this.socketClient.isConnected()
+            isConnected: false // TODO: this.socketClient.isConnected() when implemented
         };
     }
 }
@@ -583,15 +632,21 @@ class AppController {
 window.AppController = AppController;
 
 // Global helper functions (updated to use new notification system)
-window.openModal = function(modalId) {
-    // TODO: Implement when Modal component is created
-    logger.warn('Modal system not yet implemented');
-    notifications.warning('Modal system coming soon!');
+window.openModal = function(modalType, options = {}) {
+    if (window.app && window.app.modal) {
+        return window.app.modal.open(modalType, options);
+    } else {
+        logger.warn('Modal system not available');
+        notifications.warning('Modal system not available');
+    }
 };
 
 window.closeModal = function(modalId) {
-    // TODO: Implement when Modal component is created
-    logger.warn('Modal system not yet implemented');
+    if (window.app && window.app.modal) {
+        return window.app.modal.close(modalId);
+    } else {
+        logger.warn('Modal system not available');
+    }
 };
 
 window.showNotification = function(message, type = 'info') {
@@ -600,6 +655,32 @@ window.showNotification = function(message, type = 'info') {
 
 window.startPracticeGame = function() {
     notifications.info('Practice mode coming soon!');
+};
+
+// Deck management global functions
+window.createNewDeck = function() {
+    if (window.app && window.app.deckBuilder) {
+        window.app.deckBuilder.createNewDeck('New Deck');
+        window.app.updateDeckCount();
+    } else {
+        notifications.warning('Deck Builder not yet initialized. Please wait for loading to complete.');
+    }
+};
+
+window.loadDeck = function() {
+    if (window.app && window.app.modal) {
+        window.app.modal.openDeckSelect();
+    } else {
+        notifications.info('Deck loading interface coming soon!');
+    }
+};
+
+window.saveDeck = function() {
+    if (window.app && window.app.deckBuilder) {
+        window.app.deckBuilder.saveDeck();
+    } else {
+        notifications.warning('Deck Builder not yet initialized. Please wait for loading to complete.');
+    }
 };
 
 // Enhanced debugging functions

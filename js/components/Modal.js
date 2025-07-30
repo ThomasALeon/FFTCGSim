@@ -159,7 +159,7 @@ export class Modal {
         
         // Show modal with animation
         requestAnimationFrame(() => {
-            modalElement.classList.add('active');
+            modalElement.parentElement.classList.add('active');
         });
 
         // Emit event
@@ -477,6 +477,264 @@ export class Modal {
                 Create Room
             </button>
         `;
+    }
+
+    /**
+     * Create deck selection modal content
+     */
+    createDeckSelectModal(body, footer, options) {
+        // Get available decks from the deck manager
+        const decks = window.app?.deckManager?.getAllDecks() || new Map();
+        const deckArray = Array.from(decks.values());
+
+        body.innerHTML = `
+            <div class="deck-select-content">
+                <div class="deck-select-header">
+                    <h3>Select a Deck to Load</h3>
+                    <p>Choose from your saved decks below:</p>
+                </div>
+                
+                <div class="deck-list-container">
+                    ${deckArray.length === 0 ? `
+                        <div class="no-decks-message">
+                            <div class="no-decks-icon">📚</div>
+                            <h4>No Saved Decks</h4>
+                            <p>You haven't saved any decks yet. Create and save a deck first!</p>
+                        </div>
+                    ` : `
+                        <div class="deck-selection-list">
+                            ${deckArray.map(deck => `
+                                <div class="deck-option" data-deck-id="${deck.id}">
+                                    <div class="deck-option-info">
+                                        <h4 class="deck-option-name">${deck.name}</h4>
+                                        <div class="deck-option-details">
+                                            <span class="deck-card-count">${deck.cards.length} cards</span>
+                                            <span class="deck-last-modified">Modified: ${new Date(deck.updatedAt).toLocaleDateString()}</span>
+                                        </div>
+                                        <div class="deck-option-stats">
+                                            ${this.getDeckElementBreakdown(deck)}
+                                        </div>
+                                    </div>
+                                    <div class="deck-option-actions">
+                                        <button class="btn btn-primary" onclick="app.modal.loadSelectedDeck('${deck.id}')">
+                                            Load Deck
+                                        </button>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `}
+                </div>
+            </div>
+        `;
+
+        footer.innerHTML = `
+            <button type="button" class="btn btn-secondary" onclick="app.modal.close('${body.closest('.modal').id}')">
+                Cancel
+            </button>
+            ${deckArray.length > 0 ? `
+                <button type="button" class="btn btn-danger" onclick="app.modal.confirmDeleteAllDecks()">
+                    Delete All Decks
+                </button>
+            ` : ''}
+        `;
+    }
+
+    /**
+     * Get deck element breakdown for display
+     */
+    getDeckElementBreakdown(deck) {
+        if (!deck.cards || deck.cards.length === 0) {
+            return '<span class="deck-empty">Empty deck</span>';
+        }
+
+        const elementCounts = {};
+        const cardDatabase = window.app?.cardDatabase;
+        
+        if (!cardDatabase) {
+            return '<span class="deck-stats-unavailable">Stats unavailable</span>';
+        }
+
+        deck.cards.forEach(cardId => {
+            const card = cardDatabase.getCard(cardId);
+            if (card) {
+                elementCounts[card.element] = (elementCounts[card.element] || 0) + 1;
+            }
+        });
+
+        const elementIcons = {
+            fire: '🔥', ice: '❄️', wind: '🌪️', lightning: '⚡',
+            water: '💧', earth: '🌍', light: '☀️', dark: '🌑'
+        };
+
+        return Object.entries(elementCounts)
+            .sort(([,a], [,b]) => b - a)
+            .slice(0, 3) // Show top 3 elements
+            .map(([element, count]) => `
+                <span class="element-count">
+                    ${elementIcons[element] || '❓'} ${count}
+                </span>
+            `).join('');
+    }
+
+    /**
+     * Load selected deck
+     */
+    loadSelectedDeck(deckId) {
+        try {
+            if (window.app?.deckBuilder) {
+                window.app.deckBuilder.loadDeck(deckId);
+                this.close(this.getModalIdFromElement(document.querySelector(`[data-deck-id="${deckId}"]`)));
+            } else {
+                window.showNotification('Deck Builder not available', 'error');
+            }
+        } catch (error) {
+            console.error('Error loading deck:', error);
+            window.showNotification(`Error loading deck: ${error.message}`, 'error');
+        }
+    }
+
+    /**
+     * Confirm delete all decks
+     */
+    confirmDeleteAllDecks() {
+        this.confirm('Are you sure you want to delete all saved decks? This action cannot be undone.', {
+            confirmText: 'Delete All',
+            cancelText: 'Cancel',
+            type: 'danger',
+            onConfirm: () => {
+                try {
+                    window.app?.deckManager?.clearAllDecks();
+                    window.showNotification('All decks deleted successfully', 'success');
+                    // Refresh the modal content
+                    this.closeAll();
+                } catch (error) {
+                    window.showNotification(`Error deleting decks: ${error.message}`, 'error');
+                }
+            }
+        });
+    }
+
+    /**
+     * Get modal ID from element
+     */
+    getModalIdFromElement(element) {
+        const modal = element?.closest('.modal');
+        return modal?.id || null;
+    }
+
+    /**
+     * Create card preview modal content
+     */
+    createCardPreviewModal(body, footer, options) {
+        const card = options.card;
+        if (!card) {
+            body.innerHTML = '<p>No card data provided</p>';
+            return;
+        }
+
+        body.innerHTML = `
+            <div class="card-preview-content">
+                <div class="card-preview-display">
+                    <div class="card-preview-image">
+                        <div class="card-large-placeholder element-${card.element}">
+                            <div class="card-large-icon">${this.getElementIcon(card.element)}</div>
+                            <div class="card-large-name">${card.name}</div>
+                        </div>
+                    </div>
+                    <div class="card-preview-details">
+                        <div class="card-detail-header">
+                            <h3 class="card-detail-name">${card.name}</h3>
+                            <div class="card-detail-cost">${card.cost || '-'}</div>
+                        </div>
+                        
+                        <div class="card-detail-info">
+                            <div class="card-detail-row">
+                                <span class="card-detail-label">Element:</span>
+                                <span class="card-detail-value">
+                                    ${this.getElementIcon(card.element)} ${this.capitalizeFirst(card.element)}
+                                </span>
+                            </div>
+                            <div class="card-detail-row">
+                                <span class="card-detail-label">Type:</span>
+                                <span class="card-detail-value">${this.capitalizeFirst(card.type)}</span>
+                            </div>
+                            ${card.power ? `
+                                <div class="card-detail-row">
+                                    <span class="card-detail-label">Power:</span>
+                                    <span class="card-detail-value">${card.power}</span>
+                                </div>
+                            ` : ''}
+                            ${card.job ? `
+                                <div class="card-detail-row">
+                                    <span class="card-detail-label">Job:</span>
+                                    <span class="card-detail-value">${card.job}</span>
+                                </div>
+                            ` : ''}
+                            ${card.category ? `
+                                <div class="card-detail-row">
+                                    <span class="card-detail-label">Category:</span>
+                                    <span class="card-detail-value">${card.category}</span>
+                                </div>
+                            ` : ''}
+                            ${card.rarity ? `
+                                <div class="card-detail-row">
+                                    <span class="card-detail-label">Rarity:</span>
+                                    <span class="card-detail-value">${card.rarity}</span>
+                                </div>
+                            ` : ''}
+                        </div>
+                        
+                        ${card.text ? `
+                            <div class="card-detail-text">
+                                <h4>Card Text:</h4>
+                                <p>${card.text}</p>
+                            </div>
+                        ` : ''}
+                        
+                        ${card.flavorText ? `
+                            <div class="card-detail-flavor">
+                                <h4>Flavor Text:</h4>
+                                <p><em>${card.flavorText}</em></p>
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            </div>
+        `;
+
+        footer.innerHTML = `
+            <button type="button" class="btn btn-secondary" onclick="app.modal.close('${body.closest('.modal').id}')">
+                Close
+            </button>
+            <button type="button" class="btn btn-primary" onclick="app.deckBuilder?.addCardToDeck('${card.id}'); app.modal.close('${body.closest('.modal').id}')">
+                Add to Deck
+            </button>
+        `;
+    }
+
+    /**
+     * Get element icon (helper method for card preview)
+     */
+    getElementIcon(element) {
+        const icons = {
+            fire: '🔥',
+            ice: '❄️', 
+            wind: '🌪️',
+            lightning: '⚡',
+            water: '💧',
+            earth: '🌍',
+            light: '☀️',
+            dark: '🌑'
+        };
+        return icons[element] || '❓';
+    }
+
+    /**
+     * Capitalize first letter (helper method)
+     */
+    capitalizeFirst(str) {
+        return str.charAt(0).toUpperCase() + str.slice(1);
     }
 
     /**

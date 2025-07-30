@@ -319,16 +319,28 @@ export class CardDatabase {
     loadCards(cardData) {
         this.cards.clear();
         
-        cardData.forEach(card => {
+        console.log(`🔍 Loading ${cardData.length} cards into database...`);
+        let validCount = 0;
+        let invalidCount = 0;
+        
+        cardData.forEach((card, index) => {
             // Validate card data
             if (this.validateCard(card)) {
                 this.cards.set(card.id, card);
+                validCount++;
             } else {
-                console.warn('Invalid card data:', card);
+                console.warn(`Invalid card data [${index}]:`, card);
+                console.warn(`Missing fields:`, this.getMissingFields(card));
+                invalidCount++;
             }
         });
         
+        console.log(`🔍 Card loading results: ${validCount} valid, ${invalidCount} invalid`);
+        
         this.totalCards = this.cards.size;
+        
+        // Build search indices after loading cards
+        this.buildIndices();
     }
 
     /**
@@ -337,6 +349,14 @@ export class CardDatabase {
     validateCard(card) {
         const required = ['id', 'name', 'element', 'type', 'cost'];
         return required.every(field => card.hasOwnProperty(field) && card[field] !== null);
+    }
+
+    /**
+     * Get missing fields for debugging
+     */
+    getMissingFields(card) {
+        const required = ['id', 'name', 'element', 'type', 'cost'];
+        return required.filter(field => !card.hasOwnProperty(field) || card[field] === null);
     }
 
     /**
