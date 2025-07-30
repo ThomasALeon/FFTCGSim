@@ -59,11 +59,6 @@ export class ExternalCardAPI {
             fallback: 'https://via.placeholder.com/200x280/333/fff?text='
         };
         
-        // Image cache for offline storage
-        this.IMAGE_CACHE_KEY = 'fftcg_card_images_cache';
-        this.imageCache = new Map();
-        this.loadImageCache();
-        
         // Rate limiting
         this.rateLimiter = new Map();
         this.requestQueue = [];
@@ -76,9 +71,14 @@ export class ExternalCardAPI {
         this.lastHealthCheck = null;
         this.isHealthCheckRunning = false;
         
-        // Enhanced logging
+        // Enhanced logging - MUST be initialized before image cache loading
         this.debugLogs = [];
         this.MAX_DEBUG_LOGS = 1000;
+        
+        // Image cache for offline storage - AFTER debug logging is ready
+        this.IMAGE_CACHE_KEY = 'fftcg_card_images_cache';
+        this.imageCache = new Map();
+        this.MAX_IMAGE_CACHE_SIZE = 1000; // Prevent memory issues
         
         this.initialize();
     }
@@ -89,6 +89,10 @@ export class ExternalCardAPI {
     initialize() {
         this.loadCachedData();
         this.setupCORSProxy();
+        
+        // Load image cache AFTER debug logging is ready
+        this.loadImageCache();
+        
         this.startPeriodicHealthChecks();
         
         this.debugLog('info', '🌐 External Card API initialized with health monitoring');
@@ -935,13 +939,23 @@ export class ExternalCardAPI {
     }
 
     /**
-     * Cache image URLs for cards
+     * Cache image URLs for cards with size management
      */
     cacheImageUrls(cards) {
         let cached = 0;
         
         cards.forEach(card => {
             if (card.imageUrls && card.imageUrls.length > 0) {
+                // Check cache size and clear old entries if needed
+                if (this.imageCache.size >= this.MAX_IMAGE_CACHE_SIZE) {
+                    const oldestEntries = Array.from(this.imageCache.entries())
+                        .sort((a, b) => new Date(a[1].cached) - new Date(b[1].cached))
+                        .slice(0, Math.floor(this.MAX_IMAGE_CACHE_SIZE * 0.1)); // Remove 10%
+                    
+                    oldestEntries.forEach(([key]) => this.imageCache.delete(key));
+                    this.debugLog('info', `Cleaned ${oldestEntries.length} old cache entries`);
+                }
+                
                 this.imageCache.set(card.id, {
                     primary: card.image,
                     alternatives: card.imageUrls,
@@ -952,7 +966,7 @@ export class ExternalCardAPI {
         });
         
         this.saveImageCache();
-        this.debugLog('info', `Cached image URLs for ${cached} cards`);
+        this.debugLog('info', `Cached image URLs for ${cached} cards (total: ${this.imageCache.size})`);
     }
 
     /**
