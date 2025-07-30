@@ -27,6 +27,7 @@ import { EXTENDED_CARD_DATA, generateCardImages } from './data/ExtendedCardDatab
 import { PlayerManager } from './core/PlayerManager.js';
 import { Modal } from './components/Modal.js';
 import { DeckBuilder } from './components/DeckBuilder.js';
+import { GameBoard } from './components/GameBoard.js';
 // import { Lobby } from './components/Lobby.js';
 // import { SocketClient } from './network/SocketClient.js';
 
@@ -52,6 +53,7 @@ class AppController {
         this.playerManager = new PlayerManager();
         this.modal = new Modal();
         this.deckBuilder = null; // Will be initialized after card database loads
+        this.gameBoard = null; // Will be initialized after card database loads
         // this.lobby = new Lobby();
         // this.socketClient = new SocketClient();
         
@@ -145,6 +147,10 @@ class AppController {
             // Initialize deck builder after card database is loaded
             logger.info('🔨 Initializing Deck Builder...');
             this.deckBuilder = new DeckBuilder(this.cardDatabase, this.deckManager);
+            
+            // Initialize game board after card database is loaded
+            logger.info('🎮 Initializing Game Board...');
+            this.gameBoard = new GameBoard(this.gameEngine, this.cardDatabase);
             
         } catch (error) {
             logger.error('Failed to load extended card data:', error);
@@ -408,7 +414,12 @@ class AppController {
                 }
                 break;
             case 'game':
-                this.gameEngine.activate();
+                if (this.gameBoard) {
+                    this.gameBoard.startGame();
+                    logger.info('Game board activated');
+                } else {
+                    logger.warn('Game board not yet initialized');
+                }
                 break;
             case 'profile':
                 this.showProfileView();
@@ -654,7 +665,11 @@ window.showNotification = function(message, type = 'info') {
 };
 
 window.startPracticeGame = function() {
-    notifications.info('Practice mode coming soon!');
+    if (window.app) {
+        window.app.switchView('game');
+    } else {
+        notifications.info('Application not yet loaded');
+    }
 };
 
 // Deck management global functions

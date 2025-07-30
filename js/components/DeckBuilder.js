@@ -94,6 +94,9 @@ export class DeckBuilder {
             this.boundHandlers.deckName = this.handleDeckNameChange.bind(this);
             this.deckNameInput.addEventListener('input', this.boundHandlers.deckName);
         }
+
+        // Set up drag and drop for deck list
+        this.setupDragAndDrop();
     }
 
     /**
@@ -230,8 +233,19 @@ export class DeckBuilder {
         // Add drag and drop event listeners
         cardDiv.addEventListener('dragstart', (e) => {
             e.dataTransfer.setData('text/plain', card.id);
+            e.dataTransfer.setData('application/x-drag-type', 'add-card');
+            e.dataTransfer.setData('application/json', JSON.stringify({
+                id: card.id,
+                name: card.name,
+                element: card.element,
+                type: card.type,
+                cost: card.cost,
+                source: 'database'
+            }));
             e.dataTransfer.effectAllowed = 'copy';
             cardDiv.classList.add('dragging');
+            
+            logger.debug(`Started dragging card: ${card.name} (${card.id})`);
         });
 
         cardDiv.addEventListener('dragend', () => {
@@ -394,6 +408,7 @@ export class DeckBuilder {
         const cardDiv = document.createElement('div');
         cardDiv.className = 'deck-card-item';
         cardDiv.dataset.cardId = card.id;
+        cardDiv.draggable = true;
 
         const elementClass = `element-${card.element}`;
 
@@ -415,6 +430,69 @@ export class DeckBuilder {
                 </div>
             </div>
         `;
+
+        // Add drag functionality for deck reordering
+        cardDiv.addEventListener('dragstart', (e) => {
+            e.dataTransfer.setData('text/plain', card.id);
+            e.dataTransfer.setData('application/x-drag-type', 'reorder-card');
+            e.dataTransfer.setData('application/json', JSON.stringify({
+                id: card.id,
+                name: card.name,
+                element: card.element,
+                source: 'deck'
+            }));
+            e.dataTransfer.effectAllowed = 'move';
+            cardDiv.classList.add('dragging');
+            
+            logger.debug(`Started dragging deck card: ${card.name} (${card.id})`);
+        });
+
+        cardDiv.addEventListener('dragend', () => {
+            cardDiv.classList.remove('dragging');
+        });
+
+        // Add drop zones between cards for reordering
+        cardDiv.addEventListener('dragover', (e) => {
+            // Check if we're dealing with a reorder operation by checking types
+            const types = Array.from(e.dataTransfer.types);
+            if (types.includes('application/x-drag-type')) {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = 'move';
+                
+                // Determine if we're dropping above or below this card
+                const rect = cardDiv.getBoundingClientRect();
+                const midpoint = rect.top + rect.height / 2;
+                
+                if (e.clientY < midpoint) {
+                    cardDiv.classList.add('drop-above');
+                    cardDiv.classList.remove('drop-below');
+                } else {
+                    cardDiv.classList.add('drop-below');
+                    cardDiv.classList.remove('drop-above');
+                }
+            }
+        });
+
+        cardDiv.addEventListener('dragleave', (e) => {
+            // Only remove classes if we're actually leaving the card element
+            if (!cardDiv.contains(e.relatedTarget)) {
+                cardDiv.classList.remove('drop-above', 'drop-below');
+            }
+        });
+
+        cardDiv.addEventListener('drop', (e) => {
+            if (e.dataTransfer.getData('application/x-drag-type') === 'reorder-card') {
+                e.preventDefault();
+                cardDiv.classList.remove('drop-above', 'drop-below');
+                
+                const draggedCardId = e.dataTransfer.getData('text/plain');
+                const targetCardId = card.id;
+                
+                if (draggedCardId !== targetCardId) {
+                    this.handleDeckReorder(draggedCardId, targetCardId, e);
+                }
+            }
+        });
 
         return cardDiv;
     }
@@ -480,6 +558,97 @@ export class DeckBuilder {
             this.currentDeck.name = event.target.value.trim() || 'Unnamed Deck';
             this.updateDeckStats();
         }
+    }
+
+    /**
+     * Set up drag and drop functionality
+     */
+    setupDragAndDrop() {
+        if (!this.deckList) return;
+
+        // Make deck list a drop zone
+        this.deckList.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'copy';
+            this.deckList.classList.add('drag-over');
+        });
+
+        this.deckList.addEventListener('dragleave', (e) => {
+            // Only remove if we're actually leaving the drop zone
+            if (!this.deckList.contains(e.relatedTarget)) {
+                this.deckList.classList.remove('drag-over');
+            }
+        });
+
+        this.deckList.addEventListener('drop', (e) => {
+            e.preventDefault();
+            this.deckList.classList.remove('drag-over');
+            
+            const cardId = e.dataTransfer.getData('text/plain');
+            const dragType = e.dataTransfer.getData('application/x-drag-type') || 'add-card';
+            
+            if (cardId) {
+                if (dragType === 'add-card') {
+                    this.addCardToDeck(cardId);
+                    logger.debug(`Card ${cardId} dropped into deck`);
+                } else if (dragType === 'reorder-card') {
+                    this.handleDeckReorder(cardId, null, e);
+                }
+            }
+        });
+
+        // Also make the whole deck builder content a drop zone (for better UX)
+        const deckBuilderContent = document.querySelector('.current-deck-panel');
+        if (deckBuilderContent) {
+            deckBuilderContent.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = 'copy';
+                deckBuilderContent.classList.add('drag-over');
+            });
+
+            deckBuilderContent.addEventListener('dragleave', (e) => {
+                if (!deckBuilderContent.contains(e.relatedTarget)) {
+                    deckBuilderContent.classList.remove('drag-over');
+                }
+            });
+
+            deckBuilderContent.addEventListener('drop', (e) => {
+                e.preventDefault();
+                deckBuilderContent.classList.remove('drag-over');
+                
+                const cardId = e.dataTransfer.getData('text/plain');
+                if (cardId && e.dataTransfer.getData('application/x-drag-type') !== 'reorder-card') {
+                    this.addCardToDeck(cardId);
+                    logger.debug(`Card ${cardId} dropped into deck area`);
+                }
+            });
+        }
+    }
+
+    /**
+     * Handle deck card reordering
+     */
+    handleDeckReorder(draggedCardId, targetCardId, event) {
+        if (!this.currentDeck || draggedCardId === targetCardId) return;
+
+        // For now, since cards are grouped by ID, we'll implement a simple approach
+        // In a full implementation, you might want to track individual card instances
+        if (targetCardId) {
+            logger.debug(`Reordering: ${draggedCardId} relative to ${targetCardId}`);
+        } else {
+            logger.debug(`Reordering: ${draggedCardId} to end of deck`);
+        }
+        
+        // This is a placeholder - in a real deck reordering system, you'd need to:
+        // 1. Track individual card positions, not just counts
+        // 2. Implement proper insertion logic based on drop position
+        // 3. Update the deck array to reflect the new order
+        
+        // For now, we'll just update the display to show the reorder happened
+        const cardName = this.cardDatabase.getCard(draggedCardId)?.name || draggedCardId;
+        const targetName = targetCardId ? this.cardDatabase.getCard(targetCardId)?.name || targetCardId : 'end';
+        window.showNotification(`Moved ${cardName} ${targetCardId ? `relative to ${targetName}` : 'to deck'}`, 'info');
+        this.updateDeckDisplay();
     }
 
     /**

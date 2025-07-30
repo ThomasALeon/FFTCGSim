@@ -202,8 +202,116 @@
             <!-- Game View -->
             <section id="gameView" class="view">
                 <div class="game-container">
-                    <!-- Game will be rendered here -->
-                    <div id="gameBoard"></div>
+                    <!-- Game Controls -->
+                    <div class="game-controls">
+                        <div class="turn-indicator" id="turnIndicator">
+                            <span>🎯</span>
+                            <span id="currentPlayer">Your Turn</span>
+                            <span id="turnPhase" class="phase-indicator">Main Phase</span>
+                        </div>
+                        
+                        <div class="game-actions">
+                            <button class="phase-btn" id="endPhaseBtn">End Phase</button>
+                            <button class="phase-btn" id="endTurnBtn">End Turn</button>
+                            <button class="phase-btn btn-secondary" onclick="window.app?.switchView('home')">Leave Game</button>
+                        </div>
+                    </div>
+
+                    <!-- Game Board -->
+                    <div class="game-board" id="gameBoard">
+                        <!-- Opponent Areas -->
+                        <div class="player-area opponent-controlled opponent-hand" id="opponentHand">
+                            <div class="zone-header">
+                                <h3 class="zone-title">Opponent Hand</h3>
+                                <span class="zone-count" id="opponentHandCount">7</span>
+                            </div>
+                            <div class="zone-content horizontal" id="opponentHandContent">
+                                <!-- Opponent hand cards (face down) -->
+                            </div>
+                        </div>
+
+                        <div class="player-area opponent-controlled opponent-damage" id="opponentDamage">
+                            <div class="zone-header">
+                                <h3 class="zone-title">Damage Zone</h3>
+                                <span class="zone-count" id="opponentDamageCount">0</span>
+                            </div>
+                            <div class="zone-content vertical" id="opponentDamageContent">
+                                <div class="zone-empty">No damage cards yet</div>
+                            </div>
+                        </div>
+
+                        <div class="player-area opponent-controlled opponent-backups" id="opponentBackups">
+                            <div class="zone-header">
+                                <h3 class="zone-title">Backups</h3>
+                                <span class="zone-count" id="opponentBackupsCount">0</span>
+                                <div class="cp-counter" id="opponentCP">CP: 1</div>
+                            </div>
+                            <div class="zone-content vertical" id="opponentBackupsContent">
+                                <div class="zone-empty">No backup cards</div>
+                            </div>
+                        </div>
+
+                        <div class="player-area opponent-controlled opponent-summons" id="opponentSummons">
+                            <div class="zone-header">
+                                <h3 class="zone-title">Summons</h3>
+                                <span class="zone-count" id="opponentSummonsCount">0</span>
+                            </div>
+                            <div class="zone-content vertical" id="opponentSummonsContent">
+                                <div class="zone-empty">No summon cards</div>
+                            </div>
+                        </div>
+
+                        <!-- Field -->
+                        <div class="player-area field" id="gameField">
+                            <div class="zone-header">
+                                <h3 class="zone-title">Field</h3>
+                                <span class="zone-count" id="fieldCount">0</span>
+                            </div>
+                            <!-- Field slots for forwards -->
+                        </div>
+
+                        <!-- Player Areas -->
+                        <div class="player-area player-controlled player-summons" id="playerSummons">
+                            <div class="zone-header">
+                                <h3 class="zone-title">Summons</h3>
+                                <span class="zone-count" id="playerSummonsCount">0</span>
+                            </div>
+                            <div class="zone-content vertical" id="playerSummonsContent">
+                                <div class="zone-empty">No summon cards</div>
+                            </div>
+                        </div>
+
+                        <div class="player-area player-controlled player-backups" id="playerBackups">
+                            <div class="zone-header">
+                                <h3 class="zone-title">Backups</h3>
+                                <span class="zone-count" id="playerBackupsCount">0</span>
+                                <div class="cp-counter" id="playerCP">CP: 1</div>
+                            </div>
+                            <div class="zone-content vertical" id="playerBackupsContent">
+                                <div class="zone-empty">No backup cards</div>
+                            </div>
+                        </div>
+
+                        <div class="player-area player-controlled player-damage" id="playerDamage">
+                            <div class="zone-header">
+                                <h3 class="zone-title">Damage Zone</h3>
+                                <span class="zone-count" id="playerDamageCount">0</span>
+                            </div>
+                            <div class="zone-content vertical" id="playerDamageContent">
+                                <div class="zone-empty">No damage cards yet</div>
+                            </div>
+                        </div>
+
+                        <div class="player-area player-controlled player-hand" id="playerHand">
+                            <div class="zone-header">
+                                <h3 class="zone-title">Your Hand</h3>
+                                <span class="zone-count" id="playerHandCount">5</span>
+                            </div>
+                            <div class="zone-content horizontal" id="playerHandContent">
+                                <!-- Player hand cards -->
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
 

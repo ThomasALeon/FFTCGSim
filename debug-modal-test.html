@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modal Debug Test</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components/modals.css">
+    <style>
+        body { 
+            font-family: monospace; 
+            background: #1a1a2e; 
+            color: white; 
+            padding: 20px; 
+        }
+        .debug-section {
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(0, 100, 200, 0.1);
+            border-radius: 5px;
+            border-left: 3px solid #0066cc;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 Modal Debug Test</h1>
+    
+    <div class="debug-section">
+        <h3>Modal Container Status</h3>
+        <p id="containerStatus">Checking...</p>
+    </div>
+    
+    <div class="debug-section">
+        <h3>Test Actions</h3>
+        <button onclick="testModal()" style="padding: 10px 20px; margin: 5px; background: #0066cc; color: white; border: none; border-radius: 4px; cursor: pointer;">Test Profile Modal</button>
+        <button onclick="inspectDOM()" style="padding: 10px 20px; margin: 5px; background: #cc6600; color: white; border: none; border-radius: 4px; cursor: pointer;">Inspect DOM</button>
+        <button onclick="testDirectModal()" style="padding: 10px 20px; margin: 5px; background: #00cc66; color: white; border: none; border-radius: 4px; cursor: pointer;">Direct Modal Test</button>
+    </div>
+    
+    <div class="debug-section">
+        <h3>Debug Output</h3>
+        <div id="debugOutput" style="background: #000; padding: 15px; border-radius: 4px; font-family: monospace; white-space: pre-wrap; max-height: 400px; overflow-y: auto;"></div>
+    </div>
+
+    <script type="module">
+        import { Modal } from './js/components/Modal.js';
+        import { logger } from './js/utils/Logger.js';
+        
+        let modal = null;
+        let debugOutput = document.getElementById('debugOutput');
+        
+        function log(message) {
+            console.log(message);
+            debugOutput.textContent += new Date().toLocaleTimeString() + ': ' + message + '\n';
+            debugOutput.scrollTop = debugOutput.scrollHeight;
+        }
+        
+        // Initialize
+        try {
+            log('🚀 Initializing Modal...');
+            modal = new Modal();
+            log('✅ Modal created successfully');
+            log('Modal instance: ' + (modal ? 'OK' : 'NULL'));
+            log('Modal types available: ' + Object.keys(modal.modalTypes).join(', '));
+        } catch (error) {
+            log('❌ Modal creation failed: ' + error.message);
+        }
+        
+        // Check container
+        function checkContainer() {
+            const container = document.getElementById('modalContainer');
+            const status = document.getElementById('containerStatus');
+            
+            if (container) {
+                status.innerHTML = `✅ Container exists: ${container.className}<br>Children: ${container.children.length}`;
+                log('Modal container found: ' + container.id);
+            } else {
+                status.innerHTML = '❌ No modal container found';
+                log('No modal container in DOM');
+            }
+        }
+        
+        // Test modal
+        window.testModal = function() {
+            try {
+                log('🔲 Testing profile modal...');
+                const modalId = modal.open('profile');
+                log('Modal opened with ID: ' + modalId);
+                log('Active modals: ' + modal.activeModals.size);
+                
+                // Check if modal element exists
+                setTimeout(() => {
+                    const modalElement = document.getElementById(modalId);
+                    if (modalElement) {
+                        log('✅ Modal element found in DOM');
+                        log('Modal classes: ' + modalElement.className);
+                        log('Modal parent classes: ' + modalElement.parentElement?.className);
+                        
+                        // Check visibility
+                        const computed = window.getComputedStyle(modalElement.parentElement);
+                        log('Modal backdrop opacity: ' + computed.opacity);
+                        log('Modal backdrop display: ' + computed.display);
+                    } else {
+                        log('❌ Modal element NOT found in DOM');
+                    }
+                    checkContainer();
+                }, 100);
+                
+            } catch (error) {
+                log('❌ Modal test failed: ' + error.message);
+            }
+        };
+        
+        // Inspect DOM
+        window.inspectDOM = function() {
+            log('🔍 DOM Inspection:');
+            log('document.body children: ' + document.body.children.length);
+            
+            Array.from(document.body.children).forEach((child, index) => {
+                log(`  [${index}] ${child.tagName}#${child.id}.${child.className}`);
+            });
+            
+            const modals = document.querySelectorAll('.modal');
+            log('Modal elements found: ' + modals.length);
+            
+            const backdrops = document.querySelectorAll('.modal-backdrop');
+            log('Modal backdrops found: ' + backdrops.length);
+            
+            checkContainer();
+        };
+        
+        // Direct modal test
+        window.testDirectModal = function() {
+            log('🧪 Creating direct modal HTML...');
+            
+            const testHTML = `
+                <div class="modal-backdrop active" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; display: flex; align-items: center; justify-content: center;">
+                    <div class="modal" style="background: #2a2a3a; padding: 20px; border-radius: 8px; color: white;">
+                        <h3>Direct Test Modal</h3>
+                        <p>This modal was created directly with HTML.</p>
+                        <button onclick="document.querySelector('.modal-backdrop').remove()" style="background: #0066cc; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">Close</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', testHTML);
+            log('✅ Direct modal added to DOM');
+        };
+        
+        // Initial check
+        checkContainer();
+        log('🔧 Debug test ready');
+    </script>
+</body>
+</html>

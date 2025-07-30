@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drag & Drop Test - FFTCG Simulator</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components/deck-builder.css">
+    <style>
+        body {
+            margin: 20px;
+            background: var(--color-background, #1a1a2e);
+            color: var(--color-text-primary, #fff);
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .test-section {
+            margin-bottom: 40px;
+            padding: 20px;
+            background: var(--color-surface, #2a2a3a);
+            border-radius: 8px;
+        }
+        .test-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .card-source, .card-target {
+            min-height: 200px;
+            padding: 20px;
+            background: var(--color-surface-elevated, #3a3a4a);
+            border-radius: 8px;
+            border: 2px dashed var(--color-border, #444);
+        }
+        .card-target.drag-over {
+            border-color: var(--color-primary, #ffd700);
+            background: rgba(255, 215, 0, 0.1);
+        }
+        .status {
+            margin-top: 20px;
+            padding: 10px;
+            background: var(--color-info, #4a90e2);
+            border-radius: 4px;
+            color: white;
+        }
+        .test-card {
+            margin: 10px 0;
+            padding: 15px;
+            background: var(--color-surface, #1a1a2e);
+            border: 2px solid var(--color-primary, #ffd700);
+            border-radius: 8px;
+            cursor: grab;
+            transition: transform 0.2s ease;
+        }
+        .test-card:hover {
+            transform: translateY(-2px);
+        }
+        .test-card.dragging {
+            opacity: 0.7;
+            transform: rotate(5deg);
+            cursor: grabbing;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🃏 FFTCG Drag & Drop Test</h1>
+        
+        <div class="test-section">
+            <h2>Basic Drag & Drop Test</h2>
+            <p>Drag cards from the source to the target area:</p>
+            
+            <div class="test-grid">
+                <div class="card-source">
+                    <h3>Card Source</h3>
+                    <div class="test-card" draggable="true" data-card-id="test-terra">
+                        <strong>Terra</strong><br>
+                        Fire Forward - Cost: 5<br>
+                        <small>Test Card 1</small>
+                    </div>
+                    <div class="test-card" draggable="true" data-card-id="test-cloud">
+                        <strong>Cloud</strong><br>
+                        Wind Forward - Cost: 7<br>
+                        <small>Test Card 2</small>
+                    </div>
+                    <div class="test-card" draggable="true" data-card-id="test-shiva">
+                        <strong>Shiva</strong><br>
+                        Ice Summon - Cost: 3<br>
+                        <small>Test Card 3</small>
+                    </div>
+                </div>
+                
+                <div class="card-target" id="dropTarget">
+                    <h3>Drop Target</h3>
+                    <p>Drop cards here...</p>
+                    <div id="droppedCards"></div>
+                </div>
+            </div>
+            
+            <div class="status" id="statusDisplay">
+                Ready for testing...
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Test drag and drop functionality
+        let dragCounter = 0;
+        const statusDisplay = document.getElementById('statusDisplay');
+        const dropTarget = document.getElementById('dropTarget');
+        const droppedCards = document.getElementById('droppedCards');
+        
+        function updateStatus(message) {
+            statusDisplay.textContent = `${new Date().toLocaleTimeString()}: ${message}`;
+            console.log(message);
+        }
+        
+        // Set up drag events on test cards
+        document.querySelectorAll('.test-card').forEach(card => {
+            card.addEventListener('dragstart', (e) => {
+                const cardId = e.target.dataset.cardId;
+                const cardName = e.target.querySelector('strong').textContent;
+                
+                e.dataTransfer.setData('text/plain', cardId);
+                e.dataTransfer.setData('application/x-card-name', cardName);
+                e.dataTransfer.setData('application/x-drag-type', 'add-card');
+                e.dataTransfer.effectAllowed = 'copy';
+                
+                e.target.classList.add('dragging');
+                updateStatus(`Started dragging: ${cardName} (${cardId})`);
+            });
+            
+            card.addEventListener('dragend', (e) => {
+                e.target.classList.remove('dragging');
+                updateStatus('Drag ended');
+            });
+        });
+        
+        // Set up drop target
+        dropTarget.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'copy';
+            dropTarget.classList.add('drag-over');
+        });
+        
+        dropTarget.addEventListener('dragleave', (e) => {
+            if (!dropTarget.contains(e.relatedTarget)) {
+                dropTarget.classList.remove('drag-over');
+            }
+        });
+        
+        dropTarget.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropTarget.classList.remove('drag-over');
+            
+            const cardId = e.dataTransfer.getData('text/plain');
+            const cardName = e.dataTransfer.getData('application/x-card-name');
+            const dragType = e.dataTransfer.getData('application/x-drag-type');
+            
+            if (cardId && cardName) {
+                // Add dropped card to the target area
+                const droppedCard = document.createElement('div');
+                droppedCard.className = 'test-card';
+                droppedCard.innerHTML = `<strong>${cardName}</strong><br><small>Dropped: ${cardId}</small>`;
+                droppedCards.appendChild(droppedCard);
+                
+                dragCounter++;
+                updateStatus(`✅ Successfully dropped: ${cardName} (${cardId}) - Total: ${dragCounter}`);
+            } else {
+                updateStatus('❌ Drop failed - no card data received');
+            }
+        });
+        
+        updateStatus('Drag & Drop test initialized - try dragging cards!');
+    </script>
+</body>
+</html>

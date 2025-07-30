@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FFTCG Quick Test</title>
+    <style>
+        body { 
+            font-family: monospace; 
+            background: #1a1a2e; 
+            color: white; 
+            padding: 20px; 
+        }
+        .test-result { 
+            margin: 10px 0; 
+            padding: 10px; 
+            border-radius: 5px;
+        }
+        .success { background: rgba(0, 255, 0, 0.2); }
+        .error { background: rgba(255, 0, 0, 0.2); }
+    </style>
+</head>
+<body>
+    <h1>🧪 FFTCG Quick Test</h1>
+    <div id="results"></div>
+
+    <script type="module">
+        import { logger } from './js/utils/Logger.js';
+        import { LocalStorage } from './js/utils/LocalStorage.js';
+        import { notifications } from './js/utils/Notifications.js';
+        import { validate, validateCard } from './js/utils/Validation.js';
+        import { CardDatabase } from './js/core/CardDatabase.js';
+        import { DeckManager } from './js/core/DeckManager.js';
+        import { EXTENDED_CARD_DATA } from './js/data/ExtendedCardDatabase.js';
+
+        const results = document.getElementById('results');
+
+        function addResult(test, success, message) {
+            const div = document.createElement('div');
+            div.className = `test-result ${success ? 'success' : 'error'}`;
+            div.innerHTML = `<strong>${test}:</strong> ${success ? '✅' : '❌'} ${message}`;
+            results.appendChild(div);
+        }
+
+        async function runQuickTests() {
+            logger.info('🚀 Running quick tests...');
+
+            // Test 1: Logger
+            try {
+                logger.info('Logger test');
+                addResult('Logger', true, 'Successfully logged message');
+            } catch (e) {
+                addResult('Logger', false, e.message);
+            }
+
+            // Test 2: LocalStorage
+            try {
+                LocalStorage.set('test', 'data');
+                const data = LocalStorage.get('test');
+                addResult('LocalStorage', data === 'data', `Retrieved: ${data}`);
+            } catch (e) {
+                addResult('LocalStorage', false, e.message);
+            }
+
+            // Test 3: Notifications
+            try {
+                notifications.success('Test notification');
+                addResult('Notifications', true, 'Successfully showed notification');
+            } catch (e) {
+                addResult('Notifications', false, e.message);
+            }
+
+            // Test 4: Validation
+            try {
+                const result = validate('test@example.com', ['email']);
+                addResult('Validation', result.isValid, `Email validation: ${result.isValid}`);
+            } catch (e) {
+                addResult('Validation', false, e.message);
+            }
+
+            // Test 5: Card Database
+            try {
+                const db = new CardDatabase();
+                db.loadCards(EXTENDED_CARD_DATA);
+                const card = db.getCard('ff1-001-h');
+                addResult('Card Database', card?.name === 'Terra', `Found card: ${card?.name}`);
+            } catch (e) {
+                addResult('Card Database', false, e.message);
+            }
+
+            // Test 6: Deck Manager
+            try {
+                const dm = new DeckManager();
+                const deck = dm.createNewDeck('Test Deck');
+                addResult('Deck Manager', deck?.name === 'Test Deck', `Created deck: ${deck?.name}`);
+            } catch (e) {
+                addResult('Deck Manager', false, e.message);
+            }
+
+            // Test 7: Extended Card Data
+            try {
+                const cardCount = EXTENDED_CARD_DATA.length;
+                addResult('Extended Card Data', cardCount > 50, `Loaded ${cardCount} cards`);
+            } catch (e) {
+                addResult('Extended Card Data', false, e.message);
+            }
+
+            logger.info('✅ Quick tests completed');
+            notifications.info('Quick tests completed! Check results above.', {
+                title: 'Test Results',
+                actions: [
+                    {
+                        id: 'full-tests',
+                        label: 'Run Full Tests',
+                        handler: () => window.open('/test.html', '_blank')
+                    }
+                ]
+            });
+        }
+
+        // Run tests when page loads
+        runQuickTests();
+    </script>
+</body>
+</html>

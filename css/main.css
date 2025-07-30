@@ -742,3 +742,7 @@ a:hover {
 .mt-auto { margin-top: auto; }
 .w-full { width: 100%; }
 .h-full { height: 100%; }
+
+/* === COMPONENT IMPORTS === */
+@import url('components/deck-builder.css');
+@import url('components/game-board.css');

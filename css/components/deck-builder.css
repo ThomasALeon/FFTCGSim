@@ -431,9 +431,88 @@
 }
 
 /* Drag and Drop Zones */
-.deck-list.drag-over {
+.deck-list.drag-over,
+.current-deck-panel.drag-over {
     background: rgba(255, 215, 0, 0.1);
     border: 2px dashed var(--color-primary, #ffd700);
+}
+
+/* Dragging States */
+.card-item.dragging {
+    opacity: 0.6;
+    transform: rotate(3deg) scale(0.95);
+    z-index: 1000;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+}
+
+.deck-card-item.dragging {
+    opacity: 0.6;
+    transform: translateX(10px) scale(0.98);
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Drop Indicators for Reordering */
+.deck-card-item.drop-above::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--color-primary, #ffd700);
+    border-radius: 2px;
+    z-index: 10;
+}
+
+.deck-card-item.drop-below::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--color-primary, #ffd700);
+    border-radius: 2px;
+    z-index: 10;
+}
+
+.deck-card-item {
+    position: relative;
+}
+
+/* Enhanced Visual Feedback */
+.card-item:hover {
+    cursor: grab;
+}
+
+.card-item:active,
+.card-item.dragging {
+    cursor: grabbing;
+}
+
+.deck-card-item:hover {
+    cursor: grab;
+}
+
+.deck-card-item:active,
+.deck-card-item.dragging {
+    cursor: grabbing;
+}
+
+/* Drop Zone Animations */
+.deck-list.drag-over,
+.current-deck-panel.drag-over {
+    animation: pulse-glow 1s ease-in-out infinite alternate;
+}
+
+@keyframes pulse-glow {
+    from {
+        box-shadow: 0 0 5px rgba(255, 215, 0, 0.3);
+    }
+    to {
+        box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+    }
 }
 
 /* Responsive Design */

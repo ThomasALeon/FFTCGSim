@@ -1,0 +1,497 @@
+/**
+ * GAME BOARD COMPONENT STYLES
+ * Styling for the FFTCG game board interface including play areas and card zones
+ */
+
+/* Game Container */
+.game-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    padding: 20px;
+    gap: 20px;
+    background: var(--color-background, #1a1a2e);
+    overflow: hidden;
+}
+
+/* Game Board Layout */
+.game-board {
+    display: grid;
+    grid-template-areas: 
+        "opponent-hand opponent-hand opponent-hand"
+        "opponent-damage opponent-backups opponent-summons"
+        "field field field"
+        "player-summons player-backups player-damage"
+        "player-hand player-hand player-hand";
+    grid-template-rows: 120px 200px 1fr 200px 120px;
+    grid-template-columns: 300px 1fr 300px;
+    gap: 15px;
+    flex: 1;
+    min-height: 0;
+}
+
+/* Player Areas */
+.player-area {
+    background: var(--color-surface, #2a2a3a);
+    border-radius: 8px;
+    border: 2px solid var(--color-border, #444);
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.player-area.player-controlled {
+    border-color: var(--color-primary, #ffd700);
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+.player-area.opponent-controlled {
+    border-color: var(--color-error, #ff4444);
+    box-shadow: 0 0 10px rgba(255, 68, 68, 0.2);
+}
+
+/* Specific Zone Layouts */
+.opponent-hand {
+    grid-area: opponent-hand;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.opponent-damage {
+    grid-area: opponent-damage;
+}
+
+.opponent-backups {
+    grid-area: opponent-backups;
+}
+
+.opponent-summons {
+    grid-area: opponent-summons;
+}
+
+.field {
+    grid-area: field;
+    background: var(--color-surface-elevated, #3a3a4a);
+    border: 3px solid var(--color-primary, #ffd700);
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+    padding: 15px;
+}
+
+.player-summons {
+    grid-area: player-summons;
+}
+
+.player-backups {
+    grid-area: player-backups;
+}
+
+.player-damage {
+    grid-area: player-damage;
+}
+
+.player-hand {
+    grid-area: player-hand;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+/* Zone Headers */
+.zone-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid var(--color-border, #444);
+    min-height: 30px;
+}
+
+.zone-title {
+    font-weight: 600;
+    color: var(--color-text-primary, #fff);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.zone-count {
+    background: var(--color-primary, #ffd700);
+    color: var(--color-primary-text, #000);
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    min-width: 20px;
+    text-align: center;
+}
+
+/* Zone Content */
+.zone-content {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    overflow: hidden;
+    align-content: flex-start;
+}
+
+.zone-content.horizontal {
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+    align-items: center;
+}
+
+.zone-content.vertical {
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Game Cards */
+.game-card {
+    width: 120px;
+    height: 168px;
+    background: var(--color-surface, #1a1a2e);
+    border: 2px solid var(--color-border, #444);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.game-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    border-color: var(--color-primary, #ffd700);
+}
+
+.game-card.dragging {
+    opacity: 0.7;
+    transform: rotate(5deg) scale(0.95);
+    z-index: 1000;
+}
+
+.game-card.tapped {
+    transform: rotate(90deg);
+    margin-right: 48px;
+}
+
+.game-card.selected {
+    border-color: var(--color-primary, #ffd700);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+}
+
+/* Card in Field */
+.field .game-card {
+    width: 100%;
+    height: 140px;
+}
+
+/* Card in Hand */
+.player-hand .game-card {
+    width: 100px;
+    height: 140px;
+    margin-right: -20px; /* Overlap cards in hand */
+}
+
+.player-hand .game-card:hover {
+    margin-right: 0;
+    z-index: 10;
+}
+
+.player-hand .game-card:last-child {
+    margin-right: 0;
+}
+
+/* Opponent Hand Cards (face down) */
+.opponent-hand .game-card {
+    width: 80px;
+    height: 112px;
+    background: var(--color-card-back, #4a4a6a);
+    border-color: var(--color-info, #4a90e2);
+    margin-right: -15px;
+}
+
+.opponent-hand .game-card:last-child {
+    margin-right: 0;
+}
+
+/* Card Content */
+.card-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 8px;
+}
+
+.card-image-area {
+    flex: 1;
+    background: linear-gradient(135deg, var(--color-surface-elevated, #2a2a3a), var(--color-surface, #1a1a2e));
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-secondary, #ccc);
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+}
+
+.card-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.7rem;
+}
+
+.card-name {
+    font-weight: 600;
+    color: var(--color-text-primary, #fff);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 60px;
+}
+
+.card-cost {
+    background: var(--color-primary, #ffd700);
+    color: var(--color-primary-text, #000);
+    padding: 1px 4px;
+    border-radius: 2px;
+    font-weight: 600;
+    font-size: 0.6rem;
+}
+
+/* Element Colors for Cards */
+.game-card.element-fire { border-left-color: #ff4444; }
+.game-card.element-ice { border-left-color: #44aaff; }
+.game-card.element-wind { border-left-color: #44ff44; }
+.game-card.element-lightning { border-left-color: #ffff44; }
+.game-card.element-water { border-left-color: #4444ff; }
+.game-card.element-earth { border-left-color: #aa8844; }
+.game-card.element-light { border-left-color: #ffddaa; }
+.game-card.element-dark { border-left-color: #aa44aa; }
+
+/* Drop Zones */
+.zone-content.drop-zone {
+    border: 2px dashed var(--color-primary, #ffd700);
+    background: rgba(255, 215, 0, 0.1);
+    border-radius: 8px;
+}
+
+.field.drop-zone {
+    border-color: var(--color-success, #44aa44);
+    background: rgba(68, 170, 68, 0.1);
+}
+
+/* Game Controls */
+.game-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background: var(--color-surface, #2a2a3a);
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.turn-indicator {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    color: var(--color-text-primary, #fff);
+}
+
+.turn-indicator.active {
+    color: var(--color-primary, #ffd700);
+}
+
+.phase-indicator {
+    padding: 8px 16px;
+    background: var(--color-info, #4a90e2);
+    color: white;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.game-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.phase-btn {
+    padding: 8px 16px;
+    background: var(--color-primary, #ffd700);
+    color: var(--color-primary-text, #000);
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.phase-btn:hover {
+    background: var(--color-primary-dark, #e6c200);
+}
+
+.phase-btn:disabled {
+    background: var(--color-disabled, #666);
+    color: var(--color-text-disabled, #999);
+    cursor: not-allowed;
+}
+
+/* CP Counter */
+.cp-counter {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: var(--color-info, #4a90e2);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.8rem;
+}
+
+/* Empty States */
+.zone-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: var(--color-text-secondary, #ccc);
+    font-style: italic;
+    text-align: center;
+    background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 10px,
+        rgba(255, 255, 255, 0.05) 10px,
+        rgba(255, 255, 255, 0.05) 20px
+    );
+    border-radius: 4px;
+}
+
+/* Responsive Design */
+@media (max-width: 1400px) {
+    .game-board {
+        grid-template-columns: 250px 1fr 250px;
+    }
+    
+    .game-card {
+        width: 100px;
+        height: 140px;
+    }
+    
+    .field .game-card {
+        height: 120px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .game-board {
+        grid-template-areas: 
+            "opponent-hand opponent-hand"
+            "opponent-damage opponent-backups"
+            "field field"
+            "player-backups player-damage"
+            "player-hand player-hand";
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 100px 180px 1fr 180px 100px;
+    }
+    
+    .opponent-summons,
+    .player-summons {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .game-container {
+        padding: 10px;
+        gap: 10px;
+    }
+    
+    .game-board {
+        gap: 8px;
+        grid-template-rows: 80px 150px 1fr 150px 80px;
+    }
+    
+    .game-card {
+        width: 80px;
+        height: 112px;
+    }
+    
+    .player-hand .game-card {
+        width: 70px;
+        height: 98px;
+        margin-right: -15px;
+    }
+}
+
+/* Animations */
+@keyframes cardEnter {
+    from {
+        opacity: 0;
+        transform: translateY(20px) rotate(5deg);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) rotate(0deg);
+    }
+}
+
+.game-card.entering {
+    animation: cardEnter 0.3s ease-out;
+}
+
+@keyframes cardLeave {
+    to {
+        opacity: 0;
+        transform: translateY(-20px) rotate(-5deg);
+    }
+}
+
+.game-card.leaving {
+    animation: cardLeave 0.3s ease-in;
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+    .game-card {
+        border-width: 3px;
+    }
+    
+    .field {
+        border-width: 4px;
+    }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    .game-card,
+    .phase-btn {
+        transition: none;
+    }
+    
+    .game-card:hover {
+        transform: none;
+    }
+    
+    .cardEnter,
+    .cardLeave {
+        animation: none;
+    }
+}
