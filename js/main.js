@@ -19,6 +19,7 @@ import { logger } from './utils/Logger.js';
 import { LocalStorage } from './utils/LocalStorage.js';
 import { notifications } from './utils/Notifications.js';
 import { validate, validateCard, validateDeck } from './utils/Validation.js';
+import { security } from './utils/Security.js';
 
 // Import extended card data
 import { EXTENDED_CARD_DATA, generateCardImages } from './data/ExtendedCardDatabase.js';
@@ -45,6 +46,7 @@ class AppController {
         this.deckManager = new DeckManager();
         this.cardDatabase = new CardDatabase();
         this.gameEngine = new GameEngine();
+        this.security = security;
         
         // UI components (using global instances)
         this.notifications = notifications;
@@ -707,6 +709,7 @@ window.debug = {
     validate: validate,
     validateCard: validateCard,
     validateDeck: validateDeck,
+    security: security,
     
     // Utility functions
     testCard: (cardId) => {

@@ -12,6 +12,7 @@
 
 import { LocalStorage } from '../utils/LocalStorage.js';
 import { validate } from '../utils/Validation.js';
+import { security } from '../utils/Security.js';
 
 /**
  * DeckManager Class
@@ -133,7 +134,14 @@ export class DeckManager {
             throw new Error('No deck to save');
         }
 
-        // Validate deck name
+        // Security validation
+        try {
+            security.validateDeckSubmission(deckToSave, 'current-user');
+        } catch (error) {
+            throw new Error(`Deck validation failed: ${error.message}`);
+        }
+
+        // Validate deck name (additional check after security)
         if (!deckToSave.name || deckToSave.name.trim().length === 0) {
             throw new Error('Deck name is required');
         }

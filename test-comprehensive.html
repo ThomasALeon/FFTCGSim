@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FFTCG Simulator - Comprehensive Test Suite</title>
+    <link rel="stylesheet" href="css/main.css">
+    <style>
+        .test-results {
+            font-family: 'Courier New', monospace;
+            background: #1a1a1a;
+            color: #00ff00;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 8px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        .test-header {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .test-controls {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .test-controls button {
+            margin: 0 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="test-header">
+            <h1>🧪 FFTCG Simulator - Comprehensive Test Suite</h1>
+            <p>Security, Game Logic, UI/UX, Performance, and Integration Tests</p>
+        </div>
+        
+        <div class="test-controls">
+            <button id="runAllTests" class="btn-primary">🚀 Run All Tests</button>
+            <button id="runSecurityTests" class="btn-secondary">🔒 Security Tests</button>
+            <button id="runGameLogicTests" class="btn-secondary">🎮 Game Logic Tests</button>
+            <button id="runUITests" class="btn-secondary">🖥️ UI/UX Tests</button>
+            <button id="clearResults" class="btn-danger">🗑️ Clear Results</button>
+        </div>
+        
+        <div id="testResults" class="test-results">
+            <p>Click "Run All Tests" to start the comprehensive test suite...</p>
+        </div>
+    </div>
+
+    <!-- Import test dependencies first -->
+    <script type="module">
+        // Import all required modules for testing
+        import { Security } from './js/utils/Security.js';
+        import { CardDatabase } from './js/core/CardDatabase.js';
+        import { DeckManager } from './js/core/DeckManager.js';
+        import { GameEngine } from './js/core/GameEngine.js';
+        import { PlayerManager } from './js/core/PlayerManager.js';
+        import { Notifications } from './js/utils/Notifications.js';
+        import { runner, assert } from './js/tests/ComprehensiveTestSuite.js';
+
+        // Make modules available globally for tests
+        window.Security = Security;
+        window.CardDatabase = CardDatabase;
+        window.DeckManager = DeckManager;
+        window.GameEngine = GameEngine;
+        window.PlayerManager = PlayerManager;
+        window.Notifications = Notifications;
+        window.testRunner = runner;
+        window.assert = assert;
+
+        // Set up test result display
+        const testResults = document.getElementById('testResults');
+        
+        // Override console methods to capture output
+        const originalLog = console.log;
+        const originalError = console.error;
+        const originalGroup = console.group;
+        const originalGroupEnd = console.groupEnd;
+        
+        function logToResults(message, type = 'log') {
+            const timestamp = new Date().toLocaleTimeString();
+            const colorClass = type === 'error' ? 'color: #ff4444;' : 
+                              type === 'success' ? 'color: #44ff44;' : 
+                              type === 'group' ? 'color: #4444ff; font-weight: bold;' : '';
+            
+            testResults.innerHTML += `<div style="${colorClass}">[${timestamp}] ${message}</div>`;
+            testResults.scrollTop = testResults.scrollHeight;
+        }
+        
+        console.log = (...args) => {
+            originalLog.apply(console, args);
+            logToResults(args.join(' '));
+        };
+        
+        console.error = (...args) => {
+            originalError.apply(console, args);
+            logToResults(args.join(' '), 'error');
+        };
+        
+        console.group = (message) => {
+            originalGroup.apply(console, arguments);
+            logToResults(`▼ ${message}`, 'group');
+        };
+        
+        console.groupEnd = () => {
+            originalGroupEnd.apply(console, arguments);
+            logToResults('', 'log');
+        };
+
+        // Test control handlers
+        document.getElementById('runAllTests').addEventListener('click', async () => {
+            testResults.innerHTML = '<p>🚀 Starting comprehensive test suite...</p>';
+            try {
+                await runner.run();
+                logToResults('✅ Test suite completed!', 'success');
+            } catch (error) {
+                logToResults(`❌ Test suite failed: ${error.message}`, 'error');
+            }
+        });
+
+        document.getElementById('runSecurityTests').addEventListener('click', async () => {
+            testResults.innerHTML = '<p>🔒 Running security tests...</p>';
+            // Filter and run only security tests
+            const securityTests = runner.tests.filter(test => test.suite === 'Security Tests');
+            try {
+                for (const test of securityTests) {
+                    await test.fn();
+                    logToResults(`✅ ${test.name}`, 'success');
+                }
+                logToResults('🔒 Security tests completed!', 'success');
+            } catch (error) {
+                logToResults(`❌ Security test failed: ${error.message}`, 'error');
+            }
+        });
+
+        document.getElementById('runGameLogicTests').addEventListener('click', async () => {
+            testResults.innerHTML = '<p>🎮 Running game logic tests...</p>';
+            const gameTests = runner.tests.filter(test => test.suite === 'Game Logic Tests');
+            try {
+                for (const test of gameTests) {
+                    await test.fn();
+                    logToResults(`✅ ${test.name}`, 'success');
+                }
+                logToResults('🎮 Game logic tests completed!', 'success');
+            } catch (error) {
+                logToResults(`❌ Game logic test failed: ${error.message}`, 'error');
+            }
+        });
+
+        document.getElementById('runUITests').addEventListener('click', async () => {
+            testResults.innerHTML = '<p>🖥️ Running UI/UX tests...</p>';
+            const uiTests = runner.tests.filter(test => 
+                test.suite === 'UI/UX Tests' || test.suite === 'Accessibility Tests'
+            );
+            try {
+                for (const test of uiTests) {
+                    await test.fn();
+                    logToResults(`✅ ${test.name}`, 'success');
+                }
+                logToResults('🖥️ UI/UX tests completed!', 'success');
+            } catch (error) {
+                logToResults(`❌ UI/UX test failed: ${error.message}`, 'error');
+            }
+        });
+
+        document.getElementById('clearResults').addEventListener('click', () => {
+            testResults.innerHTML = '<p>Test results cleared. Click a test button to run tests...</p>';
+        });
+
+        // Auto-run tests if URL parameter is set
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('autorun') === 'true') {
+            setTimeout(() => {
+                document.getElementById('runAllTests').click();
+            }, 1000);
+        }
+
+        logToResults('🧪 Test environment ready! Click buttons above to run tests.', 'success');
+    </script>
+</body>
+</html>
