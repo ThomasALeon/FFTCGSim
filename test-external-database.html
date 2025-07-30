@@ -214,8 +214,15 @@
                 <div class="controls">
                     <button onclick="syncWithExternal()" class="primary">Sync with External DBs</button>
                     <button onclick="loadFromExternal()">Load External Cards</button>
+                    <button onclick="loadEnhancedFallback()">Load Enhanced FFTCG Data</button>
+                    <button onclick="preloadCardImages()">Preload Card Images</button>
                     <button onclick="clearCache()">Clear Cache</button>
                     <button onclick="exportData()">Export Data</button>
+                </div>
+                
+                <div id="imageLoadingStatus" style="display: none; margin-top: 15px; padding: 10px; background: #e3f2fd; border-radius: 4px;">
+                    <h4>Image Loading Progress</h4>
+                    <div id="imageProgress"></div>
                 </div>
             </section>
 
@@ -246,7 +253,9 @@
                 <div class="controls">
                     <button onclick="loadAvailableSets()">Load Available Sets</button>
                     <button onclick="loadOpusSet('Opus I')">Load Opus I</button>
-                    <button onclick="loadOpusSet('Opus II')">Load Opus II</button>
+                    <button onclick="loadOpusSet('Opus XIII')">Load Opus XIII</button>
+                    <button onclick="showAllOpusSets()">Show All 13 Sets</button>
+                    <button onclick="testImageUrls()">Test Image URLs</button>
                 </div>
             </section>
 
@@ -755,6 +764,131 @@
             log('Debug information exported successfully', 'success');
         };
         
+        // Load enhanced fallback data into database
+        window.loadEnhancedFallback = async function() {
+            log('Loading enhanced FFTCG character data with all 13 Opus sets...', 'info');
+            
+            try {
+                const enhancedData = externalAPI.generateEnhancedFallbackData();
+                
+                if (enhancedData && enhancedData.length > 0) {
+                    const bySets = {};
+                    enhancedData.forEach(card => {
+                        bySets[card.set] = (bySets[card.set] || 0) + 1;
+                    });
+                    
+                    log(`Loading ${enhancedData.length} enhanced FFTCG cards into database`, 'info');
+                    log(`Opus sets available: ${Object.keys(bySets).sort().join(', ')}`, 'info');
+                    log(`Total sets: ${Object.keys(bySets).length}/13`, 'success');
+                    
+                    updateStats();
+                } else {
+                    log('Failed to load enhanced data', 'error');
+                }
+            } catch (error) {
+                log(`Error loading enhanced data: ${error.message}`, 'error');
+            }
+        };
+        
+        // Show all Opus sets
+        window.showAllOpusSets = function() {
+            log('Displaying all 13 Opus sets...', 'info');
+            
+            try {
+                const enhancedData = externalAPI.generateEnhancedFallbackData();
+                const setGroups = {};
+                enhancedData.forEach(card => {
+                    if (!setGroups[card.set]) {
+                        setGroups[card.set] = [];
+                    }
+                    setGroups[card.set].push(card);
+                });
+                
+                const resultsDiv = document.getElementById('cardResults');
+                let html = '<h3>All 13 Opus Sets Available</h3>';
+                
+                Object.keys(setGroups).sort().forEach(setName => {
+                    const setCards = setGroups[setName];
+                    html += `
+                        <div style="margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 8px;">
+                            <h4>${setName} (${setCards.length} cards)</h4>
+                            <p>Sample characters: ${setCards.slice(0, 5).map(c => c.name).join(', ')}${setCards.length > 5 ? '...' : ''}</p>
+                        </div>
+                    `;
+                });
+                
+                resultsDiv.innerHTML = html;
+                log(`Generated ${Object.keys(setGroups).length} Opus sets with ${enhancedData.length} total cards`, 'success');
+            } catch (error) {
+                log(`Error displaying Opus sets: ${error.message}`, 'error');
+            }
+        };
+        
+        // Preload card images
+        window.preloadCardImages = async function() {
+            log('Starting card image preloading...', 'info');
+            
+            try {
+                const enhancedData = externalAPI.generateEnhancedFallbackData();
+                const sampleCards = enhancedData.slice(0, 10);
+                
+                const statusDiv = document.getElementById('imageLoadingStatus');
+                const progressDiv = document.getElementById('imageProgress');
+                statusDiv.style.display = 'block';
+                progressDiv.innerHTML = 'Testing image URLs...';
+                
+                log(`Testing image URLs for ${sampleCards.length} sample cards...`, 'info');
+                
+                if (externalAPI.preloadCardImages) {
+                    const result = await externalAPI.preloadCardImages(sampleCards, 3);
+                    progressDiv.innerHTML = `
+                        <p><strong>Image Test Complete!</strong></p>
+                        <p>Working URLs: ${result.loaded}</p>
+                        <p>Failed URLs: ${result.failed}</p>
+                        <p>Success rate: ${Math.round((result.loaded / result.total) * 100)}%</p>
+                    `;
+                    log(`Image preloading completed: ${result.loaded}/${result.total} successful`, 'success');
+                } else {
+                    progressDiv.innerHTML = '<p>Image preloading function not available</p>';
+                    log('Image preloading function not available', 'warn');
+                }
+                
+                updateStats();
+                setTimeout(() => {
+                    statusDiv.style.display = 'none';
+                }, 5000);
+                
+            } catch (error) {
+                log(`Error preloading images: ${error.message}`, 'error');
+                document.getElementById('imageLoadingStatus').style.display = 'none';
+            }
+        };
+        
+        // Test image URLs
+        window.testImageUrls = async function() {
+            log('Testing card image URL generation...', 'info');
+            
+            try {
+                const enhancedData = externalAPI.generateEnhancedFallbackData();
+                const testCard = enhancedData.find(card => card.name === 'Terra') || enhancedData[0];
+                
+                if (testCard && testCard.imageUrls) {
+                    log(`Generated ${testCard.imageUrls.length} image URL patterns for ${testCard.name}:`, 'info');
+                    
+                    testCard.imageUrls.slice(0, 5).forEach((url, index) => {
+                        log(`${index + 1}. ${url}`, 'info');
+                    });
+                    
+                    displayCardResults([testCard], 'image-test');
+                    log('Image URL test completed - check card display above', 'success');
+                } else {
+                    log('No test card with image URLs found', 'warn');
+                }
+            } catch (error) {
+                log(`Error testing image URLs: ${error.message}`, 'error');
+            }
+        };
+        
         // Initialize on page load
         setTimeout(() => {
             log('External database integration test initialized with enhanced monitoring', 'success');
@@ -766,7 +900,8 @@
                 loadAvailableSets();
                 
                 // Show enhanced data demo
-                log('💡 Try "Test Enhanced Data" to see real FFTCG characters!', 'info');
+                log('💡 Try "Load Enhanced FFTCG Data" to see all 13 Opus sets!', 'info');
+                log('🇺🇸 Try "Show All 13 Sets" to see complete Opus coverage!', 'info');
             }, 2000);
         }, 1000);
     </script>

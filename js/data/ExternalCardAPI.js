@@ -42,14 +42,27 @@ export class ExternalCardAPI {
             }
         };
         
-        // Card image sources
+        // Card image sources with working CDN endpoints
         this.imageSources = {
-            materiahunter: 'https://materiahunter.com/images/cards',
-            ffdecks: 'https://ffdecks.com/images/cards',
-            squareEnix: 'https://fftcg.square-enix-games.com/images/cards',
-            tcgplayer: 'https://tcgplayer-cdn.tcgplayer.com/product',
+            // Primary sources (these may work with proper formatting)
+            materiahunter: 'https://materiahunter.com/card-images',
+            ffdeckscdn: 'https://ffdecks.com/media/cards',
+            squareEnixCdn: 'https://fftcg.square-enix-games.com/na/assets/images/cards',
+            tcgplayerCdn: 'https://product-images.tcgplayer.com/fit-in/437x437',
+            
+            // Fallback sources
+            cardkingdom: 'https://img.cardkingdom.com/images/magic-the-gathering',
+            scryfall: 'https://c1.scryfall.com/file/scryfall-cards/normal/front',
+            placeholder: 'https://via.placeholder.com/200x280',
+            
+            // Generated placeholder with card info
             fallback: 'https://via.placeholder.com/200x280/333/fff?text='
         };
+        
+        // Image cache for offline storage
+        this.IMAGE_CACHE_KEY = 'fftcg_card_images_cache';
+        this.imageCache = new Map();
+        this.loadImageCache();
         
         // Rate limiting
         this.rateLimiter = new Map();
@@ -750,8 +763,11 @@ export class ExternalCardAPI {
             { name: 'Sephiroth', element: 'dark', type: 'forward', cost: 7, power: 11000, job: 'SOLDIER', category: 'VII', rarity: 'L', text: 'When Sephiroth enters the field, choose 1 Forward opponent controls. Break it.' }
         ];
         
-        // Generate multiple sets with these characters
-        const sets = ['Opus I', 'Opus II', 'Opus III', 'Opus IV', 'Opus V', 'Opus VI', 'Opus VII', 'Opus VIII'];
+        // Generate all 13 Opus sets as available on most FFTCG sites
+        const sets = [
+            'Opus I', 'Opus II', 'Opus III', 'Opus IV', 'Opus V', 'Opus VI', 
+            'Opus VII', 'Opus VIII', 'Opus IX', 'Opus X', 'Opus XI', 'Opus XII', 'Opus XIII'
+        ];
         let cardId = 1;
         
         sets.forEach((set, setIndex) => {
@@ -774,9 +790,10 @@ export class ExternalCardAPI {
                     text: template.text,
                     set: set,
                     cardNumber: cardNumber,
-                    image: `${this.imageSources.materiahunter}/${template.name.toLowerCase().replace(/\s+/g, '-')}.jpg`,
+                    image: this.generateCardImageUrl(template, setIndex + 1, cardNumber),
+                    imageUrls: this.generateMultipleImageUrls(template, setIndex + 1, cardNumber),
                     source: 'enhanced-fallback',
-                    hasRealImage: true // Since we're referencing real cards
+                    hasRealImage: true
                 };
                 
                 enhancedCards.push(card);
@@ -792,20 +809,24 @@ export class ExternalCardAPI {
                 const element = elements[i % elements.length];
                 const type = types[i % types.length];
                 
+                const rarity = this.determineRarity(i + characterCards.length);
+                const cardName = `${set} ${element} ${type} ${cardNumber}`;
+                
                 const card = {
-                    id: `${setIndex + 1}-${cardNumber}C`,
-                    name: `${set} ${element} ${type} ${cardNumber}`,
+                    id: `${setIndex + 1}-${cardNumber}${rarity}`,
+                    name: cardName,
                     element: element,
                     type: type,
                     cost: Math.min(Math.max(Math.floor(i / 20) + 1, 1), 8),
                     power: type === 'forward' ? (Math.floor(i / 15) + 3) * 1000 : undefined,
                     job: type === 'forward' ? 'Warrior' : type === 'backup' ? 'Mage' : null,
                     category: 'Generic',
-                    rarity: this.determineRarity(i + characterCards.length),
+                    rarity: rarity,
                     text: `Enhanced ${type} ability for ${element} element.`,
                     set: set,
                     cardNumber: cardNumber,
-                    image: `${this.imageSources.materiahunter}/${element}-${type}-${cardNumber}.jpg`,
+                    image: this.generateCardImageUrl({ name: cardName, element, type }, setIndex + 1, cardNumber),
+                    imageUrls: this.generateMultipleImageUrls({ name: cardName, element, type }, setIndex + 1, cardNumber),
                     source: 'enhanced-fallback',
                     hasRealImage: true
                 };
@@ -819,10 +840,235 @@ export class ExternalCardAPI {
             totalCards: enhancedCards.length,
             sets: sets.length,
             realCharacters: characterCards.length,
-            setsGenerated: sets.length
+            setsGenerated: sets.length,
+            cardsPerSet: 186,
+            totalExpected: sets.length * 186
         });
         
+        // Cache image URLs for future use
+        this.cacheImageUrls(enhancedCards);
+        
         return enhancedCards;
+    }
+
+    /**
+     * Generate primary image URL for a card
+     */
+    generateCardImageUrl(cardTemplate, setNumber, cardNumber) {
+        const cardName = cardTemplate.name.toLowerCase().replace(/[^a-z0-9]/g, '-');
+        const setId = setNumber.toString().padStart(2, '0');
+        const cardId = cardNumber.toString().padStart(3, '0');
+        
+        // Try multiple URL patterns that might work
+        const patterns = [
+            `${this.imageSources.materiahunter}/${setId}/${cardId}.jpg`,
+            `${this.imageSources.ffdeckscdn}/${setId}-${cardId}.png`,
+            `${this.imageSources.squareEnixCdn}/opus${setNumber}/${cardId}.jpg`,
+            `${this.imageSources.tcgplayerCdn}/final-fantasy-tcg/${cardName}.jpg`
+        ];
+        
+        // Return the first pattern as primary, but store alternatives
+        return patterns[0];
+    }
+
+    /**
+     * Generate multiple potential image URLs for fallback
+     */
+    generateMultipleImageUrls(cardTemplate, setNumber, cardNumber) {
+        const cardName = cardTemplate.name.toLowerCase().replace(/[^a-z0-9]/g, '-');
+        const setId = setNumber.toString().padStart(2, '0');
+        const cardId = cardNumber.toString().padStart(3, '0');
+        const element = cardTemplate.element || 'neutral';
+        
+        return [
+            // Primary sources
+            `${this.imageSources.materiahunter}/cards/${setId}/${cardId}.jpg`,
+            `${this.imageSources.materiahunter}/images/${cardName}.jpg`,
+            
+            // FFDecks patterns
+            `${this.imageSources.ffdeckscdn}/${setId}-${cardId}.png`,
+            `${this.imageSources.ffdeckscdn}/${cardName}.jpg`,
+            
+            // Square Enix patterns
+            `${this.imageSources.squareEnixCdn}/opus${setNumber}/${cardId}.jpg`,
+            `${this.imageSources.squareEnixCdn}/${setId}/${cardNumber}.png`,
+            
+            // TCGPlayer patterns
+            `${this.imageSources.tcgplayerCdn}/fftcg/${cardName}.jpg`,
+            `${this.imageSources.tcgplayerCdn}/final-fantasy/${setId}${cardId}.jpg`,
+            
+            // Generic patterns
+            `https://fftcg-images.s3.amazonaws.com/${setId}/${cardId}.jpg`,
+            `https://cdn.fftcg.com/cards/${element}/${cardName}.jpg`,
+            
+            // Fallback with card info
+            `${this.imageSources.placeholder}/${element}/${encodeURIComponent(cardTemplate.name)}`
+        ];
+    }
+
+    /**
+     * Load image cache from localStorage
+     */
+    loadImageCache() {
+        try {
+            const cached = LocalStorage.get(this.IMAGE_CACHE_KEY);
+            if (cached) {
+                this.imageCache = new Map(cached);
+                this.debugLog('info', `Loaded ${this.imageCache.size} cached image URLs`);
+            }
+        } catch (error) {
+            this.debugLog('warn', 'Failed to load image cache', { error: error.message });
+        }
+    }
+
+    /**
+     * Save image cache to localStorage
+     */
+    saveImageCache() {
+        try {
+            const cacheArray = Array.from(this.imageCache.entries());
+            LocalStorage.set(this.IMAGE_CACHE_KEY, cacheArray);
+            this.debugLog('info', `Saved ${cacheArray.length} image URLs to cache`);
+        } catch (error) {
+            this.debugLog('warn', 'Failed to save image cache', { error: error.message });
+        }
+    }
+
+    /**
+     * Cache image URLs for cards
+     */
+    cacheImageUrls(cards) {
+        let cached = 0;
+        
+        cards.forEach(card => {
+            if (card.imageUrls && card.imageUrls.length > 0) {
+                this.imageCache.set(card.id, {
+                    primary: card.image,
+                    alternatives: card.imageUrls,
+                    cached: new Date().toISOString()
+                });
+                cached++;
+            }
+        });
+        
+        this.saveImageCache();
+        this.debugLog('info', `Cached image URLs for ${cached} cards`);
+    }
+
+    /**
+     * Get working image URL for a card (with fallback testing)
+     */
+    async getWorkingImageUrl(cardId) {
+        const cached = this.imageCache.get(cardId);
+        if (!cached) {
+            return `${this.imageSources.fallback}${encodeURIComponent(cardId)}`;
+        }
+        
+        // Test primary URL first
+        if (await this.testImageUrl(cached.primary)) {
+            return cached.primary;
+        }
+        
+        // Test alternatives
+        for (const url of cached.alternatives) {
+            if (await this.testImageUrl(url)) {
+                // Update cache with working URL
+                this.imageCache.set(cardId, {
+                    ...cached,
+                    primary: url,
+                    lastWorking: new Date().toISOString()
+                });
+                this.saveImageCache();
+                return url;
+            }
+        }
+        
+        // Return fallback
+        return `${this.imageSources.fallback}${encodeURIComponent(cardId)}`;
+    }
+
+    /**
+     * Test if an image URL is accessible
+     */
+    async testImageUrl(url) {
+        try {
+            const response = await fetch(url, { method: 'HEAD', timeout: 5000 });
+            return response.ok && response.headers.get('content-type')?.startsWith('image/');
+        } catch {
+            return false;
+        }
+    }
+
+    /**
+     * Preload images for a set of cards
+     */
+    async preloadCardImages(cards, maxConcurrent = 5) {
+        this.debugLog('info', `Preloading images for ${cards.length} cards`);
+        
+        const chunks = [];
+        for (let i = 0; i < cards.length; i += maxConcurrent) {
+            chunks.push(cards.slice(i, i + maxConcurrent));
+        }
+        
+        let loaded = 0;
+        let failed = 0;
+        
+        for (const chunk of chunks) {
+            const promises = chunk.map(async (card) => {
+                try {
+                    const workingUrl = await this.getWorkingImageUrl(card.id);
+                    card.image = workingUrl;
+                    loaded++;
+                    
+                    // Update cache with successful load
+                    const cached = this.imageCache.get(card.id);
+                    if (cached) {
+                        cached.lastLoaded = new Date().toISOString();
+                        this.imageCache.set(card.id, cached);
+                    }
+                } catch (error) {
+                    this.debugLog('warn', `Failed to preload image for ${card.id}`, { error: error.message });
+                    failed++;
+                }
+            });
+            
+            await Promise.all(promises);
+            
+            // Small delay between chunks to avoid overwhelming servers
+            await new Promise(resolve => setTimeout(resolve, 100));
+        }
+        
+        this.saveImageCache();
+        
+        this.debugLog('info', 'Image preloading completed', {
+            total: cards.length,
+            loaded,
+            failed,
+            successRate: `${Math.round((loaded / cards.length) * 100)}%`
+        });
+        
+        return { loaded, failed, total: cards.length };
+    }
+
+    /**
+     * Clear image cache
+     */
+    clearImageCache() {
+        this.imageCache.clear();
+        LocalStorage.remove(this.IMAGE_CACHE_KEY);
+        this.debugLog('info', 'Image cache cleared');
+    }
+
+    /**
+     * Get image cache statistics
+     */
+    getImageCacheStats() {
+        return {
+            totalCached: this.imageCache.size,
+            cacheKey: this.IMAGE_CACHE_KEY,
+            sources: Object.keys(this.imageSources),
+            lastUpdated: LocalStorage.get(this.IMAGE_CACHE_KEY + '_timestamp')
+        };
     }
 
     /**
@@ -879,11 +1125,18 @@ export class ExternalCardAPI {
     }
 
     /**
-     * Get card image URL from various sources
+     * Get card image URL from various sources with enhanced fallback
      */
-    getCardImageUrl(card, source = 'ffdecks') {
+    getCardImageUrl(card, source = 'materiahunter') {
         const cardId = card.id || card.code || card.card_number;
+        const cardName = card.name || 'Unknown Card';
         
+        // Check if we have cached image URLs
+        if (card.imageUrls && card.imageUrls.length > 0) {
+            return card.imageUrls[0]; // Return primary cached URL
+        }
+        
+        // Use provided image URL if available
         if (card.image_url) {
             return card.image_url;
         }
@@ -892,30 +1145,35 @@ export class ExternalCardAPI {
             return card.images.large;
         }
         
-        // Construct image URL based on source
+        // Construct image URL based on source with better patterns
+        const cleanCardName = cardName.toLowerCase().replace(/[^a-z0-9]/g, '-');
+        
         switch (source) {
+            case 'materiahunter':
+                if (cardId) {
+                    return `${this.imageSources.materiahunter}/${cardId}.jpg`;
+                }
+                return `${this.imageSources.materiahunter}/${cleanCardName}.jpg`;
+                
             case 'ffdecks':
                 if (cardId) {
-                    return `${this.imageSources.ffdecks}/${cardId}.jpg`;
+                    return `${this.imageSources.ffdeckscdn}/${cardId}.jpg`;
                 }
-                break;
-                
-            case 'fftcgdb':
-                if (cardId) {
-                    return `${this.imageSources.fftcgdb}/${cardId}.png`;
-                }
-                break;
+                return `${this.imageSources.ffdeckscdn}/${cleanCardName}.png`;
                 
             case 'squareEnix':
                 if (cardId) {
-                    return `${this.imageSources.squareEnix}/${cardId}.jpg`;
+                    return `${this.imageSources.squareEnixCdn}/${cardId}.jpg`;
                 }
                 break;
+                
+            case 'tcgplayer':
+                return `${this.imageSources.tcgplayerCdn}/fftcg/${cleanCardName}.jpg`;
         }
         
-        // Fallback placeholder
-        const cardName = card.name || 'Unknown Card';
-        return `${this.imageSources.fallback}${encodeURIComponent(cardName)}`;
+        // Enhanced fallback with card information
+        const fallbackText = encodeURIComponent(`${cardName}\n${card.element || ''}\n${card.type || ''}`);
+        return `${this.imageSources.fallback}${fallbackText}`;
     }
 
     /**
@@ -1124,6 +1382,7 @@ export class ExternalCardAPI {
             availableSources: Object.keys(this.endpoints),
             rateLimitStatus: Array.from(this.rateLimiter.entries()),
             healthStatus: this.getHealthStatus(),
+            imageCache: this.getImageCacheStats(),
             debugLogs: {
                 total: this.debugLogs.length,
                 recent: this.getDebugLogs('error', 10),
