@@ -22,7 +22,7 @@ import { validate, validateCard, validateDeck } from './utils/Validation.js';
 import { security } from './utils/Security.js';
 
 // Import extended card data
-import { EXTENDED_CARD_DATA, generateCardImages } from './data/ExtendedCardDatabase.js';
+import { EXTENDED_CARD_DATA, generateCardImages, getEnhancedCardDatabase, getOpus1CardDatabase } from './data/ExtendedCardDatabase.js';
 
 // Import player management
 import { PlayerManager } from './core/PlayerManager.js';
@@ -133,18 +133,20 @@ class AppController {
         logger.info('📚 Loading extended card database...');
         
         try {
-            // Load extended card data into the card database
-            this.cardDatabase.loadCards(EXTENDED_CARD_DATA);
+            // Load enhanced card data with Opus 1 images
+            logger.info('🃏 Loading enhanced card database with Opus 1 images...');
+            const enhancedCardData = getEnhancedCardDatabase();
+            this.cardDatabase.loadCards(enhancedCardData);
             
-            // Generate placeholder images
-            logger.info('🖼️ Generating card images...');
+            // Generate placeholder images for cards without real images
+            logger.info('🖼️ Generating placeholder images for remaining cards...');
             const cardImages = generateCardImages();
             
             // Store images for later use
             this.cardImages = cardImages;
             
             const loadDuration = logger.timeEnd('card-data-loading');
-            logger.info(`✅ Loaded ${EXTENDED_CARD_DATA.length} cards with images in ${loadDuration?.toFixed(2)}ms`);
+            logger.info(`✅ Loaded ${enhancedCardData.length} cards (including ${enhancedCardData.filter(c => c.hasRealImage).length} with Opus 1 images) in ${loadDuration?.toFixed(2)}ms`);
             
             // Initialize deck builder after card database is loaded
             logger.info('🔨 Initializing Deck Builder...');

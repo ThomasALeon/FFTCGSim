@@ -3,7 +3,11 @@
  * 
  * Provides a large collection of sample FFTCG cards across all elements
  * and types to enable proper deck building and game testing
+ * 
+ * Now enhanced with actual Opus 1 card images!
  */
+
+import { mergeWithOpus1Images, createOpus1CardDatabase } from './Opus1CardMapping.js';
 
 export const EXTENDED_CARD_DATA = [
     // === FIRE ELEMENT ===
@@ -1064,4 +1068,20 @@ export function generateCardImages() {
     });
 
     return images;
+}
+
+/**
+ * Get enhanced card database with Opus 1 images
+ * @returns {Array} - Card database with actual Opus 1 images where available
+ */
+export function getEnhancedCardDatabase() {
+    return mergeWithOpus1Images(EXTENDED_CARD_DATA);
+}
+
+/**
+ * Get complete Opus 1 card database
+ * @returns {Array} - Complete Opus 1 card database based on actual files
+ */
+export function getOpus1CardDatabase() {
+    return createOpus1CardDatabase();
 }
