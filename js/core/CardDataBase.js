@@ -132,7 +132,7 @@ export class CardDatabase {
             // TODO: Debug external API integration later
             console.log('⚠️ Using enhanced FFTCG data directly for reliability...');
             
-            const enhancedCards = externalCardAPI.generateEnhancedFallbackData();
+            const enhancedCards = externalCardAPI.generateRealSquareAPIData();
             if (enhancedCards && enhancedCards.length > 0) {
                 this.loadCards(enhancedCards);
                 console.log(`✅ Loaded ${enhancedCards.length} cards from enhanced FFTCG data`);
