@@ -191,100 +191,174 @@
                         </div>
                         
                         <div class="deck-editor-content">
-                            <!-- Card Search Panel - Initially Hidden -->
-                            <div class="card-search-panel" id="cardSearchPanel" style="display: none;">
-                                <div class="search-header">
-                                    <h3>Add Cards</h3>
-                                    <button class="btn btn-secondary btn-sm" onclick="window.app?.deckBuilder?.hideCardSearch()">Done</button>
+                            <!-- Persistent Edge Bars -->
+                            <div class="edge-toggle-bar left-edge" id="leftEdgeBar" onclick="toggleSearchSidebar()" style="display: none;">
+                                <div class="edge-handle">
+                                    <span class="edge-icon">🔍</span>
+                                    <span class="edge-text">Search</span>
                                 </div>
-                                <div class="search-controls">
-                                    <div class="search-input-container">
-                                        <input type="text" id="cardSearch" placeholder="Search cards by name..." class="search-input">
-                                        <button class="search-clear-btn" id="clearSearch" style="display: none;" onclick="window.app?.deckBuilder?.clearSearch()">✕</button>
-                                    </div>
-                                    
-                                    <!-- Element Filter Buttons -->
-                                    <div class="filter-group">
-                                        <label class="filter-group-label">Element:</label>
-                                        <div class="filter-buttons" id="elementButtons">
-                                            <button class="filter-btn active" data-element="" onclick="window.app?.deckBuilder?.setElementFilter('')">All</button>
-                                            <button class="filter-btn element-fire" data-element="fire" onclick="window.app?.deckBuilder?.setElementFilter('fire')">🔥 Fire</button>
-                                            <button class="filter-btn element-ice" data-element="ice" onclick="window.app?.deckBuilder?.setElementFilter('ice')">❄️ Ice</button>
-                                            <button class="filter-btn element-wind" data-element="wind" onclick="window.app?.deckBuilder?.setElementFilter('wind')">🌪️ Wind</button>
-                                            <button class="filter-btn element-lightning" data-element="lightning" onclick="window.app?.deckBuilder?.setElementFilter('lightning')">⚡ Lightning</button>
-                                            <button class="filter-btn element-water" data-element="water" onclick="window.app?.deckBuilder?.setElementFilter('water')">💧 Water</button>
-                                            <button class="filter-btn element-earth" data-element="earth" onclick="window.app?.deckBuilder?.setElementFilter('earth')">🌍 Earth</button>
-                                            <button class="filter-btn element-light" data-element="light" onclick="window.app?.deckBuilder?.setElementFilter('light')">☀️ Light</button>
-                                            <button class="filter-btn element-dark" data-element="dark" onclick="window.app?.deckBuilder?.setElementFilter('dark')">🌑 Dark</button>
-                                        </div>
-                                    </div>
-                                    
-                                    <!-- Type Filter Buttons -->
-                                    <div class="filter-group">
-                                        <label class="filter-group-label">Type:</label>
-                                        <div class="filter-buttons" id="typeButtons">
-                                            <button class="filter-btn active" data-type="" onclick="window.app?.deckBuilder?.setTypeFilter('')">All</button>
-                                            <button class="filter-btn" data-type="forward" onclick="window.app?.deckBuilder?.setTypeFilter('forward')">⚔️ Forward</button>
-                                            <button class="filter-btn" data-type="backup" onclick="window.app?.deckBuilder?.setTypeFilter('backup')">🛡️ Backup</button>
-                                            <button class="filter-btn" data-type="summon" onclick="window.app?.deckBuilder?.setTypeFilter('summon')">✨ Summon</button>
-                                            <button class="filter-btn" data-type="monster" onclick="window.app?.deckBuilder?.setTypeFilter('monster')">👹 Monster</button>
-                                        </div>
-                                    </div>
-                                    
-                                    <!-- Cost Filter Buttons -->
-                                    <div class="filter-group">
-                                        <label class="filter-group-label">Cost:</label>
-                                        <div class="filter-buttons" id="costButtons">
-                                            <button class="filter-btn active" data-cost="" onclick="window.app?.deckBuilder?.setCostFilter('')">All</button>
-                                            <button class="filter-btn" data-cost="1" onclick="window.app?.deckBuilder?.setCostFilter('1')">1</button>
-                                            <button class="filter-btn" data-cost="2" onclick="window.app?.deckBuilder?.setCostFilter('2')">2</button>
-                                            <button class="filter-btn" data-cost="3" onclick="window.app?.deckBuilder?.setCostFilter('3')">3</button>
-                                            <button class="filter-btn" data-cost="4" onclick="window.app?.deckBuilder?.setCostFilter('4')">4</button>
-                                            <button class="filter-btn" data-cost="5" onclick="window.app?.deckBuilder?.setCostFilter('5')">5</button>
-                                            <button class="filter-btn" data-cost="6" onclick="window.app?.deckBuilder?.setCostFilter('6')">6</button>
-                                            <button class="filter-btn" data-cost="7+" onclick="window.app?.deckBuilder?.setCostFilter('7+')">7+</button>
-                                        </div>
-                                    </div>
-                                    
-                                    <!-- Rarity Filter Buttons -->
-                                    <div class="filter-group">
-                                        <label class="filter-group-label">Rarity:</label>
-                                        <div class="filter-buttons" id="rarityButtons">
-                                            <button class="filter-btn active" data-rarity="" onclick="window.app?.deckBuilder?.setRarityFilter('')">All</button>
-                                            <button class="filter-btn rarity-c" data-rarity="C" onclick="window.app?.deckBuilder?.setRarityFilter('C')">C</button>
-                                            <button class="filter-btn rarity-r" data-rarity="R" onclick="window.app?.deckBuilder?.setRarityFilter('R')">R</button>
-                                            <button class="filter-btn rarity-h" data-rarity="H" onclick="window.app?.deckBuilder?.setRarityFilter('H')">H</button>
-                                            <button class="filter-btn rarity-l" data-rarity="L" onclick="window.app?.deckBuilder?.setRarityFilter('L')">L</button>
-                                        </div>
-                                    </div>
-                                    
-                                    <!-- Opus Filter Buttons -->
-                                    <div class="filter-group">
-                                        <label class="filter-group-label">Opus Set:</label>
-                                        <div class="filter-buttons" id="opusButtons">
-                                            <button class="filter-btn active" data-opus="" onclick="window.app?.deckBuilder?.setOpusFilter('')">All</button>
-                                            <button class="filter-btn opus-1" data-opus="Opus 1" onclick="window.app?.deckBuilder?.setOpusFilter('Opus 1')">Opus 1</button>
-                                            <button class="filter-btn opus-2" data-opus="Opus 2" onclick="window.app?.deckBuilder?.setOpusFilter('Opus 2')">Opus 2</button>
-                                            <button class="filter-btn opus-3" data-opus="Opus 3" onclick="window.app?.deckBuilder?.setOpusFilter('Opus 3')">Opus 3</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-grid" id="cardDatabase">
-                                    <!-- Cards will be populated here -->
+                            </div>
+                            <div class="edge-toggle-bar right-edge" id="rightEdgeBar" onclick="toggleDeckSidebar()" style="display: none;">
+                                <div class="edge-handle">
+                                    <span class="edge-text">Deck</span>
+                                    <span class="edge-icon">📚</span>
                                 </div>
                             </div>
 
-                            <!-- Current Deck Panel -->
-                            <div class="current-deck-panel">
-                                <div class="deck-content-header">
-                                    <h3>Deck Contents</h3>
-                                    <button class="btn btn-secondary" onclick="window.app?.deckBuilder?.showCardSearch()" id="addCardsBtn">
-                                        + Add Cards
-                                    </button>
+                            <!-- Search/Filter Sidebar - Left Side -->
+                            <div class="search-filter-sidebar" id="searchFilterSidebar">
+                                <div class="sidebar-toggle-bar left-toggle" onclick="toggleSearchSidebar()">
+                                    <div class="toggle-handle">
+                                        <span class="toggle-icon">🔍</span>
+                                        <span class="toggle-text">Search & Filters</span>
+                                        <span class="toggle-arrow">◀</span>
+                                    </div>
                                 </div>
-                                <div class="deck-list" id="currentDeck">
-                                    <div class="empty-deck-message">
-                                        <p>Your deck is empty. Click "Add Cards" to start building!</p>
+                                <div class="sidebar-content">
+                                    <div class="sidebar-header">
+                                        <h3>Search & Filter</h3>
+                                        <button class="sidebar-close-btn" onclick="toggleSearchSidebar()">✕</button>
+                                    </div>
+                                    
+                                    <!-- Search Input -->
+                                    <div class="search-section">
+                                        <div class="search-input-container">
+                                            <input type="text" id="cardSearch" placeholder="Search cards by name..." class="search-input">
+                                            <button class="search-clear-btn" id="clearSearch" style="display: none;" onclick="window.app?.deckBuilder?.clearSearch()">✕</button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Filter Controls -->
+                                    <div class="filter-controls">
+                                        <!-- Element Filter Buttons -->
+                                        <div class="filter-group">
+                                            <label class="filter-group-label">Element:</label>
+                                            <div class="filter-buttons" id="elementButtons">
+                                                <button class="filter-btn active" data-element="" onclick="window.app?.deckBuilder?.setElementFilter('')">All</button>
+                                                <button class="filter-btn element-fire" data-element="fire" onclick="window.app?.deckBuilder?.setElementFilter('fire')">
+                                                    <span class="filter-icon">🔥</span><span class="filter-text">Fire</span>
+                                                </button>
+                                                <button class="filter-btn element-ice" data-element="ice" onclick="window.app?.deckBuilder?.setElementFilter('ice')">
+                                                    <span class="filter-icon">❄️</span><span class="filter-text">Ice</span>
+                                                </button>
+                                                <button class="filter-btn element-wind" data-element="wind" onclick="window.app?.deckBuilder?.setElementFilter('wind')">
+                                                    <span class="filter-icon">🌪️</span><span class="filter-text">Wind</span>
+                                                </button>
+                                                <button class="filter-btn element-lightning" data-element="lightning" onclick="window.app?.deckBuilder?.setElementFilter('lightning')">
+                                                    <span class="filter-icon">⚡</span><span class="filter-text">Lightning</span>
+                                                </button>
+                                                <button class="filter-btn element-water" data-element="water" onclick="window.app?.deckBuilder?.setElementFilter('water')">
+                                                    <span class="filter-icon">💧</span><span class="filter-text">Water</span>
+                                                </button>
+                                                <button class="filter-btn element-earth" data-element="earth" onclick="window.app?.deckBuilder?.setElementFilter('earth')">
+                                                    <span class="filter-icon">🌍</span><span class="filter-text">Earth</span>
+                                                </button>
+                                                <button class="filter-btn element-light" data-element="light" onclick="window.app?.deckBuilder?.setElementFilter('light')">
+                                                    <span class="filter-icon">☀️</span><span class="filter-text">Light</span>
+                                                </button>
+                                                <button class="filter-btn element-dark" data-element="dark" onclick="window.app?.deckBuilder?.setElementFilter('dark')">
+                                                    <span class="filter-icon">🌑</span><span class="filter-text">Dark</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Type Filter Buttons -->
+                                        <div class="filter-group">
+                                            <label class="filter-group-label">Type:</label>
+                                            <div class="filter-buttons" id="typeButtons">
+                                                <button class="filter-btn active" data-type="" onclick="window.app?.deckBuilder?.setTypeFilter('')">All</button>
+                                                <button class="filter-btn" data-type="forward" onclick="window.app?.deckBuilder?.setTypeFilter('forward')">
+                                                    <span class="filter-icon">⚔️</span><span class="filter-text">Forward</span>
+                                                </button>
+                                                <button class="filter-btn" data-type="backup" onclick="window.app?.deckBuilder?.setTypeFilter('backup')">
+                                                    <span class="filter-icon">🛡️</span><span class="filter-text">Backup</span>
+                                                </button>
+                                                <button class="filter-btn" data-type="summon" onclick="window.app?.deckBuilder?.setTypeFilter('summon')">
+                                                    <span class="filter-icon">✨</span><span class="filter-text">Summon</span>
+                                                </button>
+                                                <button class="filter-btn" data-type="monster" onclick="window.app?.deckBuilder?.setTypeFilter('monster')">
+                                                    <span class="filter-icon">👹</span><span class="filter-text">Monster</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Cost Filter Buttons -->
+                                        <div class="filter-group">
+                                            <label class="filter-group-label">Cost:</label>
+                                            <div class="filter-buttons" id="costButtons">
+                                                <button class="filter-btn active" data-cost="" onclick="window.app?.deckBuilder?.setCostFilter('')">All</button>
+                                                <button class="filter-btn" data-cost="1" onclick="window.app?.deckBuilder?.setCostFilter('1')">1</button>
+                                                <button class="filter-btn" data-cost="2" onclick="window.app?.deckBuilder?.setCostFilter('2')">2</button>
+                                                <button class="filter-btn" data-cost="3" onclick="window.app?.deckBuilder?.setCostFilter('3')">3</button>
+                                                <button class="filter-btn" data-cost="4" onclick="window.app?.deckBuilder?.setCostFilter('4')">4</button>
+                                                <button class="filter-btn" data-cost="5" onclick="window.app?.deckBuilder?.setCostFilter('5')">5</button>
+                                                <button class="filter-btn" data-cost="6" onclick="window.app?.deckBuilder?.setCostFilter('6')">6</button>
+                                                <button class="filter-btn" data-cost="7+" onclick="window.app?.deckBuilder?.setCostFilter('7+')">7+</button>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Rarity Filter Buttons -->
+                                        <div class="filter-group">
+                                            <label class="filter-group-label">Rarity:</label>
+                                            <div class="filter-buttons" id="rarityButtons">
+                                                <button class="filter-btn active" data-rarity="" onclick="window.app?.deckBuilder?.setRarityFilter('')">All</button>
+                                                <button class="filter-btn rarity-c" data-rarity="C" onclick="window.app?.deckBuilder?.setRarityFilter('C')">C</button>
+                                                <button class="filter-btn rarity-r" data-rarity="R" onclick="window.app?.deckBuilder?.setRarityFilter('R')">R</button>
+                                                <button class="filter-btn rarity-h" data-rarity="H" onclick="window.app?.deckBuilder?.setRarityFilter('H')">H</button>
+                                                <button class="filter-btn rarity-l" data-rarity="L" onclick="window.app?.deckBuilder?.setRarityFilter('L')">L</button>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Opus Filter Buttons -->
+                                        <div class="filter-group">
+                                            <label class="filter-group-label">Opus Set:</label>
+                                            <div class="filter-buttons" id="opusButtons">
+                                                <button class="filter-btn active" data-opus="" onclick="window.app?.deckBuilder?.setOpusFilter('')">All</button>
+                                                <button class="filter-btn opus-1" data-opus="Opus 1" onclick="window.app?.deckBuilder?.setOpusFilter('Opus 1')">Opus 1</button>
+                                                <button class="filter-btn opus-2" data-opus="Opus 2" onclick="window.app?.deckBuilder?.setOpusFilter('Opus 2')">Opus 2</button>
+                                                <button class="filter-btn opus-3" data-opus="Opus 3" onclick="window.app?.deckBuilder?.setOpusFilter('Opus 3')">Opus 3</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Main Content Area (Card Grid) -->
+                            <div class="main-content-area">
+                                <div class="card-search-panel" id="cardSearchPanel" style="display: none;">
+                                    <div class="card-grid-container">
+                                        <div class="card-grid" id="cardDatabase">
+                                            <!-- Cards will be populated here -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Current Deck Sidebar - Right Side -->
+                            <div class="current-deck-sidebar" id="deckSidebar">
+                                <div class="sidebar-toggle-bar right-toggle" onclick="toggleDeckSidebar()">
+                                    <div class="toggle-handle">
+                                        <span class="toggle-arrow">▶</span>
+                                        <span class="toggle-text">Deck Contents</span>
+                                        <span class="toggle-icon">📚</span>
+                                    </div>
+                                </div>
+                                <div class="sidebar-content">
+                                    <div class="current-deck-panel">
+                                        <div class="sidebar-header">
+                                            <h3>Deck Contents</h3>
+                                            <button class="sidebar-close-btn" onclick="toggleDeckSidebar()">✕</button>
+                                        </div>
+                                        <div class="deck-actions-bar">
+                                            <button class="btn btn-secondary" onclick="window.app?.deckBuilder?.showCardSearch()" id="addCardsBtn">
+                                                + Add Cards
+                                            </button>
+                                        </div>
+                                        <div class="deck-list" id="currentDeck">
+                                            <div class="empty-deck-message">
+                                                <p>Your deck is empty. Click "Add Cards" to start building!</p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -427,5 +501,113 @@
 
     <!-- JavaScript Modules -->
     <script type="module" src="js/main.js"></script>
+    
+    <!-- Sidebar Toggle Functions -->
+    <script>
+        // Update main content margins based on sidebar states
+        function updateMainContentMargins() {
+            const mainContent = document.querySelector('.main-content-area');
+            const searchSidebar = document.getElementById('searchFilterSidebar');
+            const deckSidebar = document.getElementById('deckSidebar');
+            
+            if (!mainContent) return;
+            
+            const searchCollapsed = searchSidebar.classList.contains('collapsed');
+            const deckCollapsed = deckSidebar.classList.contains('collapsed');
+            
+            // Reset classes
+            mainContent.classList.remove('search-collapsed', 'deck-collapsed');
+            
+            // Add classes based on current state
+            if (searchCollapsed) mainContent.classList.add('search-collapsed');
+            if (deckCollapsed) mainContent.classList.add('deck-collapsed');
+        }
+        
+        // Update edge bar visibility
+        function updateEdgeBars() {
+            const leftEdgeBar = document.getElementById('leftEdgeBar');
+            const rightEdgeBar = document.getElementById('rightEdgeBar');
+            const searchSidebar = document.getElementById('searchFilterSidebar');
+            const deckSidebar = document.getElementById('deckSidebar');
+            
+            // Show left edge bar only when search sidebar is collapsed
+            if (leftEdgeBar) {
+                leftEdgeBar.style.display = searchSidebar.classList.contains('collapsed') ? 'flex' : 'none';
+            }
+            
+            // Show right edge bar only when deck sidebar is collapsed
+            if (rightEdgeBar) {
+                rightEdgeBar.style.display = deckSidebar.classList.contains('collapsed') ? 'flex' : 'none';
+            }
+        }
+        
+        // Toggle search/filter sidebar
+        function toggleSearchSidebar() {
+            const sidebar = document.getElementById('searchFilterSidebar');
+            sidebar.classList.toggle('collapsed');
+            
+            // Update UI
+            updateMainContentMargins();
+            updateEdgeBars();
+            
+            // Save state to localStorage
+            localStorage.setItem('searchSidebarCollapsed', sidebar.classList.contains('collapsed'));
+        }
+        
+        // Toggle deck contents sidebar
+        function toggleDeckSidebar() {
+            const sidebar = document.getElementById('deckSidebar');
+            sidebar.classList.toggle('collapsed');
+            
+            // Update UI
+            updateMainContentMargins();
+            updateEdgeBars();
+            
+            // Save state to localStorage
+            localStorage.setItem('deckSidebarCollapsed', sidebar.classList.contains('collapsed'));
+        }
+        
+        // Restore sidebar states on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Restore search sidebar state
+            const searchCollapsed = localStorage.getItem('searchSidebarCollapsed') === 'true';
+            if (searchCollapsed) {
+                document.getElementById('searchFilterSidebar').classList.add('collapsed');
+            }
+            
+            // Restore deck sidebar state
+            const deckCollapsed = localStorage.getItem('deckSidebarCollapsed') === 'true';
+            if (deckCollapsed) {
+                document.getElementById('deckSidebar').classList.add('collapsed');
+            }
+            
+            // Update UI after restoring states
+            setTimeout(() => {
+                updateMainContentMargins();
+                updateEdgeBars();
+            }, 100);
+        });
+        
+        // Keyboard shortcuts for sidebar toggling
+        document.addEventListener('keydown', function(e) {
+            // Only activate when in deck builder view and not typing in inputs
+            if (!document.getElementById('deck-builderView').classList.contains('active') || 
+                e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+                return;
+            }
+            
+            // Ctrl/Cmd + [ to toggle search sidebar
+            if ((e.ctrlKey || e.metaKey) && e.key === '[') {
+                e.preventDefault();
+                toggleSearchSidebar();
+            }
+            
+            // Ctrl/Cmd + ] to toggle deck sidebar
+            if ((e.ctrlKey || e.metaKey) && e.key === ']') {
+                e.preventDefault();
+                toggleDeckSidebar();
+            }
+        });
+    </script>
 </body>
 </html>

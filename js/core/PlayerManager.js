@@ -61,6 +61,7 @@ export class PlayerManager {
             largeText: false,
             reducedMotion: false,
             screenReader: false,
+            filterIconSize: 'medium',
             
             // Audio
             soundEffects: true,
@@ -124,6 +125,9 @@ export class PlayerManager {
             if (savedAchievements) {
                 this.achievements = savedAchievements;
             }
+
+            // Apply current settings to DOM
+            this.applySettings();
 
             // Update last active time
             this.profile.lastActive = new Date().toISOString();
@@ -395,11 +399,45 @@ export class PlayerManager {
         const oldSettings = { ...this.settings };
         this.settings = { ...this.settings, ...updates };
         
+        // Apply icon size setting if it changed
+        if (updates.filterIconSize && updates.filterIconSize !== oldSettings.filterIconSize) {
+            this.applyFilterIconSize(updates.filterIconSize);
+        }
+        
         this.saveProfile();
         this.emit('settingsUpdated', { old: oldSettings, new: this.settings });
         
         logger.info('⚙️ Settings updated');
         return this.settings;
+    }
+
+    /**
+     * Apply all current settings to the DOM
+     */
+    applySettings() {
+        // Apply filter icon size setting
+        this.applyFilterIconSize(this.settings.filterIconSize);
+        
+        // Apply other settings as needed
+        // TODO: Add other settings application here
+    }
+
+    /**
+     * Apply filter icon size setting to the DOM
+     */
+    applyFilterIconSize(iconSize) {
+        const filterControls = document.querySelector('.filter-controls');
+        if (!filterControls) return;
+
+        // Remove existing icon size classes
+        filterControls.classList.remove('icon-size-small', 'icon-size-medium', 'icon-size-large', 'icon-size-extra-large');
+        
+        // Add new icon size class
+        if (iconSize && iconSize !== 'medium') {
+            filterControls.classList.add(`icon-size-${iconSize}`);
+        }
+        
+        logger.debug(`🎨 Applied filter icon size: ${iconSize}`);
     }
 
     /**

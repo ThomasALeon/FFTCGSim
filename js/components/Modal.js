@@ -386,6 +386,17 @@ export class Modal {
                         </label>
                         <div class="form-hint">Minimizes animations and transitions</div>
                     </div>
+                    
+                    <div class="form-group">
+                        <label for="filterIconSize">Filter Icon Size</label>
+                        <select id="filterIconSize" name="filterIconSize">
+                            <option value="small" ${currentSettings.filterIconSize === 'small' ? 'selected' : ''}>Small</option>
+                            <option value="medium" ${currentSettings.filterIconSize === 'medium' || !currentSettings.filterIconSize ? 'selected' : ''}>Medium (Default)</option>
+                            <option value="large" ${currentSettings.filterIconSize === 'large' ? 'selected' : ''}>Large</option>
+                            <option value="extra-large" ${currentSettings.filterIconSize === 'extra-large' ? 'selected' : ''}>Extra Large</option>
+                        </select>
+                        <div class="form-hint">Adjusts the size of filter icons in the deck builder for better visibility</div>
+                    </div>
                 </div>
 
                 <div class="settings-section">
