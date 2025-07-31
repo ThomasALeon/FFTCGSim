@@ -238,6 +238,8 @@
                                             <option value="id-desc">ID (Descending)</option>
                                             <option value="cost-asc">Cost (Low to High)</option>
                                             <option value="cost-desc">Cost (High to Low)</option>
+                                            <option value="category-asc">Category (A-Z)</option>
+                                            <option value="category-desc">Category (Z-A)</option>
                                         </select>
                                     </div>
 
@@ -328,6 +330,15 @@
                                             <div class="filter-buttons" id="opusButtons">
                                                 <button class="filter-btn active" data-opus="" onclick="window.app?.deckBuilder?.setOpusFilter('')">All</button>
                                                 <!-- Set buttons will be dynamically generated -->
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Category Filter Buttons - Dynamically Generated -->
+                                        <div class="filter-group">
+                                            <label class="filter-group-label">Category:</label>
+                                            <div class="filter-buttons" id="categoryButtons">
+                                                <button class="filter-btn active" data-category="" onclick="window.app?.deckBuilder?.setCategoryFilter('')">All</button>
+                                                <!-- Category buttons will be dynamically generated -->
                                             </div>
                                         </div>
                                     </div>

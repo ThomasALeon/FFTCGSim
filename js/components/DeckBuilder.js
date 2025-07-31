@@ -29,6 +29,7 @@ export class DeckBuilder {
         this.costFilter = [];     // Changed to array for multiple selection
         this.rarityFilter = [];   // Changed to array for multiple selection
         this.opusFilter = [];     // Changed to array for multiple selection
+        this.categoryFilter = []; // Changed to array for multiple selection
         this.sortOption = 'name-asc'; // Default sort option
         
         // UI elements
@@ -119,6 +120,7 @@ export class DeckBuilder {
         
         // Generate set filter buttons dynamically once card database is loaded
         this.generateSetFilterButtons();
+        this.generateCategoryFilterButtons();
     }
 
     /**
@@ -188,6 +190,98 @@ export class DeckBuilder {
             logger.info(`✅ Generated ${availableSets.length} set filter buttons`);
         } catch (error) {
             logger.error('Failed to generate set filter buttons:', error);
+        }
+    }
+
+    /**
+     * Generate category filter buttons dynamically based on available categories in database
+     */
+    generateCategoryFilterButtons() {
+        const categoryButtonsContainer = document.getElementById('categoryButtons');
+        if (!categoryButtonsContainer || !this.cardDatabase) {
+            logger.warn('Cannot generate category filter buttons - missing container or card database');
+            return;
+        }
+
+        try {
+            // Get all unique categories from the database
+            const allCards = this.cardDatabase.getAllCards();
+            const availableCategories = [...new Set(allCards
+                .map(card => card.category)
+                .filter(category => category)
+            )].sort();
+
+            logger.info(`🎯 Generating filter buttons for ${availableCategories.length} categories`);
+
+            // Save the "All" button state before clearing
+            const existingAllButton = categoryButtonsContainer.querySelector('[data-category=""]');
+            const wasAllButtonActive = existingAllButton?.classList.contains('active') || true;
+            
+            // Clear existing buttons
+            categoryButtonsContainer.innerHTML = '';
+            
+            // Re-create the "All" button first
+            const allButton = document.createElement('button');
+            allButton.className = 'filter-btn' + (wasAllButtonActive ? ' active' : '');
+            allButton.setAttribute('data-category', '');
+            allButton.textContent = 'All';
+            allButton.onclick = () => window.app?.deckBuilder?.setCategoryFilter('');
+            categoryButtonsContainer.appendChild(allButton);
+
+            // Focus on main FF game categories first, then others
+            const ffGameCategories = availableCategories.filter(cat => 
+                /^[IVX]+$/.test(cat) || ['TYPE-0', 'MOBIUS', 'FFT', 'FFCC', 'FFBE', 'FFL', 'DFF', 'WOFF'].includes(cat)
+            );
+            const otherCategories = availableCategories.filter(cat => 
+                !ffGameCategories.includes(cat)
+            );
+
+            // Combine them: FF games first, then others
+            const prioritizedCategories = [...ffGameCategories, ...otherCategories];
+
+            // Generate buttons for categories (limit to prevent UI overflow)
+            const maxButtons = 20; // Show top 20 categories
+            const categoriesToShow = prioritizedCategories.slice(0, maxButtons);
+
+            categoriesToShow.forEach(category => {
+                const button = document.createElement('button');
+                button.className = 'filter-btn';
+                button.setAttribute('data-category', category);
+                button.onclick = () => window.app?.deckBuilder?.setCategoryFilter(category);
+                
+                // Create display name with FF game name mapping
+                let displayName = category;
+                const gameNames = {
+                    'I': 'FF I', 'II': 'FF II', 'III': 'FF III', 'IV': 'FF IV', 'V': 'FF V',
+                    'VI': 'FF VI', 'VII': 'FF VII', 'VIII': 'FF VIII', 'IX': 'FF IX', 'X': 'FF X',
+                    'XI': 'FF XI', 'XII': 'FF XII', 'XIII': 'FF XIII', 'XIV': 'FF XIV', 'XV': 'FF XV',
+                    'XVI': 'FF XVI', 'TYPE-0': 'Type-0', 'MOBIUS': 'Mobius', 'FFT': 'Tactics',
+                    'FFCC': 'Crystal Chronicles', 'FFBE': 'Brave Exvius', 'FFL': 'Legend',
+                    'DFF': 'Dissidia', 'WOFF': 'World of FF'
+                };
+                
+                if (gameNames[category]) {
+                    displayName = gameNames[category];
+                }
+                
+                button.textContent = displayName;
+                button.title = `${category} - Filter by Final Fantasy ${displayName} cards`;
+                
+                categoryButtonsContainer.appendChild(button);
+            });
+
+            if (availableCategories.length > maxButtons) {
+                // Add a "More..." indicator
+                const moreButton = document.createElement('span');
+                moreButton.className = 'filter-more-indicator';
+                moreButton.textContent = `+${availableCategories.length - maxButtons} more`;
+                moreButton.title = `${availableCategories.length - maxButtons} additional categories available`;
+                categoryButtonsContainer.appendChild(moreButton);
+            }
+
+            logger.info(`✅ Generated ${categoriesToShow.length} category filter buttons`);
+        } catch (error) {
+            logger.error('Failed to generate category filter buttons:', error);
         }
     }
 
@@ -293,7 +387,7 @@ export class DeckBuilder {
         this.filteredCards = this.getFilteredCards();
         
         // Debug: Log filtering results
-        logger.debug(`🔍 Filtered cards: ${this.filteredCards.length} (search: "${this.searchTerm}", element: [${this.elementFilter.join(', ')}], type: [${this.typeFilter.join(', ')}])`);
+        logger.debug(`🔍 Filtered cards: ${this.filteredCards.length} (search: "${this.searchTerm}", element: [${this.elementFilter.join(', ')}], type: [${this.typeFilter.join(', ')}], category: [${this.categoryFilter.join(', ')}])`);
         
         // Clear existing content
         this.cardGrid.innerHTML = '';
@@ -382,6 +476,13 @@ export class DeckBuilder {
             logger.debug(`🔍 After opus filter [${this.opusFilter.join(', ')}]: ${beforeOpus} → ${cards.length} cards`);
         }
 
+        // Apply category filter (multiple selection)
+        if (this.categoryFilter.length > 0) {
+            const beforeCategory = cards.length;
+            cards = cards.filter(card => this.categoryFilter.includes(card.category));
+            logger.debug(`🔍 After category filter [${this.categoryFilter.join(', ')}]: ${beforeCategory} → ${cards.length} cards`);
+        }
+
         // Apply sorting
         cards = this.sortCards(cards);
 
@@ -410,6 +511,10 @@ export class DeckBuilder {
                 case 'cost':
                     valueA = a.cost || 0;
                     valueB = b.cost || 0;
+                    break;
+                case 'category':
+                    valueA = (a.category || 'Unknown').toLowerCase();
+                    valueB = (b.category || 'Unknown').toLowerCase();
                     break;
                 default:
                     valueA = a.name.toLowerCase();
@@ -908,6 +1013,26 @@ export class DeckBuilder {
             }
         }
         this.updateFilterButtonStates('opus', this.opusFilter);
+        this.refreshCardDisplay();
+    }
+
+    /**
+     * Toggle category filter (for button-based filters with multiple selection)
+     */
+    setCategoryFilter(category) {
+        if (category === '') {
+            // "All" button - clear all filters
+            this.categoryFilter = [];
+        } else {
+            // Toggle specific category
+            const index = this.categoryFilter.indexOf(category);
+            if (index > -1) {
+                this.categoryFilter.splice(index, 1); // Remove if already selected
+            } else {
+                this.categoryFilter.push(category); // Add if not selected
+            }
+        }
+        this.updateFilterButtonStates('category', this.categoryFilter);
         this.refreshCardDisplay();
     }
 
