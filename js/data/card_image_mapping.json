@@ -1,623 +1,623 @@
 {
   "21-001R": {
     "name": "Ward",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-001R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-001R.jpg",
+    "source": "materia-hunter"
   },
   "21-002R": {
     "name": "Edgar",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-002R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-002R.jpg",
+    "source": "materia-hunter"
   },
   "21-003R": {
     "name": "Flameserpent General Gadalar",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-003R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-003R.jpg",
+    "source": "materia-hunter"
   },
   "21-004L": {
     "name": "Cyan",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-004L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-004L.jpg",
+    "source": "materia-hunter"
   },
   "21-005C": {
     "name": "Black Mage",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-005C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-005C.jpg",
+    "source": "materia-hunter"
   },
   "21-006C": {
     "name": "Samurai",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-006C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-006C.jpg",
+    "source": "materia-hunter"
   },
   "21-007L": {
     "name": "Shadow",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-007L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-007L.jpg",
+    "source": "materia-hunter"
   },
   "21-008R": {
     "name": "Vermilion Bird l'Cie Caetuna",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-008R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-008R.jpg",
+    "source": "materia-hunter"
   },
   "21-009C": {
     "name": "Warrior",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-009C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-009C.jpg",
+    "source": "materia-hunter"
   },
   "21-010H": {
     "name": "Taivas",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-010H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-010H.jpg",
+    "source": "materia-hunter"
   },
   "21-011H": {
     "name": "Neon",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-011H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-011H.jpg",
+    "source": "materia-hunter"
   },
   "21-012H": {
     "name": "Bahamut",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-012H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-012H.jpg",
+    "source": "materia-hunter"
   },
   "21-013H": {
     "name": "Feolthanos",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-013H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-013H.jpg",
+    "source": "materia-hunter"
   },
   "21-014C": {
     "name": "Bomb",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-014C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-014C.jpg",
+    "source": "materia-hunter"
   },
   "21-015R": {
     "name": "Marilith",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-015R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-015R.jpg",
+    "source": "materia-hunter"
   },
   "21-016C": {
     "name": "Mutsuki",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-016C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-016C.jpg",
+    "source": "materia-hunter"
   },
   "21-017C": {
     "name": "Monk",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-017C_Premium_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-017C.jpg",
+    "source": "materia-hunter"
   },
   "21-018R": {
     "name": "Rain",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-018R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-018R.jpg",
+    "source": "materia-hunter"
   },
   "21-019C": {
     "name": "Reynn",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-019C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-019C.jpg",
+    "source": "materia-hunter"
   },
   "21-020C": {
     "name": "Lehftia",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-020C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-020C.jpg",
+    "source": "materia-hunter"
   },
   "21-021C": {
     "name": "Red Mage",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-021C_Premium_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-021C.jpg",
+    "source": "materia-hunter"
   },
   "21-022H": {
     "name": "Astos",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-022H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-022H.jpg",
+    "source": "materia-hunter"
   },
   "21-023L": {
     "name": "Ultimecia",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-023L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-023L.jpg",
+    "source": "materia-hunter"
   },
   "21-024C": {
     "name": "Scholar",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-024C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-024C.jpg",
+    "source": "materia-hunter"
   },
   "21-025R": {
     "name": "Kiros",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-025R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-025R.jpg",
+    "source": "materia-hunter"
   },
   "21-026C": {
     "name": "Bard",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-026C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-026C.jpg",
+    "source": "materia-hunter"
   },
   "21-027L": {
     "name": "Griever",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-027L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-027L.jpg",
+    "source": "materia-hunter"
   },
   "21-028H": {
     "name": "Shiva",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-028H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-028H.jpg",
+    "source": "materia-hunter"
   },
   "21-029R": {
     "name": "Squall",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-029R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-029R.jpg",
+    "source": "materia-hunter"
   },
   "21-030C": {
     "name": "Snow",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-030C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-030C.jpg",
+    "source": "materia-hunter"
   },
   "21-031H": {
     "name": "Setzer",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-031H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-031H.jpg",
+    "source": "materia-hunter"
   },
   "21-032R": {
     "name": "Terra",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-032R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-032R.jpg",
+    "source": "materia-hunter"
   },
   "21-033R": {
     "name": "The Girl Who Forgot Her Name",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-033R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-033R.jpg",
+    "source": "materia-hunter"
   },
   "21-034C": {
     "name": "Fomor",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-034C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-034C.jpg",
+    "source": "materia-hunter"
   },
   "21-035C": {
     "name": "Minwu",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-035C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-035C.jpg",
+    "source": "materia-hunter"
   },
   "21-037C": {
     "name": "Reaper",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-037C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-037C.jpg",
+    "source": "materia-hunter"
   },
   "21-038R": {
     "name": "Rinoa",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-038R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-038R.jpg",
+    "source": "materia-hunter"
   },
   "21-039C": {
     "name": "Lufenian",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-039C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-039C.jpg",
+    "source": "materia-hunter"
   },
   "21-040R": {
     "name": "Rursan Arbiter",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-040R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-040R.jpg",
+    "source": "materia-hunter"
   },
   "21-041C": {
     "name": "Evil Weapon",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-041C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-041C.jpg",
+    "source": "materia-hunter"
   },
   "21-042H": {
     "name": "Vaan",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-042H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-042H.jpg",
+    "source": "materia-hunter"
   },
   "21-043C": {
     "name": "Viera",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-043C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-043C.jpg",
+    "source": "materia-hunter"
   },
   "21-044C": {
     "name": "Dancer",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-044C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-044C.jpg",
+    "source": "materia-hunter"
   },
   "21-045C": {
     "name": "Princess Goblin",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-045C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-045C.jpg",
+    "source": "materia-hunter"
   },
   "21-046C": {
     "name": "Cid (II)",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-046C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-046C.jpg",
+    "source": "materia-hunter"
   },
   "21-047C": {
     "name": "Summoner",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-047C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-047C.jpg",
+    "source": "materia-hunter"
   },
   "21-048L": {
     "name": "Princess Sarah",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-048L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-048L.jpg",
+    "source": "materia-hunter"
   },
   "21-049R": {
     "name": "Sarah (MOBIUS)",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-049R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-049R.jpg",
+    "source": "materia-hunter"
   },
   "21-050H": {
     "name": "Sophia (SOPFFO)",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-050H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-050H.jpg",
+    "source": "materia-hunter"
   },
   "21-051R": {
     "name": "Tiamat",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-051R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-051R.jpg",
+    "source": "materia-hunter"
   },
   "21-052R": {
     "name": "Niini",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-052R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-052R.jpg",
+    "source": "materia-hunter"
   },
   "21-053L": {
     "name": "Balthier",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-053L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-053L.jpg",
+    "source": "materia-hunter"
   },
   "21-054H": {
     "name": "Pandemonium",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-054H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-054H.jpg",
+    "source": "materia-hunter"
   },
   "21-055H": {
     "name": "Penelo",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-055H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-055H.jpg",
+    "source": "materia-hunter"
   },
   "21-056R": {
     "name": "Galeserpent General Najelith",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-056R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-056R.jpg",
+    "source": "materia-hunter"
   },
   "21-057R": {
     "name": "Fran",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-057R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-057R.jpg",
+    "source": "materia-hunter"
   },
   "21-058C": {
     "name": "Machina",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-058C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-058C.jpg",
+    "source": "materia-hunter"
   },
   "21-059C": {
     "name": "Dragoon",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-059C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-059C.jpg",
+    "source": "materia-hunter"
   },
   "21-060R": {
     "name": "Rikku",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-060R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-060R.jpg",
+    "source": "materia-hunter"
   },
   "21-061H": {
     "name": "Ursula",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-061H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-061H.jpg",
+    "source": "materia-hunter"
   },
   "21-062H": {
     "name": "Ash",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-062H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-062H.jpg",
+    "source": "materia-hunter"
   },
   "21-063C": {
     "name": "Dark Knight",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-063C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-063C.jpg",
+    "source": "materia-hunter"
   },
   "21-064L": {
     "name": "Ingus",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-064L_Premium_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-064L.jpg",
+    "source": "materia-hunter"
   },
   "21-065R": {
     "name": "Onion Knight",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-065R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-065R.jpg",
+    "source": "materia-hunter"
   },
   "21-066C": {
     "name": "Guy",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-066C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-066C.jpg",
+    "source": "materia-hunter"
   },
   "21-067R": {
     "name": "Galuf",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-067R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-067R.jpg",
+    "source": "materia-hunter"
   },
   "21-068C": {
     "name": "Qiqirn",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-068C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-068C.jpg",
+    "source": "materia-hunter"
   },
   "21-069C": {
     "name": "Krile",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-069C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-069C.jpg",
+    "source": "materia-hunter"
   },
   "21-070C": {
     "name": "White Mage",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-070C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-070C.jpg",
+    "source": "materia-hunter"
   },
   "21-071H": {
     "name": "Titan",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-071H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-071H.jpg",
+    "source": "materia-hunter"
   },
   "21-072H": {
     "name": "Tulien",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-072H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-072H.jpg",
+    "source": "materia-hunter"
   },
   "21-073R": {
     "name": "Stoneserpent General Zazarg",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-073R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-073R.jpg",
+    "source": "materia-hunter"
   },
   "21-074L": {
     "name": "Neo Exdeath",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-074L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-074L.jpg",
+    "source": "materia-hunter"
   },
   "21-075R": {
     "name": "Haveh",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-075R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-075R.jpg",
+    "source": "materia-hunter"
   },
   "21-076C": {
     "name": "White Tiger l'Cie Qun'mi",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-076C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-076C.jpg",
+    "source": "materia-hunter"
   },
   "21-077C": {
     "name": "Monk",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-077C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-077C.jpg",
+    "source": "materia-hunter"
   },
   "21-078C": {
     "name": "Ram",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-078C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-078C.jpg",
+    "source": "materia-hunter"
   },
   "21-079R": {
     "name": "Lich",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-079R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-079R.jpg",
+    "source": "materia-hunter"
   },
   "21-080R": {
     "name": "Runda",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-080R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-080R.jpg",
+    "source": "materia-hunter"
   },
   "21-081L": {
     "name": "Irvine",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-081L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-081L.jpg",
+    "source": "materia-hunter"
   },
   "21-082C": {
     "name": "Red Mage",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-082C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-082C.jpg",
+    "source": "materia-hunter"
   },
   "21-083H": {
     "name": "Ace",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-083H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-083H.jpg",
+    "source": "materia-hunter"
   },
   "21-084H": {
     "name": "Odin",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-084H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-084H.jpg",
+    "source": "materia-hunter"
   },
   "21-085H": {
     "name": "Emperor Gestahl",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-085H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-085H.jpg",
+    "source": "materia-hunter"
   },
   "21-086C": {
     "name": "Gunbreaker",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-086C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-086C.jpg",
+    "source": "materia-hunter"
   },
   "21-087C": {
     "name": "Machinist",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-087C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-087C.jpg",
+    "source": "materia-hunter"
   },
   "21-088C": {
     "name": "Gilgamesh",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-088C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-088C.jpg",
+    "source": "materia-hunter"
   },
   "21-089R": {
     "name": "Queen",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-089R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-089R.jpg",
+    "source": "materia-hunter"
   },
   "21-090R": {
     "name": "Cloud",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-090R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-090R.jpg",
+    "source": "materia-hunter"
   },
   "21-091C": {
     "name": "Black Knight",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-091C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-091C.jpg",
+    "source": "materia-hunter"
   },
   "21-092R": {
     "name": "Man in Black",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-092R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-092R.jpg",
+    "source": "materia-hunter"
   },
   "21-093L": {
     "name": "Xande",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-093L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-093L.jpg",
+    "source": "materia-hunter"
   },
   "21-094C": {
     "name": "Shantotto",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-094C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-094C.jpg",
+    "source": "materia-hunter"
   },
   "21-095C": {
     "name": "Trey",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-095C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-095C.jpg",
+    "source": "materia-hunter"
   },
   "21-096R": {
     "name": "Nine",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-096R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-096R.jpg",
+    "source": "materia-hunter"
   },
   "21-097R": {
     "name": "Neilikka",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-097R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-097R.jpg",
+    "source": "materia-hunter"
   },
   "21-098R": {
     "name": "Palom",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-098R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-098R.jpg",
+    "source": "materia-hunter"
   },
   "21-099H": {
     "name": "Firion",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-099H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-099H.jpg",
+    "source": "materia-hunter"
   },
   "21-100C": {
     "name": "Dragoon",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-100C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-100C.jpg",
+    "source": "materia-hunter"
   },
   "21-101C": {
     "name": "Ashe",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-101C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-101C.jpg",
+    "source": "materia-hunter"
   },
   "21-102L": {
     "name": "Gau",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-102L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-102L.jpg",
+    "source": "materia-hunter"
   },
   "21-103R": {
     "name": "Kraken",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-103R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-103R.jpg",
+    "source": "materia-hunter"
   },
   "21-104C": {
     "name": "Sage",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-104C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-104C.jpg",
+    "source": "materia-hunter"
   },
   "21-105C": {
     "name": "Sahagin",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-105C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-105C.jpg",
+    "source": "materia-hunter"
   },
   "21-106H": {
     "name": "Jed",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-106H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-106H.jpg",
+    "source": "materia-hunter"
   },
   "21-107R": {
     "name": "Springserpent General Mihli Aliapoh",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-107R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-107R.jpg",
+    "source": "materia-hunter"
   },
   "21-108R": {
     "name": "Ceodore",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-108R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-108R.jpg",
+    "source": "materia-hunter"
   },
   "21-109C": {
     "name": "Astrologian",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-109C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-109C.jpg",
+    "source": "materia-hunter"
   },
   "21-110C": {
     "name": "Desch",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-110C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-110C.jpg",
+    "source": "materia-hunter"
   },
   "21-111C": {
     "name": "Paladin",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-111C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-111C.jpg",
+    "source": "materia-hunter"
   },
   "21-112C": {
     "name": "Ninja",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-112C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-112C.jpg",
+    "source": "materia-hunter"
   },
   "21-113R": {
     "name": "Bikke",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-113R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-113R.jpg",
+    "source": "materia-hunter"
   },
   "21-114L": {
     "name": "Faris",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-114L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-114L.jpg",
+    "source": "materia-hunter"
   },
   "21-115C": {
     "name": "Larsa",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-115C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-115C.jpg",
+    "source": "materia-hunter"
   },
   "21-116H": {
     "name": "Leviathan",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-116H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-116H.jpg",
+    "source": "materia-hunter"
   },
   "21-117R": {
     "name": "Rhus",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-117R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-117R.jpg",
+    "source": "materia-hunter"
   },
   "21-118H": {
     "name": "Leila",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-118H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-118H.jpg",
+    "source": "materia-hunter"
   },
   "21-119H": {
     "name": "Lenna",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-119H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-119H.jpg",
+    "source": "materia-hunter"
   },
   "21-120R": {
     "name": "Refia",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-120R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-120R.jpg",
+    "source": "materia-hunter"
   },
   "21-121L": {
     "name": "Warrior of Light",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-121L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-121L.jpg",
+    "source": "materia-hunter"
   },
   "21-122H": {
     "name": "Skyserpent General Rughadjeen",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-122H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-122H.jpg",
+    "source": "materia-hunter"
   },
   "21-123H": {
     "name": "Darkness Manifest",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-123H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-123H.jpg",
+    "source": "materia-hunter"
   },
   "21-124L": {
     "name": "Jack Garland",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/21-124L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/21-124L.jpg",
+    "source": "materia-hunter"
   },
   "C-007": {
     "name": "",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/C-007_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/21/C-007.jpg",
+    "source": "materia-hunter"
   },
   "B-001": {
     "name": "Chaos",
@@ -4776,1653 +4776,1653 @@
   },
   "23-001C": {
     "name": "Garland",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-001C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-001C.jpg",
+    "source": "materia-hunter"
   },
   "23-002L": {
     "name": "Caius",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-002L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-002L.jpg",
+    "source": "materia-hunter"
   },
   "23-003C": {
     "name": "Kain",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-003C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-003C.jpg",
+    "source": "materia-hunter"
   },
   "23-004R": {
     "name": "Kefka",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-004R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-004R.jpg",
+    "source": "materia-hunter"
   },
   "23-005R": {
     "name": "Golbez",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-005R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-005R.jpg",
+    "source": "materia-hunter"
   },
   "23-006R": {
     "name": "Soulcage",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-006R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-006R.jpg",
+    "source": "materia-hunter"
   },
   "23-007C/15-007C": {
     "name": "Samurai",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-007C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-007C/15.jpg",
+    "source": "materia-hunter"
   },
   "23-008H": {
     "name": "Zidane",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-008H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-008H.jpg",
+    "source": "materia-hunter"
   },
   "23-009H": {
     "name": "Zorn &amp; Thorn",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-009H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-009H.jpg",
+    "source": "materia-hunter"
   },
   "23-010C": {
     "name": "SOLDIER Candidate",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-010C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-010C.jpg",
+    "source": "materia-hunter"
   },
   "23-011L": {
     "name": "Terra",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-011L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-011L.jpg",
+    "source": "materia-hunter"
   },
   "23-012C": {
     "name": "Tifa",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-012C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-012C.jpg",
+    "source": "materia-hunter"
   },
   "23-013C": {
     "name": "Morrow",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-013C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-013C.jpg",
+    "source": "materia-hunter"
   },
   "23-014H": {
     "name": "Nelapa",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-014H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-014H.jpg",
+    "source": "materia-hunter"
   },
   "23-015C": {
     "name": "Notsugo",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-015C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-015C.jpg",
+    "source": "materia-hunter"
   },
   "23-016R": {
     "name": "Bahamut",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-016R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-016R.jpg",
+    "source": "materia-hunter"
   },
   "23-017C": {
     "name": "Parai",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-017C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-017C.jpg",
+    "source": "materia-hunter"
   },
   "23-018R": {
     "name": "Palom",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-018R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-018R.jpg",
+    "source": "materia-hunter"
   },
   "23-019C": {
     "name": "Monk",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-019C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-019C.jpg",
+    "source": "materia-hunter"
   },
   "23-020C": {
     "name": "Red Mage",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-020C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-020C.jpg",
+    "source": "materia-hunter"
   },
   "23-021C": {
     "name": "Weiss",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-021C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-021C.jpg",
+    "source": "materia-hunter"
   },
   "23-022R": {
     "name": "Aemo",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-022R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-022R.jpg",
+    "source": "materia-hunter"
   },
   "23-023H": {
     "name": "Anima, Eikon of Eikons",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-023H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-023H.jpg",
+    "source": "materia-hunter"
   },
   "23-024R": {
     "name": "Shiva",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-024R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-024R.jpg",
+    "source": "materia-hunter"
   },
   "23-025C": {
     "name": "Shelke",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-025C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-025C.jpg",
+    "source": "materia-hunter"
   },
   "23-026C": {
     "name": "Jegran",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-026C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-026C.jpg",
+    "source": "materia-hunter"
   },
   "23-027C": {
     "name": "Jihl Nabaat",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-027C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-027C.jpg",
+    "source": "materia-hunter"
   },
   "23-028L": {
     "name": "Cecil",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-028L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-028L.jpg",
+    "source": "materia-hunter"
   },
   "23-029R": {
     "name": "Zenos",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-029R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-029R.jpg",
+    "source": "materia-hunter"
   },
   "23-030C": {
     "name": "Serah",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-030C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-030C.jpg",
+    "source": "materia-hunter"
   },
   "23-031C": {
     "name": "SOLDIER Candidate",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-031C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-031C.jpg",
+    "source": "materia-hunter"
   },
   "23-032H": {
     "name": "Drautos",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-032H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-032H.jpg",
+    "source": "materia-hunter"
   },
   "23-033C/15-038C": {
     "name": "Knight",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-033C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-033C/15.jpg",
+    "source": "materia-hunter"
   },
   "23-034R": {
     "name": "Pacos Amethyst",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-034R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-034R.jpg",
+    "source": "materia-hunter"
   },
   "23-035H": {
     "name": "White Tiger l'Cie Nimbus",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-035H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-035H.jpg",
+    "source": "materia-hunter"
   },
   "23-036C": {
     "name": "Flan",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-036C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-036C.jpg",
+    "source": "materia-hunter"
   },
   "23-037R": {
     "name": "Lightning",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-037R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-037R.jpg",
+    "source": "materia-hunter"
   },
   "23-038H": {
     "name": "Lady Lilith",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-038H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-038H.jpg",
+    "source": "materia-hunter"
   },
   "23-039R": {
     "name": "Asura",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-039R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-039R.jpg",
+    "source": "materia-hunter"
   },
   "23-040L": {
     "name": "Adelle",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-040L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-040L.jpg",
+    "source": "materia-hunter"
   },
   "23-041C": {
     "name": "Jornee",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-041C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-041C.jpg",
+    "source": "materia-hunter"
   },
   "23-042C": {
     "name": "Vaan",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-042C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-042C.jpg",
+    "source": "materia-hunter"
   },
   "23-043R": {
     "name": "Venat",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-043R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-043R.jpg",
+    "source": "materia-hunter"
   },
   "23-044R": {
     "name": "Silver Dragon",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-044R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-044R.jpg",
+    "source": "materia-hunter"
   },
   "23-045C": {
     "name": "Samovira",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-045C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-045C.jpg",
+    "source": "materia-hunter"
   },
   "23-046C": {
     "name": "SOLDIER Candidate",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-046C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-046C.jpg",
+    "source": "materia-hunter"
   },
   "23-047H": {
     "name": "Tyro",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-047H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-047H.jpg",
+    "source": "materia-hunter"
   },
   "23-048C": {
     "name": "Dr. Mog",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-048C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-048C.jpg",
+    "source": "materia-hunter"
   },
   "23-049C": {
     "name": "Ninja",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-049C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-049C.jpg",
+    "source": "materia-hunter"
   },
   "23-050H": {
     "name": "Noel",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-050H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-050H.jpg",
+    "source": "materia-hunter"
   },
   "23-051L": {
     "name": "Hope",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-051L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-051L.jpg",
+    "source": "materia-hunter"
   },
   "23-052R": {
     "name": "Maina",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-052R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-052R.jpg",
+    "source": "materia-hunter"
   },
   "23-053R": {
     "name": "Meteion",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-053R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-053R.jpg",
+    "source": "materia-hunter"
   },
   "23-054C": {
     "name": "Yuffie",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-054C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-054C.jpg",
+    "source": "materia-hunter"
   },
   "23-055C/15-058C": {
     "name": "Dragoon",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-055C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-055C/15.jpg",
+    "source": "materia-hunter"
   },
   "23-056C": {
     "name": "Luso",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-056C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-056C.jpg",
+    "source": "materia-hunter"
   },
   "23-057H": {
     "name": "General Leo",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-057H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-057H.jpg",
+    "source": "materia-hunter"
   },
   "23-058C": {
     "name": "Dark Knight",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-058C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-058C.jpg",
+    "source": "materia-hunter"
   },
   "23-059C": {
     "name": "Ignis",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-059C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-059C.jpg",
+    "source": "materia-hunter"
   },
   "23-060L": {
     "name": "Vincent",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-060L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-060L.jpg",
+    "source": "materia-hunter"
   },
   "23-061H": {
     "name": "Warrior of Light",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-061H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-061H.jpg",
+    "source": "materia-hunter"
   },
   "23-062H": {
     "name": "Emet-Selch",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-062H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-062H.jpg",
+    "source": "materia-hunter"
   },
   "23-063C": {
     "name": "Gladiolus",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-063C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-063C.jpg",
+    "source": "materia-hunter"
   },
   "23-064R": {
     "name": "Golem",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-064R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-064R.jpg",
+    "source": "materia-hunter"
   },
   "23-065R": {
     "name": "Gogmagog",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-065R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-065R.jpg",
+    "source": "materia-hunter"
   },
   "23-066R": {
     "name": "Jessie",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-066R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-066R.jpg",
+    "source": "materia-hunter"
   },
   "23-067R": {
     "name": "Shantotto",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-067R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-067R.jpg",
+    "source": "materia-hunter"
   },
   "23-068C": {
     "name": "SOLDIER Candidate",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-068C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-068C.jpg",
+    "source": "materia-hunter"
   },
   "23-069C": {
     "name": "Narasimha",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-069C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-069C.jpg",
+    "source": "materia-hunter"
   },
   "23-070H": {
     "name": "Hythlodaeus",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-070H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-070H.jpg",
+    "source": "materia-hunter"
   },
   "23-071C/15-080C": {
     "name": "Geomancer",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-071C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-071C/15.jpg",
+    "source": "materia-hunter"
   },
   "23-072C": {
     "name": "Brionac",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-072C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-072C.jpg",
+    "source": "materia-hunter"
   },
   "23-073C": {
     "name": "Prompto",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-073C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-073C.jpg",
+    "source": "materia-hunter"
   },
   "23-074C": {
     "name": "Wrieg",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-074C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-074C.jpg",
+    "source": "materia-hunter"
   },
   "23-075R": {
     "name": "Layle",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-075R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-075R.jpg",
+    "source": "materia-hunter"
   },
   "23-076H": {
     "name": "Regis",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-076H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-076H.jpg",
+    "source": "materia-hunter"
   },
   "23-077H": {
     "name": "Azul",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-077H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-077H.jpg",
+    "source": "materia-hunter"
   },
   "23-078C": {
     "name": "Alisaie",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-078C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-078C.jpg",
+    "source": "materia-hunter"
   },
   "23-079R": {
     "name": "Estinien",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-079R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-079R.jpg",
+    "source": "materia-hunter"
   },
   "23-080R": {
     "name": "Odin",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-080R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-080R.jpg",
+    "source": "materia-hunter"
   },
   "23-081C": {
     "name": "Puppetmaster",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-081C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-081C.jpg",
+    "source": "materia-hunter"
   },
   "23-082H": {
     "name": "King",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-082H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-082H.jpg",
+    "source": "materia-hunter"
   },
   "23-083H": {
     "name": "Queen",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-083H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-083H.jpg",
+    "source": "materia-hunter"
   },
   "23-084C": {
     "name": "G'raha Tia",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-084C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-084C.jpg",
+    "source": "materia-hunter"
   },
   "23-085R": {
     "name": "Krile (XIV)",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-085R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-085R.jpg",
+    "source": "materia-hunter"
   },
   "23-086H": {
     "name": "Thancred",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-086H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-086H.jpg",
+    "source": "materia-hunter"
   },
   "23-087C": {
     "name": "Jack",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-087C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-087C.jpg",
+    "source": "materia-hunter"
   },
   "23-088L": {
     "name": "Serah",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-088L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-088L.jpg",
+    "source": "materia-hunter"
   },
   "23-089C": {
     "name": "SOLDIER Candidate",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-089C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-089C.jpg",
+    "source": "materia-hunter"
   },
   "23-090C/15-095C": {
     "name": "Ninja",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-090C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-090C/15.jpg",
+    "source": "materia-hunter"
   },
   "23-091C": {
     "name": "Fencer (XIII)",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-091C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-091C.jpg",
+    "source": "materia-hunter"
   },
   "23-092R": {
     "name": "Black Widow",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-092R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-092R.jpg",
+    "source": "materia-hunter"
   },
   "23-093C": {
     "name": "Mog (XIII-2)",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-093C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-093C.jpg",
+    "source": "materia-hunter"
   },
   "23-094C": {
     "name": "Y'shtola",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-094C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-094C.jpg",
+    "source": "materia-hunter"
   },
   "23-095R": {
     "name": "Rosso",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-095R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-095R.jpg",
+    "source": "materia-hunter"
   },
   "23-096C": {
     "name": "Apkallu",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-096C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-096C.jpg",
+    "source": "materia-hunter"
   },
   "23-097C": {
     "name": "Altennia",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-097C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-097C.jpg",
+    "source": "materia-hunter"
   },
   "23-098C": {
     "name": "Alphinaud",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-098C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-098C.jpg",
+    "source": "materia-hunter"
   },
   "23-099C": {
     "name": "Urianger",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-099C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-099C.jpg",
+    "source": "materia-hunter"
   },
   "23-100L": {
     "name": "Young Excenmille",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-100L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-100L.jpg",
+    "source": "materia-hunter"
   },
   "23-101C": {
     "name": "Dancer",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-101C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-101C.jpg",
+    "source": "materia-hunter"
   },
   "23-102R": {
     "name": "Gizamaluke",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-102R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-102R.jpg",
+    "source": "materia-hunter"
   },
   "23-103C": {
     "name": "Quina",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-103C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-103C.jpg",
+    "source": "materia-hunter"
   },
   "23-104H": {
     "name": "Witch of the Fens",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-104H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-104H.jpg",
+    "source": "materia-hunter"
   },
   "23-105C": {
     "name": "Defender",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-105C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-105C.jpg",
+    "source": "materia-hunter"
   },
   "23-106H": {
     "name": "Tataru",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-106H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-106H.jpg",
+    "source": "materia-hunter"
   },
   "23-107L": {
     "name": "Frimelda",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-107L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-107L.jpg",
+    "source": "materia-hunter"
   },
   "23-108R": {
     "name": "Fourchenault",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-108R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-108R.jpg",
+    "source": "materia-hunter"
   },
   "23-109C": {
     "name": "Portia",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-109C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-109C.jpg",
+    "source": "materia-hunter"
   },
   "23-110R": {
     "name": "Porom",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-110R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-110R.jpg",
+    "source": "materia-hunter"
   },
   "23-111C/15-123C": {
     "name": "Oracle",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-111C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-111C/15.jpg",
+    "source": "materia-hunter"
   },
   "23-112H": {
     "name": "Young Rahal",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-112H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-112H.jpg",
+    "source": "materia-hunter"
   },
   "23-113R": {
     "name": "Leviathan",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-113R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-113R.jpg",
+    "source": "materia-hunter"
   },
   "23-114R": {
     "name": "Lilisette",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-114R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-114R.jpg",
+    "source": "materia-hunter"
   },
   "23-115L": {
     "name": "Venat",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-115L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-115L.jpg",
+    "source": "materia-hunter"
   },
   "23-116H": {
     "name": "Illua",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-116H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-116H.jpg",
+    "source": "materia-hunter"
   },
   "23-117L": {
     "name": "Chaos",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-117L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-117L.jpg",
+    "source": "materia-hunter"
   },
   "23-118H": {
     "name": "Ardyn",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-118H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-118H.jpg",
+    "source": "materia-hunter"
   },
   "23-119R": {
     "name": "Vincent",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-119R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-119R.jpg",
+    "source": "materia-hunter"
   },
   "23-120R": {
     "name": "Kuja",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-120R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-120R.jpg",
+    "source": "materia-hunter"
   },
   "23-121L": {
     "name": "Cait Sith",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-121L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-121L.jpg",
+    "source": "materia-hunter"
   },
   "23-122R": {
     "name": "Cid Highwind",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-122R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-122R.jpg",
+    "source": "materia-hunter"
   },
   "23-123H": {
     "name": "Deathgaze",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-123H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-123H.jpg",
+    "source": "materia-hunter"
   },
   "23-124L": {
     "name": "Eiko",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-124L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-124L.jpg",
+    "source": "materia-hunter"
   },
   "23-125R": {
     "name": "Noctis",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-125R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-125R.jpg",
+    "source": "materia-hunter"
   },
   "23-126L": {
     "name": "Edge",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-126L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-126L.jpg",
+    "source": "materia-hunter"
   },
   "23-127R": {
     "name": "Nyx",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-127R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-127R.jpg",
+    "source": "materia-hunter"
   },
   "23-128R": {
     "name": "Beatrix",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-128R_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-128R.jpg",
+    "source": "materia-hunter"
   },
   "23-129H": {
     "name": "Lunafreya",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-129H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-129H.jpg",
+    "source": "materia-hunter"
   },
   "23-130H": {
     "name": "Luso",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/23-130H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/23/23-130H.jpg",
+    "source": "materia-hunter"
   },
   "Re-001H/12-002H": {
     "name": "Amaterasu",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-001H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/12/12-002.jpg",
+    "source": "materia-hunter"
   },
   "Re-002C/12-004R": {
     "name": "Alphinaud",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-002C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/12/12-004.jpg",
+    "source": "materia-hunter"
   },
   "Re-003H/20-003H": {
     "name": "Ifrit",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-003H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/20/20-003.jpg",
+    "source": "materia-hunter"
   },
   "Re-004C/8-004R": {
     "name": "Iroha",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-004C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/08/8-004.jpg",
+    "source": "materia-hunter"
   },
   "Re-005L/17-002L": {
     "name": "Edgar",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-005L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/17/17-002.jpg",
+    "source": "materia-hunter"
   },
   "Re-006C/16-003C": {
     "name": "Elbis",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-006C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/16/16-003.jpg",
+    "source": "materia-hunter"
   },
   "Re-007C/11-003R": {
     "name": "Cyan",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-007C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/11/11-003.jpg",
+    "source": "materia-hunter"
   },
   "Re-008C/1-007R": {
     "name": "Gadot",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-008C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-007.jpg",
+    "source": "materia-hunter"
   },
   "Re-009C/3-009C": {
     "name": "Cater",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-009C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-009.jpg",
+    "source": "materia-hunter"
   },
   "Re-010C/4-012C": {
     "name": "Goblin",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-010C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/04/4-012.jpg",
+    "source": "materia-hunter"
   },
   "Re-011C/17-007C": {
     "name": "Goblin",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-011C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/17/17-007.jpg",
+    "source": "materia-hunter"
   },
   "Re-012C/12-008R": {
     "name": "Princess Goblin",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-012C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/12/12-008.jpg",
+    "source": "materia-hunter"
   },
   "Re-013C/7-008C": {
     "name": "Sazh",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-013C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/07/7-008.jpg",
+    "source": "materia-hunter"
   },
   "Re-014H/PR-108": {
     "name": "Squall",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-014H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/legacy/Re-014H.jpg",
+    "source": "materia-hunter"
   },
   "Re-015C/14-015R": {
     "name": "Zenos",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-015C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/14/14-015.jpg",
+    "source": "materia-hunter"
   },
   "Re-016C/18-007C": {
     "name": "Selphie",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-016C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/18/18-007.jpg",
+    "source": "materia-hunter"
   },
   "Re-017C/10-132S": {
     "name": "Terra",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-017C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/10/10-132.jpg",
+    "source": "materia-hunter"
   },
   "Re-018L/17-016L": {
     "name": "Hien",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-018L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/17/17-016.jpg",
+    "source": "materia-hunter"
   },
   "Re-019L/18-012L": {
     "name": "Faris",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-019L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/18/18-012.jpg",
+    "source": "materia-hunter"
   },
   "Re-020H/20-018H": {
     "name": "Phoinix",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-020H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/20/20-018.jpg",
+    "source": "materia-hunter"
   },
   "Re-021H/6-019L": {
     "name": "Firion",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-021H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/06/6-019.jpg",
+    "source": "materia-hunter"
   },
   "Re-022C/9-017C": {
     "name": "Belias",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-022C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/09/9-017.jpg",
+    "source": "materia-hunter"
   },
   "Re-023C/7-016C": {
     "name": "Bomb",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-023C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/07/7-016.jpg",
+    "source": "materia-hunter"
   },
   "Re-024C/8-018R": {
     "name": "Marche",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-024C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/08/8-018.jpg",
+    "source": "materia-hunter"
   },
   "Re-025H/12-017H": {
     "name": "Magissa",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-025H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/12/12-017.jpg",
+    "source": "materia-hunter"
   },
   "Re-026H/17-017H": {
     "name": "Sabin",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-026H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/17/17-017.jpg",
+    "source": "materia-hunter"
   },
   "Re-027H/7-017H": {
     "name": "Meeth",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-027H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/07/7-017.jpg",
+    "source": "materia-hunter"
   },
   "Re-028C/18-015R": {
     "name": "Ramza",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-028C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/18/18-015.jpg",
+    "source": "materia-hunter"
   },
   "Re-029C/13-015C": {
     "name": "Luneth",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-029C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/13/13-015.jpg",
+    "source": "materia-hunter"
   },
   "Re-030C/16-022R": {
     "name": "Erwin",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-030C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/16/16-022.jpg",
+    "source": "materia-hunter"
   },
   "Re-031H/16-023H": {
     "name": "Agrias",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-031H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/16/16-023.jpg",
+    "source": "materia-hunter"
   },
   "Re-032C/6-022R": {
     "name": "Ysayle",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-032C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/06/6-022.jpg",
+    "source": "materia-hunter"
   },
   "Re-033C/18-019R": {
     "name": "Weiss",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-033C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/18/18-019.jpg",
+    "source": "materia-hunter"
   },
   "Re-034C/19-019R": {
     "name": "Vincent",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-034C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/19/19-019.jpg",
+    "source": "materia-hunter"
   },
   "Re-035H/10-023H": {
     "name": "Unei",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-035H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/10/10-023.jpg",
+    "source": "materia-hunter"
   },
   "Re-036H/4-026H": {
     "name": "Gestahlian Empire Cid",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-036H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/04/4-026.jpg",
+    "source": "materia-hunter"
   },
   "Re-037L/14-023L": {
     "name": "Gilgamesh (FFBE)",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-037L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/14/14-023.jpg",
+    "source": "materia-hunter"
   },
   "Re-038C/11-133S": {
     "name": "Cait Sith",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-038C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/11/11-133.jpg",
+    "source": "materia-hunter"
   },
   "Re-039C/7-030C": {
     "name": "Goblin",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-039C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/07/7-030.jpg",
+    "source": "materia-hunter"
   },
   "Re-040C/8-032R": {
     "name": "Shiva",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-040C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/08/8-032.jpg",
+    "source": "materia-hunter"
   },
   "Re-041H/13-022H": {
     "name": "Cid Randell",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-041H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/13/13-022.jpg",
+    "source": "materia-hunter"
   },
   "Re-042C/13-023R": {
     "name": "Charlotte",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-042C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/13/13-023.jpg",
+    "source": "materia-hunter"
   },
   "Re-043L/16-030L": {
     "name": "Shantotto",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-043L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/16/16-030.jpg",
+    "source": "materia-hunter"
   },
   "Re-044C/8-034R": {
     "name": "Scale Toad",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-044C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/08/8-034.jpg",
+    "source": "materia-hunter"
   },
   "Re-045C/20-030R": {
     "name": "Setzer",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-045C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/20/20-030.jpg",
+    "source": "materia-hunter"
   },
   "Re-046H/15-036H": {
     "name": "Celes",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-046H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/15/15-036.jpg",
+    "source": "materia-hunter"
   },
   "Re-047C/11-134S": {
     "name": "Don Corneo",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-047C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/11/11-134.jpg",
+    "source": "materia-hunter"
   },
   "Re-048C/10-039C": {
     "name": "Nag'molada",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-048C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/10/10-039.jpg",
+    "source": "materia-hunter"
   },
   "Re-049C/18-028C": {
     "name": "Nero",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-049C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/18/18-028.jpg",
+    "source": "materia-hunter"
   },
   "Re-050H/16-038H": {
     "name": "Byblos",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-050H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/16/16-038.jpg",
+    "source": "materia-hunter"
   },
   "Re-051H/18-030H": {
     "name": "Physalis",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-051H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/18/18-030.jpg",
+    "source": "materia-hunter"
   },
   "Re-052C/4-043C": {
     "name": "Flan",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-052C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/04/4-043.jpg",
+    "source": "materia-hunter"
   },
   "Re-053C/4-044R": {
     "name": "Mewt",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-053C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/04/4-044.jpg",
+    "source": "materia-hunter"
   },
   "Re-054C/16-042R": {
     "name": "Lasswell",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-054C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/16/16-042.jpg",
+    "source": "materia-hunter"
   },
   "Re-055C/2-048R": {
     "name": "Rinoa",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-055C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-048.jpg",
+    "source": "materia-hunter"
   },
   "Re-056L/6-041L": {
     "name": "Rinoa",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-056L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/06/6-041.jpg",
+    "source": "materia-hunter"
   },
   "Re-057C/4-047R": {
     "name": "Remedi",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-057C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/04/4-047.jpg",
+    "source": "materia-hunter"
   },
   "Re-058H/4-048L": {
     "name": "Locke",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-058H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/04/4-048.jpg",
+    "source": "materia-hunter"
   },
   "Re-059H/2-049H": {
     "name": "Asura",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-059H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-049.jpg",
+    "source": "materia-hunter"
   },
   "Re-060H/16-043H": {
     "name": "Atomos",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-060H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/16/16-043.jpg",
+    "source": "materia-hunter"
   },
   "Re-061C/1-197S": {
     "name": "Brother",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-061C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-197.jpg",
+    "source": "materia-hunter"
   },
   "Re-062C/18-035R": {
     "name": "Arc",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-062C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/18/18-035.jpg",
+    "source": "materia-hunter"
   },
   "Re-063C/8-046R": {
     "name": "Alexander",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-063C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/08/8-046.jpg",
+    "source": "materia-hunter"
   },
   "Re-064C/8-047C": {
     "name": "Waltrill",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-064C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/08/8-047.jpg",
+    "source": "materia-hunter"
   },
   "Re-065L/20-044L": {
     "name": "Edge",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-065L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/20/20-044.jpg",
+    "source": "materia-hunter"
   },
   "Re-066H/8-053H": {
     "name": "Sherlotta",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-066H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/08/8-053.jpg",
+    "source": "materia-hunter"
   },
   "Re-067C/17-049C": {
     "name": "Cid Pollendina",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-067C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/17/17-049.jpg",
+    "source": "materia-hunter"
   },
   "Re-068C/7-053C": {
     "name": "Zu",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-068C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/07/7-053.jpg",
+    "source": "materia-hunter"
   },
   "Re-069C/13-043C": {
     "name": "Stiltzkin",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-069C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/13/13-043.jpg",
+    "source": "materia-hunter"
   },
   "Re-070L/16-051L": {
     "name": "Cecil",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-070L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/16/16-051.jpg",
+    "source": "materia-hunter"
   },
   "Re-071H/3-059H": {
     "name": "King Tycoon",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-071H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-059.jpg",
+    "source": "materia-hunter"
   },
   "Re-072C/4-063C": {
     "name": "Chocobo",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-072C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/04/4-063.jpg",
+    "source": "materia-hunter"
   },
   "Re-073H/10-055H": {
     "name": "Chocobo",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-073H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/10/10-055.jpg",
+    "source": "materia-hunter"
   },
   "Re-074C/6-051C": {
     "name": "Choco/Mog",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-074C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/06/6-051.jpg",
+    "source": "materia-hunter"
   },
   "Re-075C/12-048R": {
     "name": "Chocolatte",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-075C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/12/12-048.jpg",
+    "source": "materia-hunter"
   },
   "Re-076C/3-062C": {
     "name": "Deuce",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-076C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-062.jpg",
+    "source": "materia-hunter"
   },
   "Re-077C/8-058R": {
     "name": "Norschtalen",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-077C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/08/8-058.jpg",
+    "source": "materia-hunter"
   },
   "Re-078H/7-059L": {
     "name": "Bartz",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-078H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/07/7-059.jpg",
+    "source": "materia-hunter"
   },
   "Re-079H/13-048H": {
     "name": "Balthier",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-079H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/13/13-048.jpg",
+    "source": "materia-hunter"
   },
   "Re-080C/16-059C": {
     "name": "Pecciotta",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-080C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/16/16-059.jpg",
+    "source": "materia-hunter"
   },
   "Re-081C/11-060C": {
     "name": "Maina",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-081C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/11/11-060.jpg",
+    "source": "materia-hunter"
   },
   "Re-082C/6-058R": {
     "name": "Moogle (XI)",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-082C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/06/6-058.jpg",
+    "source": "materia-hunter"
   },
   "Re-083L/18-050L": {
     "name": "Yuffie",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-083L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/18/18-050.jpg",
+    "source": "materia-hunter"
   },
   "Re-084C/17-063R": {
     "name": "Luso",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-084C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/17/17-063.jpg",
+    "source": "materia-hunter"
   },
   "Re-085C/16-062C": {
     "name": "Lexa",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-085C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/16/16-062.jpg",
+    "source": "materia-hunter"
   },
   "Re-086C/3-072R": {
     "name": "Rem",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-086C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-072.jpg",
+    "source": "materia-hunter"
   },
   "Re-087H/14-057H": {
     "name": "Rosa",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-087H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/14/14-057.jpg",
+    "source": "materia-hunter"
   },
   "Re-088H/18-052H": {
     "name": "Ahriman",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-088H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/18/18-052.jpg",
+    "source": "materia-hunter"
   },
   "Re-089H/8-071H": {
     "name": "Undead Princess",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-089H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/08/8-071.jpg",
+    "source": "materia-hunter"
   },
   "Re-090C/16-065C": {
     "name": "Amber",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-090C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/16/16-065.jpg",
+    "source": "materia-hunter"
   },
   "Re-091C/13-054C": {
     "name": "Lady of Antiquity",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-091C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/13/13-054.jpg",
+    "source": "materia-hunter"
   },
   "Re-092C/13-055C": {
     "name": "Ingus",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-092C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/13/13-055.jpg",
+    "source": "materia-hunter"
   },
   "Re-093C/10-068C": {
     "name": "Cu Sith",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-093C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/10/10-068.jpg",
+    "source": "materia-hunter"
   },
   "Re-094C/11-136S": {
     "name": "Cloud",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-094C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/11/11-136.jpg",
+    "source": "materia-hunter"
   },
   "Re-095C/18-055R": {
     "name": "Krile",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-095C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/18/18-055.jpg",
+    "source": "materia-hunter"
   },
   "Re-096C/11-068R": {
     "name": "Clarus",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-096C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/11/11-068.jpg",
+    "source": "materia-hunter"
   },
   "Re-097C/7-069C": {
     "name": "Kolka",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-097C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/07/7-069.jpg",
+    "source": "materia-hunter"
   },
   "Re-098C/1-204S": {
     "name": "Jessie",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-098C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-204.jpg",
+    "source": "materia-hunter"
   },
   "Re-099L/1-107L": {
     "name": "Shantotto",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-099L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-107.jpg",
+    "source": "materia-hunter"
   },
   "Re-100C/16-075R": {
     "name": "Shinju",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-100C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/16/16-075.jpg",
+    "source": "materia-hunter"
   },
   "Re-101L/20-075L": {
     "name": "Cecil",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-101L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/20/20-075.jpg",
+    "source": "materia-hunter"
   },
   "Re-102C/8-144S": {
     "name": "Tifa",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-102C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/08/8-144.jpg",
+    "source": "materia-hunter"
   },
   "Re-103C/11-072R": {
     "name": "Tyro",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-103C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/11/11-072.jpg",
+    "source": "materia-hunter"
   },
   "Re-104H/11-073H": {
     "name": "Tilika",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-104H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/11/11-073.jpg",
+    "source": "materia-hunter"
   },
   "Re-105H/9-068H": {
     "name": "Mist Dragon",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-105H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/09/9-068.jpg",
+    "source": "materia-hunter"
   },
   "Re-106C/8-080C": {
     "name": "Luminous Puma",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-106C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/08/8-080.jpg",
+    "source": "materia-hunter"
   },
   "Re-107H/12-068H": {
     "name": "Fenrir",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-107H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/12/12-068.jpg",
+    "source": "materia-hunter"
   },
   "Re-108C/7-081C": {
     "name": "Flan",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-108C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/07/7-081.jpg",
+    "source": "materia-hunter"
   },
   "Re-109C/1-117R": {
     "name": "Hecatoncheir",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-109C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-117.jpg",
+    "source": "materia-hunter"
   },
   "Re-110H/15-082H": {
     "name": "Hecatoncheir",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-110H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/15/15-082.jpg",
+    "source": "materia-hunter"
   },
   "Re-111C/6-078R": {
     "name": "Maat",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-111C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/06/6-078.jpg",
+    "source": "materia-hunter"
   },
   "Re-112H/16-080H": {
     "name": "Madam Edel",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-112H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/16/16-080.jpg",
+    "source": "materia-hunter"
   },
   "Re-113C/8-085C": {
     "name": "Marlene",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-113C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/08/8-085.jpg",
+    "source": "materia-hunter"
   },
   "Re-114L/17-079L": {
     "name": "Shadow Lord",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-114L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/17/17-079.jpg",
+    "source": "materia-hunter"
   },
   "Re-115H/6-084L": {
     "name": "Leo",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-115H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/06/6-084.jpg",
+    "source": "materia-hunter"
   },
   "Re-116C/9-080C": {
     "name": "Regis",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-116C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/09/9-080.jpg",
+    "source": "materia-hunter"
   },
   "Re-117C/15-086R": {
     "name": "Axis",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-117C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/15/15-086.jpg",
+    "source": "materia-hunter"
   },
   "Re-118H/20-086H": {
     "name": "Alisaie",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-118H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/20/20-086.jpg",
+    "source": "materia-hunter"
   },
   "Re-119C/10-086C": {
     "name": "Aldo",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-119C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/10/10-086.jpg",
+    "source": "materia-hunter"
   },
   "Re-120C/3-097R": {
     "name": "Arecia Al-Rashia",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-120C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-097.jpg",
+    "source": "materia-hunter"
   },
   "Re-121C/17-090R": {
     "name": "Ixion",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-121C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/17/17-090.jpg",
+    "source": "materia-hunter"
   },
   "Re-122L/2-099L": {
     "name": "Edea",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-122L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-099.jpg",
+    "source": "materia-hunter"
   },
   "Re-123C/13-070C": {
     "name": "Delusory Warlock",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-123C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/13/13-070.jpg",
+    "source": "materia-hunter"
   },
   "Re-124C/13-135S": {
     "name": "Urianger",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-124C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/13/13-135.jpg",
+    "source": "materia-hunter"
   },
   "Re-125L/17-091L": {
     "name": "Exdeath",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-125L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/17/17-091.jpg",
+    "source": "materia-hunter"
   },
   "Re-126L/20-088L": {
     "name": "Estinien",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-126L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/20/20-088.jpg",
+    "source": "materia-hunter"
   },
   "Re-127H/13-073H": {
     "name": "Kain",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-127H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/13/13-073.jpg",
+    "source": "materia-hunter"
   },
   "Re-128C/5-103R": {
     "name": "Cid of Clan Gully",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-128C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/05/5-103.jpg",
+    "source": "materia-hunter"
   },
   "Re-129H/18-073H": {
     "name": "Garuda (III)",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-129H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/18/18-073.jpg",
+    "source": "materia-hunter"
   },
   "Re-130C/7-089C": {
     "name": "Coeurl",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-130C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/07/7-089.jpg",
+    "source": "materia-hunter"
   },
   "Re-131H/20-090H": {
     "name": "G'raha Tia",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-131H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/20/20-090.jpg",
+    "source": "materia-hunter"
   },
   "Re-132C/2-106R": {
     "name": "Gramis",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-132C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-106.jpg",
+    "source": "materia-hunter"
   },
   "Re-133H/17-096H": {
     "name": "Man in Black",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-133H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/17/17-096.jpg",
+    "source": "materia-hunter"
   },
   "Re-134C/1-134R": {
     "name": "Duke Goltanna",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-134C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-134.jpg",
+    "source": "materia-hunter"
   },
   "Re-135H/5-108L": {
     "name": "Zemus",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-135H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/05/5-108.jpg",
+    "source": "materia-hunter"
   },
   "Re-136C/12-082R": {
     "name": "Diana",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-136C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/12/12-082.jpg",
+    "source": "materia-hunter"
   },
   "Re-137C/16-099C": {
     "name": "Merald",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-137C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/16/16-099.jpg",
+    "source": "materia-hunter"
   },
   "Re-138H/18-081H": {
     "name": "Melusine",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-138H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/18/18-081.jpg",
+    "source": "materia-hunter"
   },
   "Re-139C/10-104R": {
     "name": "Ranperre",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-139C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/10/10-104.jpg",
+    "source": "materia-hunter"
   },
   "Re-140C/9-098C": {
     "name": "Reeve",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-140C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/09/9-098.jpg",
+    "source": "materia-hunter"
   },
   "Re-141C/19-084R": {
     "name": "Ricard",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-141C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/19/19-084.jpg",
+    "source": "materia-hunter"
   },
   "Re-142C/5-120C": {
     "name": "Louisoix",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-142C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/05/5-120.jpg",
+    "source": "materia-hunter"
   },
   "Re-143C/13-085R": {
     "name": "Lumina",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-143C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/13/13-085.jpg",
+    "source": "materia-hunter"
   },
   "Re-144C/4-120R": {
     "name": "Restrictor",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-144C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/04/4-120.jpg",
+    "source": "materia-hunter"
   },
   "Re-145H/14-095H": {
     "name": "Roche",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-145H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/14/14-095.jpg",
+    "source": "materia-hunter"
   },
   "Re-146H/18-086H": {
     "name": "Ashe",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-146H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/18/18-086.jpg",
+    "source": "materia-hunter"
   },
   "Re-147C/6-108R": {
     "name": "Thordan VII",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-147C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/06/6-108.jpg",
+    "source": "materia-hunter"
   },
   "Re-148C/3-127R": {
     "name": "Eiko",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-148C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-127.jpg",
+    "source": "materia-hunter"
   },
   "Re-149C/14-099C": {
     "name": "Eiko",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-149C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/14/14-099.jpg",
+    "source": "materia-hunter"
   },
   "Re-150H/5-123H": {
     "name": "Aria (III)",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-150H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/05/5-123.jpg",
+    "source": "materia-hunter"
   },
   "Re-151L/17-113L": {
     "name": "Glaciela Wezette",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-151L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/17/17-113.jpg",
+    "source": "materia-hunter"
   },
   "Re-152C/4-128C": {
     "name": "PuPu",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-152C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/04/4-128.jpg",
+    "source": "materia-hunter"
   },
   "Re-153C/7-110C": {
     "name": "Sahagin",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-153C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/07/7-110.jpg",
+    "source": "materia-hunter"
   },
   "Re-154C/11-114R": {
     "name": "Sahagin Chief",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-154C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/11/11-114.jpg",
+    "source": "materia-hunter"
   },
   "Re-155H/13-093H": {
     "name": "Sara",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-155H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/13/13-093.jpg",
+    "source": "materia-hunter"
   },
   "Re-156H/19-093H": {
     "name": "Strago",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-156H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/19/19-093.jpg",
+    "source": "materia-hunter"
   },
   "Re-157C/12-099R": {
     "name": "Sarah (FFL)",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-157C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/12/12-099.jpg",
+    "source": "materia-hunter"
   },
   "Re-158H/20-110H": {
     "name": "Hippokampos",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-158H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/20/20-110.jpg",
+    "source": "materia-hunter"
   },
   "Re-159C/10-119R": {
     "name": "Verena",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-159C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/10/10-119.jpg",
+    "source": "materia-hunter"
   },
   "Re-160C/9-114C": {
-    "name": "C\u00fachulainn, the Impure",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-160C_eg.jpg",
-    "source": "square-enix"
+    "name": "Cúchulainn, the Impure",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/09/9-114.jpg",
+    "source": "materia-hunter"
   },
   "Re-161H/12-103H": {
     "name": "Beatrix",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-161H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/12/12-103.jpg",
+    "source": "materia-hunter"
   },
   "Re-162C/16-121R": {
     "name": "Vesvia",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-162C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/16/16-121.jpg",
+    "source": "materia-hunter"
   },
   "Re-163C/9-115R": {
     "name": "Porom",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-163C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/09/9-115.jpg",
+    "source": "materia-hunter"
   },
   "Re-164H/6-123L": {
     "name": "Minwu",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-164H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/06/6-123.jpg",
+    "source": "materia-hunter"
   },
   "Re-165C/4-138R": {
     "name": "Merlwyb",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-165C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/04/4-138.jpg",
+    "source": "materia-hunter"
   },
   "Re-166C/1-172C": {
     "name": "Moogle",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-166C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-172.jpg",
+    "source": "materia-hunter"
   },
   "Re-167C/1-174R": {
     "name": "Yaag Rosch",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-167C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-174.jpg",
+    "source": "materia-hunter"
   },
   "Re-168C/1-177R": {
     "name": "Yuna",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-168C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-177.jpg",
+    "source": "materia-hunter"
   },
   "Re-169L/12-105L": {
     "name": "Yuna",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-169L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/12/12-105.jpg",
+    "source": "materia-hunter"
   },
   "Re-170H/16-124H": {
     "name": "Lightning",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-170H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/16/16-124.jpg",
+    "source": "materia-hunter"
   },
   "Re-171C/14-113R": {
     "name": "Leviathan",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-171C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/14/14-113.jpg",
+    "source": "materia-hunter"
   },
   "Re-172C/3-143C": {
     "name": "Leonora",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-172C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-143.jpg",
+    "source": "materia-hunter"
   },
   "Re-173C/15-126R": {
     "name": "Lenna",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-173C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/15/15-126.jpg",
+    "source": "materia-hunter"
   },
   "Re-174L/19-102L": {
     "name": "Refia",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-174L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/19/19-102.jpg",
+    "source": "materia-hunter"
   },
   "Re-175C/11-139S": {
     "name": "Aerith",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-175C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/11/11-139.jpg",
+    "source": "materia-hunter"
   },
   "Re-176L/20-127L": {
     "name": "Shinryu",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-176L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/20/20-127.jpg",
+    "source": "materia-hunter"
   },
   "Re-177H/19-103H": {
     "name": "Tidus",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-177H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/19/19-103.jpg",
+    "source": "materia-hunter"
   },
   "Re-178H/19-105H": {
     "name": "Ark",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-178H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/19/19-105.jpg",
+    "source": "materia-hunter"
   },
   "Re-179L/16-129L": {
     "name": "Chaos",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-179L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/16/16-129.jpg",
+    "source": "materia-hunter"
   },
   "Re-180C/11-140S": {
     "name": "Kadaj",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-180C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/11/11-140.jpg",
+    "source": "materia-hunter"
   },
   "Re-181C/19-107C": {
     "name": "Vaan",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-181C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/19/19-107.jpg",
+    "source": "materia-hunter"
   },
   "Re-182L/19-108L": {
     "name": "Zidane",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-182L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/19/19-108.jpg",
+    "source": "materia-hunter"
   },
   "Re-183H/14-120H": {
     "name": "Tifa",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-183H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/14/14-120.jpg",
+    "source": "materia-hunter"
   },
   "Re-184L/18-111L": {
     "name": "Basch",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-184L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/18/18-111.jpg",
+    "source": "materia-hunter"
   },
   "Re-185H/18-113H": {
     "name": "Cid Haze",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-185H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/18/18-113.jpg",
+    "source": "materia-hunter"
   },
   "Re-186H/19-110H": {
     "name": "The Emperor",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-186H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/19/19-110.jpg",
+    "source": "materia-hunter"
   },
   "Re-187L/18-116L": {
     "name": "Sephiroth",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-187L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/18/18-116.jpg",
+    "source": "materia-hunter"
   },
   "Re-188H/18-117H": {
     "name": "Lightning",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-188H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/18/18-117.jpg",
+    "source": "materia-hunter"
   },
   "Re-189L/12-119L": {
     "name": "Y'shtola",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-189L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/12/12-119.jpg",
+    "source": "materia-hunter"
   },
   "Re-190L/19-114L": {
     "name": "Cloud",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-190L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/19/19-114.jpg",
+    "source": "materia-hunter"
   },
   "Re-191C/12-121R": {
     "name": "Noctis",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-191C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/12/12-121.jpg",
+    "source": "materia-hunter"
   },
   "Re-192C/19-120C": {
     "name": "Garnet",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-192C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/19/19-120.jpg",
+    "source": "materia-hunter"
   },
   "Re-193L/13-123L": {
     "name": "Nine",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-193L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/13/13-123.jpg",
+    "source": "materia-hunter"
   },
   "Re-194H/18-125H": {
     "name": "Onion Knight",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-194H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/18/18-125.jpg",
+    "source": "materia-hunter"
   },
   "Re-195C/12-126R": {
     "name": "Gawain",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-195C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/12/12-126.jpg",
+    "source": "materia-hunter"
   },
   "Re-196C/12-127C": {
     "name": "Steiner",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-196C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/12/12-127.jpg",
+    "source": "materia-hunter"
   },
   "Re-197C/13-125R": {
     "name": "Yuzuki",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-197C_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/13/13-125.jpg",
+    "source": "materia-hunter"
   },
   "Re-198H/13-127H": {
     "name": "Chime",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-198H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/13/13-127.jpg",
+    "source": "materia-hunter"
   },
   "Re-199H/19-125H": {
     "name": "Mog (VI)",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-199H_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/19/19-125.jpg",
+    "source": "materia-hunter"
   },
   "Re-200L/19-128L": {
     "name": "Warrior of Light",
-    "image": "https://fftcg.cdn.sewest.net/images/cards/full/Re-200L_eg.jpg",
-    "source": "square-enix"
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/19/19-128.jpg",
+    "source": "materia-hunter"
   },
   "1-001H": {
     "name": "Auron",
@@ -8180,7 +8180,7 @@
     "source": "materia-hunter"
   },
   "2-133R": {
-    "name": "C\u00fachulainn, the Impure",
+    "name": "Cúchulainn, the Impure",
     "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-133.jpg",
     "source": "materia-hunter"
   },
@@ -10330,7 +10330,7 @@
     "source": "materia-hunter"
   },
   "9-114C": {
-    "name": "C\u00fachulainn, the Impure",
+    "name": "Cúchulainn, the Impure",
     "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/09/9-114.jpg",
     "source": "materia-hunter"
   },
@@ -13835,7 +13835,7 @@
     "source": "materia-hunter"
   },
   "10-110C": {
-    "name": "C\u00fachulainn",
+    "name": "Cúchulainn",
     "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/10/10-110.jpg",
     "source": "materia-hunter"
   },
@@ -14060,7 +14060,7 @@
     "source": "materia-hunter"
   },
   "11-015L": {
-    "name": "Braska\u2019s Final Aeon",
+    "name": "Braska’s Final Aeon",
     "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/11/11-015.jpg",
     "source": "materia-hunter"
   },
@@ -16595,7 +16595,7 @@
     "source": "materia-hunter"
   },
   "14-116H": {
-    "name": "Mach\u00e9rie",
+    "name": "Machérie",
     "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/14/14-116.jpg",
     "source": "materia-hunter"
   },
@@ -17210,7 +17210,7 @@
     "source": "materia-hunter"
   },
   "17-109R": {
-    "name": "C\u00fachulainn",
+    "name": "Cúchulainn",
     "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/17/17-109.jpg",
     "source": "materia-hunter"
   },

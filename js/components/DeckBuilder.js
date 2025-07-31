@@ -136,12 +136,20 @@ export class DeckBuilder {
             const availableSets = this.cardDatabase.getAllSets();
             logger.info(`🎯 Generating filter buttons for ${availableSets.length} sets:`, availableSets);
 
-            // Clear existing buttons except "All"
-            const allButton = opusButtonsContainer.querySelector('[data-opus=""]');
+            // Save the "All" button state before clearing
+            const existingAllButton = opusButtonsContainer.querySelector('[data-opus=""]');
+            const wasAllButtonActive = existingAllButton?.classList.contains('active') || false;
+            
+            // Clear existing buttons
             opusButtonsContainer.innerHTML = '';
-            if (allButton) {
-                opusButtonsContainer.appendChild(allButton);
-            }
+            
+            // Re-create the "All" button first
+            const allButton = document.createElement('button');
+            allButton.className = 'filter-btn' + (wasAllButtonActive ? ' active' : '');
+            allButton.setAttribute('data-opus', '');
+            allButton.textContent = 'All';
+            allButton.onclick = () => window.app?.deckBuilder?.setOpusFilter('');
+            opusButtonsContainer.appendChild(allButton);
 
             // Generate buttons for each available set
             availableSets.forEach(setName => {
@@ -280,9 +288,6 @@ export class DeckBuilder {
      */
     refreshCardDisplay() {
         if (!this.cardGrid) return;
-
-        // Ensure set filter buttons are up to date
-        this.generateSetFilterButtons();
 
         // Get filtered cards
         this.filteredCards = this.getFilteredCards();
@@ -923,10 +928,16 @@ export class DeckBuilder {
      */
     updateFilterButtonStates(filterType, selectedValues) {
         const buttonContainer = document.getElementById(`${filterType}Buttons`);
-        if (!buttonContainer) return;
+        if (!buttonContainer) {
+            logger.warn(`Filter button container not found: ${filterType}Buttons`);
+            return;
+        }
 
+        // Get all buttons at once for better performance
+        const allButtons = buttonContainer.querySelectorAll('.filter-btn');
+        
         // Remove active class from all buttons in this group
-        buttonContainer.querySelectorAll('.filter-btn').forEach(btn => {
+        allButtons.forEach(btn => {
             btn.classList.remove('active');
         });
 
@@ -937,13 +948,18 @@ export class DeckBuilder {
                 const allButton = buttonContainer.querySelector(`[data-${filterType}=""]`);
                 if (allButton) {
                     allButton.classList.add('active');
+                } else {
+                    logger.warn(`All button not found for ${filterType} filter`);
                 }
             } else {
-                // Add active class to all selected buttons
-                selectedValues.forEach(value => {
-                    const activeButton = buttonContainer.querySelector(`[data-${filterType}="${value}"]`);
-                    if (activeButton) {
-                        activeButton.classList.add('active');
+                // Create a Set for faster lookups
+                const selectedSet = new Set(selectedValues);
+                
+                // Add active class to selected buttons efficiently
+                allButtons.forEach(button => {
+                    const buttonValue = button.getAttribute(`data-${filterType}`);
+                    if (buttonValue && selectedSet.has(buttonValue)) {
+                        button.classList.add('active');
                     }
                 });
             }
