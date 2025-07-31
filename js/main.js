@@ -22,8 +22,6 @@ import { validate, validateCard, validateDeck } from './utils/Validation.js';
 import { security } from './utils/Security.js';
 import { accessibilitySettings } from './utils/AccessibilitySettings.js';
 
-// Import extended card data
-import { EXTENDED_CARD_DATA, generateCardImages, getEnhancedCardDatabase, getOpus1CardDatabase } from './data/ExtendedCardDatabase.js';
 
 // Import player management
 import { PlayerManager } from './core/PlayerManager.js';

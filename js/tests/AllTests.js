@@ -13,7 +13,6 @@ import { Validation, validate, validateCard, validateDeck } from '../utils/Valid
 import { CardDatabase } from '../core/CardDatabase.js';
 import { DeckManager } from '../core/DeckManager.js';
 import { GameEngine } from '../core/GameEngine.js';
-import { EXTENDED_CARD_DATA } from '../data/ExtendedCardDatabase.js';
 
 /**
  * Run all test suites

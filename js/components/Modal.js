@@ -181,7 +181,6 @@ export class Modal {
         // Show modal with animation
         requestAnimationFrame(() => {
             modalElement.parentElement.classList.add('active');
-            }, 100); // Small delay for animation
         });
 
         // Emit event
