@@ -337,6 +337,18 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
+.card-item:focus {
+    outline: 2px solid var(--color-primary, #ffd700);
+    outline-offset: 2px;
+}
+
+/* Remove focus when modal is open */
+body.modal-open .card-item:focus {
+    outline: none;
+    transform: none;
+    box-shadow: none;
+}
+
 .card-item.dragging {
     opacity: 0.7;
     transform: rotate(5deg);

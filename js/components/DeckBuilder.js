@@ -364,6 +364,16 @@ export class DeckBuilder {
             if (!e.target.classList.contains('add-to-deck-btn')) {
                 // Ensure dragging class is removed (safeguard)
                 cardDiv.classList.remove('dragging');
+                
+                // Remove focus from the clicked card to prevent hover/focus effects
+                cardDiv.blur();
+                
+                // Remove focus from all other card elements
+                document.querySelectorAll('.card-item').forEach(el => {
+                    el.blur();
+                    el.classList.remove('dragging');
+                });
+                
                 this.showCardPreview(card);
             }
         });

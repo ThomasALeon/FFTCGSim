@@ -178,6 +178,9 @@ export class Modal {
         // Populate content based on type
         this.populateModalContent(modalId, type, options);
         
+        // Add modal-open class to body
+        document.body.classList.add('modal-open');
+
         // Show modal with animation
         requestAnimationFrame(() => {
             modalElement.parentElement.classList.add('active');
@@ -967,6 +970,11 @@ export class Modal {
                 modal.element.parentElement.remove();
             }
             this.activeModals.delete(modalId);
+            
+            // Remove modal-open class if no more modals
+            if (this.activeModals.size === 0) {
+                document.body.classList.remove('modal-open');
+            }
         }, 300);
 
         // Emit event
