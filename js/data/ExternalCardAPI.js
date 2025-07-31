@@ -720,13 +720,13 @@ export class ExternalCardAPI {
     /**
      * Generate enhanced fallback card data with realistic FFTCG cards
      */
-    generateRealSquareAPIData() {
+    async generateRealSquareAPIData() {
         this.debugLog('info', '📦 Loading REAL FFTCG cards from Square API data...');
         logger.info('📦 Loading REAL FFTCG cards from Square API data...');
         
         try {
             // Try to load the real card data file we extracted
-            const realCardsData = this.loadRealCardDataFile();
+            const realCardsData = await this.loadRealCardDataFile();
             if (realCardsData && realCardsData.length > 0) {
                 this.debugLog('info', 'Successfully loaded real FFTCG cards from Square API', {
                     totalCards: realCardsData.length,
@@ -744,11 +744,28 @@ export class ExternalCardAPI {
         return this.generateMinimalRealCards();
     }
 
-    loadRealCardDataFile() {
-        // In a real implementation, you'd load this from a JSON file
-        // For now, return null to trigger the minimal fallback
-        // This could be enhanced to fetch from a URL or embedded data
-        return null;
+    async loadRealCardDataFile() {
+        try {
+            // Load the real card data we extracted from Square's API
+            const response = await fetch('./js/data/fftcg_real_cards.json');
+            if (response.ok) {
+                const cardData = await response.json();
+                
+                this.debugLog('info', 'Successfully loaded real card data file', {
+                    totalCards: cardData.length,
+                    sets: [...new Set(cardData.map(c => c.set))],
+                    source: 'fftcg_real_cards.json'
+                });
+                
+                return cardData;
+            } else {
+                this.debugLog('warn', 'Failed to fetch real card data file', { status: response.status });
+                return null;
+            }
+        } catch (error) {
+            this.debugLog('error', 'Error loading real card data file', error);
+            return null;
+        }
     }
 
     generateMinimalRealCards() {
