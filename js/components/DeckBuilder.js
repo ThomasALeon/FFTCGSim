@@ -204,14 +204,11 @@ export class DeckBuilder {
         }
 
         try {
-            // Get all unique categories from the database
+            // Get all unique categories from the database and consolidate them
             const allCards = this.cardDatabase.getAllCards();
-            const availableCategories = [...new Set(allCards
-                .map(card => card.category)
-                .filter(category => category)
-            )].sort();
+            const consolidatedCategories = this.getConsolidatedCategories(allCards);
 
-            logger.info(`🎯 Generating filter buttons for ${availableCategories.length} categories`);
+            logger.info(`🎯 Generating filter buttons for ${consolidatedCategories.length} consolidated categories`);
 
             // Save the "All" button state before clearing
             const existingAllButton = categoryButtonsContainer.querySelector('[data-category=""]');
@@ -228,61 +225,134 @@ export class DeckBuilder {
             allButton.onclick = () => window.app?.deckBuilder?.setCategoryFilter('');
             categoryButtonsContainer.appendChild(allButton);
 
-            // Focus on main FF game categories first, then others
-            const ffGameCategories = availableCategories.filter(cat => 
-                /^[IVX]+$/.test(cat) || ['TYPE-0', 'MOBIUS', 'FFT', 'FFCC', 'FFBE', 'FFL', 'DFF', 'WOFF'].includes(cat)
-            );
-            const otherCategories = availableCategories.filter(cat => 
-                !ffGameCategories.includes(cat)
-            );
+            // Sort categories by card count (descending) but prioritize FF main series
+            const ffMainSeries = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI'];
+            const ffMainCategories = consolidatedCategories.filter(cat => ffMainSeries.includes(cat.category));
+            const otherCategories = consolidatedCategories.filter(cat => !ffMainSeries.includes(cat.category));
+            
+            // Sort FF main series by roman numeral order, others by card count
+            ffMainCategories.sort((a, b) => ffMainSeries.indexOf(a.category) - ffMainSeries.indexOf(b.category));
+            otherCategories.sort((a, b) => b.count - a.count);
+            
+            const prioritizedCategories = [...ffMainCategories, ...otherCategories];
 
-            // Combine them: FF games first, then others
-            const prioritizedCategories = [...ffGameCategories, ...otherCategories];
-
-            // Generate buttons for categories (limit to prevent UI overflow)
-            const maxButtons = 20; // Show top 20 categories
-            const categoriesToShow = prioritizedCategories.slice(0, maxButtons);
-
-            categoriesToShow.forEach(category => {
+            // Show all categories since we've consolidated to 34
+            prioritizedCategories.forEach(categoryInfo => {
+                const category = categoryInfo.category;
                 const button = document.createElement('button');
                 button.className = 'filter-btn';
                 button.setAttribute('data-category', category);
                 button.onclick = () => window.app?.deckBuilder?.setCategoryFilter(category);
                 
-                // Create display name with FF game name mapping
-                let displayName = category;
-                const gameNames = {
-                    'I': 'FF I', 'II': 'FF II', 'III': 'FF III', 'IV': 'FF IV', 'V': 'FF V',
-                    'VI': 'FF VI', 'VII': 'FF VII', 'VIII': 'FF VIII', 'IX': 'FF IX', 'X': 'FF X',
-                    'XI': 'FF XI', 'XII': 'FF XII', 'XIII': 'FF XIII', 'XIV': 'FF XIV', 'XV': 'FF XV',
-                    'XVI': 'FF XVI', 'TYPE-0': 'Type-0', 'MOBIUS': 'Mobius', 'FFT': 'Tactics',
-                    'FFCC': 'Crystal Chronicles', 'FFBE': 'Brave Exvius', 'FFL': 'Legend',
-                    'DFF': 'Dissidia', 'WOFF': 'World of FF'
-                };
-                
-                if (gameNames[category]) {
-                    displayName = gameNames[category];
-                }
+                // Create display name with mapping
+                let displayName = this.getCategoryDisplayName(category);
                 
                 button.textContent = displayName;
-                button.title = `${category} - Filter by Final Fantasy ${displayName} cards`;
+                button.title = `${category} - ${categoryInfo.count} cards - Filter by ${displayName}`;
                 
                 categoryButtonsContainer.appendChild(button);
             });
 
-            if (availableCategories.length > maxButtons) {
-                // Add a "More..." indicator
-                const moreButton = document.createElement('span');
-                moreButton.className = 'filter-more-indicator';
-                moreButton.textContent = `+${availableCategories.length - maxButtons} more`;
-                moreButton.title = `${availableCategories.length - maxButtons} additional categories available`;
-                categoryButtonsContainer.appendChild(moreButton);
-            }
-
-            logger.info(`✅ Generated ${categoriesToShow.length} category filter buttons`);
+            logger.info(`✅ Generated ${prioritizedCategories.length} category filter buttons`);
         } catch (error) {
             logger.error('Failed to generate category filter buttons:', error);
         }
+    }
+
+    /**
+     * Get consolidated categories from cards
+     */
+    getConsolidatedCategories(cards) {
+        const categoryMapping = this.getCategoryMapping();
+        const consolidatedCounts = {};
+        
+        cards.forEach(card => {
+            const originalCategory = card.category;
+            const consolidatedCategory = categoryMapping[originalCategory] || 'Special';
+            consolidatedCounts[consolidatedCategory] = (consolidatedCounts[consolidatedCategory] || 0) + 1;
+        });
+        
+        return Object.entries(consolidatedCounts)
+            .map(([category, count]) => ({ category, count }))
+            .filter(item => item.count > 0);
+    }
+
+    /**
+     * Get category mapping for consolidation
+     */
+    getCategoryMapping() {
+        return {
+            'VIII': 'VIII', 'WOFF': 'WOFF', 'XI': 'XI', 'VI': 'VI', 'XIV': 'XIV', 
+            'TYPE-0': 'Type-0', 'THEATRHYTHM &middot; TYPE-0': 'Type-0', 'PICTLOGICA &middot; TYPE-0': 'Type-0',
+            'FFBE': 'FFBE', 'FFBE &middot; FFT': 'FFBE', 'SOPFFO': 'SOPFFO', 'III': 'III', 'XII': 'XII',
+            'Special': 'Special', 'I &middot; II': 'Special',
+            // Mobius variations
+            'MOBIUS &middot; VIII': 'Mobius', 'MOBIUS &middot; XI': 'Mobius', 'MOBIUS &middot; V': 'Mobius',
+            'MOBIUS': 'Mobius', 'MOBIUS &middot; VII': 'Mobius', 'MOBIUS &middot; VI': 'Mobius',
+            'MOBIUS &middot; X': 'Mobius', 'MOBIUS &middot; XIII': 'Mobius', 'MOBIUS &middot; XII': 'Mobius',
+            'MOBIUS &middot; IV': 'Mobius', 'MOBIUS &middot; II': 'Mobius', 'MOBIUS &middot; III': 'Mobius',
+            'II': 'II',
+            // THEATRHYTHM variations
+            'THEATRHYTHM &middot; VIII': 'THEATRHYTHM', 'THEATRHYTHM &middot; II': 'THEATRHYTHM',
+            'THEATRHYTHM &middot; V': 'THEATRHYTHM', 'THEATRHYTHM &middot; XI': 'THEATRHYTHM',
+            'THEATRHYTHM &middot; XIII': 'THEATRHYTHM', 'THEATRHYTHM &middot; X': 'THEATRHYTHM',
+            'THEATRHYTHM': 'THEATRHYTHM', 'THEATRHYTHM &middot; XV': 'THEATRHYTHM',
+            'THEATRHYTHM &middot; VI': 'THEATRHYTHM', 'THEATRHYTHM &middot; IV': 'THEATRHYTHM',
+            'THEATRHYTHM &middot; FFCC': 'THEATRHYTHM', 'THEATRHYTHM &middot; MQ': 'THEATRHYTHM',
+            'THEATRHYTHM &middot; VII': 'THEATRHYTHM', 'THEATRHYTHM &middot; IX': 'THEATRHYTHM',
+            'THEATRHYTHM &middot; MOBIUS': 'THEATRHYTHM', 'THEATRHYTHM &middot; FFT': 'THEATRHYTHM',
+            'THEATRHYTHM &middot; I': 'THEATRHYTHM', 'THEATRHYTHM &middot; XII': 'THEATRHYTHM',
+            'THEATRHYTHM &middot; III': 'THEATRHYTHM', 'THEATRHYTHM &middot; XIV': 'THEATRHYTHM',
+            // Pictlogica variations
+            'PICTLOGICA &middot; MOBIUS': 'Pictlogica', 'PICTLOGICA &middot; FFCC': 'Pictlogica',
+            'PICTLOGICA &middot; VII': 'Pictlogica', 'PICTLOGICA &middot; XIII': 'Pictlogica',
+            'PICTLOGICA &middot; FFTA': 'Pictlogica', 'PICTLOGICA &middot; X': 'Pictlogica',
+            'PICTLOGICA &middot; IV': 'Pictlogica', 'PICTLOGICA &middot; FFTA2': 'Pictlogica',
+            'PICTLOGICA &middot; FFT': 'Pictlogica', 'PICTLOGICA &middot; FFL': 'Pictlogica',
+            'PICTLOGICA &middot; IX': 'Pictlogica', 'PICTLOGICA &middot; II': 'Pictlogica',
+            'PICTLOGICA &middot; XI': 'Pictlogica', 'PICTLOGICA &middot; III': 'Pictlogica',
+            'PICTLOGICA &middot; I': 'Pictlogica', 'PICTLOGICA &middot; FFRK': 'Pictlogica',
+            'PICTLOGICA &middot; VIII': 'Pictlogica', 'PICTLOGICA &middot; XII': 'Pictlogica',
+            'PICTLOGICA &middot; XIV': 'Pictlogica', 'PICTLOGICA &middot; VI': 'Pictlogica',
+            'PICTLOGICA &middot; WOFF': 'Pictlogica',
+            'IV': 'IV',
+            // DFF variations
+            'DFF &middot; III': 'DFF', 'DFF &middot; V': 'DFF', 'DFF &middot; TYPE-0': 'DFF',
+            'DFF &middot; I': 'DFF', 'DFF': 'DFF', 'DFF &middot; IV': 'DFF', 'DFF &middot; II': 'DFF',
+            'DFF &middot; VI': 'DFF', 'DFF &middot; VIII': 'DFF', 'DFF &middot; IX': 'DFF',
+            'DFF &middot; FFCC': 'DFF', 'DFF &middot; XIII': 'DFF', 'DFF &middot; XII': 'DFF',
+            'DFF &middot; XV': 'DFF', 'DFF &middot; VII': 'DFF', 'DFF &middot; FFT': 'DFF',
+            'DFF &middot; XI': 'DFF', 'DFF &middot; XIV': 'DFF', 'DFF &middot; X': 'DFF',
+            'V': 'V', 'I': 'I', 'XIII': 'XIII', 'X': 'X',
+            // FFT variations
+            'FFT': 'FFT', 'FFT &middot; XII': 'FFT', 'FFT &middot; FFTA2': 'FFT',
+            'XV': 'XV', 'FFCC': 'FFCC',
+            // FFEX variations
+            'FFEX': 'FFEX', 'FFEX &middot; V': 'FFEX', 'FFEX &middot; VII': 'FFEX',
+            'FFEX &middot; X': 'FFEX', 'FFEX &middot; XII': 'FFEX',
+            'VII': 'VII', 'Crystal Hunt': 'Crystal Hunt', 'FFTA': 'FFTA', 'FFL': 'FFL',
+            'IX': 'IX', 'FFTA2': 'FFTA2', 'XVI': 'XVI', 'FFRK': 'FFRK',
+            // LOV variations
+            'LOV &middot; IV': 'LOV', 'LOV &middot; IX': 'LOV', 'LOV &middot; XI': 'LOV', 'LOV &middot; FFT': 'LOV'
+        };
+    }
+
+    /**
+     * Get display name for category
+     */
+    getCategoryDisplayName(category) {
+        const displayNames = {
+            'I': 'FF I', 'II': 'FF II', 'III': 'FF III', 'IV': 'FF IV', 'V': 'FF V',
+            'VI': 'FF VI', 'VII': 'FF VII', 'VIII': 'FF VIII', 'IX': 'FF IX', 'X': 'FF X',
+            'XI': 'FF XI', 'XII': 'FF XII', 'XIII': 'FF XIII', 'XIV': 'FF XIV', 'XV': 'FF XV',
+            'XVI': 'FF XVI', 'Type-0': 'Type-0', 'Mobius': 'Mobius', 'FFT': 'Tactics',
+            'FFCC': 'Crystal Chronicles', 'FFBE': 'Brave Exvius', 'FFL': 'Legend',
+            'DFF': 'Dissidia', 'WOFF': 'World of FF', 'THEATRHYTHM': 'Theatrhythm',
+            'Pictlogica': 'Pictlogica', 'FFTA': 'Tactics A', 'FFTA2': 'Tactics A2',
+            'FFEX': 'Explorers', 'SOPFFO': 'Stranger of Paradise', 'Crystal Hunt': 'Crystal Hunt',
+            'LOV': 'Lord of Vermilion', 'FFRK': 'Record Keeper'
+        };
+        return displayNames[category] || category;
     }
 
     /**
@@ -476,10 +546,15 @@ export class DeckBuilder {
             logger.debug(`🔍 After opus filter [${this.opusFilter.join(', ')}]: ${beforeOpus} → ${cards.length} cards`);
         }
 
-        // Apply category filter (multiple selection)
+        // Apply category filter (multiple selection with consolidation)
         if (this.categoryFilter.length > 0) {
             const beforeCategory = cards.length;
-            cards = cards.filter(card => this.categoryFilter.includes(card.category));
+            const categoryMapping = this.getCategoryMapping();
+            cards = cards.filter(card => {
+                const originalCategory = card.category;
+                const consolidatedCategory = categoryMapping[originalCategory] || 'Special';
+                return this.categoryFilter.includes(consolidatedCategory);
+            });
             logger.debug(`🔍 After category filter [${this.categoryFilter.join(', ')}]: ${beforeCategory} → ${cards.length} cards`);
         }
 
@@ -513,8 +588,11 @@ export class DeckBuilder {
                     valueB = b.cost || 0;
                     break;
                 case 'category':
-                    valueA = (a.category || 'Unknown').toLowerCase();
-                    valueB = (b.category || 'Unknown').toLowerCase();
+                    const categoryMapping = this.getCategoryMapping();
+                    const consolidatedA = categoryMapping[a.category] || 'Special';
+                    const consolidatedB = categoryMapping[b.category] || 'Special';
+                    valueA = consolidatedA.toLowerCase();
+                    valueB = consolidatedB.toLowerCase();
                     break;
                 default:
                     valueA = a.name.toLowerCase();
