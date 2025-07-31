@@ -301,7 +301,7 @@
     color: var(--color-text-primary, #fff);
 }
 
-/* Sidebar Toggle Bars */
+/* Sidebar Toggle Bars - Only visible when sidebar is open */
 .sidebar-toggle-bar {
     position: absolute;
     top: 50%;
@@ -318,6 +318,11 @@
     transition: all 0.3s ease;
     z-index: 20;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Hide sidebar toggle bars when collapsed */
+.collapsed .sidebar-toggle-bar {
+    display: none;
 }
 
 .sidebar-toggle-bar:hover {
