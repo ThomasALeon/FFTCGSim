@@ -228,6 +228,19 @@
                                         </div>
                                     </div>
 
+                                    <!-- Sort Options -->
+                                    <div class="sort-section">
+                                        <label class="sort-label">Sort by:</label>
+                                        <select id="sortSelect" class="sort-select" onchange="window.app?.deckBuilder?.setSortOption(this.value)">
+                                            <option value="name-asc">Name (A-Z)</option>
+                                            <option value="name-desc">Name (Z-A)</option>
+                                            <option value="id-asc">ID (Ascending)</option>
+                                            <option value="id-desc">ID (Descending)</option>
+                                            <option value="cost-asc">Cost (Low to High)</option>
+                                            <option value="cost-desc">Cost (High to Low)</option>
+                                        </select>
+                                    </div>
+
                                     <!-- Filter Controls -->
                                     <div class="filter-controls">
                                         <!-- Element Filter Buttons -->

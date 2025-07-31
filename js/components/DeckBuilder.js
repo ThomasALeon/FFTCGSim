@@ -28,6 +28,7 @@ export class DeckBuilder {
         this.costFilter = [];     // Changed to array for multiple selection
         this.rarityFilter = [];   // Changed to array for multiple selection
         this.opusFilter = [];     // Changed to array for multiple selection
+        this.sortOption = 'name-asc'; // Default sort option
         
         // UI elements
         this.cardGrid = null;
@@ -120,6 +121,7 @@ export class DeckBuilder {
         this.cardSearchPanel = document.getElementById('cardSearchPanel');
         this.cardGrid = document.getElementById('cardDatabase');
         this.searchInput = document.getElementById('cardSearch');
+        this.sortSelect = document.getElementById('sortSelect');
         this.elementSelect = document.getElementById('elementFilter');
         this.typeSelect = document.getElementById('typeFilter');
         
@@ -287,15 +289,58 @@ export class DeckBuilder {
             logger.debug(`🔍 After opus filter [${this.opusFilter.join(', ')}]: ${beforeOpus} → ${cards.length} cards`);
         }
 
-        // Sort cards by cost first, then by name
-        cards.sort((a, b) => {
-            if (a.cost !== b.cost) {
-                return a.cost - b.cost;
-            }
-            return a.name.localeCompare(b.name);
-        });
+        // Apply sorting
+        cards = this.sortCards(cards);
 
         return cards;
+    }
+
+    /**
+     * Sort cards based on the current sort option
+     */
+    sortCards(cards) {
+        const [sortBy, direction] = this.sortOption.split('-');
+        const ascending = direction === 'asc';
+
+        return cards.sort((a, b) => {
+            let valueA, valueB;
+
+            switch (sortBy) {
+                case 'name':
+                    valueA = a.name.toLowerCase();
+                    valueB = b.name.toLowerCase();
+                    break;
+                case 'id':
+                    valueA = a.id.toLowerCase();
+                    valueB = b.id.toLowerCase();
+                    break;
+                case 'cost':
+                    valueA = a.cost || 0;
+                    valueB = b.cost || 0;
+                    break;
+                default:
+                    valueA = a.name.toLowerCase();
+                    valueB = b.name.toLowerCase();
+            }
+
+            let comparison;
+            if (typeof valueA === 'string') {
+                comparison = valueA.localeCompare(valueB);
+            } else {
+                comparison = valueA - valueB;
+            }
+
+            return ascending ? comparison : -comparison;
+        });
+    }
+
+    /**
+     * Set the sort option
+     */
+    setSortOption(sortOption) {
+        this.sortOption = sortOption;
+        this.refreshCardDisplay();
+        logger.debug(`🔀 Sort option changed to: ${sortOption}`);
     }
 
     /**

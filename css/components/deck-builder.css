@@ -590,6 +590,51 @@
     border-bottom: 2px solid var(--color-primary, #ffd700);
 }
 
+/* Sort Section */
+.sort-section {
+    margin-bottom: 20px;
+    padding: 16px;
+    background: var(--color-surface, #1a1a2e);
+    border-radius: 8px;
+    border-bottom: 2px solid var(--color-accent, #00d4ff);
+}
+
+.sort-label {
+    display: block;
+    color: var(--color-text-primary, #fff);
+    font-weight: 500;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+}
+
+.sort-select {
+    width: 100%;
+    padding: 10px 12px;
+    background: var(--color-surface-elevated, #2a2a3a);
+    border: 1px solid var(--color-border, #444);
+    border-radius: 6px;
+    color: var(--color-text-primary, #fff);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sort-select:hover {
+    border-color: var(--color-accent, #00d4ff);
+}
+
+.sort-select:focus {
+    outline: none;
+    border-color: var(--color-accent, #00d4ff);
+    box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.2);
+}
+
+.sort-select option {
+    background: var(--color-surface-elevated, #2a2a3a);
+    color: var(--color-text-primary, #fff);
+    padding: 8px;
+}
+
 .search-input-container {
     position: relative;
     display: flex;
