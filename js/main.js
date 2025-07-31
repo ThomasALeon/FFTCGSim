@@ -25,6 +25,9 @@ import { accessibilitySettings } from './utils/AccessibilitySettings.js';
 // Import extended card data
 import { EXTENDED_CARD_DATA, generateCardImages, getEnhancedCardDatabase, getOpus1CardDatabase } from './data/ExtendedCardDatabase.js';
 
+// Import external API integration
+import { externalCardAPI } from './data/ExternalCardAPI.js';
+
 // Import player management
 import { PlayerManager } from './core/PlayerManager.js';
 import { Modal } from './components/Modal.js';
@@ -128,39 +131,47 @@ class AppController {
     }
 
     /**
-     * Load extended card data into the database
+     * Load card data into the database using our new external API integration
      */
     async loadExtendedCardData() {
         logger.time('card-data-loading');
-        logger.info('📚 Loading extended card database...');
+        logger.info('📚 Loading card database from external APIs...');
         
         try {
-            // Load enhanced card data with Opus 1 images
-            logger.info('🃏 Loading enhanced card database with Opus 1 images...');
-            const enhancedCardData = getEnhancedCardDatabase();
-            this.cardDatabase.loadCards(enhancedCardData);
+            // Initialize card database with external API integration
+            await this.cardDatabase.initialize();
             
-            // Generate placeholder images for cards without real images
-            logger.info('🖼️ Generating placeholder images for remaining cards...');
-            const cardImages = generateCardImages();
-            
-            // Store images for later use
-            this.cardImages = cardImages;
-            
+            const totalCards = this.cardDatabase.getAllCards().length;
             const loadDuration = logger.timeEnd('card-data-loading');
-            logger.info(`✅ Loaded ${enhancedCardData.length} cards (including ${enhancedCardData.filter(c => c.hasRealImage).length} with Opus 1 images) in ${loadDuration?.toFixed(2)}ms`);
+            logger.info(`✅ Loaded ${totalCards} cards from database in ${loadDuration?.toFixed(2)}ms`);
             
             // Initialize deck builder after card database is loaded
             logger.info('🔨 Initializing Deck Builder...');
-            this.deckBuilder = new DeckBuilder(this.cardDatabase, this.deckManager);
+            try {
+                this.deckBuilder = new DeckBuilder(this.cardDatabase, this.deckManager);
+                logger.info('✅ Deck Builder initialized successfully');
+            } catch (builderError) {
+                logger.error('Failed to initialize Deck Builder:', builderError);
+                // Create a minimal fallback
+                this.deckBuilder = null;
+            }
             
-            // Initialize game board after card database is loaded
+            // Initialize game board after card database is loaded  
             logger.info('🎮 Initializing Game Board...');
-            this.gameBoard = new GameBoard(this.gameEngine, this.cardDatabase);
+            try {
+                this.gameBoard = new GameBoard(this.gameEngine, this.cardDatabase);
+                logger.info('✅ Game Board initialized successfully');
+            } catch (boardError) {
+                logger.error('Failed to initialize Game Board:', boardError);
+                this.gameBoard = null;
+            }
             
         } catch (error) {
-            logger.error('Failed to load extended card data:', error);
-            throw error;
+            logger.error('Failed to load card data:', error);
+            // Don't throw - the database should still be initialized with fallback data
+            if (!this.cardDatabase.isLoaded) {
+                throw error;
+            }
         }
     }
 
@@ -412,11 +423,16 @@ class AppController {
     handleViewActivation(viewName) {
         switch (viewName) {
             case 'deck-builder':
-                if (this.deckBuilder) {
-                    this.deckBuilder.refreshCardDisplay();
+                if (this.deckBuilder && this.cardDatabase.isLoaded) {
                     logger.info('Deck builder activated');
+                    // The deck builder now manages its own display
                 } else {
-                    logger.warn('Deck builder not yet initialized');
+                    logger.warn('Deck builder or card database not ready yet');
+                    // Show loading message in deck builder view
+                    const deckBuilderView = document.getElementById('deck-builderView');
+                    if (deckBuilderView) {
+                        deckBuilderView.innerHTML = '<div style="text-align: center; padding: 50px;"><h3>Loading deck builder...</h3><p>Please wait while the card database loads...</p></div>';
+                    }
                 }
                 break;
             case 'game':

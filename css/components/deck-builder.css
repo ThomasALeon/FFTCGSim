@@ -12,6 +12,226 @@
     gap: 20px;
 }
 
+/* Deck Manager - Main Interface */
+.deck-manager {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.deck-manager-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background: var(--color-surface-elevated, #2a2a3a);
+    border-radius: 8px;
+    border-bottom: 2px solid var(--color-primary, #ffd700);
+    margin-bottom: 20px;
+}
+
+.deck-manager-header h2 {
+    margin: 0;
+    color: var(--color-text-primary, #fff);
+    font-size: 1.5rem;
+}
+
+.deck-list-container {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    overflow-y: auto;
+}
+
+/* No Decks Placeholder */
+.no-decks-placeholder {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+}
+
+.placeholder-content {
+    text-align: center;
+    color: var(--color-text-secondary, #aaa);
+}
+
+.placeholder-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    opacity: 0.5;
+}
+
+.placeholder-content h3 {
+    margin: 0 0 10px 0;
+    font-size: 1.5rem;
+    color: var(--color-text-primary, #fff);
+}
+
+.placeholder-content p {
+    margin: 0 0 20px 0;
+    font-size: 1rem;
+}
+
+.btn-large {
+    padding: 15px 30px;
+    font-size: 1.1rem;
+}
+
+/* Deck Cards */
+.deck-card {
+    background: var(--color-surface-elevated, #2a2a3a);
+    border-radius: 8px;
+    border: 1px solid var(--color-border, #444);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    overflow: hidden;
+}
+
+.deck-card:hover {
+    border-color: var(--color-primary, #ffd700);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.deck-card-content {
+    padding: 20px;
+}
+
+.deck-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.deck-name {
+    margin: 0;
+    color: var(--color-text-primary, #fff);
+    font-size: 1.2rem;
+}
+
+.deck-card-count {
+    color: var(--color-primary, #ffd700);
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.deck-card-meta {
+    margin-bottom: 15px;
+    color: var(--color-text-secondary, #aaa);
+    font-size: 0.85rem;
+}
+
+.deck-card-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-sm {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+}
+
+.btn-danger {
+    background: #dc3545;
+    border-color: #dc3545;
+}
+
+.btn-danger:hover {
+    background: #c82333;
+    border-color: #bd2130;
+}
+
+/* Deck Editor Interface */
+.deck-editor {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.deck-editor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background: var(--color-surface-elevated, #2a2a3a);
+    border-radius: 8px;
+    border-bottom: 2px solid var(--color-primary, #ffd700);
+    margin-bottom: 20px;
+}
+
+.deck-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex: 1;
+    justify-content: center;
+}
+
+.deck-name-input {
+    padding: 8px 12px;
+    border: 1px solid var(--color-border, #444);
+    border-radius: 4px;
+    background: var(--color-surface, #1a1a2a);
+    color: var(--color-text-primary, #fff);
+    font-size: 1.1rem;
+    min-width: 200px;
+}
+
+.deck-count {
+    color: var(--color-primary, #ffd700);
+    font-weight: bold;
+}
+
+.deck-editor-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Card Search Panel */
+.card-search-panel {
+    background: var(--color-surface-elevated, #2a2a3a);
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.search-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.search-header h3 {
+    margin: 0;
+    color: var(--color-text-primary, #fff);
+}
+
+/* Current Deck Panel Updates */
+.deck-content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.deck-content-header h3 {
+    margin: 0;
+    color: var(--color-text-primary, #fff);
+}
+
+.empty-deck-message {
+    text-align: center;
+    color: var(--color-text-secondary, #aaa);
+    padding: 40px 20px;
+    font-style: italic;
+}
+
 /* Deck Builder Header */
 .deck-builder-header {
     display: flex;

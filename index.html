@@ -136,22 +136,67 @@
             <!-- Deck Builder View -->
             <section id="deck-builderView" class="view">
                 <div class="deck-builder-container">
-                    <!-- Deck Builder Header -->
-                    <div class="deck-builder-header">
-                        <h2>Deck Builder</h2>
-                        <div class="deck-actions">
-                            <button class="btn btn-secondary" onclick="createNewDeck()">New Deck</button>
-                            <button class="btn btn-secondary" onclick="loadDeck()">Load Deck</button>
-                            <button class="btn btn-primary" onclick="saveDeck()" id="saveDeckBtn" disabled>Save Deck</button>
+                    
+                    <!-- Deck Manager - Main Interface -->
+                    <div class="deck-manager" id="deckManager">
+                        <div class="deck-manager-header">
+                            <h2>My Decks</h2>
+                            <button class="btn btn-primary" onclick="
+                                if (window.app && window.app.deckBuilder) {
+                                    window.app.deckBuilder.showCreateNewDeck();
+                                } else {
+                                    console.error('App or deck builder not available:', {app: !!window.app, deckBuilder: !!window.app?.deckBuilder});
+                                    alert('Deck builder is still loading. Please wait a moment and try again.');
+                                }
+                            ">
+                                + New Deck
+                            </button>
+                        </div>
+                        
+                        <div class="deck-list-container" id="deckListContainer">
+                            <!-- Deck list will be populated here -->
+                            <div class="no-decks-placeholder" id="noDecksPlaceholder">
+                                <div class="placeholder-content">
+                                    <div class="placeholder-icon">🎴</div>
+                                    <h3>No Decks Created</h3>
+                                    <p>Create your first deck to get started building and playing!</p>
+                                    <button class="btn btn-primary btn-large" onclick="
+                                        if (window.app && window.app.deckBuilder) {
+                                            window.app.deckBuilder.showCreateNewDeck();
+                                        } else {
+                                            console.error('App or deck builder not available:', {app: !!window.app, deckBuilder: !!window.app?.deckBuilder});
+                                            alert('Deck builder is still loading. Please wait a moment and try again.');
+                                        }
+                                    ">
+                                        Create Your First Deck
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Deck Builder Content -->
-                    <div class="deck-builder-content">
-                        <!-- Card Database Panel -->
-                        <div class="card-database-panel">
-                            <div class="database-header">
-                                <h3>Card Database</h3>
+                    <!-- Deck Editor - Hidden by default -->
+                    <div class="deck-editor" id="deckEditor" style="display: none;">
+                        <div class="deck-editor-header">
+                            <button class="btn btn-secondary" onclick="window.app?.deckBuilder?.exitDeckEditor()">
+                                ← Back to Decks
+                            </button>
+                            <div class="deck-info">
+                                <input type="text" id="deckName" placeholder="Deck Name" class="deck-name-input">
+                                <span class="deck-count"><span id="deckCardCount">0</span>/50 cards</span>
+                            </div>
+                            <div class="deck-actions">
+                                <button class="btn btn-primary" onclick="window.app?.deckBuilder?.saveDeck()" id="saveDeckBtn" disabled>Save Deck</button>
+                            </div>
+                        </div>
+                        
+                        <div class="deck-editor-content">
+                            <!-- Card Search Panel - Initially Hidden -->
+                            <div class="card-search-panel" id="cardSearchPanel" style="display: none;">
+                                <div class="search-header">
+                                    <h3>Add Cards</h3>
+                                    <button class="btn btn-secondary btn-sm" onclick="window.app?.deckBuilder?.hideCardSearch()">Done</button>
+                                </div>
                                 <div class="search-controls">
                                     <input type="text" id="cardSearch" placeholder="Search cards..." class="search-input">
                                     <select id="elementFilter" class="filter-select">
@@ -173,26 +218,23 @@
                                         <option value="monster">Monster</option>
                                     </select>
                                 </div>
-                            </div>
-                            <div class="card-grid" id="cardDatabase">
-                                <!-- Cards will be populated here -->
-                            </div>
-                        </div>
-
-                        <!-- Current Deck Panel -->
-                        <div class="current-deck-panel">
-                            <div class="deck-header">
-                                <h3>Current Deck</h3>
-                                <div class="deck-info">
-                                    <span id="deckCardCount">0</span>/50 cards
+                                <div class="card-grid" id="cardDatabase">
+                                    <!-- Cards will be populated here -->
                                 </div>
                             </div>
-                            <div class="deck-content">
-                                <div class="deck-name-input">
-                                    <input type="text" id="deckName" placeholder="Deck Name" class="deck-name-field">
+
+                            <!-- Current Deck Panel -->
+                            <div class="current-deck-panel">
+                                <div class="deck-content-header">
+                                    <h3>Deck Contents</h3>
+                                    <button class="btn btn-secondary" onclick="window.app?.deckBuilder?.showCardSearch()" id="addCardsBtn">
+                                        + Add Cards
+                                    </button>
                                 </div>
                                 <div class="deck-list" id="currentDeck">
-                                    <!-- Current deck cards will be shown here -->
+                                    <div class="empty-deck-message">
+                                        <p>Your deck is empty. Click "Add Cards" to start building!</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>

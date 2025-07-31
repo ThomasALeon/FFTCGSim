@@ -45,25 +45,36 @@ export class DeckBuilder {
     initialize() {
         this.setupUIElements();
         this.setupEventListeners();
-        this.loadInitialData();
+        this.initializeDeckManager();
         
-        logger.info('🔨 Deck Builder initialized');
+        logger.info('🔨 Deck Builder initialized with minimal UI');
     }
 
     /**
      * Set up UI element references
      */
     setupUIElements() {
+        // Main UI containers
+        this.deckManager = document.getElementById('deckManager');
+        this.deckEditor = document.getElementById('deckEditor');
+        this.deckListContainer = document.getElementById('deckListContainer');
+        this.noDecksPlaceholder = document.getElementById('noDecksPlaceholder');
+        
+        // Card search panel
+        this.cardSearchPanel = document.getElementById('cardSearchPanel');
         this.cardGrid = document.getElementById('cardDatabase');
-        this.deckList = document.getElementById('currentDeck');
         this.searchInput = document.getElementById('cardSearch');
         this.elementSelect = document.getElementById('elementFilter');
         this.typeSelect = document.getElementById('typeFilter');
+        
+        // Deck editing elements
+        this.deckList = document.getElementById('currentDeck');
         this.deckNameInput = document.getElementById('deckName');
         this.deckCardCount = document.getElementById('deckCardCount');
         this.saveDeckBtn = document.getElementById('saveDeckBtn');
+        this.addCardsBtn = document.getElementById('addCardsBtn');
         
-        if (!this.cardGrid || !this.deckList) {
+        if (!this.deckManager || !this.deckEditor) {
             throw new Error('Required deck builder elements not found in DOM');
         }
     }
@@ -103,9 +114,9 @@ export class DeckBuilder {
     }
 
     /**
-     * Load initial data and display
+     * Initialize the deck manager interface
      */
-    loadInitialData() {
+    initializeDeckManager() {
         // Debug: Log card database info
         const allCards = this.cardDatabase.getAllCards();
         logger.info(`🔍 DeckBuilder loaded with ${allCards.length} cards from database`);
@@ -117,8 +128,9 @@ export class DeckBuilder {
         });
         logger.info('🔍 Cards by element:', elementCounts);
         
-        this.refreshCardDisplay();
-        this.updateDeckDisplay();
+        // Show deck manager by default
+        this.showDeckManager();
+        this.refreshDeckList();
     }
 
     /**
@@ -991,6 +1003,217 @@ export class DeckBuilder {
         if (card && window.app && window.app.notifications) {
             const message = `${card.name} ${action}`;
             window.app.notifications.info(message, { duration: 2000 });
+        }
+    }
+
+    /**
+     * Show the deck manager interface
+     */
+    showDeckManager() {
+        if (this.deckManager) {
+            this.deckManager.style.display = 'block';
+        }
+        if (this.deckEditor) {
+            this.deckEditor.style.display = 'none';
+        }
+    }
+
+    /**
+     * Show the deck editor interface
+     */
+    showDeckEditor() {
+        if (this.deckManager) {
+            this.deckManager.style.display = 'none';
+        }
+        if (this.deckEditor) {
+            this.deckEditor.style.display = 'block';
+        }
+        // Hide card search panel initially
+        this.hideCardSearch();
+    }
+
+    /**
+     * Exit deck editor and return to deck manager
+     */
+    exitDeckEditor() {
+        this.showDeckManager();
+        this.currentDeck = null;
+        this.refreshDeckList();
+    }
+
+    /**
+     * Show card search panel
+     */
+    showCardSearch() {
+        if (this.cardSearchPanel) {
+            this.cardSearchPanel.style.display = 'block';
+            this.refreshCardDisplay();
+        }
+        if (this.addCardsBtn) {
+            this.addCardsBtn.style.display = 'none';
+        }
+    }
+
+    /**
+     * Hide card search panel
+     */
+    hideCardSearch() {
+        if (this.cardSearchPanel) {
+            this.cardSearchPanel.style.display = 'none';
+        }
+        if (this.addCardsBtn) {
+            this.addCardsBtn.style.display = 'inline-block';
+        }
+    }
+
+    /**
+     * Show create new deck interface
+     */
+    showCreateNewDeck() {
+        this.createNewDeck('New Deck');
+        this.showDeckEditor();
+        this.updateDeckDisplay();
+        
+        // Focus on deck name input
+        if (this.deckNameInput) {
+            this.deckNameInput.focus();
+            this.deckNameInput.select();
+        }
+    }
+
+    /**
+     * Refresh the deck list in deck manager
+     */
+    refreshDeckList() {
+        if (!this.deckListContainer) return;
+
+        // Get saved decks
+        const savedDecks = this.deckManager.getAllDecks();
+        
+        // Clear container
+        this.deckListContainer.innerHTML = '';
+        
+        if (savedDecks.length === 0) {
+            // Show no decks placeholder
+            this.deckListContainer.appendChild(this.noDecksPlaceholder);
+        } else {
+            // Create deck cards
+            savedDecks.forEach(deck => {
+                const deckCard = this.createDeckCard(deck);
+                this.deckListContainer.appendChild(deckCard);
+            });
+        }
+    }
+
+    /**
+     * Create a deck card for the deck manager
+     */
+    createDeckCard(deck) {
+        const deckCard = document.createElement('div');
+        deckCard.className = 'deck-card';
+        deckCard.dataset.deckId = deck.id;
+
+        const cardCount = deck.cards ? deck.cards.length : 0;
+        const lastModified = deck.dateModified ? new Date(deck.dateModified).toLocaleDateString() : 'Unknown';
+
+        deckCard.innerHTML = `
+            <div class="deck-card-content">
+                <div class="deck-card-header">
+                    <h3 class="deck-name">${deck.name}</h3>
+                    <span class="deck-card-count">${cardCount}/50 cards</span>
+                </div>
+                <div class="deck-card-meta">
+                    <span class="deck-last-modified">Modified: ${lastModified}</span>
+                </div>
+                <div class="deck-card-actions">
+                    <button class="btn btn-primary btn-sm" onclick="window.app?.deckBuilder?.editDeck('${deck.id}')">
+                        Edit
+                    </button>
+                    <button class="btn btn-secondary btn-sm" onclick="window.app?.deckBuilder?.duplicateDeck('${deck.id}')">
+                        Copy
+                    </button>
+                    <button class="btn btn-danger btn-sm" onclick="window.app?.deckBuilder?.confirmDeleteDeck('${deck.id}')">
+                        Delete
+                    </button>
+                </div>
+            </div>
+        `;
+
+        // Add click to edit functionality
+        deckCard.addEventListener('click', (e) => {
+            // Don't edit if clicking on buttons
+            if (!e.target.classList.contains('btn')) {
+                this.editDeck(deck.id);
+            }
+        });
+
+        return deckCard;
+    }
+
+    /**
+     * Edit a deck
+     */
+    editDeck(deckId) {
+        try {
+            this.loadDeck(deckId);
+            this.showDeckEditor();
+            this.updateDeckDisplay();
+            
+            logger.info(`Editing deck: ${this.currentDeck?.name}`);
+        } catch (error) {
+            logger.error('Error editing deck:', error);
+            window.showNotification('Error loading deck for editing', 'error');
+        }
+    }
+
+    /**
+     * Duplicate a deck
+     */
+    duplicateDeck(deckId) {
+        try {
+            const originalDeck = this.deckManager.loadDeck(deckId);
+            const newDeck = this.deckManager.createNewDeck(`${originalDeck.name} (Copy)`);
+            
+            // Copy cards
+            newDeck.cards = [...originalDeck.cards];
+            
+            this.deckManager.saveDeck(newDeck);
+            this.refreshDeckList();
+            
+            logger.info(`Duplicated deck: ${originalDeck.name} → ${newDeck.name}`);
+            window.showNotification(`Duplicated deck: ${newDeck.name}`, 'success');
+        } catch (error) {
+            logger.error('Error duplicating deck:', error);
+            window.showNotification('Error duplicating deck', 'error');
+        }
+    }
+
+    /**
+     * Confirm deck deletion
+     */
+    confirmDeleteDeck(deckId) {
+        const deck = this.deckManager.loadDeck(deckId);
+        if (!deck) return;
+
+        if (confirm(`Are you sure you want to delete "${deck.name}"? This cannot be undone.`)) {
+            this.deleteDeck(deckId);
+        }
+    }
+
+    /**
+     * Delete a deck
+     */
+    deleteDeck(deckId) {
+        try {
+            const deck = this.deckManager.loadDeck(deckId);
+            this.deckManager.deleteDeck(deckId);
+            this.refreshDeckList();
+            
+            logger.info(`Deleted deck: ${deck?.name}`);
+            window.showNotification(`Deleted deck: ${deck?.name}`, 'success');
+        } catch (error) {
+            logger.error('Error deleting deck:', error);
+            window.showNotification('Error deleting deck', 'error');
         }
     }
 
