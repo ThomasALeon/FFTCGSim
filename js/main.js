@@ -167,11 +167,13 @@ class AppController {
             
             // Initialize deck builder after card database is loaded
             logger.info('🔨 Initializing Deck Builder...');
+            logger.info(`🔍 Pre-init state: CardDB loaded=${this.cardDatabase.isLoaded}, DeckManager=${!!this.deckManager}, CardCount=${this.cardDatabase.getAllCards().length}`);
             try {
                 this.deckBuilder = new DeckBuilder(this.cardDatabase, this.deckManager);
                 logger.info('✅ Deck Builder initialized successfully');
             } catch (builderError) {
-                logger.error('Failed to initialize Deck Builder:', builderError);
+                logger.error('❌ Failed to initialize Deck Builder:', builderError.message, builderError);
+                logger.error('❌ Error stack:', builderError.stack);
                 // Create a minimal fallback
                 this.deckBuilder = null;
             }
@@ -461,12 +463,10 @@ class AppController {
                     if (!this.deckBuilder && this.cardDatabase.isLoaded) {
                         logger.info('🔧 Force-initializing DeckBuilder...');
                         try {
-                            // Import DeckBuilder class dynamically if needed
-                            const { DeckBuilder } = await import('./components/DeckBuilder.js');
                             this.deckBuilder = new DeckBuilder(this.cardDatabase, this.deckManager);
                             logger.info('✅ Deck Builder force-initialized successfully');
                         } catch (error) {
-                            logger.error('❌ Failed to force-initialize Deck Builder:', error);
+                            logger.error('❌ Failed to force-initialize Deck Builder:', error.message, error);
                         }
                     }
                     

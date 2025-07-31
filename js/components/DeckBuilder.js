@@ -54,9 +54,9 @@ export class DeckBuilder {
      * Set up UI element references
      */
     setupUIElements() {
-        // Main UI containers
-        this.deckManager = document.getElementById('deckManager');
-        this.deckEditor = document.getElementById('deckEditor');
+        // Main UI containers (using different names to avoid conflict with class instances)
+        this.deckManagerElement = document.getElementById('deckManager');
+        this.deckEditorElement = document.getElementById('deckEditor');
         this.deckListContainer = document.getElementById('deckListContainer');
         this.noDecksPlaceholder = document.getElementById('noDecksPlaceholder');
         
@@ -74,7 +74,7 @@ export class DeckBuilder {
         this.saveDeckBtn = document.getElementById('saveDeckBtn');
         this.addCardsBtn = document.getElementById('addCardsBtn');
         
-        if (!this.deckManager || !this.deckEditor) {
+        if (!this.deckManagerElement || !this.deckEditorElement) {
             throw new Error('Required deck builder elements not found in DOM');
         }
     }
@@ -1010,11 +1010,11 @@ export class DeckBuilder {
      * Show the deck manager interface
      */
     showDeckManager() {
-        if (this.deckManager) {
-            this.deckManager.style.display = 'block';
+        if (this.deckManagerElement) {
+            this.deckManagerElement.style.display = 'block';
         }
-        if (this.deckEditor) {
-            this.deckEditor.style.display = 'none';
+        if (this.deckEditorElement) {
+            this.deckEditorElement.style.display = 'none';
         }
     }
 
@@ -1022,11 +1022,11 @@ export class DeckBuilder {
      * Show the deck editor interface
      */
     showDeckEditor() {
-        if (this.deckManager) {
-            this.deckManager.style.display = 'none';
+        if (this.deckManagerElement) {
+            this.deckManagerElement.style.display = 'none';
         }
-        if (this.deckEditor) {
-            this.deckEditor.style.display = 'block';
+        if (this.deckEditorElement) {
+            this.deckEditorElement.style.display = 'block';
         }
         // Hide card search panel initially
         this.hideCardSearch();
