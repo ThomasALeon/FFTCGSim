@@ -713,6 +713,45 @@
     font-weight: 600;
 }
 
+/* Dynamic Set Filter Button Styles */
+.filter-btn[data-opus*="Opus"] {
+    background: linear-gradient(135deg, #2a2a3a, #1a1a2e);
+    border-color: #555;
+}
+
+.filter-btn[data-opus*="Opus"]:hover {
+    background: linear-gradient(135deg, #333, #222);
+    border-color: var(--color-primary, #ffd700);
+}
+
+.filter-btn[data-opus*="Opus"].active {
+    background: linear-gradient(135deg, var(--color-primary, #ffd700), #ffb000);
+}
+
+/* Special set styling for non-Opus sets */
+.filter-btn[class*="set-"] {
+    background: linear-gradient(135deg, #3a2a4a, #2a1a3e);
+    border-color: #666;
+}
+
+.filter-btn[class*="set-"]:hover {
+    background: linear-gradient(135deg, #443a5a, #332a4e);
+    border-color: var(--color-accent, #00d4ff);
+}
+
+.filter-btn[class*="set-"].active {
+    background: linear-gradient(135deg, var(--color-accent, #00d4ff), #0099cc);
+    color: #fff;
+}
+
+/* Responsive set button sizing */
+@media (max-width: 1200px) {
+    .filter-btn[data-opus] {
+        font-size: 0.75rem;
+        padding: 4px 8px;
+    }
+}
+
 /* Filter Icon and Text Alignment */
 .filter-icon {
     font-size: var(--filter-icon-size, 1rem);

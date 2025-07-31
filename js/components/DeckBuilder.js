@@ -134,6 +134,109 @@ export class DeckBuilder {
         if (!this.deckManagerElement || !this.deckEditorElement) {
             throw new Error('Required deck builder elements not found in DOM');
         }
+        
+        // Generate set filter buttons dynamically once card database is loaded
+        this.generateSetFilterButtons();
+    }
+
+    /**
+     * Generate set filter buttons dynamically based on available sets in database
+     */
+    generateSetFilterButtons() {
+        const opusButtonsContainer = document.getElementById('opusButtons');
+        if (!opusButtonsContainer || !this.cardDatabase) {
+            logger.warn('Cannot generate set filter buttons - missing container or card database');
+            return;
+        }
+
+        try {
+            // Get all available sets from the database
+            const availableSets = this.cardDatabase.getAllSets();
+            logger.info(`🎯 Generating filter buttons for ${availableSets.length} sets:`, availableSets);
+
+            // Clear existing buttons except "All"
+            const allButton = opusButtonsContainer.querySelector('[data-opus=""]');
+            opusButtonsContainer.innerHTML = '';
+            if (allButton) {
+                opusButtonsContainer.appendChild(allButton);
+            }
+
+            // Generate buttons for each available set
+            availableSets.forEach(setName => {
+                const button = document.createElement('button');
+                button.className = 'filter-btn';
+                button.setAttribute('data-opus', setName);
+                button.onclick = () => window.app?.deckBuilder?.setOpusFilter(setName);
+                
+                // Create display name (shorten long names for UI)
+                let displayName = setName;
+                if (setName.length > 12) {
+                    // For long names, try to create a shorter version
+                    if (setName.startsWith('Opus ')) {
+                        displayName = setName; // Keep Opus X format as-is
+                    } else {
+                        // For named sets, abbreviate intelligently
+                        const words = setName.split(' ');
+                        if (words.length > 2) {
+                            displayName = words.map(word => word.charAt(0)).join('') + ' ' + this.getOpusNumber(setName);
+                        }
+                    }
+                }
+                
+                button.textContent = displayName;
+                button.title = setName; // Full name on hover
+                
+                // Add CSS class for styling specific sets
+                const cssClass = this.getSetCSSClass(setName);
+                if (cssClass) {
+                    button.classList.add(cssClass);
+                }
+                
+                opusButtonsContainer.appendChild(button);
+            });
+
+            logger.info(`✅ Generated ${availableSets.length} set filter buttons`);
+        } catch (error) {
+            logger.error('Failed to generate set filter buttons:', error);
+        }
+    }
+
+    /**
+     * Get CSS class for set styling
+     */
+    getSetCSSClass(setName) {
+        // Create a CSS-friendly class name
+        const className = setName.toLowerCase()
+            .replace(/[^a-z0-9\s]/g, '') // Remove special characters
+            .replace(/\s+/g, '-'); // Replace spaces with hyphens
+        return `set-${className}`;
+    }
+
+    /**
+     * Get Opus number for display purposes
+     */
+    getOpusNumber(setName) {
+        const opusMatch = setName.match(/^Opus\s+([IVXLCDM]+)$/);
+        if (opusMatch) {
+            return opusMatch[1];
+        }
+        
+        // Map named sets to their Opus numbers
+        const namedOpusMap = {
+            'Crystal Dominion': 'XV',
+            'Emissaries of Light': 'XVI',
+            'Rebellion\'s Call': 'XVII',
+            'Resurgence of Power': 'XVIII',
+            'From Nightmares': 'XIX',
+            'Dawn of Heroes': 'XX',
+            'Beyond Destiny': 'XXI',
+            'Hidden Hope': 'XXII',
+            'Hidden Trials': 'XXIII',
+            'Hidden Legends': 'XXIV',
+            'Tears of the Planet': 'XXV'
+        };
+        
+        return namedOpusMap[setName] || '';
     }
 
     /**
@@ -195,6 +298,9 @@ export class DeckBuilder {
      */
     refreshCardDisplay() {
         if (!this.cardGrid) return;
+
+        // Ensure set filter buttons are up to date
+        this.generateSetFilterButtons();
 
         // Get filtered cards
         this.filteredCards = this.getFilteredCards();

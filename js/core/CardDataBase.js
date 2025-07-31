@@ -7,6 +7,16 @@
  * - Card validation for deck building
  * - Element and type categorization
  * - Card image and asset management
+ * - Dynamic set detection and future-proofing for new releases
+ * 
+ * ADDING NEW SETS:
+ * 1. Add new card data to js/data/fftcg_real_cards.json with proper "set" field
+ * 2. Update the namedOpusMap in CardDatabase.getAllSets() if it's Opus XV+ format
+ * 3. Update the namedOpusMap in DeckBuilder.getOpusNumber() for display names
+ * 4. Set filter buttons will be automatically generated
+ * 
+ * The system automatically detects all sets present in the card data,
+ * so adding new cards with proper set names will make them filterable.
  */
 
 import { LocalStorage } from '../utils/LocalStorage.js';
@@ -839,6 +849,130 @@ export class CardDatabase {
         this.buildIndices();
         
         console.log('✅ Card database refreshed');
+    }
+
+    /**
+     * Add new cards to the database (for future expansions)
+     */
+    addCards(newCards) {
+        if (!Array.isArray(newCards)) {
+            logger.error('addCards requires an array of card objects');
+            return false;
+        }
+
+        let addedCount = 0;
+        newCards.forEach(card => {
+            if (card.id && !this.cards.has(card.id)) {
+                this.cards.set(card.id, card);
+                addedCount++;
+            }
+        });
+
+        if (addedCount > 0) {
+            this.buildIndices();
+            this.totalCards = this.cards.size;
+            this.saveToStorage();
+            logger.info(`➕ Added ${addedCount} new cards to database`);
+        }
+
+        return addedCount > 0;
+    }
+
+    /**
+     * Scan for new sets and update available sets list
+     */
+    scanForNewSets() {
+        const previousSets = new Set(this.cardsBySet.keys());
+        this.buildIndices();
+        const currentSets = new Set(this.cardsBySet.keys());
+        
+        const newSets = [...currentSets].filter(set => !previousSets.has(set));
+        
+        if (newSets.length > 0) {
+            logger.info(`🆕 Discovered ${newSets.length} new sets:`, newSets);
+            return newSets;
+        }
+        
+        return [];
+    }
+
+    /**
+     * Get all available sets in the database
+     */
+    getAllSets() {
+        return Array.from(this.cardsBySet.keys()).sort((a, b) => {
+            // Custom sort to handle Opus sets properly
+            const getOpusNumber = (setName) => {
+                // Handle "Opus X" format
+                const opusMatch = setName.match(/^Opus\s+([IVXLCDM]+)$/);
+                if (opusMatch) {
+                    return this.romanToNumber(opusMatch[1]);
+                }
+                
+                // Handle "[Set Name]" (Opus XV+) format - extract opus number from context
+                const namedOpusMap = {
+                    'Crystal Dominion': 15,
+                    'Emissaries of Light': 16,
+                    'Rebellion\'s Call': 17,
+                    'Resurgence of Power': 18,
+                    'From Nightmares': 19,
+                    'Dawn of Heroes': 20,
+                    'Beyond Destiny': 21,
+                    'Hidden Hope': 22,
+                    'Hidden Trials': 23,
+                    'Hidden Legends': 24,
+                    'Tears of the Planet': 25
+                };
+                
+                if (namedOpusMap[setName]) {
+                    return namedOpusMap[setName];
+                }
+                
+                // Special sets come after main sets
+                return 1000;
+            };
+            
+            const numA = getOpusNumber(a);
+            const numB = getOpusNumber(b);
+            
+            if (numA !== numB) {
+                return numA - numB;
+            }
+            
+            // If same opus number or both special sets, sort alphabetically
+            return a.localeCompare(b);
+        });
+    }
+
+    /**
+     * Convert Roman numerals to numbers for sorting
+     */
+    romanToNumber(roman) {
+        const romanMap = {
+            'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000
+        };
+        
+        let result = 0;
+        for (let i = 0; i < roman.length; i++) {
+            const current = romanMap[roman[i]];
+            const next = romanMap[roman[i + 1]];
+            
+            if (next && current < next) {
+                result += next - current;
+                i++; // Skip next character
+            } else {
+                result += current;
+            }
+        }
+        
+        return result;
+    }
+
+    /**
+     * Get cards by set name
+     */
+    getCardsBySet(setName) {
+        return this.cardsBySet.get(setName) || [];
     }
 
     /**
