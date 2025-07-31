@@ -9,6 +9,7 @@
  */
 
 import { logger } from '../utils/Logger.js';
+import { imageMapping } from '../utils/ImageMapping.js';
 
 /**
  * DeckBuilder Class
@@ -46,8 +47,8 @@ export class DeckBuilder {
     /**
      * Initialize the deck builder
      */
-    initialize() {
-        this.loadCardImageMapping();
+    async initialize() {
+        await imageMapping.loadCardImageMapping();
         this.setupUIElements();
         this.setupEventListeners();
         this.initializeDeckManager();
@@ -55,37 +56,18 @@ export class DeckBuilder {
         logger.info('🔨 Deck Builder initialized with minimal UI');
     }
 
-    /**
-     * Load the card image mapping from JSON file
-     */
-    async loadCardImageMapping() {
-        try {
-            logger.debug('🖼️ Loading card image mapping...');
-            const response = await fetch('./js/data/card_image_mapping.json');
-            if (response.ok) {
-                this.cardImageMapping = await response.json();
-                logger.info(`✅ Loaded image mapping for ${Object.keys(this.cardImageMapping).length} cards`);
-            } else {
-                logger.warn('⚠️ Card image mapping file not found, using placeholders');
-                this.cardImageMapping = {};
-            }
-        } catch (error) {
-            logger.error('❌ Failed to load card image mapping:', error);
-            this.cardImageMapping = {};
-        }
-    }
 
     /**
      * Get the appropriate image HTML for a card
      */
     getCardImageHTML(card) {
         // Check if we have a real image mapping for this card
-        const imageMapping = this.cardImageMapping && this.cardImageMapping[card.id];
+        const cardImageMapping = imageMapping.getCardImageMapping(card.id);
         
-        if (imageMapping && imageMapping.image) {
+        if (cardImageMapping && cardImageMapping.image) {
             return `
                 <img class="card-real-image" 
-                     src="${imageMapping.image}" 
+                     src="${cardImageMapping.image}" 
                      alt="${card.name}" 
                      onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
                      onload="this.style.display='block'; this.nextElementSibling.style.display='none';">
