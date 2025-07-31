@@ -21,6 +21,10 @@ export class Modal {
         this.activeModals = new Map();
         this.modalCounter = 0;
         
+        // Load card image mapping
+        this.cardImageMapping = {};
+        this.loadCardImageMapping();
+        
         // Modal types and their configurations
         this.modalTypes = {
             profile: {
@@ -49,7 +53,7 @@ export class Modal {
             },
             cardPreview: {
                 title: 'Card Preview',
-                width: '400px',
+                width: '700px',
                 closable: true,
                 backdrop: true
             },
@@ -98,7 +102,24 @@ export class Modal {
         // Set up global event listeners
         this.setupEventListeners();
         
-        console.log('🪟 Modal system initialized');
+    }
+
+    /**
+     * Load card image mapping from JSON file
+     */
+    async loadCardImageMapping() {
+        try {
+            const response = await fetch('./js/data/card_image_mapping.json');
+            if (response.ok) {
+                this.cardImageMapping = await response.json();
+            } else {
+                console.warn('⚠️ Modal: Card image mapping file not found, using placeholders');
+                this.cardImageMapping = {};
+            }
+        } catch (error) {
+            console.error('❌ Modal: Failed to load card image mapping:', error);
+            this.cardImageMapping = {};
+        }
     }
 
     /**
@@ -160,12 +181,12 @@ export class Modal {
         // Show modal with animation
         requestAnimationFrame(() => {
             modalElement.parentElement.classList.add('active');
+            }, 100); // Small delay for animation
         });
 
         // Emit event
         this.emit('modalOpened', { modalId, type, options });
         
-        console.log(`🪟 Opened ${type} modal: ${modalId}`);
         return modalId;
     }
 
@@ -637,10 +658,7 @@ export class Modal {
             <div class="card-preview-content">
                 <div class="card-preview-display">
                     <div class="card-preview-image">
-                        <div class="card-large-placeholder element-${card.element}">
-                            <div class="card-large-icon">${this.getElementIcon(card.element)}</div>
-                            <div class="card-large-name">${card.name}</div>
-                        </div>
+                        ${this.getCardPreviewImageHTML(card)}
                     </div>
                     <div class="card-preview-details">
                         <div class="card-detail-header">
@@ -735,6 +753,50 @@ export class Modal {
      */
     capitalizeFirst(str) {
         return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    /**
+     * Get the appropriate image HTML for card preview modal
+     */
+    getCardPreviewImageHTML(card) {
+        // Check if we have a real image mapping for this card
+        const imageMapping = this.cardImageMapping && this.cardImageMapping[card.id];
+        
+        if (imageMapping && imageMapping.image) {
+            return `
+                <img class="card-preview-real-image" 
+                     src="${imageMapping.image}" 
+                     alt="${card.name}" 
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                     onload="this.style.display='block'; this.nextElementSibling.style.display='none';">
+                <div class="card-large-placeholder element-${card.element}" style="display: none;">
+                    <div class="card-preview-header">
+                        <div class="card-large-icon">${this.getElementIcon(card.element)}</div>
+                        <div class="card-cost-badge">${card.cost || '0'}</div>
+                    </div>
+                    <div class="card-large-name">${card.name}</div>
+                    <div class="card-large-meta">${card.set || 'Unknown'}</div>
+                    <div class="card-large-type">${this.capitalizeFirst(card.type)}</div>
+                    ${card.power ? `<div class="card-large-power">${card.power}</div>` : ''}
+                    <div class="card-art-note">Official Card Art<br>Not Available</div>
+                </div>
+            `;
+        } else {
+            // Use placeholder
+            return `
+                <div class="card-large-placeholder element-${card.element}">
+                    <div class="card-preview-header">
+                        <div class="card-large-icon">${this.getElementIcon(card.element)}</div>
+                        <div class="card-cost-badge">${card.cost || '0'}</div>
+                    </div>
+                    <div class="card-large-name">${card.name}</div>
+                    <div class="card-large-meta">${card.set || 'Unknown'}</div>
+                    <div class="card-large-type">${this.capitalizeFirst(card.type)}</div>
+                    ${card.power ? `<div class="card-large-power">${card.power}</div>` : ''}
+                    <div class="card-art-note">Official Card Art<br>Not Available</div>
+                </div>
+            `;
+        }
     }
 
     /**

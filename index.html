@@ -257,6 +257,17 @@
                                             <button class="filter-btn rarity-l" data-rarity="L" onclick="window.app?.deckBuilder?.setRarityFilter('L')">L</button>
                                         </div>
                                     </div>
+                                    
+                                    <!-- Opus Filter Buttons -->
+                                    <div class="filter-group">
+                                        <label class="filter-group-label">Opus Set:</label>
+                                        <div class="filter-buttons" id="opusButtons">
+                                            <button class="filter-btn active" data-opus="" onclick="window.app?.deckBuilder?.setOpusFilter('')">All</button>
+                                            <button class="filter-btn opus-1" data-opus="Opus 1" onclick="window.app?.deckBuilder?.setOpusFilter('Opus 1')">Opus 1</button>
+                                            <button class="filter-btn opus-2" data-opus="Opus 2" onclick="window.app?.deckBuilder?.setOpusFilter('Opus 2')">Opus 2</button>
+                                            <button class="filter-btn opus-3" data-opus="Opus 3" onclick="window.app?.deckBuilder?.setOpusFilter('Opus 3')">Opus 3</button>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="card-grid" id="cardDatabase">
                                     <!-- Cards will be populated here -->

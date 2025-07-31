@@ -1,0 +1,2607 @@
+{
+  "1-001H": {
+    "name": "Auron",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-001.jpg",
+    "source": "materia-hunter"
+  },
+  "1-002R": {
+    "name": "Auron",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-002.jpg",
+    "source": "materia-hunter"
+  },
+  "1-003C": {
+    "name": "Red Mage",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-003.jpg",
+    "source": "materia-hunter"
+  },
+  "1-004C": {
+    "name": "Ifrit",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-004.jpg",
+    "source": "materia-hunter"
+  },
+  "1-005R": {
+    "name": "Warrior of Light",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-005.jpg",
+    "source": "materia-hunter"
+  },
+  "1-006H": {
+    "name": "Garland",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-006.jpg",
+    "source": "materia-hunter"
+  },
+  "1-007R": {
+    "name": "Gadot",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-007.jpg",
+    "source": "materia-hunter"
+  },
+  "1-008C": {
+    "name": "Ranger",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-008.jpg",
+    "source": "materia-hunter"
+  },
+  "1-009C": {
+    "name": "Cloud",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-009.jpg",
+    "source": "materia-hunter"
+  },
+  "1-010C": {
+    "name": "Black Mage",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-010.jpg",
+    "source": "materia-hunter"
+  },
+  "1-011C": {
+    "name": "Evoker",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-011.jpg",
+    "source": "materia-hunter"
+  },
+  "1-012R": {
+    "name": "Zack",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-012.jpg",
+    "source": "materia-hunter"
+  },
+  "1-013H": {
+    "name": "Sazh",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-013.jpg",
+    "source": "materia-hunter"
+  },
+  "1-014C": {
+    "name": "Samurai",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-014.jpg",
+    "source": "materia-hunter"
+  },
+  "1-015L": {
+    "name": "Jecht",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-015.jpg",
+    "source": "materia-hunter"
+  },
+  "1-016C": {
+    "name": "Tifa",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-016.jpg",
+    "source": "materia-hunter"
+  },
+  "1-017R": {
+    "name": "Dajh",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-017.jpg",
+    "source": "materia-hunter"
+  },
+  "1-018L": {
+    "name": "Bahamut",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-018.jpg",
+    "source": "materia-hunter"
+  },
+  "1-019C": {
+    "name": "Chocobo Chick",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-019.jpg",
+    "source": "materia-hunter"
+  },
+  "1-020R": {
+    "name": "Fang",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-020.jpg",
+    "source": "materia-hunter"
+  },
+  "1-021H": {
+    "name": "Firion",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-021.jpg",
+    "source": "materia-hunter"
+  },
+  "1-022R": {
+    "name": "Firion",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-022.jpg",
+    "source": "materia-hunter"
+  },
+  "1-023R": {
+    "name": "Brynhildr",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-023.jpg",
+    "source": "materia-hunter"
+  },
+  "1-024C": {
+    "name": "Magus",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-024.jpg",
+    "source": "materia-hunter"
+  },
+  "1-025C": {
+    "name": "Squire",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-025.jpg",
+    "source": "materia-hunter"
+  },
+  "1-026C": {
+    "name": "Squire",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-026.jpg",
+    "source": "materia-hunter"
+  },
+  "1-027H": {
+    "name": "Lann",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-027.jpg",
+    "source": "materia-hunter"
+  },
+  "1-028R": {
+    "name": "Reynn",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-028.jpg",
+    "source": "materia-hunter"
+  },
+  "1-029C": {
+    "name": "Red XIII",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-029.jpg",
+    "source": "materia-hunter"
+  },
+  "1-030R": {
+    "name": "Lebreau",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-030.jpg",
+    "source": "materia-hunter"
+  },
+  "1-031C": {
+    "name": "Chemist",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-031.jpg",
+    "source": "materia-hunter"
+  },
+  "1-032C": {
+    "name": "Chemist",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-032.jpg",
+    "source": "materia-hunter"
+  },
+  "1-033C": {
+    "name": "Argath",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-033.jpg",
+    "source": "materia-hunter"
+  },
+  "1-034R": {
+    "name": "Orran",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-034.jpg",
+    "source": "materia-hunter"
+  },
+  "1-035C": {
+    "name": "Bard",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-035.jpg",
+    "source": "materia-hunter"
+  },
+  "1-036C": {
+    "name": "Bard",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-036.jpg",
+    "source": "materia-hunter"
+  },
+  "1-037H": {
+    "name": "Kuja",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-037.jpg",
+    "source": "materia-hunter"
+  },
+  "1-038R": {
+    "name": "Shiva",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-038.jpg",
+    "source": "materia-hunter"
+  },
+  "1-039C": {
+    "name": "Shiva",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-039.jpg",
+    "source": "materia-hunter"
+  },
+  "1-040C": {
+    "name": "Summoner",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-040.jpg",
+    "source": "materia-hunter"
+  },
+  "1-041L": {
+    "name": "Squall",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-041.jpg",
+    "source": "materia-hunter"
+  },
+  "1-042R": {
+    "name": "Squall",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-042.jpg",
+    "source": "materia-hunter"
+  },
+  "1-043H": {
+    "name": "Snow",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-043.jpg",
+    "source": "materia-hunter"
+  },
+  "1-044R": {
+    "name": "Sephiroth",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-044.jpg",
+    "source": "materia-hunter"
+  },
+  "1-045R": {
+    "name": "Serah",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-045.jpg",
+    "source": "materia-hunter"
+  },
+  "1-046H": {
+    "name": "Terra",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-046.jpg",
+    "source": "materia-hunter"
+  },
+  "1-047R": {
+    "name": "Terra",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-047.jpg",
+    "source": "materia-hunter"
+  },
+  "1-048C": {
+    "name": "Devout",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-048.jpg",
+    "source": "materia-hunter"
+  },
+  "1-049C": {
+    "name": "Time Mage",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-049.jpg",
+    "source": "materia-hunter"
+  },
+  "1-050C": {
+    "name": "Knight",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-050.jpg",
+    "source": "materia-hunter"
+  },
+  "1-051R": {
+    "name": "Nooj",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-051.jpg",
+    "source": "materia-hunter"
+  },
+  "1-052R": {
+    "name": "Hades",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-052.jpg",
+    "source": "materia-hunter"
+  },
+  "1-053C": {
+    "name": "Summoner",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-053.jpg",
+    "source": "materia-hunter"
+  },
+  "1-054C": {
+    "name": "Dark Knight",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-054.jpg",
+    "source": "materia-hunter"
+  },
+  "1-055C": {
+    "name": "Dark Knight",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-055.jpg",
+    "source": "materia-hunter"
+  },
+  "1-056H": {
+    "name": "Josef",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-056.jpg",
+    "source": "materia-hunter"
+  },
+  "1-057R": {
+    "name": "Duke Larg",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-057.jpg",
+    "source": "materia-hunter"
+  },
+  "1-058L": {
+    "name": "Laguna",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-058.jpg",
+    "source": "materia-hunter"
+  },
+  "1-059R": {
+    "name": "Laguna",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-059.jpg",
+    "source": "materia-hunter"
+  },
+  "1-060H": {
+    "name": "Leon",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-060.jpg",
+    "source": "materia-hunter"
+  },
+  "1-061R": {
+    "name": "Alexander",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-061.jpg",
+    "source": "materia-hunter"
+  },
+  "1-062L": {
+    "name": "Valefor",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-062.jpg",
+    "source": "materia-hunter"
+  },
+  "1-063H": {
+    "name": "Vaan",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-063.jpg",
+    "source": "materia-hunter"
+  },
+  "1-064R": {
+    "name": "Aerith",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-064.jpg",
+    "source": "materia-hunter"
+  },
+  "1-065C": {
+    "name": "Aerith",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-065.jpg",
+    "source": "materia-hunter"
+  },
+  "1-066C": {
+    "name": "Dancer",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-066.jpg",
+    "source": "materia-hunter"
+  },
+  "1-067R": {
+    "name": "Onion Knight",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-067.jpg",
+    "source": "materia-hunter"
+  },
+  "1-068C": {
+    "name": "Evoker",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-068.jpg",
+    "source": "materia-hunter"
+  },
+  "1-069C": {
+    "name": "Thief",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-069.jpg",
+    "source": "materia-hunter"
+  },
+  "1-070C": {
+    "name": "Thief",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-070.jpg",
+    "source": "materia-hunter"
+  },
+  "1-071L": {
+    "name": "Zidane",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-071.jpg",
+    "source": "materia-hunter"
+  },
+  "1-072R": {
+    "name": "Cid Highwind",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-072.jpg",
+    "source": "materia-hunter"
+  },
+  "1-073C": {
+    "name": "Cid Highwind",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-073.jpg",
+    "source": "materia-hunter"
+  },
+  "1-074R": {
+    "name": "Sylph",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-074.jpg",
+    "source": "materia-hunter"
+  },
+  "1-075C": {
+    "name": "Chocobo",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-075.jpg",
+    "source": "materia-hunter"
+  },
+  "1-076C": {
+    "name": "Chocobo",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-076.jpg",
+    "source": "materia-hunter"
+  },
+  "1-077C": {
+    "name": "Devout",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-077.jpg",
+    "source": "materia-hunter"
+  },
+  "1-078C": {
+    "name": "Ninja",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-078.jpg",
+    "source": "materia-hunter"
+  },
+  "1-079R": {
+    "name": "Nora",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-079.jpg",
+    "source": "materia-hunter"
+  },
+  "1-080H": {
+    "name": "Bartz",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-080.jpg",
+    "source": "materia-hunter"
+  },
+  "1-081R": {
+    "name": "Bartz",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-081.jpg",
+    "source": "materia-hunter"
+  },
+  "1-082R": {
+    "name": "Hope",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-082.jpg",
+    "source": "materia-hunter"
+  },
+  "1-083H": {
+    "name": "Maria",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-083.jpg",
+    "source": "materia-hunter"
+  },
+  "1-084H": {
+    "name": "Y'shtola",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-084.jpg",
+    "source": "materia-hunter"
+  },
+  "1-085R": {
+    "name": "Yuffie",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-085.jpg",
+    "source": "materia-hunter"
+  },
+  "1-086C": {
+    "name": "Yuffie",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-086.jpg",
+    "source": "materia-hunter"
+  },
+  "1-087C": {
+    "name": "Archer",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-087.jpg",
+    "source": "materia-hunter"
+  },
+  "1-088C": {
+    "name": "Archer",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-088.jpg",
+    "source": "materia-hunter"
+  },
+  "1-089H": {
+    "name": "Rikku",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-089.jpg",
+    "source": "materia-hunter"
+  },
+  "1-090R": {
+    "name": "Rikku",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-090.jpg",
+    "source": "materia-hunter"
+  },
+  "1-091R": {
+    "name": "Amodar",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-091.jpg",
+    "source": "materia-hunter"
+  },
+  "1-092C": {
+    "name": "Dark Knight",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-092.jpg",
+    "source": "materia-hunter"
+  },
+  "1-093H": {
+    "name": "Vanille",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-093.jpg",
+    "source": "materia-hunter"
+  },
+  "1-094R": {
+    "name": "Vincent",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-094.jpg",
+    "source": "materia-hunter"
+  },
+  "1-095R": {
+    "name": "Enna Kros",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-095.jpg",
+    "source": "materia-hunter"
+  },
+  "1-096C": {
+    "name": "Mystic",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-096.jpg",
+    "source": "materia-hunter"
+  },
+  "1-097H": {
+    "name": "Guy",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-097.jpg",
+    "source": "materia-hunter"
+  },
+  "1-098R": {
+    "name": "Gabranth",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-098.jpg",
+    "source": "materia-hunter"
+  },
+  "1-099C": {
+    "name": "Black Belt",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-099.jpg",
+    "source": "materia-hunter"
+  },
+  "1-100C": {
+    "name": "Black Belt",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-100.jpg",
+    "source": "materia-hunter"
+  },
+  "1-101R": {
+    "name": "Gippal",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-101.jpg",
+    "source": "materia-hunter"
+  },
+  "1-102H": {
+    "name": "Kimahri",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-102.jpg",
+    "source": "materia-hunter"
+  },
+  "1-103C": {
+    "name": "Kimahri",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-103.jpg",
+    "source": "materia-hunter"
+  },
+  "1-104H": {
+    "name": "Kefka",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-104.jpg",
+    "source": "materia-hunter"
+  },
+  "1-105C": {
+    "name": "Evoker",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-105.jpg",
+    "source": "materia-hunter"
+  },
+  "1-106C": {
+    "name": "Golem",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-106.jpg",
+    "source": "materia-hunter"
+  },
+  "1-107L": {
+    "name": "Shantotto",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-107.jpg",
+    "source": "materia-hunter"
+  },
+  "1-108H": {
+    "name": "Cecil",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-108.jpg",
+    "source": "materia-hunter"
+  },
+  "1-109R": {
+    "name": "Serafie",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-109.jpg",
+    "source": "materia-hunter"
+  },
+  "1-110C": {
+    "name": "Titan",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-110.jpg",
+    "source": "materia-hunter"
+  },
+  "1-111C": {
+    "name": "Tama",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-111.jpg",
+    "source": "materia-hunter"
+  },
+  "1-112R": {
+    "name": "Delita",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-112.jpg",
+    "source": "materia-hunter"
+  },
+  "1-113C": {
+    "name": "Delita",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-113.jpg",
+    "source": "materia-hunter"
+  },
+  "1-114R": {
+    "name": "Barret",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-114.jpg",
+    "source": "materia-hunter"
+  },
+  "1-115C": {
+    "name": "Geomancer",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-115.jpg",
+    "source": "materia-hunter"
+  },
+  "1-116L": {
+    "name": "Prishe",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-116.jpg",
+    "source": "materia-hunter"
+  },
+  "1-117R": {
+    "name": "Hecatoncheir",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-117.jpg",
+    "source": "materia-hunter"
+  },
+  "1-118R": {
+    "name": "Mustadio",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-118.jpg",
+    "source": "materia-hunter"
+  },
+  "1-119C": {
+    "name": "Monk",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-119.jpg",
+    "source": "materia-hunter"
+  },
+  "1-120C": {
+    "name": "Monk",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-120.jpg",
+    "source": "materia-hunter"
+  },
+  "1-121C": {
+    "name": "Red Mage",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-121.jpg",
+    "source": "materia-hunter"
+  },
+  "1-122H": {
+    "name": "Exdeath",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-122.jpg",
+    "source": "materia-hunter"
+  },
+  "1-123R": {
+    "name": "Odin",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-123.jpg",
+    "source": "materia-hunter"
+  },
+  "1-124R": {
+    "name": "Odin",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-124.jpg",
+    "source": "materia-hunter"
+  },
+  "1-125R": {
+    "name": "Onion Knight",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-125.jpg",
+    "source": "materia-hunter"
+  },
+  "1-126H": {
+    "name": "Orlandeau",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-126.jpg",
+    "source": "materia-hunter"
+  },
+  "1-127H": {
+    "name": "Kain",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-127.jpg",
+    "source": "materia-hunter"
+  },
+  "1-128R": {
+    "name": "Gilgamesh",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-128.jpg",
+    "source": "materia-hunter"
+  },
+  "1-129C": {
+    "name": "Gilgamesh",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-129.jpg",
+    "source": "materia-hunter"
+  },
+  "1-130C": {
+    "name": "Black Mage",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-130.jpg",
+    "source": "materia-hunter"
+  },
+  "1-131R": {
+    "name": "Cait Sith",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-131.jpg",
+    "source": "materia-hunter"
+  },
+  "1-132C": {
+    "name": "Cait Sith",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-132.jpg",
+    "source": "materia-hunter"
+  },
+  "1-133C": {
+    "name": "Sage",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-133.jpg",
+    "source": "materia-hunter"
+  },
+  "1-134R": {
+    "name": "Duke Goltanna",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-134.jpg",
+    "source": "materia-hunter"
+  },
+  "1-135L": {
+    "name": "Golbez",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-135.jpg",
+    "source": "materia-hunter"
+  },
+  "1-136C": {
+    "name": "Zalbaag",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-136.jpg",
+    "source": "materia-hunter"
+  },
+  "1-137R": {
+    "name": "Seymour",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-137.jpg",
+    "source": "materia-hunter"
+  },
+  "1-138C": {
+    "name": "Summoner",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-138.jpg",
+    "source": "materia-hunter"
+  },
+  "1-139C": {
+    "name": "Summoner",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-139.jpg",
+    "source": "materia-hunter"
+  },
+  "1-140C": {
+    "name": "Magus",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-140.jpg",
+    "source": "materia-hunter"
+  },
+  "1-141L": {
+    "name": "Lightning",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-141.jpg",
+    "source": "materia-hunter"
+  },
+  "1-142R": {
+    "name": "Lightning",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-142.jpg",
+    "source": "materia-hunter"
+  },
+  "1-143C": {
+    "name": "Ramuh",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-143.jpg",
+    "source": "materia-hunter"
+  },
+  "1-144R": {
+    "name": "Ramza",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-144.jpg",
+    "source": "materia-hunter"
+  },
+  "1-145C": {
+    "name": "Ramza",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-145.jpg",
+    "source": "materia-hunter"
+  },
+  "1-146H": {
+    "name": "Ricard",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-146.jpg",
+    "source": "materia-hunter"
+  },
+  "1-147C": {
+    "name": "Dragoon",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-147.jpg",
+    "source": "materia-hunter"
+  },
+  "1-148C": {
+    "name": "Dragoon",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-148.jpg",
+    "source": "materia-hunter"
+  },
+  "1-149H": {
+    "name": "Lulu",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-149.jpg",
+    "source": "materia-hunter"
+  },
+  "1-150R": {
+    "name": "Lulu",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-150.jpg",
+    "source": "materia-hunter"
+  },
+  "1-151R": {
+    "name": "Agrias",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-151.jpg",
+    "source": "materia-hunter"
+  },
+  "1-152L": {
+    "name": "Ultimecia",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-152.jpg",
+    "source": "materia-hunter"
+  },
+  "1-153C": {
+    "name": "Alma",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-153.jpg",
+    "source": "materia-hunter"
+  },
+  "1-154R": {
+    "name": "Vaan",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-154.jpg",
+    "source": "materia-hunter"
+  },
+  "1-155R": {
+    "name": "Warrior of Light",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-155.jpg",
+    "source": "materia-hunter"
+  },
+  "1-156C": {
+    "name": "Ovelia",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-156.jpg",
+    "source": "materia-hunter"
+  },
+  "1-157C": {
+    "name": "Scholar",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-157.jpg",
+    "source": "materia-hunter"
+  },
+  "1-158H": {
+    "name": "Cloud of Darkness",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-158.jpg",
+    "source": "materia-hunter"
+  },
+  "1-159C": {
+    "name": "Evoker",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-159.jpg",
+    "source": "materia-hunter"
+  },
+  "1-160H": {
+    "name": "Gordon",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-160.jpg",
+    "source": "materia-hunter"
+  },
+  "1-161C": {
+    "name": "White Mage",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-161.jpg",
+    "source": "materia-hunter"
+  },
+  "1-162R": {
+    "name": "Cecil",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-162.jpg",
+    "source": "materia-hunter"
+  },
+  "1-163L": {
+    "name": "Tidus",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-163.jpg",
+    "source": "materia-hunter"
+  },
+  "1-164R": {
+    "name": "Tidus",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-164.jpg",
+    "source": "materia-hunter"
+  },
+  "1-165C": {
+    "name": "Knight",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-165.jpg",
+    "source": "materia-hunter"
+  },
+  "1-166C": {
+    "name": "Knight",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-166.jpg",
+    "source": "materia-hunter"
+  },
+  "1-167C": {
+    "name": "Viking",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-167.jpg",
+    "source": "materia-hunter"
+  },
+  "1-168C": {
+    "name": "Geomancer",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-168.jpg",
+    "source": "materia-hunter"
+  },
+  "1-169C": {
+    "name": "Geomancer",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-169.jpg",
+    "source": "materia-hunter"
+  },
+  "1-170C": {
+    "name": "Fairy",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-170.jpg",
+    "source": "materia-hunter"
+  },
+  "1-171H": {
+    "name": "Minwu",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-171.jpg",
+    "source": "materia-hunter"
+  },
+  "1-172C": {
+    "name": "Moogle",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-172.jpg",
+    "source": "materia-hunter"
+  },
+  "1-173C": {
+    "name": "Mime",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-173.jpg",
+    "source": "materia-hunter"
+  },
+  "1-174R": {
+    "name": "Yaag Rosch",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-174.jpg",
+    "source": "materia-hunter"
+  },
+  "1-175R": {
+    "name": "Yuj",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-175.jpg",
+    "source": "materia-hunter"
+  },
+  "1-176H": {
+    "name": "Yuna",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-176.jpg",
+    "source": "materia-hunter"
+  },
+  "1-177R": {
+    "name": "Yuna",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-177.jpg",
+    "source": "materia-hunter"
+  },
+  "1-178R": {
+    "name": "Leviathan",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-178.jpg",
+    "source": "materia-hunter"
+  },
+  "1-179H": {
+    "name": "Leila",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-179.jpg",
+    "source": "materia-hunter"
+  },
+  "1-180R": {
+    "name": "Wakka",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-180.jpg",
+    "source": "materia-hunter"
+  },
+  "1-181H": {
+    "name": "Onion Knight",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-181.jpg",
+    "source": "materia-hunter"
+  },
+  "1-182L": {
+    "name": "Cloud",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-182.jpg",
+    "source": "materia-hunter"
+  },
+  "1-183H": {
+    "name": "Cosmos",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-183.jpg",
+    "source": "materia-hunter"
+  },
+  "1-184H": {
+    "name": "Chaos",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-184.jpg",
+    "source": "materia-hunter"
+  },
+  "1-185H": {
+    "name": "The Emperor",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-185.jpg",
+    "source": "materia-hunter"
+  },
+  "1-186L": {
+    "name": "Sephiroth",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-186.jpg",
+    "source": "materia-hunter"
+  },
+  "1-187S": {
+    "name": "Cloud",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-187.jpg",
+    "source": "materia-hunter"
+  },
+  "1-188S": {
+    "name": "Zangan",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-188.jpg",
+    "source": "materia-hunter"
+  },
+  "1-189S": {
+    "name": "Tifa",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-189.jpg",
+    "source": "materia-hunter"
+  },
+  "1-190S": {
+    "name": "Bahamut Fury",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-190.jpg",
+    "source": "materia-hunter"
+  },
+  "1-191S": {
+    "name": "Red XIII",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-191.jpg",
+    "source": "materia-hunter"
+  },
+  "1-192S": {
+    "name": "Cid Raines",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-192.jpg",
+    "source": "materia-hunter"
+  },
+  "1-193S": {
+    "name": "Jihl Nabaat",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-193.jpg",
+    "source": "materia-hunter"
+  },
+  "1-194S": {
+    "name": "Snow",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-194.jpg",
+    "source": "materia-hunter"
+  },
+  "1-195S": {
+    "name": "Serah",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-195.jpg",
+    "source": "materia-hunter"
+  },
+  "1-196S": {
+    "name": "Mog (XIII-2)",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-196.jpg",
+    "source": "materia-hunter"
+  },
+  "1-197S": {
+    "name": "Brother",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-197.jpg",
+    "source": "materia-hunter"
+  },
+  "1-198S": {
+    "name": "Valefor",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-198.jpg",
+    "source": "materia-hunter"
+  },
+  "1-199S": {
+    "name": "Paine",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-199.jpg",
+    "source": "materia-hunter"
+  },
+  "1-200S": {
+    "name": "Baralai",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-200.jpg",
+    "source": "materia-hunter"
+  },
+  "1-201S": {
+    "name": "Rikku",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-201.jpg",
+    "source": "materia-hunter"
+  },
+  "1-202S": {
+    "name": "Vincent",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-202.jpg",
+    "source": "materia-hunter"
+  },
+  "1-203S": {
+    "name": "Wedge",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-203.jpg",
+    "source": "materia-hunter"
+  },
+  "1-204S": {
+    "name": "Jessie",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-204.jpg",
+    "source": "materia-hunter"
+  },
+  "1-205S": {
+    "name": "Barret",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-205.jpg",
+    "source": "materia-hunter"
+  },
+  "1-206S": {
+    "name": "Biggs",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-206.jpg",
+    "source": "materia-hunter"
+  },
+  "1-207S": {
+    "name": "Gilgamesh",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-207.jpg",
+    "source": "materia-hunter"
+  },
+  "1-208S": {
+    "name": "Noel",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-208.jpg",
+    "source": "materia-hunter"
+  },
+  "1-209S": {
+    "name": "Maqui",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-209.jpg",
+    "source": "materia-hunter"
+  },
+  "1-210S": {
+    "name": "Lightning",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-210.jpg",
+    "source": "materia-hunter"
+  },
+  "1-211S": {
+    "name": "Rygdea",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-211.jpg",
+    "source": "materia-hunter"
+  },
+  "1-212S": {
+    "name": "Shuyin",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-212.jpg",
+    "source": "materia-hunter"
+  },
+  "1-213S": {
+    "name": "Tidus",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-213.jpg",
+    "source": "materia-hunter"
+  },
+  "1-214S": {
+    "name": "Yuna",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-214.jpg",
+    "source": "materia-hunter"
+  },
+  "1-215S": {
+    "name": "Lenne",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-215.jpg",
+    "source": "materia-hunter"
+  },
+  "1-216S": {
+    "name": "Wakka",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/01/1-216.jpg",
+    "source": "materia-hunter"
+  },
+  "PR-001": {
+    "name": "Sephiroth",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/PR/PR-001.jpg",
+    "source": "materia-hunter"
+  },
+  "PR-002": {
+    "name": "Vincent",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/PR/PR-002.jpg",
+    "source": "materia-hunter"
+  },
+  "PR-003": {
+    "name": "Lightning",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/PR/PR-003.jpg",
+    "source": "materia-hunter"
+  },
+  "2-001H": {
+    "name": "Irvine",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-001.jpg",
+    "source": "materia-hunter"
+  },
+  "2-002C": {
+    "name": "Ifrit",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-002.jpg",
+    "source": "materia-hunter"
+  },
+  "2-003C": {
+    "name": "Ward",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-003.jpg",
+    "source": "materia-hunter"
+  },
+  "2-004C": {
+    "name": "Ephemeral Phantom",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-004.jpg",
+    "source": "materia-hunter"
+  },
+  "2-005C": {
+    "name": "Sage",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-005.jpg",
+    "source": "materia-hunter"
+  },
+  "2-006R": {
+    "name": "Sazh",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-006.jpg",
+    "source": "materia-hunter"
+  },
+  "2-007L": {
+    "name": "Emperor Xande",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-007.jpg",
+    "source": "materia-hunter"
+  },
+  "2-008C": {
+    "name": "Zell",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-008.jpg",
+    "source": "materia-hunter"
+  },
+  "2-009R": {
+    "name": "Selphie",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-009.jpg",
+    "source": "materia-hunter"
+  },
+  "2-010C": {
+    "name": "Warrior",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-010.jpg",
+    "source": "materia-hunter"
+  },
+  "2-011L": {
+    "name": "Tifa",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-011.jpg",
+    "source": "materia-hunter"
+  },
+  "2-012R": {
+    "name": "Tellah",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-012.jpg",
+    "source": "materia-hunter"
+  },
+  "2-013C": {
+    "name": "Ninja",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-013.jpg",
+    "source": "materia-hunter"
+  },
+  "2-014H": {
+    "name": "Basch",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-014.jpg",
+    "source": "materia-hunter"
+  },
+  "2-015H": {
+    "name": "Palom",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-015.jpg",
+    "source": "materia-hunter"
+  },
+  "2-016R": {
+    "name": "Palom",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-016.jpg",
+    "source": "materia-hunter"
+  },
+  "2-017R": {
+    "name": "Bergan",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-017.jpg",
+    "source": "materia-hunter"
+  },
+  "2-018C": {
+    "name": "Summoner",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-018.jpg",
+    "source": "materia-hunter"
+  },
+  "2-019R": {
+    "name": "Belias, the Gigas",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-019.jpg",
+    "source": "materia-hunter"
+  },
+  "2-020C": {
+    "name": "Imitation Liegeman",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-020.jpg",
+    "source": "materia-hunter"
+  },
+  "2-021C": {
+    "name": "Montblanc",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-021.jpg",
+    "source": "materia-hunter"
+  },
+  "2-022H": {
+    "name": "Luneth",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-022.jpg",
+    "source": "materia-hunter"
+  },
+  "2-023H": {
+    "name": "Rubicante",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-023.jpg",
+    "source": "materia-hunter"
+  },
+  "2-024R": {
+    "name": "Rosso",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-024.jpg",
+    "source": "materia-hunter"
+  },
+  "2-025H": {
+    "name": "Weiss",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-025.jpg",
+    "source": "materia-hunter"
+  },
+  "2-026L": {
+    "name": "Vayne",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-026.jpg",
+    "source": "materia-hunter"
+  },
+  "2-027C": {
+    "name": "Scholar",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-027.jpg",
+    "source": "materia-hunter"
+  },
+  "2-028C": {
+    "name": "Semblance of a Lion",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-028.jpg",
+    "source": "materia-hunter"
+  },
+  "2-029C": {
+    "name": "Imaginary Champion",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-029.jpg",
+    "source": "materia-hunter"
+  },
+  "2-030H": {
+    "name": "Edward",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-030.jpg",
+    "source": "materia-hunter"
+  },
+  "2-031C": {
+    "name": "Edward",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-031.jpg",
+    "source": "materia-hunter"
+  },
+  "2-032C": {
+    "name": "Bard",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-032.jpg",
+    "source": "materia-hunter"
+  },
+  "2-033C": {
+    "name": "Black Mage",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-033.jpg",
+    "source": "materia-hunter"
+  },
+  "2-034R": {
+    "name": "Zargabaath",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-034.jpg",
+    "source": "materia-hunter"
+  },
+  "2-035H": {
+    "name": "Shelke",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-035.jpg",
+    "source": "materia-hunter"
+  },
+  "2-036R": {
+    "name": "Shalua",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-036.jpg",
+    "source": "materia-hunter"
+  },
+  "2-037R": {
+    "name": "Jihl Nabaat",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-037.jpg",
+    "source": "materia-hunter"
+  },
+  "2-038H": {
+    "name": "Squall",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-038.jpg",
+    "source": "materia-hunter"
+  },
+  "2-039C": {
+    "name": "Capricious Reaper",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-039.jpg",
+    "source": "materia-hunter"
+  },
+  "2-040C": {
+    "name": "Time Mage",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-040.jpg",
+    "source": "materia-hunter"
+  },
+  "2-041H": {
+    "name": "Doctor Cid",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-041.jpg",
+    "source": "materia-hunter"
+  },
+  "2-042R": {
+    "name": "Nero",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-042.jpg",
+    "source": "materia-hunter"
+  },
+  "2-043C": {
+    "name": "Hurdy",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-043.jpg",
+    "source": "materia-hunter"
+  },
+  "2-044R": {
+    "name": "Mateus, the Corrupt",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-044.jpg",
+    "source": "materia-hunter"
+  },
+  "2-045C": {
+    "name": "Moomba",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-045.jpg",
+    "source": "materia-hunter"
+  },
+  "2-046R": {
+    "name": "Laguna",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-046.jpg",
+    "source": "materia-hunter"
+  },
+  "2-047L": {
+    "name": "Rinoa",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-047.jpg",
+    "source": "materia-hunter"
+  },
+  "2-048R": {
+    "name": "Rinoa",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-048.jpg",
+    "source": "materia-hunter"
+  },
+  "2-049H": {
+    "name": "Asura",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-049.jpg",
+    "source": "materia-hunter"
+  },
+  "2-050H": {
+    "name": "Arc",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-050.jpg",
+    "source": "materia-hunter"
+  },
+  "2-051L": {
+    "name": "Vaan",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-051.jpg",
+    "source": "materia-hunter"
+  },
+  "2-052C": {
+    "name": "Vaan",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-052.jpg",
+    "source": "materia-hunter"
+  },
+  "2-053H": {
+    "name": "Edge",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-053.jpg",
+    "source": "materia-hunter"
+  },
+  "2-054R": {
+    "name": "Edge",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-054.jpg",
+    "source": "materia-hunter"
+  },
+  "2-055H": {
+    "name": "Kan-E-Senna",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-055.jpg",
+    "source": "materia-hunter"
+  },
+  "2-056C": {
+    "name": "Ranger",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-056.jpg",
+    "source": "materia-hunter"
+  },
+  "2-057C": {
+    "name": "Cid Pollendina",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-057.jpg",
+    "source": "materia-hunter"
+  },
+  "2-058C": {
+    "name": "White Mage",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-058.jpg",
+    "source": "materia-hunter"
+  },
+  "2-059C": {
+    "name": "Capricious Thief",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-059.jpg",
+    "source": "materia-hunter"
+  },
+  "2-060C": {
+    "name": "Chocobo",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-060.jpg",
+    "source": "materia-hunter"
+  },
+  "2-061C": {
+    "name": "Ninja",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-061.jpg",
+    "source": "materia-hunter"
+  },
+  "2-062C": {
+    "name": "Nono",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-062.jpg",
+    "source": "materia-hunter"
+  },
+  "2-063R": {
+    "name": "Paine",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-063.jpg",
+    "source": "materia-hunter"
+  },
+  "2-064H": {
+    "name": "Barbariccia",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-064.jpg",
+    "source": "materia-hunter"
+  },
+  "2-065L": {
+    "name": "Balthier",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-065.jpg",
+    "source": "materia-hunter"
+  },
+  "2-066R": {
+    "name": "Balthier",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-066.jpg",
+    "source": "materia-hunter"
+  },
+  "2-067R": {
+    "name": "Penelo",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-067.jpg",
+    "source": "materia-hunter"
+  },
+  "2-068R": {
+    "name": "Fran",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-068.jpg",
+    "source": "materia-hunter"
+  },
+  "2-069C": {
+    "name": "Fallacious Wanderer",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-069.jpg",
+    "source": "materia-hunter"
+  },
+  "2-070R": {
+    "name": "Shemhazai, the Whisperer",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-070.jpg",
+    "source": "materia-hunter"
+  },
+  "2-071R": {
+    "name": "Rikku",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-071.jpg",
+    "source": "materia-hunter"
+  },
+  "2-072C": {
+    "name": "Reddas",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-072.jpg",
+    "source": "materia-hunter"
+  },
+  "2-073C": {
+    "name": "Dark Knight",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-073.jpg",
+    "source": "materia-hunter"
+  },
+  "2-074C": {
+    "name": "Warrior of Antiquity",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-074.jpg",
+    "source": "materia-hunter"
+  },
+  "2-075H": {
+    "name": "Ingus",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-075.jpg",
+    "source": "materia-hunter"
+  },
+  "2-076R": {
+    "name": "Vanille",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-076.jpg",
+    "source": "materia-hunter"
+  },
+  "2-077L": {
+    "name": "Vincent",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-077.jpg",
+    "source": "materia-hunter"
+  },
+  "2-078R": {
+    "name": "Vincent",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-078.jpg",
+    "source": "materia-hunter"
+  },
+  "2-079R": {
+    "name": "Ormi",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-079.jpg",
+    "source": "materia-hunter"
+  },
+  "2-080C": {
+    "name": "Carbuncle",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-080.jpg",
+    "source": "materia-hunter"
+  },
+  "2-081L": {
+    "name": "Gabranth",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-081.jpg",
+    "source": "materia-hunter"
+  },
+  "2-082C": {
+    "name": "Ranger",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-082.jpg",
+    "source": "materia-hunter"
+  },
+  "2-083C": {
+    "name": "Machinist",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-083.jpg",
+    "source": "materia-hunter"
+  },
+  "2-084R": {
+    "name": "Logos",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-084.jpg",
+    "source": "materia-hunter"
+  },
+  "2-085H": {
+    "name": "Scarmiglione",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-085.jpg",
+    "source": "materia-hunter"
+  },
+  "2-086C": {
+    "name": "Sorbet",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-086.jpg",
+    "source": "materia-hunter"
+  },
+  "2-087R": {
+    "name": "Hashmal, Bringer of Order",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-087.jpg",
+    "source": "materia-hunter"
+  },
+  "2-088C": {
+    "name": "Ba'Gamnan",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-088.jpg",
+    "source": "materia-hunter"
+  },
+  "2-089C": {
+    "name": "Monk",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-089.jpg",
+    "source": "materia-hunter"
+  },
+  "2-090R": {
+    "name": "Yang",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-090.jpg",
+    "source": "materia-hunter"
+  },
+  "2-091C": {
+    "name": "Yang",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-091.jpg",
+    "source": "materia-hunter"
+  },
+  "2-092C": {
+    "name": "Phantasmal Harlequin",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-092.jpg",
+    "source": "materia-hunter"
+  },
+  "2-093H": {
+    "name": "Raubahn",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-093.jpg",
+    "source": "materia-hunter"
+  },
+  "2-094H": {
+    "name": "Rydia",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-094.jpg",
+    "source": "materia-hunter"
+  },
+  "2-095R": {
+    "name": "Rydia",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-095.jpg",
+    "source": "materia-hunter"
+  },
+  "2-096H": {
+    "name": "Leblanc",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-096.jpg",
+    "source": "materia-hunter"
+  },
+  "2-097H": {
+    "name": "Al-Cid",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-097.jpg",
+    "source": "materia-hunter"
+  },
+  "2-098L": {
+    "name": "Amon",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-098.jpg",
+    "source": "materia-hunter"
+  },
+  "2-099L": {
+    "name": "Edea",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-099.jpg",
+    "source": "materia-hunter"
+  },
+  "2-100H": {
+    "name": "Edea",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-100.jpg",
+    "source": "materia-hunter"
+  },
+  "2-101H": {
+    "name": "Exdeath",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-101.jpg",
+    "source": "materia-hunter"
+  },
+  "2-102C": {
+    "name": "Gurdy",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-102.jpg",
+    "source": "materia-hunter"
+  },
+  "2-103H": {
+    "name": "Kain",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-103.jpg",
+    "source": "materia-hunter"
+  },
+  "2-104R": {
+    "name": "Kain",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-104.jpg",
+    "source": "materia-hunter"
+  },
+  "2-105C": {
+    "name": "Kiros",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-105.jpg",
+    "source": "materia-hunter"
+  },
+  "2-106R": {
+    "name": "Gramis",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-106.jpg",
+    "source": "materia-hunter"
+  },
+  "2-107C": {
+    "name": "Cyclops",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-107.jpg",
+    "source": "materia-hunter"
+  },
+  "2-108C": {
+    "name": "Black Mage",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-108.jpg",
+    "source": "materia-hunter"
+  },
+  "2-109H": {
+    "name": "Golbez",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-109.jpg",
+    "source": "materia-hunter"
+  },
+  "2-110R": {
+    "name": "Seifer",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-110.jpg",
+    "source": "materia-hunter"
+  },
+  "2-111C": {
+    "name": "Seifer",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-111.jpg",
+    "source": "materia-hunter"
+  },
+  "2-112C": {
+    "name": "Fleeting Flash",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-112.jpg",
+    "source": "materia-hunter"
+  },
+  "2-113R": {
+    "name": "Drace",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-113.jpg",
+    "source": "materia-hunter"
+  },
+  "2-114C": {
+    "name": "Ninja",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-114.jpg",
+    "source": "materia-hunter"
+  },
+  "2-115C": {
+    "name": "Ninja",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-115.jpg",
+    "source": "materia-hunter"
+  },
+  "2-116R": {
+    "name": "Fusoya",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-116.jpg",
+    "source": "materia-hunter"
+  },
+  "2-117R": {
+    "name": "Adrammelech, the Wroth",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-117.jpg",
+    "source": "materia-hunter"
+  },
+  "2-118C": {
+    "name": "Arborous Simulacrum",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-118.jpg",
+    "source": "materia-hunter"
+  },
+  "2-119R": {
+    "name": "Reeve",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-119.jpg",
+    "source": "materia-hunter"
+  },
+  "2-120C": {
+    "name": "Dragoon",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-120.jpg",
+    "source": "materia-hunter"
+  },
+  "2-121H": {
+    "name": "Ashe",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-121.jpg",
+    "source": "materia-hunter"
+  },
+  "2-122R": {
+    "name": "Agrias",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-122.jpg",
+    "source": "materia-hunter"
+  },
+  "2-123C": {
+    "name": "Ephemeral Vision",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-123.jpg",
+    "source": "materia-hunter"
+  },
+  "2-124H": {
+    "name": "Cagnazzo",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-124.jpg",
+    "source": "materia-hunter"
+  },
+  "2-125C": {
+    "name": "Semblance of a Witch",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-125.jpg",
+    "source": "materia-hunter"
+  },
+  "2-126R": {
+    "name": "Ghis",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-126.jpg",
+    "source": "materia-hunter"
+  },
+  "2-127R": {
+    "name": "Quistis",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-127.jpg",
+    "source": "materia-hunter"
+  },
+  "2-128C": {
+    "name": "Summoner",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-128.jpg",
+    "source": "materia-hunter"
+  },
+  "2-129L": {
+    "name": "Cecil",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-129.jpg",
+    "source": "materia-hunter"
+  },
+  "2-130C": {
+    "name": "Astrologian",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-130.jpg",
+    "source": "materia-hunter"
+  },
+  "2-131C": {
+    "name": "Paladin",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-131.jpg",
+    "source": "materia-hunter"
+  },
+  "2-132C": {
+    "name": "Viking",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-132.jpg",
+    "source": "materia-hunter"
+  },
+  "2-133R": {
+    "name": "C\u00fachulainn, the Impure",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-133.jpg",
+    "source": "materia-hunter"
+  },
+  "2-134C": {
+    "name": "Horne",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-134.jpg",
+    "source": "materia-hunter"
+  },
+  "2-135H": {
+    "name": "Porom",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-135.jpg",
+    "source": "materia-hunter"
+  },
+  "2-136R": {
+    "name": "Porom",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-136.jpg",
+    "source": "materia-hunter"
+  },
+  "2-137H": {
+    "name": "Merlwyb",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-137.jpg",
+    "source": "materia-hunter"
+  },
+  "2-138L": {
+    "name": "Yuna",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-138.jpg",
+    "source": "materia-hunter"
+  },
+  "2-139C": {
+    "name": "Larsa",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-139.jpg",
+    "source": "materia-hunter"
+  },
+  "2-140C": {
+    "name": "Leviathan",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-140.jpg",
+    "source": "materia-hunter"
+  },
+  "2-141H": {
+    "name": "Refia",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-141.jpg",
+    "source": "materia-hunter"
+  },
+  "2-142R": {
+    "name": "Lenne",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-142.jpg",
+    "source": "materia-hunter"
+  },
+  "2-143R": {
+    "name": "Rosa",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-143.jpg",
+    "source": "materia-hunter"
+  },
+  "2-144C": {
+    "name": "Rosa",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-144.jpg",
+    "source": "materia-hunter"
+  },
+  "2-145L": {
+    "name": "Warrior of Light",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-145.jpg",
+    "source": "materia-hunter"
+  },
+  "2-146H": {
+    "name": "Fusoya",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-146.jpg",
+    "source": "materia-hunter"
+  },
+  "2-147L": {
+    "name": "The Emperor",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-147.jpg",
+    "source": "materia-hunter"
+  },
+  "2-148H": {
+    "name": "Zemus",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/02/2-148.jpg",
+    "source": "materia-hunter"
+  },
+  "3-001C": {
+    "name": "Red Mage",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-001.jpg",
+    "source": "materia-hunter"
+  },
+  "3-002R": {
+    "name": "Ifrit",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-002.jpg",
+    "source": "materia-hunter"
+  },
+  "3-003R": {
+    "name": "Ace",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-003.jpg",
+    "source": "materia-hunter"
+  },
+  "3-004H": {
+    "name": "Garland",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-004.jpg",
+    "source": "materia-hunter"
+  },
+  "3-005C": {
+    "name": "Imaginary Brawler",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-005.jpg",
+    "source": "materia-hunter"
+  },
+  "3-006R": {
+    "name": "King",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-006.jpg",
+    "source": "materia-hunter"
+  },
+  "3-007C": {
+    "name": "Bard",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-007.jpg",
+    "source": "materia-hunter"
+  },
+  "3-008C": {
+    "name": "Cloud",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-008.jpg",
+    "source": "materia-hunter"
+  },
+  "3-009C": {
+    "name": "Cater",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-009.jpg",
+    "source": "materia-hunter"
+  },
+  "3-010R": {
+    "name": "Gekkou",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-010.jpg",
+    "source": "materia-hunter"
+  },
+  "3-011C": {
+    "name": "Gladiator",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-011.jpg",
+    "source": "materia-hunter"
+  },
+  "3-012L": {
+    "name": "Zack",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-012.jpg",
+    "source": "materia-hunter"
+  },
+  "3-013R": {
+    "name": "Amarant",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-013.jpg",
+    "source": "materia-hunter"
+  },
+  "3-014C": {
+    "name": "Cinque",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-014.jpg",
+    "source": "materia-hunter"
+  },
+  "3-015R": {
+    "name": "Black Waltz 2",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-015.jpg",
+    "source": "materia-hunter"
+  },
+  "3-016H": {
+    "name": "Palom",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-016.jpg",
+    "source": "materia-hunter"
+  },
+  "3-017L": {
+    "name": "Vivi",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-017.jpg",
+    "source": "materia-hunter"
+  },
+  "3-018C": {
+    "name": "Vivi",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-018.jpg",
+    "source": "materia-hunter"
+  },
+  "3-019H": {
+    "name": "Faris",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-019.jpg",
+    "source": "materia-hunter"
+  },
+  "3-020H": {
+    "name": "Phoenix",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-020.jpg",
+    "source": "materia-hunter"
+  },
+  "3-021C": {
+    "name": "Cannoneer",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-021.jpg",
+    "source": "materia-hunter"
+  },
+  "3-022H": {
+    "name": "Machina",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-022.jpg",
+    "source": "materia-hunter"
+  },
+  "3-023C": {
+    "name": "Luca",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-023.jpg",
+    "source": "materia-hunter"
+  },
+  "3-024R": {
+    "name": "Rubicante",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-024.jpg",
+    "source": "materia-hunter"
+  },
+  "3-025C": {
+    "name": "Emina",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-025.jpg",
+    "source": "materia-hunter"
+  },
+  "3-026C": {
+    "name": "Kazusa",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-026.jpg",
+    "source": "materia-hunter"
+  },
+  "3-027R": {
+    "name": "Qator Bashtar",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-027.jpg",
+    "source": "materia-hunter"
+  },
+  "3-028C": {
+    "name": "Semblance of a Gunslinger",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-028.jpg",
+    "source": "materia-hunter"
+  },
+  "3-029R": {
+    "name": "Edward",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-029.jpg",
+    "source": "materia-hunter"
+  },
+  "3-030L": {
+    "name": "Kuja",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-030.jpg",
+    "source": "materia-hunter"
+  },
+  "3-031R": {
+    "name": "Kurasame",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-031.jpg",
+    "source": "materia-hunter"
+  },
+  "3-032R": {
+    "name": "Shiva",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-032.jpg",
+    "source": "materia-hunter"
+  },
+  "3-033L": {
+    "name": "Genesis",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-033.jpg",
+    "source": "materia-hunter"
+  },
+  "3-034H": {
+    "name": "Genesis Avatar",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-034.jpg",
+    "source": "materia-hunter"
+  },
+  "3-035R": {
+    "name": "Shelke",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-035.jpg",
+    "source": "materia-hunter"
+  },
+  "3-036H": {
+    "name": "Cid Aulstyne",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-036.jpg",
+    "source": "materia-hunter"
+  },
+  "3-037H": {
+    "name": "Zalera, the Death Seraph",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-037.jpg",
+    "source": "materia-hunter"
+  },
+  "3-038H": {
+    "name": "Xezat",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-038.jpg",
+    "source": "materia-hunter"
+  },
+  "3-039R": {
+    "name": "Sephiroth",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-039.jpg",
+    "source": "materia-hunter"
+  },
+  "3-040C": {
+    "name": "DGS Trooper 1st Class",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-040.jpg",
+    "source": "materia-hunter"
+  },
+  "3-041C": {
+    "name": "Deepground Soldier",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-041.jpg",
+    "source": "materia-hunter"
+  },
+  "3-042C": {
+    "name": "Deepground Soldier",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-042.jpg",
+    "source": "materia-hunter"
+  },
+  "3-043C": {
+    "name": "Time Mage",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-043.jpg",
+    "source": "materia-hunter"
+  },
+  "3-044C": {
+    "name": "Harley",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-044.jpg",
+    "source": "materia-hunter"
+  },
+  "3-045R": {
+    "name": "White Tiger l'Cie Qun'mi",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-045.jpg",
+    "source": "materia-hunter"
+  },
+  "3-046H": {
+    "name": "White Tiger l'Cie Nimbus",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-046.jpg",
+    "source": "materia-hunter"
+  },
+  "3-047C": {
+    "name": "Cannoneer",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-047.jpg",
+    "source": "materia-hunter"
+  },
+  "3-048C": {
+    "name": "Mystic Knight",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-048.jpg",
+    "source": "materia-hunter"
+  },
+  "3-049C": {
+    "name": "Izana",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-049.jpg",
+    "source": "materia-hunter"
+  },
+  "3-050L": {
+    "name": "Aerith",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-050.jpg",
+    "source": "materia-hunter"
+  },
+  "3-051R": {
+    "name": "Eight",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-051.jpg",
+    "source": "materia-hunter"
+  },
+  "3-052C": {
+    "name": "Dancer",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-052.jpg",
+    "source": "materia-hunter"
+  },
+  "3-053C": {
+    "name": "Ranger",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-053.jpg",
+    "source": "materia-hunter"
+  },
+  "3-054C": {
+    "name": "Black Chocobo",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-054.jpg",
+    "source": "materia-hunter"
+  },
+  "3-055C": {
+    "name": "Thief",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-055.jpg",
+    "source": "materia-hunter"
+  },
+  "3-056H": {
+    "name": "Zidane",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-056.jpg",
+    "source": "materia-hunter"
+  },
+  "3-057R": {
+    "name": "Seven",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-057.jpg",
+    "source": "materia-hunter"
+  },
+  "3-058C": {
+    "name": "Sky Pirate Replica",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-058.jpg",
+    "source": "materia-hunter"
+  },
+  "3-059H": {
+    "name": "King Tycoon",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-059.jpg",
+    "source": "materia-hunter"
+  },
+  "3-060R": {
+    "name": "Tsukinowa",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-060.jpg",
+    "source": "materia-hunter"
+  },
+  "3-061R": {
+    "name": "Diablos",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-061.jpg",
+    "source": "materia-hunter"
+  },
+  "3-062C": {
+    "name": "Deuce",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-062.jpg",
+    "source": "materia-hunter"
+  },
+  "3-063H": {
+    "name": "Dorgann",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-063.jpg",
+    "source": "materia-hunter"
+  },
+  "3-064H": {
+    "name": "Trey",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-064.jpg",
+    "source": "materia-hunter"
+  },
+  "3-065L": {
+    "name": "Bartz",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-065.jpg",
+    "source": "materia-hunter"
+  },
+  "3-066R": {
+    "name": "Barbariccia",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-066.jpg",
+    "source": "materia-hunter"
+  },
+  "3-067R": {
+    "name": "Wind Drake",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-067.jpg",
+    "source": "materia-hunter"
+  },
+  "3-068C": {
+    "name": "Geomancer",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-068.jpg",
+    "source": "materia-hunter"
+  },
+  "3-069C": {
+    "name": "Yuffie",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-069.jpg",
+    "source": "materia-hunter"
+  },
+  "3-070C": {
+    "name": "Oracle",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-070.jpg",
+    "source": "materia-hunter"
+  },
+  "3-071H": {
+    "name": "Chaos, Walker of the Wheel",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-071.jpg",
+    "source": "materia-hunter"
+  },
+  "3-072R": {
+    "name": "Rem",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-072.jpg",
+    "source": "materia-hunter"
+  },
+  "3-073C": {
+    "name": "Ursula",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-073.jpg",
+    "source": "materia-hunter"
+  },
+  "3-074R": {
+    "name": "Atomos",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-074.jpg",
+    "source": "materia-hunter"
+  },
+  "3-075C": {
+    "name": "Horror of Antiquity",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-075.jpg",
+    "source": "materia-hunter"
+  },
+  "3-076R": {
+    "name": "Masked Woman",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-076.jpg",
+    "source": "materia-hunter"
+  },
+  "3-077H": {
+    "name": "Galuf",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-077.jpg",
+    "source": "materia-hunter"
+  },
+  "3-078H": {
+    "name": "Krile",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-078.jpg",
+    "source": "materia-hunter"
+  },
+  "3-079H": {
+    "name": "Kefka",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-079.jpg",
+    "source": "materia-hunter"
+  },
+  "3-080R": {
+    "name": "Black Tortoise l'Cie Gilgamesh",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-080.jpg",
+    "source": "materia-hunter"
+  },
+  "3-081C": {
+    "name": "Summoner",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-081.jpg",
+    "source": "materia-hunter"
+  },
+  "3-082R": {
+    "name": "Scarmiglione",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-082.jpg",
+    "source": "materia-hunter"
+  },
+  "3-083C": {
+    "name": "Segwarides",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-083.jpg",
+    "source": "materia-hunter"
+  },
+  "3-084C": {
+    "name": "WRO Member",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-084.jpg",
+    "source": "materia-hunter"
+  },
+  "3-085C": {
+    "name": "WRO Member",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-085.jpg",
+    "source": "materia-hunter"
+  },
+  "3-086C": {
+    "name": "WRO Commander",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-086.jpg",
+    "source": "materia-hunter"
+  },
+  "3-087H": {
+    "name": "Zeromus, the Condemner",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-087.jpg",
+    "source": "materia-hunter"
+  },
+  "3-088L": {
+    "name": "Delita",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-088.jpg",
+    "source": "materia-hunter"
+  },
+  "3-089R": {
+    "name": "The Girl Who Forgot Her Name",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-089.jpg",
+    "source": "materia-hunter"
+  },
+  "3-090C": {
+    "name": "Ninja",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-090.jpg",
+    "source": "materia-hunter"
+  },
+  "3-091C": {
+    "name": "Berserker",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-091.jpg",
+    "source": "materia-hunter"
+  },
+  "3-092L": {
+    "name": "Prishe",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-092.jpg",
+    "source": "materia-hunter"
+  },
+  "3-093H": {
+    "name": "Brandelis",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-093.jpg",
+    "source": "materia-hunter"
+  },
+  "3-094C": {
+    "name": "Pellinore",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-094.jpg",
+    "source": "materia-hunter"
+  },
+  "3-095R": {
+    "name": "Yang",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-095.jpg",
+    "source": "materia-hunter"
+  },
+  "3-096R": {
+    "name": "Rydia",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-096.jpg",
+    "source": "materia-hunter"
+  },
+  "3-097R": {
+    "name": "Arecia Al-Rashia",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-097.jpg",
+    "source": "materia-hunter"
+  },
+  "3-098R": {
+    "name": "Angeal",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-098.jpg",
+    "source": "materia-hunter"
+  },
+  "3-099R": {
+    "name": "Angeal Penance",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-099.jpg",
+    "source": "materia-hunter"
+  },
+  "3-100L": {
+    "name": "Exdeath",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-100.jpg",
+    "source": "materia-hunter"
+  },
+  "3-101R": {
+    "name": "Enuo",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-101.jpg",
+    "source": "materia-hunter"
+  },
+  "3-102R": {
+    "name": "Odin",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-102.jpg",
+    "source": "materia-hunter"
+  },
+  "3-103H": {
+    "name": "Gilgamesh",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-103.jpg",
+    "source": "materia-hunter"
+  },
+  "3-104C": {
+    "name": "Queen",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-104.jpg",
+    "source": "materia-hunter"
+  },
+  "3-105C": {
+    "name": "Black Waltz 3",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-105.jpg",
+    "source": "materia-hunter"
+  },
+  "3-106C": {
+    "name": "Black Mage",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-106.jpg",
+    "source": "materia-hunter"
+  },
+  "3-107C": {
+    "name": "Black Mage",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-107.jpg",
+    "source": "materia-hunter"
+  },
+  "3-108H": {
+    "name": "Kelger",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-108.jpg",
+    "source": "materia-hunter"
+  },
+  "3-109C": {
+    "name": "Sice",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-109.jpg",
+    "source": "materia-hunter"
+  },
+  "3-110R": {
+    "name": "Zangetsu",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-110.jpg",
+    "source": "materia-hunter"
+  },
+  "3-111H": {
+    "name": "Jack",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-111.jpg",
+    "source": "materia-hunter"
+  },
+  "3-112H": {
+    "name": "Exodus, the Judge-Sal",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-112.jpg",
+    "source": "materia-hunter"
+  },
+  "3-113R": {
+    "name": "Nine",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-113.jpg",
+    "source": "materia-hunter"
+  },
+  "3-114C": {
+    "name": "Freya",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-114.jpg",
+    "source": "materia-hunter"
+  },
+  "3-115C": {
+    "name": "Cannoneer",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-115.jpg",
+    "source": "materia-hunter"
+  },
+  "3-116C": {
+    "name": "Mystic Knight",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-116.jpg",
+    "source": "materia-hunter"
+  },
+  "3-117C": {
+    "name": "Simulacrum of a Hero",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-117.jpg",
+    "source": "materia-hunter"
+  },
+  "3-118H": {
+    "name": "Lightning",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-118.jpg",
+    "source": "materia-hunter"
+  },
+  "3-119L": {
+    "name": "Ramza",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-119.jpg",
+    "source": "materia-hunter"
+  },
+  "3-120C": {
+    "name": "Dragoon",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-120.jpg",
+    "source": "materia-hunter"
+  },
+  "3-121C": {
+    "name": "Blue Mage",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-121.jpg",
+    "source": "materia-hunter"
+  },
+  "3-122C": {
+    "name": "Artemicion",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-122.jpg",
+    "source": "materia-hunter"
+  },
+  "3-123R": {
+    "name": "Famfrit, the Darkening Cloud",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-123.jpg",
+    "source": "materia-hunter"
+  },
+  "3-124R": {
+    "name": "Izayoi",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-124.jpg",
+    "source": "materia-hunter"
+  },
+  "3-125C": {
+    "name": "Ephemeral Summoner",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-125.jpg",
+    "source": "materia-hunter"
+  },
+  "3-126H": {
+    "name": "Eiko",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-126.jpg",
+    "source": "materia-hunter"
+  },
+  "3-127R": {
+    "name": "Eiko",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-127.jpg",
+    "source": "materia-hunter"
+  },
+  "3-128C": {
+    "name": "Dancer",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-128.jpg",
+    "source": "materia-hunter"
+  },
+  "3-129L": {
+    "name": "Garnet",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-129.jpg",
+    "source": "materia-hunter"
+  },
+  "3-130R": {
+    "name": "Cagnazzo",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-130.jpg",
+    "source": "materia-hunter"
+  },
+  "3-131H": {
+    "name": "Ghido",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-131.jpg",
+    "source": "materia-hunter"
+  },
+  "3-132R": {
+    "name": "Quacho Queen",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-132.jpg",
+    "source": "materia-hunter"
+  },
+  "3-133C": {
+    "name": "Quina",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-133.jpg",
+    "source": "materia-hunter"
+  },
+  "3-134C": {
+    "name": "Summoner",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-134.jpg",
+    "source": "materia-hunter"
+  },
+  "3-135H": {
+    "name": "Syldra",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-135.jpg",
+    "source": "materia-hunter"
+  },
+  "3-136C": {
+    "name": "White Mage",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-136.jpg",
+    "source": "materia-hunter"
+  },
+  "3-137R": {
+    "name": "Steiner",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-137.jpg",
+    "source": "materia-hunter"
+  },
+  "3-138H": {
+    "name": "Ceodore",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-138.jpg",
+    "source": "materia-hunter"
+  },
+  "3-139C": {
+    "name": "Knight",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-139.jpg",
+    "source": "materia-hunter"
+  },
+  "3-140R": {
+    "name": "Porom",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-140.jpg",
+    "source": "materia-hunter"
+  },
+  "3-141C": {
+    "name": "Mog (IX)",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-141.jpg",
+    "source": "materia-hunter"
+  },
+  "3-142H": {
+    "name": "Famed Mimic Gogo",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-142.jpg",
+    "source": "materia-hunter"
+  },
+  "3-143C": {
+    "name": "Leonora",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-143.jpg",
+    "source": "materia-hunter"
+  },
+  "3-144L": {
+    "name": "Lenna",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-144.jpg",
+    "source": "materia-hunter"
+  },
+  "3-145L": {
+    "name": "Ultima, the High Seraph",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-145.jpg",
+    "source": "materia-hunter"
+  },
+  "3-146H": {
+    "name": "Minerva",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-146.jpg",
+    "source": "materia-hunter"
+  },
+  "3-147L": {
+    "name": "Zodiark, Keeper of Precepts",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-147.jpg",
+    "source": "materia-hunter"
+  },
+  "3-148H": {
+    "name": "Feral Chaos",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-148.jpg",
+    "source": "materia-hunter"
+  },
+  "3-149S": {
+    "name": "Vivi",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-149.jpg",
+    "source": "materia-hunter"
+  },
+  "3-150S": {
+    "name": "Moogle (Class Zero Cadet)",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-150.jpg",
+    "source": "materia-hunter"
+  },
+  "3-151S": {
+    "name": "Queen",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-151.jpg",
+    "source": "materia-hunter"
+  },
+  "3-152S": {
+    "name": "Garnet",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-152.jpg",
+    "source": "materia-hunter"
+  },
+  "3-153S": {
+    "name": "Ace",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-153.jpg",
+    "source": "materia-hunter"
+  },
+  "3-154S": {
+    "name": "Zidane",
+    "image": "https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/03/3-154.jpg",
+    "source": "materia-hunter"
+  }
+}

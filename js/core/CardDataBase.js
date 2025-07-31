@@ -10,7 +10,6 @@
  */
 
 import { LocalStorage } from '../utils/LocalStorage.js';
-import { externalCardAPI } from '../data/ExternalCardAPI.js';
 import { logger } from '../utils/Logger.js';
 
 /**
@@ -98,6 +97,13 @@ export class CardDatabase {
         const lastUpdate = LocalStorage.get(this.STORAGE_KEYS.LAST_UPDATE);
         const externalLoaded = LocalStorage.get('external_cards_loaded');
         
+        console.log('🔍 CardDatabase: loadFromStorage check - savedCards:', savedCards ? savedCards.length : 'none', 'lastUpdate:', lastUpdate);
+        
+        // ALWAYS prefer loading fresh data from external APIs for now
+        // TODO: Re-enable caching once we're sure the external loading works properly
+        console.log('📚 Forcing fresh load from external APIs (bypassing cache)');
+        return false;
+        
         // If we previously loaded external cards but didn't save them (due to quota)
         // Skip storage loading and go straight to external APIs
         if (externalLoaded && !savedCards) {
@@ -126,19 +132,18 @@ export class CardDatabase {
      */
     async loadFromSource() {
         try {
-            console.log('🌐 Loading cards from external APIs...');
+            console.log('🌐 Loading cards from JSON data file...');
             
-            // For now, let's directly use the enhanced FFTCG data since external APIs might be having issues
-            // TODO: Debug external API integration later
-            console.log('⚠️ Using enhanced FFTCG data directly for reliability...');
-            
-            const enhancedCards = externalCardAPI.generateRealSquareAPIData();
-            if (enhancedCards && enhancedCards.length > 0) {
-                this.loadCards(enhancedCards);
-                console.log(`✅ Loaded ${enhancedCards.length} cards from enhanced FFTCG data`);
+            // Load the FFTCG real cards data directly
+            const response = await fetch('./js/data/fftcg_real_cards.json');
+            if (response.ok) {
+                const realCards = await response.json();
+                console.log(`✅ Loaded ${realCards.length} real FFTCG cards from JSON data`);
+                
+                this.loadCards(realCards);
                 this.saveToStorage();
             } else {
-                console.log('⚠️ Enhanced data failed, loading sample data...');
+                console.log('⚠️ JSON data failed, loading sample data...');
                 await this.loadSampleData();
             }
             
@@ -847,213 +852,5 @@ export class CardDatabase {
         console.log('🗑️ Card database cache cleared');
     }
 
-    /**
-     * Load cards from external APIs
-     */
-    async loadFromExternalAPIs(forceRefresh = false) {
-        try {
-            logger.info('🌐 Loading cards from external APIs...');
-            
-            const externalCards = await externalCardAPI.fetchAllCards(forceRefresh);
-            
-            if (externalCards && externalCards.length > 0) {
-                logger.info(`📡 Loaded ${externalCards.length} cards from external sources`);
-                
-                // Merge with existing cards
-                const mergedCards = this.mergeWithExternalCards(externalCards);
-                this.loadCards(mergedCards);
-                
-                return true;
-            } else {
-                logger.warn('⚠️ No cards loaded from external APIs');
-                return false;
-            }
-        } catch (error) {
-            logger.error('❌ Error loading from external APIs:', error);
-            return false;
-        }
-    }
 
-    /**
-     * Merge external cards with existing database
-     */
-    mergeWithExternalCards(externalCards) {
-        const existingCards = this.getAllCards();
-        const cardMap = new Map();
-        
-        // Add existing cards
-        existingCards.forEach(card => {
-            cardMap.set(card.id, card);
-        });
-        
-        // Add/update with external cards
-        externalCards.forEach(externalCard => {
-            const existingCard = cardMap.get(externalCard.id);
-            
-            if (existingCard) {
-                // Merge data, preferring external data for images and real card info
-                const mergedCard = {
-                    ...existingCard,
-                    ...externalCard,
-                    // Preserve some local enhancements
-                    localData: existingCard.localData,
-                    // Mark as having external data
-                    hasExternalData: true,
-                    lastUpdated: new Date().toISOString()
-                };
-                cardMap.set(externalCard.id, mergedCard);
-            } else {
-                // Add new external card
-                cardMap.set(externalCard.id, {
-                    ...externalCard,
-                    hasExternalData: true,
-                    addedDate: new Date().toISOString()
-                });
-            }
-        });
-        
-        return Array.from(cardMap.values());
-    }
-
-    /**
-     * Search cards using external APIs
-     */
-    async searchExternal(query, options = {}) {
-        try {
-            return await externalCardAPI.searchCards(query, options);
-        } catch (error) {
-            logger.error('Error searching external APIs:', error);
-            return [];
-        }
-    }
-
-    /**
-     * Get cards by set from external APIs
-     */
-    async getExternalCardsBySet(setName) {
-        try {
-            return await externalCardAPI.getCardsBySet(setName);
-        } catch (error) {
-            logger.error('Error getting external cards by set:', error);
-            return [];
-        }
-    }
-
-    /**
-     * Get all available sets from external sources
-     */
-    async getExternalSets() {
-        try {
-            return await externalCardAPI.getAvailableSets();
-        } catch (error) {
-            logger.error('Error getting external sets:', error);
-            return [];
-        }
-    }
-
-    /**
-     * Sync with external databases
-     */
-    async syncWithExternal() {
-        logger.info('🔄 Syncing with external card databases...');
-        
-        try {
-            // Get current cards
-            const currentCards = this.getAllCards();
-            const currentCount = currentCards.length;
-            
-            // Load from external APIs
-            const synced = await this.loadFromExternalAPIs(true);
-            
-            if (synced) {
-                const newCount = this.getAllCards().length;
-                const added = newCount - currentCount;
-                
-                logger.info(`✅ Sync completed: ${added} new cards added`);
-                
-                // Update last sync time
-                LocalStorage.set('fftcg_last_external_sync', new Date().toISOString());
-                
-                return {
-                    success: true,
-                    cardsAdded: Math.max(0, added),
-                    totalCards: newCount
-                };
-            } else {
-                logger.warn('⚠️ Sync failed - no data from external sources');
-                return {
-                    success: false,
-                    error: 'No data from external sources'
-                };
-            }
-        } catch (error) {
-            logger.error('❌ Sync failed:', error);
-            return {
-                success: false,
-                error: error.message
-            };
-        }
-    }
-
-    /**
-     * Get external API status
-     */
-    getExternalAPIStatus() {
-        return {
-            ...externalCardAPI.getAPIStatus(),
-            lastSync: LocalStorage.get('fftcg_last_external_sync'),
-            externalCardsInDatabase: this.getAllCards().filter(c => c.hasExternalData).length
-        };
-    }
-
-    /**
-     * Update card with latest external data
-     */
-    async updateCardFromExternal(cardId) {
-        try {
-            // Search for the card in external APIs
-            const externalCards = await externalCardAPI.searchCards(cardId);
-            const externalCard = externalCards.find(c => c.id === cardId);
-            
-            if (externalCard) {
-                // Update the card in our database
-                const existingCard = this.getCard(cardId);
-                const updatedCard = {
-                    ...existingCard,
-                    ...externalCard,
-                    lastUpdated: new Date().toISOString(),
-                    hasExternalData: true
-                };
-                
-                this.cards.set(cardId, updatedCard);
-                logger.info(`📡 Updated card ${cardId} from external source`);
-                
-                return updatedCard;
-            } else {
-                logger.warn(`⚠️ Card ${cardId} not found in external sources`);
-                return null;
-            }
-        } catch (error) {
-            logger.error(`❌ Error updating card ${cardId}:`, error);
-            return null;
-        }
-    }
-
-    /**
-     * Get enhanced statistics including external data
-     */
-    getEnhancedStats() {
-        const baseStats = this.getStats();
-        const externalStatus = this.getExternalAPIStatus();
-        
-        return {
-            ...baseStats,
-            external: {
-                apiStatus: externalStatus,
-                cardsWithExternalData: this.getAllCards().filter(c => c.hasExternalData).length,
-                lastSync: externalStatus.lastSync,
-                availableSources: externalStatus.availableSources
-            }
-        };
-    }
 }

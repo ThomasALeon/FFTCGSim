@@ -27,6 +27,7 @@ export class DeckBuilder {
         this.typeFilter = '';
         this.costFilter = '';
         this.rarityFilter = '';
+        this.opusFilter = '';
         
         // UI elements
         this.cardGrid = null;
@@ -45,11 +46,64 @@ export class DeckBuilder {
      * Initialize the deck builder
      */
     initialize() {
+        this.loadCardImageMapping();
         this.setupUIElements();
         this.setupEventListeners();
         this.initializeDeckManager();
         
         logger.info('🔨 Deck Builder initialized with minimal UI');
+    }
+
+    /**
+     * Load the card image mapping from JSON file
+     */
+    async loadCardImageMapping() {
+        try {
+            logger.debug('🖼️ Loading card image mapping...');
+            const response = await fetch('./js/data/card_image_mapping.json');
+            if (response.ok) {
+                this.cardImageMapping = await response.json();
+                logger.info(`✅ Loaded image mapping for ${Object.keys(this.cardImageMapping).length} cards`);
+            } else {
+                logger.warn('⚠️ Card image mapping file not found, using placeholders');
+                this.cardImageMapping = {};
+            }
+        } catch (error) {
+            logger.error('❌ Failed to load card image mapping:', error);
+            this.cardImageMapping = {};
+        }
+    }
+
+    /**
+     * Get the appropriate image HTML for a card
+     */
+    getCardImageHTML(card) {
+        // Check if we have a real image mapping for this card
+        const imageMapping = this.cardImageMapping && this.cardImageMapping[card.id];
+        
+        if (imageMapping && imageMapping.image) {
+            return `
+                <img class="card-real-image" 
+                     src="${imageMapping.image}" 
+                     alt="${card.name}" 
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                     onload="this.style.display='block'; this.nextElementSibling.style.display='none';">
+                <div class="card-placeholder element-${card.element}" style="display: none;">
+                    <div class="card-placeholder-icon">${this.getElementIcon(card.element)}</div>
+                    <div class="card-placeholder-text">${card.name}</div>
+                    <div class="card-placeholder-meta">${card.set || 'Unknown'}</div>
+                </div>
+            `;
+        } else {
+            // Use placeholder
+            return `
+                <div class="card-placeholder element-${card.element}">
+                    <div class="card-placeholder-icon">${this.getElementIcon(card.element)}</div>
+                    <div class="card-placeholder-text">${card.name}</div>
+                    <div class="card-placeholder-meta">${card.set || 'Unknown'}</div>
+                </div>
+            `;
+        }
     }
 
     /**
@@ -223,6 +277,13 @@ export class DeckBuilder {
             logger.debug(`🔍 After rarity filter "${this.rarityFilter}": ${beforeRarity} → ${cards.length} cards`);
         }
 
+        // Apply opus filter
+        if (this.opusFilter) {
+            const beforeOpus = cards.length;
+            cards = cards.filter(card => card.set === this.opusFilter);
+            logger.debug(`🔍 After opus filter "${this.opusFilter}": ${beforeOpus} → ${cards.length} cards`);
+        }
+
         // Sort cards by cost first, then by name
         cards.sort((a, b) => {
             if (a.cost !== b.cost) {
@@ -257,10 +318,7 @@ export class DeckBuilder {
         cardDiv.innerHTML = `
             <div class="card-preview ${elementClass}">
                 <div class="card-image">
-                    <div class="card-placeholder">
-                        <div class="card-placeholder-icon">${this.getElementIcon(card.element)}</div>
-                        <div class="card-placeholder-text">${card.name}</div>
-                    </div>
+                    ${this.getCardImageHTML(card)}
                 </div>
                 <div class="card-info">
                     <div class="card-name">${card.name}</div>
@@ -633,6 +691,15 @@ export class DeckBuilder {
     setRarityFilter(rarity) {
         this.rarityFilter = rarity;
         this.updateFilterButtonStates('rarity', rarity);
+        this.refreshCardDisplay();
+    }
+
+    /**
+     * Set opus filter (for button-based filters)
+     */
+    setOpusFilter(opus) {
+        this.opusFilter = opus;
+        this.updateFilterButtonStates('opus', opus);
         this.refreshCardDisplay();
     }
 

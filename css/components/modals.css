@@ -433,19 +433,43 @@
 
 /* Card Preview Modal Styles */
 .card-preview-content {
-    min-height: 300px;
+    min-height: 400px;
+    overflow: visible;
 }
 
 .card-preview-display {
     display: grid;
-    grid-template-columns: 200px 1fr;
-    gap: 20px;
+    grid-template-columns: 250px 1fr;
+    gap: 24px;
     align-items: start;
+    min-height: 400px;
 }
 
 .card-preview-image {
     display: flex;
     justify-content: center;
+}
+
+.card-large-art {
+    width: 100%;
+    max-width: 250px;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.card-preview-real-image {
+    width: 180px;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 3px solid var(--color-border, #444);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease;
+}
+
+.card-preview-real-image:hover {
+    transform: scale(1.02);
 }
 
 .card-large-placeholder {
@@ -484,8 +508,19 @@
     line-height: 1.3;
 }
 
+.card-large-meta {
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.8);
+    margin-top: 4px;
+    text-align: center;
+}
+
 .card-preview-details {
     flex: 1;
+    overflow: visible;
+    padding-right: 8px;
+    word-wrap: break-word;
 }
 
 .card-detail-header {

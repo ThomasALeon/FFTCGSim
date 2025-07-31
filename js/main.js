@@ -25,9 +25,6 @@ import { accessibilitySettings } from './utils/AccessibilitySettings.js';
 // Import extended card data
 import { EXTENDED_CARD_DATA, generateCardImages, getEnhancedCardDatabase, getOpus1CardDatabase } from './data/ExtendedCardDatabase.js';
 
-// Import external API integration
-import { externalCardAPI } from './data/ExternalCardAPI.js';
-
 // Import player management
 import { PlayerManager } from './core/PlayerManager.js';
 import { Modal } from './components/Modal.js';
