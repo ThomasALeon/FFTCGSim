@@ -362,6 +362,8 @@ export class DeckBuilder {
         // Add click for card preview
         cardDiv.addEventListener('click', (e) => {
             if (!e.target.classList.contains('add-to-deck-btn')) {
+                // Ensure dragging class is removed (safeguard)
+                cardDiv.classList.remove('dragging');
                 this.showCardPreview(card);
             }
         });
