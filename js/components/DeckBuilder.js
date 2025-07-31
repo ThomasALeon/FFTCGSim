@@ -23,11 +23,11 @@ export class DeckBuilder {
         this.currentDeck = null;
         this.filteredCards = [];
         this.searchTerm = '';
-        this.elementFilter = '';
-        this.typeFilter = '';
-        this.costFilter = '';
-        this.rarityFilter = '';
-        this.opusFilter = '';
+        this.elementFilter = []; // Changed to array for multiple selection
+        this.typeFilter = [];     // Changed to array for multiple selection
+        this.costFilter = [];     // Changed to array for multiple selection
+        this.rarityFilter = [];   // Changed to array for multiple selection
+        this.opusFilter = [];     // Changed to array for multiple selection
         
         // UI elements
         this.cardGrid = null;
@@ -199,7 +199,7 @@ export class DeckBuilder {
         this.filteredCards = this.getFilteredCards();
         
         // Debug: Log filtering results
-        logger.debug(`🔍 Filtered cards: ${this.filteredCards.length} (search: "${this.searchTerm}", element: "${this.elementFilter}", type: "${this.typeFilter}")`);
+        logger.debug(`🔍 Filtered cards: ${this.filteredCards.length} (search: "${this.searchTerm}", element: [${this.elementFilter.join(', ')}], type: [${this.typeFilter.join(', ')}])`);
         
         // Clear existing content
         this.cardGrid.innerHTML = '';
@@ -244,44 +244,48 @@ export class DeckBuilder {
             logger.debug(`🔍 After search filter "${this.searchTerm}": ${beforeSearch} → ${cards.length} cards`);
         }
 
-        // Apply element filter
-        if (this.elementFilter) {
+        // Apply element filter (multiple selection)
+        if (this.elementFilter.length > 0) {
             const beforeElement = cards.length;
-            cards = cards.filter(card => card.element === this.elementFilter);
-            logger.debug(`🔍 After element filter "${this.elementFilter}": ${beforeElement} → ${cards.length} cards`);
+            cards = cards.filter(card => this.elementFilter.includes(card.element));
+            logger.debug(`🔍 After element filter [${this.elementFilter.join(', ')}]: ${beforeElement} → ${cards.length} cards`);
         }
 
-        // Apply type filter
-        if (this.typeFilter) {
+        // Apply type filter (multiple selection)
+        if (this.typeFilter.length > 0) {
             const beforeType = cards.length;
-            cards = cards.filter(card => card.type === this.typeFilter);
-            logger.debug(`🔍 After type filter "${this.typeFilter}": ${beforeType} → ${cards.length} cards`);
+            cards = cards.filter(card => this.typeFilter.includes(card.type));
+            logger.debug(`🔍 After type filter [${this.typeFilter.join(', ')}]: ${beforeType} → ${cards.length} cards`);
         }
 
-        // Apply cost filter
-        if (this.costFilter) {
+        // Apply cost filter (multiple selection)
+        if (this.costFilter.length > 0) {
             const beforeCost = cards.length;
-            if (this.costFilter === '7+') {
-                cards = cards.filter(card => card.cost >= 7);
-            } else {
-                const cost = parseInt(this.costFilter);
-                cards = cards.filter(card => card.cost === cost);
-            }
-            logger.debug(`🔍 After cost filter "${this.costFilter}": ${beforeCost} → ${cards.length} cards`);
+            cards = cards.filter(card => {
+                return this.costFilter.some(costFilter => {
+                    if (costFilter === '7+') {
+                        return card.cost >= 7;
+                    } else {
+                        const cost = parseInt(costFilter);
+                        return card.cost === cost;
+                    }
+                });
+            });
+            logger.debug(`🔍 After cost filter [${this.costFilter.join(', ')}]: ${beforeCost} → ${cards.length} cards`);
         }
 
-        // Apply rarity filter
-        if (this.rarityFilter) {
+        // Apply rarity filter (multiple selection)
+        if (this.rarityFilter.length > 0) {
             const beforeRarity = cards.length;
-            cards = cards.filter(card => card.rarity === this.rarityFilter);
-            logger.debug(`🔍 After rarity filter "${this.rarityFilter}": ${beforeRarity} → ${cards.length} cards`);
+            cards = cards.filter(card => this.rarityFilter.includes(card.rarity));
+            logger.debug(`🔍 After rarity filter [${this.rarityFilter.join(', ')}]: ${beforeRarity} → ${cards.length} cards`);
         }
 
-        // Apply opus filter
-        if (this.opusFilter) {
+        // Apply opus filter (multiple selection)
+        if (this.opusFilter.length > 0) {
             const beforeOpus = cards.length;
-            cards = cards.filter(card => card.set === this.opusFilter);
-            logger.debug(`🔍 After opus filter "${this.opusFilter}": ${beforeOpus} → ${cards.length} cards`);
+            cards = cards.filter(card => this.opusFilter.includes(card.set));
+            logger.debug(`🔍 After opus filter [${this.opusFilter.join(', ')}]: ${beforeOpus} → ${cards.length} cards`);
         }
 
         // Sort cards by cost first, then by name
@@ -671,47 +675,102 @@ export class DeckBuilder {
     }
 
     /**
-     * Set element filter (for button-based filters)
+     * Toggle element filter (for button-based filters with multiple selection)
      */
     setElementFilter(element) {
-        this.elementFilter = element;
-        this.updateFilterButtonStates('element', element);
+        if (element === '') {
+            // "All" button - clear all filters
+            this.elementFilter = [];
+        } else {
+            // Toggle specific element
+            const index = this.elementFilter.indexOf(element);
+            if (index > -1) {
+                this.elementFilter.splice(index, 1); // Remove if already selected
+            } else {
+                this.elementFilter.push(element); // Add if not selected
+            }
+        }
+        this.updateFilterButtonStates('element', this.elementFilter);
         this.refreshCardDisplay();
     }
 
     /**
-     * Set type filter (for button-based filters)
+     * Toggle type filter (for button-based filters with multiple selection)
      */
     setTypeFilter(type) {
-        this.typeFilter = type;
-        this.updateFilterButtonStates('type', type);
+        if (type === '') {
+            // "All" button - clear all filters
+            this.typeFilter = [];
+        } else {
+            // Toggle specific type
+            const index = this.typeFilter.indexOf(type);
+            if (index > -1) {
+                this.typeFilter.splice(index, 1); // Remove if already selected
+            } else {
+                this.typeFilter.push(type); // Add if not selected
+            }
+        }
+        this.updateFilterButtonStates('type', this.typeFilter);
         this.refreshCardDisplay();
     }
 
     /**
-     * Set cost filter (for button-based filters)
+     * Toggle cost filter (for button-based filters with multiple selection)
      */
     setCostFilter(cost) {
-        this.costFilter = cost;
-        this.updateFilterButtonStates('cost', cost);
+        if (cost === '') {
+            // "All" button - clear all filters
+            this.costFilter = [];
+        } else {
+            // Toggle specific cost
+            const index = this.costFilter.indexOf(cost);
+            if (index > -1) {
+                this.costFilter.splice(index, 1); // Remove if already selected
+            } else {
+                this.costFilter.push(cost); // Add if not selected
+            }
+        }
+        this.updateFilterButtonStates('cost', this.costFilter);
         this.refreshCardDisplay();
     }
 
     /**
-     * Set rarity filter (for button-based filters)
+     * Toggle rarity filter (for button-based filters with multiple selection)
      */
     setRarityFilter(rarity) {
-        this.rarityFilter = rarity;
-        this.updateFilterButtonStates('rarity', rarity);
+        if (rarity === '') {
+            // "All" button - clear all filters
+            this.rarityFilter = [];
+        } else {
+            // Toggle specific rarity
+            const index = this.rarityFilter.indexOf(rarity);
+            if (index > -1) {
+                this.rarityFilter.splice(index, 1); // Remove if already selected
+            } else {
+                this.rarityFilter.push(rarity); // Add if not selected
+            }
+        }
+        this.updateFilterButtonStates('rarity', this.rarityFilter);
         this.refreshCardDisplay();
     }
 
     /**
-     * Set opus filter (for button-based filters)
+     * Toggle opus filter (for button-based filters with multiple selection)
      */
     setOpusFilter(opus) {
-        this.opusFilter = opus;
-        this.updateFilterButtonStates('opus', opus);
+        if (opus === '') {
+            // "All" button - clear all filters
+            this.opusFilter = [];
+        } else {
+            // Toggle specific opus
+            const index = this.opusFilter.indexOf(opus);
+            if (index > -1) {
+                this.opusFilter.splice(index, 1); // Remove if already selected
+            } else {
+                this.opusFilter.push(opus); // Add if not selected
+            }
+        }
+        this.updateFilterButtonStates('opus', this.opusFilter);
         this.refreshCardDisplay();
     }
 
@@ -728,9 +787,9 @@ export class DeckBuilder {
     }
 
     /**
-     * Update filter button states to show active filter
+     * Update filter button states to show active filters (supports multiple selection)
      */
-    updateFilterButtonStates(filterType, value) {
+    updateFilterButtonStates(filterType, selectedValues) {
         const buttonContainer = document.getElementById(`${filterType}Buttons`);
         if (!buttonContainer) return;
 
@@ -739,10 +798,29 @@ export class DeckBuilder {
             btn.classList.remove('active');
         });
 
-        // Add active class to selected button
-        const activeButton = buttonContainer.querySelector(`[data-${filterType}="${value}"]`);
-        if (activeButton) {
-            activeButton.classList.add('active');
+        // Handle array of selected values
+        if (Array.isArray(selectedValues)) {
+            if (selectedValues.length === 0) {
+                // No filters selected - activate "All" button
+                const allButton = buttonContainer.querySelector(`[data-${filterType}=""]`);
+                if (allButton) {
+                    allButton.classList.add('active');
+                }
+            } else {
+                // Add active class to all selected buttons
+                selectedValues.forEach(value => {
+                    const activeButton = buttonContainer.querySelector(`[data-${filterType}="${value}"]`);
+                    if (activeButton) {
+                        activeButton.classList.add('active');
+                    }
+                });
+            }
+        } else {
+            // Legacy single value support (fallback)
+            const activeButton = buttonContainer.querySelector(`[data-${filterType}="${selectedValues}"]`);
+            if (activeButton) {
+                activeButton.classList.add('active');
+            }
         }
     }
 
