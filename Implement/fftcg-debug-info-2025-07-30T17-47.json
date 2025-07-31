@@ -1,0 +1,486 @@
+{
+  "timestamp": "2025-07-30T17:47:59.707Z",
+  "healthStatus": {
+    "lastCheck": "2025-07-30T17:47:56.532Z",
+    "isRunning": false,
+    "apis": [
+      {
+        "name": "ffdecks",
+        "url": "https://ffdecks.com/api/cards/basic",
+        "isOnline": false,
+        "status": 0,
+        "responseTime": null,
+        "lastChecked": "2025-07-30T17:47:56.625Z",
+        "error": "Failed to fetch"
+      },
+      {
+        "name": "fftcgdb",
+        "url": "https://fftcgdb.com/api/cards",
+        "isOnline": false,
+        "status": 0,
+        "responseTime": null,
+        "lastChecked": "2025-07-30T17:47:57.339Z",
+        "error": "Failed to fetch"
+      },
+      {
+        "name": "squareEnix",
+        "url": "https://fftcg.square-enix-games.com",
+        "isOnline": false,
+        "status": 0,
+        "responseTime": null,
+        "lastChecked": "2025-07-30T17:47:58.207Z",
+        "error": "Failed to fetch"
+      }
+    ],
+    "summary": {
+      "total": 3,
+      "online": 0,
+      "offline": 3
+    }
+  },
+  "apiStatus": {
+    "cachedCards": 1,
+    "lastUpdate": "2025-07-30T17:33:15.646Z",
+    "availableSources": [
+      "ffdecks",
+      "squareEnix",
+      "fftcgdb"
+    ],
+    "rateLimitStatus": [],
+    "healthStatus": {
+      "lastCheck": "2025-07-30T17:47:56.532Z",
+      "isRunning": false,
+      "apis": [
+        {
+          "name": "ffdecks",
+          "url": "https://ffdecks.com/api/cards/basic",
+          "isOnline": false,
+          "status": 0,
+          "responseTime": null,
+          "lastChecked": "2025-07-30T17:47:56.625Z",
+          "error": "Failed to fetch"
+        },
+        {
+          "name": "fftcgdb",
+          "url": "https://fftcgdb.com/api/cards",
+          "isOnline": false,
+          "status": 0,
+          "responseTime": null,
+          "lastChecked": "2025-07-30T17:47:57.339Z",
+          "error": "Failed to fetch"
+        },
+        {
+          "name": "squareEnix",
+          "url": "https://fftcg.square-enix-games.com",
+          "isOnline": false,
+          "status": 0,
+          "responseTime": null,
+          "lastChecked": "2025-07-30T17:47:58.207Z",
+          "error": "Failed to fetch"
+        }
+      ],
+      "summary": {
+        "total": 3,
+        "online": 0,
+        "offline": 3
+      }
+    },
+    "debugLogs": {
+      "total": 85,
+      "recent": [
+        {
+          "timestamp": "2025-07-30T17:47:46.630Z",
+          "level": "error",
+          "message": "squareEnix API error",
+          "data": "{\n  \"error\": \"Failed to fetch\",\n  \"stack\": \"TypeError: Failed to fetch\\n    at ExternalCardAPI.makeHealthCheckRequest (http://localhost:8080/js/data/ExternalCardAPI.js:1282:36)\\n    at ExternalCardAPI.performHealthCheck (http://localhost:8080/js/data/ExternalCardAPI.js:1221:45)\\n    at async ExternalCardAPI.refreshHealthStatus (http://localhost:8080/js/data/ExternalCardAPI.js:1339:9)\\n    at async window.checkAPIStatus (http://localhost:8080/test-external-database.html:316:17)\"\n}"
+        },
+        {
+          "timestamp": "2025-07-30T17:47:48.156Z",
+          "level": "error",
+          "message": "ffdecks API error",
+          "data": "{\n  \"error\": \"Failed to fetch\",\n  \"stack\": \"TypeError: Failed to fetch\\n    at ExternalCardAPI.makeHealthCheckRequest (http://localhost:8080/js/data/ExternalCardAPI.js:1282:36)\\n    at ExternalCardAPI.performHealthCheck (http://localhost:8080/js/data/ExternalCardAPI.js:1221:45)\\n    at ExternalCardAPI.refreshHealthStatus (http://localhost:8080/js/data/ExternalCardAPI.js:1339:20)\\n    at window.checkAPIStatus (http://localhost:8080/test-external-database.html:316:35)\\n    at HTMLButtonElement.onclick (http://localhost:8080/test-external-database.html:180:72)\"\n}"
+        },
+        {
+          "timestamp": "2025-07-30T17:47:48.887Z",
+          "level": "error",
+          "message": "fftcgdb API error",
+          "data": "{\n  \"error\": \"Failed to fetch\",\n  \"stack\": \"TypeError: Failed to fetch\\n    at ExternalCardAPI.makeHealthCheckRequest (http://localhost:8080/js/data/ExternalCardAPI.js:1282:36)\\n    at ExternalCardAPI.performHealthCheck (http://localhost:8080/js/data/ExternalCardAPI.js:1221:45)\\n    at async ExternalCardAPI.refreshHealthStatus (http://localhost:8080/js/data/ExternalCardAPI.js:1339:9)\\n    at async window.checkAPIStatus (http://localhost:8080/test-external-database.html:316:17)\"\n}"
+        },
+        {
+          "timestamp": "2025-07-30T17:47:49.747Z",
+          "level": "error",
+          "message": "squareEnix API error",
+          "data": "{\n  \"error\": \"Failed to fetch\",\n  \"stack\": \"TypeError: Failed to fetch\\n    at ExternalCardAPI.makeHealthCheckRequest (http://localhost:8080/js/data/ExternalCardAPI.js:1282:36)\\n    at ExternalCardAPI.performHealthCheck (http://localhost:8080/js/data/ExternalCardAPI.js:1221:45)\\n    at async ExternalCardAPI.refreshHealthStatus (http://localhost:8080/js/data/ExternalCardAPI.js:1339:9)\\n    at async window.checkAPIStatus (http://localhost:8080/test-external-database.html:316:17)\"\n}"
+        },
+        {
+          "timestamp": "2025-07-30T17:47:54.563Z",
+          "level": "error",
+          "message": "ffdecks API error",
+          "data": "{\n  \"error\": \"Failed to fetch\",\n  \"stack\": \"TypeError: Failed to fetch\\n    at ExternalCardAPI.makeHealthCheckRequest (http://localhost:8080/js/data/ExternalCardAPI.js:1282:36)\\n    at ExternalCardAPI.performHealthCheck (http://localhost:8080/js/data/ExternalCardAPI.js:1221:45)\\n    at window.refreshAPIs (http://localhost:8080/test-external-database.html:607:35)\\n    at HTMLButtonElement.onclick (http://localhost:8080/test-external-database.html:181:53)\"\n}"
+        },
+        {
+          "timestamp": "2025-07-30T17:47:55.179Z",
+          "level": "error",
+          "message": "fftcgdb API error",
+          "data": "{\n  \"error\": \"Failed to fetch\",\n  \"stack\": \"TypeError: Failed to fetch\\n    at ExternalCardAPI.makeHealthCheckRequest (http://localhost:8080/js/data/ExternalCardAPI.js:1282:36)\\n    at ExternalCardAPI.performHealthCheck (http://localhost:8080/js/data/ExternalCardAPI.js:1221:45)\\n    at async window.refreshAPIs (http://localhost:8080/test-external-database.html:607:17)\"\n}"
+        },
+        {
+          "timestamp": "2025-07-30T17:47:56.027Z",
+          "level": "error",
+          "message": "squareEnix API error",
+          "data": "{\n  \"error\": \"Failed to fetch\",\n  \"stack\": \"TypeError: Failed to fetch\\n    at ExternalCardAPI.makeHealthCheckRequest (http://localhost:8080/js/data/ExternalCardAPI.js:1282:36)\\n    at ExternalCardAPI.performHealthCheck (http://localhost:8080/js/data/ExternalCardAPI.js:1221:45)\\n    at async window.refreshAPIs (http://localhost:8080/test-external-database.html:607:17)\"\n}"
+        },
+        {
+          "timestamp": "2025-07-30T17:47:56.626Z",
+          "level": "error",
+          "message": "ffdecks API error",
+          "data": "{\n  \"error\": \"Failed to fetch\",\n  \"stack\": \"TypeError: Failed to fetch\\n    at ExternalCardAPI.makeHealthCheckRequest (http://localhost:8080/js/data/ExternalCardAPI.js:1282:36)\\n    at ExternalCardAPI.performHealthCheck (http://localhost:8080/js/data/ExternalCardAPI.js:1221:45)\\n    at ExternalCardAPI.refreshHealthStatus (http://localhost:8080/js/data/ExternalCardAPI.js:1339:20)\\n    at window.checkAPIStatus (http://localhost:8080/test-external-database.html:316:35)\\n    at window.refreshAPIs (http://localhost:8080/test-external-database.html:610:23)\"\n}"
+        },
+        {
+          "timestamp": "2025-07-30T17:47:57.339Z",
+          "level": "error",
+          "message": "fftcgdb API error",
+          "data": "{\n  \"error\": \"Failed to fetch\",\n  \"stack\": \"TypeError: Failed to fetch\\n    at ExternalCardAPI.makeHealthCheckRequest (http://localhost:8080/js/data/ExternalCardAPI.js:1282:36)\\n    at ExternalCardAPI.performHealthCheck (http://localhost:8080/js/data/ExternalCardAPI.js:1221:45)\\n    at async ExternalCardAPI.refreshHealthStatus (http://localhost:8080/js/data/ExternalCardAPI.js:1339:9)\\n    at async window.checkAPIStatus (http://localhost:8080/test-external-database.html:316:17)\\n    at async window.refreshAPIs (http://localhost:8080/test-external-database.html:610:17)\"\n}"
+        },
+        {
+          "timestamp": "2025-07-30T17:47:58.207Z",
+          "level": "error",
+          "message": "squareEnix API error",
+          "data": "{\n  \"error\": \"Failed to fetch\",\n  \"stack\": \"TypeError: Failed to fetch\\n    at ExternalCardAPI.makeHealthCheckRequest (http://localhost:8080/js/data/ExternalCardAPI.js:1282:36)\\n    at ExternalCardAPI.performHealthCheck (http://localhost:8080/js/data/ExternalCardAPI.js:1221:45)\\n    at async ExternalCardAPI.refreshHealthStatus (http://localhost:8080/js/data/ExternalCardAPI.js:1339:9)\\n    at async window.checkAPIStatus (http://localhost:8080/test-external-database.html:316:17)\\n    at async window.refreshAPIs (http://localhost:8080/test-external-database.html:610:17)\"\n}"
+        }
+      ],
+      "levels": {
+        "error": 24,
+        "warn": 2,
+        "info": 59
+      }
+    },
+    "corsProxy": "https://api.allorigins.win/get?url="
+  },
+  "recentLogs": [
+    {
+      "timestamp": "2025-07-30T17:47:41.094Z",
+      "level": "info",
+      "message": "Returning cached cards",
+      "data": "{\n  \"count\": 1\n}"
+    },
+    {
+      "timestamp": "2025-07-30T17:47:41.515Z",
+      "level": "info",
+      "message": "Health check completed",
+      "data": "{\n  \"results\": [\n    {\n      \"name\": \"ffdecks\",\n      \"url\": \"https://ffdecks.com/api/cards/basic\",\n      \"isOnline\": false,\n      \"status\": 0,\n      \"responseTime\": null,\n      \"lastChecked\": \"2025-07-30T17:47:39.441Z\",\n      \"error\": \"Failed to fetch\"\n    },\n    {\n      \"name\": \"fftcgdb\",\n      \"url\": \"https://fftcgdb.com/api/cards\",\n      \"isOnline\": false,\n      \"status\": 0,\n      \"responseTime\": null,\n      \"lastChecked\": \"2025-07-30T17:47:40.088Z\",\n      \"error\": \"Failed to fetch\"\n    },\n    {\n      \"name\": \"squareEnix\",\n      \"url\": \"https://fftcg.square-enix-games.com\",\n      \"isOnline\": false,\n      \"status\": 0,\n      \"responseTime\": null,\n      \"lastChecked\": \"2025-07-30T17:47:41.013Z\",\n      \"error\": \"Failed to fetch\"\n    }\n  ]\n}"
+    },
+    {
+      "timestamp": "2025-07-30T17:47:41.518Z",
+      "level": "info",
+      "message": "Manually refreshing health status",
+      "data": null
+    },
+    {
+      "timestamp": "2025-07-30T17:47:41.518Z",
+      "level": "info",
+      "message": "Starting API health check",
+      "data": null
+    },
+    {
+      "timestamp": "2025-07-30T17:47:41.518Z",
+      "level": "info",
+      "message": "Testing ffdecks API",
+      "data": "{\n  \"url\": \"https://ffdecks.com/api/cards/basic\"\n}"
+    },
+    {
+      "timestamp": "2025-07-30T17:47:41.620Z",
+      "level": "error",
+      "message": "ffdecks API error",
+      "data": "{\n  \"error\": \"Failed to fetch\",\n  \"stack\": \"TypeError: Failed to fetch\\n    at ExternalCardAPI.makeHealthCheckRequest (http://localhost:8080/js/data/ExternalCardAPI.js:1282:36)\\n    at ExternalCardAPI.performHealthCheck (http://localhost:8080/js/data/ExternalCardAPI.js:1221:45)\\n    at ExternalCardAPI.refreshHealthStatus (http://localhost:8080/js/data/ExternalCardAPI.js:1339:20)\\n    at window.checkAPIStatus (http://localhost:8080/test-external-database.html:316:35)\\n    at window.refreshAPIs (http://localhost:8080/test-external-database.html:610:23)\"\n}"
+    },
+    {
+      "timestamp": "2025-07-30T17:47:42.122Z",
+      "level": "info",
+      "message": "Testing fftcgdb API",
+      "data": "{\n  \"url\": \"https://fftcgdb.com/api/cards\"\n}"
+    },
+    {
+      "timestamp": "2025-07-30T17:47:42.304Z",
+      "level": "error",
+      "message": "fftcgdb API error",
+      "data": "{\n  \"error\": \"Failed to fetch\",\n  \"stack\": \"TypeError: Failed to fetch\\n    at ExternalCardAPI.makeHealthCheckRequest (http://localhost:8080/js/data/ExternalCardAPI.js:1282:36)\\n    at ExternalCardAPI.performHealthCheck (http://localhost:8080/js/data/ExternalCardAPI.js:1221:45)\\n    at async ExternalCardAPI.refreshHealthStatus (http://localhost:8080/js/data/ExternalCardAPI.js:1339:9)\\n    at async window.checkAPIStatus (http://localhost:8080/test-external-database.html:316:17)\\n    at async window.refreshAPIs (http://localhost:8080/test-external-database.html:610:17)\"\n}"
+    },
+    {
+      "timestamp": "2025-07-30T17:47:42.805Z",
+      "level": "info",
+      "message": "Testing squareEnix API",
+      "data": "{\n  \"url\": \"https://fftcg.square-enix-games.com\"\n}"
+    },
+    {
+      "timestamp": "2025-07-30T17:47:43.164Z",
+      "level": "error",
+      "message": "squareEnix API error",
+      "data": "{\n  \"error\": \"Failed to fetch\",\n  \"stack\": \"TypeError: Failed to fetch\\n    at ExternalCardAPI.makeHealthCheckRequest (http://localhost:8080/js/data/ExternalCardAPI.js:1282:36)\\n    at ExternalCardAPI.performHealthCheck (http://localhost:8080/js/data/ExternalCardAPI.js:1221:45)\\n    at async ExternalCardAPI.refreshHealthStatus (http://localhost:8080/js/data/ExternalCardAPI.js:1339:9)\\n    at async window.checkAPIStatus (http://localhost:8080/test-external-database.html:316:17)\\n    at async window.refreshAPIs (http://localhost:8080/test-external-database.html:610:17)\"\n}"
+    },
+    {
+      "timestamp": "2025-07-30T17:47:43.666Z",
+      "level": "info",
+      "message": "Health check completed",
+      "data": "{\n  \"results\": [\n    {\n      \"name\": \"ffdecks\",\n      \"url\": \"https://ffdecks.com/api/cards/basic\",\n      \"isOnline\": false,\n      \"status\": 0,\n      \"responseTime\": null,\n      \"lastChecked\": \"2025-07-30T17:47:41.620Z\",\n      \"error\": \"Failed to fetch\"\n    },\n    {\n      \"name\": \"fftcgdb\",\n      \"url\": \"https://fftcgdb.com/api/cards\",\n      \"isOnline\": false,\n      \"status\": 0,\n      \"responseTime\": null,\n      \"lastChecked\": \"2025-07-30T17:47:42.304Z\",\n      \"error\": \"Failed to fetch\"\n    },\n    {\n      \"name\": \"squareEnix\",\n      \"url\": \"https://fftcg.square-enix-games.com\",\n      \"isOnline\": false,\n      \"status\": 0,\n      \"responseTime\": null,\n      \"lastChecked\": \"2025-07-30T17:47:43.164Z\",\n      \"error\": \"Failed to fetch\"\n    }\n  ]\n}"
+    },
+    {
+      "timestamp": "2025-07-30T17:47:43.673Z",
+      "level": "info",
+      "message": "Starting fetchAllCards",
+      "data": "{\n  \"forceRefresh\": false,\n  \"cachedCardsCount\": 1\n}"
+    },
+    {
+      "timestamp": "2025-07-30T17:47:43.673Z",
+      "level": "info",
+      "message": "Returning cached cards",
+      "data": "{\n  \"count\": 1\n}"
+    },
+    {
+      "timestamp": "2025-07-30T17:47:45.047Z",
+      "level": "info",
+      "message": "Manually refreshing health status",
+      "data": null
+    },
+    {
+      "timestamp": "2025-07-30T17:47:45.047Z",
+      "level": "info",
+      "message": "Starting API health check",
+      "data": null
+    },
+    {
+      "timestamp": "2025-07-30T17:47:45.047Z",
+      "level": "info",
+      "message": "Testing ffdecks API",
+      "data": "{\n  \"url\": \"https://ffdecks.com/api/cards/basic\"\n}"
+    },
+    {
+      "timestamp": "2025-07-30T17:47:45.147Z",
+      "level": "error",
+      "message": "ffdecks API error",
+      "data": "{\n  \"error\": \"Failed to fetch\",\n  \"stack\": \"TypeError: Failed to fetch\\n    at ExternalCardAPI.makeHealthCheckRequest (http://localhost:8080/js/data/ExternalCardAPI.js:1282:36)\\n    at ExternalCardAPI.performHealthCheck (http://localhost:8080/js/data/ExternalCardAPI.js:1221:45)\\n    at ExternalCardAPI.refreshHealthStatus (http://localhost:8080/js/data/ExternalCardAPI.js:1339:20)\\n    at window.checkAPIStatus (http://localhost:8080/test-external-database.html:316:35)\\n    at HTMLButtonElement.onclick (http://localhost:8080/test-external-database.html:180:72)\"\n}"
+    },
+    {
+      "timestamp": "2025-07-30T17:47:45.648Z",
+      "level": "info",
+      "message": "Testing fftcgdb API",
+      "data": "{\n  \"url\": \"https://fftcgdb.com/api/cards\"\n}"
+    },
+    {
+      "timestamp": "2025-07-30T17:47:45.757Z",
+      "level": "error",
+      "message": "fftcgdb API error",
+      "data": "{\n  \"error\": \"Failed to fetch\",\n  \"stack\": \"TypeError: Failed to fetch\\n    at ExternalCardAPI.makeHealthCheckRequest (http://localhost:8080/js/data/ExternalCardAPI.js:1282:36)\\n    at ExternalCardAPI.performHealthCheck (http://localhost:8080/js/data/ExternalCardAPI.js:1221:45)\\n    at async ExternalCardAPI.refreshHealthStatus (http://localhost:8080/js/data/ExternalCardAPI.js:1339:9)\\n    at async window.checkAPIStatus (http://localhost:8080/test-external-database.html:316:17)\"\n}"
+    },
+    {
+      "timestamp": "2025-07-30T17:47:46.258Z",
+      "level": "info",
+      "message": "Testing squareEnix API",
+      "data": "{\n  \"url\": \"https://fftcg.square-enix-games.com\"\n}"
+    },
+    {
+      "timestamp": "2025-07-30T17:47:46.630Z",
+      "level": "error",
+      "message": "squareEnix API error",
+      "data": "{\n  \"error\": \"Failed to fetch\",\n  \"stack\": \"TypeError: Failed to fetch\\n    at ExternalCardAPI.makeHealthCheckRequest (http://localhost:8080/js/data/ExternalCardAPI.js:1282:36)\\n    at ExternalCardAPI.performHealthCheck (http://localhost:8080/js/data/ExternalCardAPI.js:1221:45)\\n    at async ExternalCardAPI.refreshHealthStatus (http://localhost:8080/js/data/ExternalCardAPI.js:1339:9)\\n    at async window.checkAPIStatus (http://localhost:8080/test-external-database.html:316:17)\"\n}"
+    },
+    {
+      "timestamp": "2025-07-30T17:47:47.132Z",
+      "level": "info",
+      "message": "Health check completed",
+      "data": "{\n  \"results\": [\n    {\n      \"name\": \"ffdecks\",\n      \"url\": \"https://ffdecks.com/api/cards/basic\",\n      \"isOnline\": false,\n      \"status\": 0,\n      \"responseTime\": null,\n      \"lastChecked\": \"2025-07-30T17:47:45.147Z\",\n      \"error\": \"Failed to fetch\"\n    },\n    {\n      \"name\": \"fftcgdb\",\n      \"url\": \"https://fftcgdb.com/api/cards\",\n      \"isOnline\": false,\n      \"status\": 0,\n      \"responseTime\": null,\n      \"lastChecked\": \"2025-07-30T17:47:45.756Z\",\n      \"error\": \"Failed to fetch\"\n    },\n    {\n      \"name\": \"squareEnix\",\n      \"url\": \"https://fftcg.square-enix-games.com\",\n      \"isOnline\": false,\n      \"status\": 0,\n      \"responseTime\": null,\n      \"lastChecked\": \"2025-07-30T17:47:46.630Z\",\n      \"error\": \"Failed to fetch\"\n    }\n  ]\n}"
+    },
+    {
+      "timestamp": "2025-07-30T17:47:48.049Z",
+      "level": "info",
+      "message": "Manually refreshing health status",
+      "data": null
+    },
+    {
+      "timestamp": "2025-07-30T17:47:48.050Z",
+      "level": "info",
+      "message": "Starting API health check",
+      "data": null
+    },
+    {
+      "timestamp": "2025-07-30T17:47:48.050Z",
+      "level": "info",
+      "message": "Testing ffdecks API",
+      "data": "{\n  \"url\": \"https://ffdecks.com/api/cards/basic\"\n}"
+    },
+    {
+      "timestamp": "2025-07-30T17:47:48.156Z",
+      "level": "error",
+      "message": "ffdecks API error",
+      "data": "{\n  \"error\": \"Failed to fetch\",\n  \"stack\": \"TypeError: Failed to fetch\\n    at ExternalCardAPI.makeHealthCheckRequest (http://localhost:8080/js/data/ExternalCardAPI.js:1282:36)\\n    at ExternalCardAPI.performHealthCheck (http://localhost:8080/js/data/ExternalCardAPI.js:1221:45)\\n    at ExternalCardAPI.refreshHealthStatus (http://localhost:8080/js/data/ExternalCardAPI.js:1339:20)\\n    at window.checkAPIStatus (http://localhost:8080/test-external-database.html:316:35)\\n    at HTMLButtonElement.onclick (http://localhost:8080/test-external-database.html:180:72)\"\n}"
+    },
+    {
+      "timestamp": "2025-07-30T17:47:48.657Z",
+      "level": "info",
+      "message": "Testing fftcgdb API",
+      "data": "{\n  \"url\": \"https://fftcgdb.com/api/cards\"\n}"
+    },
+    {
+      "timestamp": "2025-07-30T17:47:48.887Z",
+      "level": "error",
+      "message": "fftcgdb API error",
+      "data": "{\n  \"error\": \"Failed to fetch\",\n  \"stack\": \"TypeError: Failed to fetch\\n    at ExternalCardAPI.makeHealthCheckRequest (http://localhost:8080/js/data/ExternalCardAPI.js:1282:36)\\n    at ExternalCardAPI.performHealthCheck (http://localhost:8080/js/data/ExternalCardAPI.js:1221:45)\\n    at async ExternalCardAPI.refreshHealthStatus (http://localhost:8080/js/data/ExternalCardAPI.js:1339:9)\\n    at async window.checkAPIStatus (http://localhost:8080/test-external-database.html:316:17)\"\n}"
+    },
+    {
+      "timestamp": "2025-07-30T17:47:49.389Z",
+      "level": "info",
+      "message": "Testing squareEnix API",
+      "data": "{\n  \"url\": \"https://fftcg.square-enix-games.com\"\n}"
+    },
+    {
+      "timestamp": "2025-07-30T17:47:49.747Z",
+      "level": "error",
+      "message": "squareEnix API error",
+      "data": "{\n  \"error\": \"Failed to fetch\",\n  \"stack\": \"TypeError: Failed to fetch\\n    at ExternalCardAPI.makeHealthCheckRequest (http://localhost:8080/js/data/ExternalCardAPI.js:1282:36)\\n    at ExternalCardAPI.performHealthCheck (http://localhost:8080/js/data/ExternalCardAPI.js:1221:45)\\n    at async ExternalCardAPI.refreshHealthStatus (http://localhost:8080/js/data/ExternalCardAPI.js:1339:9)\\n    at async window.checkAPIStatus (http://localhost:8080/test-external-database.html:316:17)\"\n}"
+    },
+    {
+      "timestamp": "2025-07-30T17:47:50.249Z",
+      "level": "info",
+      "message": "Health check completed",
+      "data": "{\n  \"results\": [\n    {\n      \"name\": \"ffdecks\",\n      \"url\": \"https://ffdecks.com/api/cards/basic\",\n      \"isOnline\": false,\n      \"status\": 0,\n      \"responseTime\": null,\n      \"lastChecked\": \"2025-07-30T17:47:48.156Z\",\n      \"error\": \"Failed to fetch\"\n    },\n    {\n      \"name\": \"fftcgdb\",\n      \"url\": \"https://fftcgdb.com/api/cards\",\n      \"isOnline\": false,\n      \"status\": 0,\n      \"responseTime\": null,\n      \"lastChecked\": \"2025-07-30T17:47:48.887Z\",\n      \"error\": \"Failed to fetch\"\n    },\n    {\n      \"name\": \"squareEnix\",\n      \"url\": \"https://fftcg.square-enix-games.com\",\n      \"isOnline\": false,\n      \"status\": 0,\n      \"responseTime\": null,\n      \"lastChecked\": \"2025-07-30T17:47:49.747Z\",\n      \"error\": \"Failed to fetch\"\n    }\n  ]\n}"
+    },
+    {
+      "timestamp": "2025-07-30T17:47:54.462Z",
+      "level": "info",
+      "message": "Starting API health check",
+      "data": null
+    },
+    {
+      "timestamp": "2025-07-30T17:47:54.462Z",
+      "level": "info",
+      "message": "Testing ffdecks API",
+      "data": "{\n  \"url\": \"https://ffdecks.com/api/cards/basic\"\n}"
+    },
+    {
+      "timestamp": "2025-07-30T17:47:54.563Z",
+      "level": "error",
+      "message": "ffdecks API error",
+      "data": "{\n  \"error\": \"Failed to fetch\",\n  \"stack\": \"TypeError: Failed to fetch\\n    at ExternalCardAPI.makeHealthCheckRequest (http://localhost:8080/js/data/ExternalCardAPI.js:1282:36)\\n    at ExternalCardAPI.performHealthCheck (http://localhost:8080/js/data/ExternalCardAPI.js:1221:45)\\n    at window.refreshAPIs (http://localhost:8080/test-external-database.html:607:35)\\n    at HTMLButtonElement.onclick (http://localhost:8080/test-external-database.html:181:53)\"\n}"
+    },
+    {
+      "timestamp": "2025-07-30T17:47:55.065Z",
+      "level": "info",
+      "message": "Testing fftcgdb API",
+      "data": "{\n  \"url\": \"https://fftcgdb.com/api/cards\"\n}"
+    },
+    {
+      "timestamp": "2025-07-30T17:47:55.179Z",
+      "level": "error",
+      "message": "fftcgdb API error",
+      "data": "{\n  \"error\": \"Failed to fetch\",\n  \"stack\": \"TypeError: Failed to fetch\\n    at ExternalCardAPI.makeHealthCheckRequest (http://localhost:8080/js/data/ExternalCardAPI.js:1282:36)\\n    at ExternalCardAPI.performHealthCheck (http://localhost:8080/js/data/ExternalCardAPI.js:1221:45)\\n    at async window.refreshAPIs (http://localhost:8080/test-external-database.html:607:17)\"\n}"
+    },
+    {
+      "timestamp": "2025-07-30T17:47:55.681Z",
+      "level": "info",
+      "message": "Testing squareEnix API",
+      "data": "{\n  \"url\": \"https://fftcg.square-enix-games.com\"\n}"
+    },
+    {
+      "timestamp": "2025-07-30T17:47:56.027Z",
+      "level": "error",
+      "message": "squareEnix API error",
+      "data": "{\n  \"error\": \"Failed to fetch\",\n  \"stack\": \"TypeError: Failed to fetch\\n    at ExternalCardAPI.makeHealthCheckRequest (http://localhost:8080/js/data/ExternalCardAPI.js:1282:36)\\n    at ExternalCardAPI.performHealthCheck (http://localhost:8080/js/data/ExternalCardAPI.js:1221:45)\\n    at async window.refreshAPIs (http://localhost:8080/test-external-database.html:607:17)\"\n}"
+    },
+    {
+      "timestamp": "2025-07-30T17:47:56.529Z",
+      "level": "info",
+      "message": "Health check completed",
+      "data": "{\n  \"results\": [\n    {\n      \"name\": \"ffdecks\",\n      \"url\": \"https://ffdecks.com/api/cards/basic\",\n      \"isOnline\": false,\n      \"status\": 0,\n      \"responseTime\": null,\n      \"lastChecked\": \"2025-07-30T17:47:54.563Z\",\n      \"error\": \"Failed to fetch\"\n    },\n    {\n      \"name\": \"fftcgdb\",\n      \"url\": \"https://fftcgdb.com/api/cards\",\n      \"isOnline\": false,\n      \"status\": 0,\n      \"responseTime\": null,\n      \"lastChecked\": \"2025-07-30T17:47:55.179Z\",\n      \"error\": \"Failed to fetch\"\n    },\n    {\n      \"name\": \"squareEnix\",\n      \"url\": \"https://fftcg.square-enix-games.com\",\n      \"isOnline\": false,\n      \"status\": 0,\n      \"responseTime\": null,\n      \"lastChecked\": \"2025-07-30T17:47:56.027Z\",\n      \"error\": \"Failed to fetch\"\n    }\n  ]\n}"
+    },
+    {
+      "timestamp": "2025-07-30T17:47:56.531Z",
+      "level": "info",
+      "message": "Manually refreshing health status",
+      "data": null
+    },
+    {
+      "timestamp": "2025-07-30T17:47:56.532Z",
+      "level": "info",
+      "message": "Starting API health check",
+      "data": null
+    },
+    {
+      "timestamp": "2025-07-30T17:47:56.532Z",
+      "level": "info",
+      "message": "Testing ffdecks API",
+      "data": "{\n  \"url\": \"https://ffdecks.com/api/cards/basic\"\n}"
+    },
+    {
+      "timestamp": "2025-07-30T17:47:56.626Z",
+      "level": "error",
+      "message": "ffdecks API error",
+      "data": "{\n  \"error\": \"Failed to fetch\",\n  \"stack\": \"TypeError: Failed to fetch\\n    at ExternalCardAPI.makeHealthCheckRequest (http://localhost:8080/js/data/ExternalCardAPI.js:1282:36)\\n    at ExternalCardAPI.performHealthCheck (http://localhost:8080/js/data/ExternalCardAPI.js:1221:45)\\n    at ExternalCardAPI.refreshHealthStatus (http://localhost:8080/js/data/ExternalCardAPI.js:1339:20)\\n    at window.checkAPIStatus (http://localhost:8080/test-external-database.html:316:35)\\n    at window.refreshAPIs (http://localhost:8080/test-external-database.html:610:23)\"\n}"
+    },
+    {
+      "timestamp": "2025-07-30T17:47:57.127Z",
+      "level": "info",
+      "message": "Testing fftcgdb API",
+      "data": "{\n  \"url\": \"https://fftcgdb.com/api/cards\"\n}"
+    },
+    {
+      "timestamp": "2025-07-30T17:47:57.339Z",
+      "level": "error",
+      "message": "fftcgdb API error",
+      "data": "{\n  \"error\": \"Failed to fetch\",\n  \"stack\": \"TypeError: Failed to fetch\\n    at ExternalCardAPI.makeHealthCheckRequest (http://localhost:8080/js/data/ExternalCardAPI.js:1282:36)\\n    at ExternalCardAPI.performHealthCheck (http://localhost:8080/js/data/ExternalCardAPI.js:1221:45)\\n    at async ExternalCardAPI.refreshHealthStatus (http://localhost:8080/js/data/ExternalCardAPI.js:1339:9)\\n    at async window.checkAPIStatus (http://localhost:8080/test-external-database.html:316:17)\\n    at async window.refreshAPIs (http://localhost:8080/test-external-database.html:610:17)\"\n}"
+    },
+    {
+      "timestamp": "2025-07-30T17:47:57.840Z",
+      "level": "info",
+      "message": "Testing squareEnix API",
+      "data": "{\n  \"url\": \"https://fftcg.square-enix-games.com\"\n}"
+    },
+    {
+      "timestamp": "2025-07-30T17:47:58.207Z",
+      "level": "error",
+      "message": "squareEnix API error",
+      "data": "{\n  \"error\": \"Failed to fetch\",\n  \"stack\": \"TypeError: Failed to fetch\\n    at ExternalCardAPI.makeHealthCheckRequest (http://localhost:8080/js/data/ExternalCardAPI.js:1282:36)\\n    at ExternalCardAPI.performHealthCheck (http://localhost:8080/js/data/ExternalCardAPI.js:1221:45)\\n    at async ExternalCardAPI.refreshHealthStatus (http://localhost:8080/js/data/ExternalCardAPI.js:1339:9)\\n    at async window.checkAPIStatus (http://localhost:8080/test-external-database.html:316:17)\\n    at async window.refreshAPIs (http://localhost:8080/test-external-database.html:610:17)\"\n}"
+    },
+    {
+      "timestamp": "2025-07-30T17:47:58.710Z",
+      "level": "info",
+      "message": "Health check completed",
+      "data": "{\n  \"results\": [\n    {\n      \"name\": \"ffdecks\",\n      \"url\": \"https://ffdecks.com/api/cards/basic\",\n      \"isOnline\": false,\n      \"status\": 0,\n      \"responseTime\": null,\n      \"lastChecked\": \"2025-07-30T17:47:56.625Z\",\n      \"error\": \"Failed to fetch\"\n    },\n    {\n      \"name\": \"fftcgdb\",\n      \"url\": \"https://fftcgdb.com/api/cards\",\n      \"isOnline\": false,\n      \"status\": 0,\n      \"responseTime\": null,\n      \"lastChecked\": \"2025-07-30T17:47:57.339Z\",\n      \"error\": \"Failed to fetch\"\n    },\n    {\n      \"name\": \"squareEnix\",\n      \"url\": \"https://fftcg.square-enix-games.com\",\n      \"isOnline\": false,\n      \"status\": 0,\n      \"responseTime\": null,\n      \"lastChecked\": \"2025-07-30T17:47:58.207Z\",\n      \"error\": \"Failed to fetch\"\n    }\n  ]\n}"
+    },
+    {
+      "timestamp": "2025-07-30T17:47:58.718Z",
+      "level": "info",
+      "message": "Starting fetchAllCards",
+      "data": "{\n  \"forceRefresh\": false,\n  \"cachedCardsCount\": 1\n}"
+    },
+    {
+      "timestamp": "2025-07-30T17:47:58.718Z",
+      "level": "info",
+      "message": "Returning cached cards",
+      "data": "{\n  \"count\": 1\n}"
+    }
+  ],
+  "configuration": {
+    "corsProxy": "https://api.allorigins.win/get?url=",
+    "cacheKey": "fftcg_external_cards",
+    "cacheDuration": 86400000,
+    "endpoints": {
+      "ffdecks": {
+        "base": "https://ffdecks.com/api",
+        "cards": "https://ffdecks.com/api/cards/basic",
+        "deck": "https://ffdecks.com/api/deck",
+        "search": "https://ffdecks.com/api/search"
+      },
+      "squareEnix": {
+        "base": "https://fftcg.square-enix-games.com",
+        "cardBrowser": "https://fftcg.square-enix-games.com/en/card-browser"
+      },
+      "fftcgdb": {
+        "base": "https://fftcgdb.com/api",
+        "cards": "https://fftcgdb.com/api/cards",
+        "sets": "https://fftcgdb.com/api/sets"
+      }
+    }
+  },
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36",
+  "location": "http://localhost:8080/test-external-database.html"
+}

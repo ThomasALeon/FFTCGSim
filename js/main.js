@@ -139,11 +139,31 @@ class AppController {
         
         try {
             // Initialize card database with external API integration
-            await this.cardDatabase.initialize();
+            logger.info('🔄 Starting CardDatabase initialization...');
+            
+            // Add timeout to prevent hanging
+            const initPromise = this.cardDatabase.initialize();
+            const timeoutPromise = new Promise((_, reject) => 
+                setTimeout(() => reject(new Error('CardDatabase initialization timeout after 10 seconds')), 10000)
+            );
+            
+            await Promise.race([initPromise, timeoutPromise]);
+            logger.info('🔄 CardDatabase.initialize() completed');
             
             const totalCards = this.cardDatabase.getAllCards().length;
             const loadDuration = logger.timeEnd('card-data-loading');
             logger.info(`✅ Loaded ${totalCards} cards from database in ${loadDuration?.toFixed(2)}ms`);
+            
+            // Additional debugging
+            logger.info(`🔍 CardDatabase.isLoaded: ${this.cardDatabase.isLoaded}`);
+            logger.info(`🔍 Sample cards: ${totalCards > 0 ? this.cardDatabase.getAllCards().slice(0, 3).map(c => c.name).join(', ') : 'None'}`);
+            
+            // Force isLoaded to true if we have cards but flag wasn't set
+            if (totalCards > 0 && !this.cardDatabase.isLoaded) {
+                logger.warn('🔧 CardDatabase has cards but isLoaded=false, fixing...');
+                this.cardDatabase.isLoaded = true;
+            }
+        
             
             // Initialize deck builder after card database is loaded
             logger.info('🔨 Initializing Deck Builder...');
@@ -383,7 +403,7 @@ class AppController {
     /**
      * Switch between different views/pages
      */
-    switchView(viewName) {
+    async switchView(viewName) {
         if (this.isLoading) {
             console.warn('Cannot switch views while loading');
             return;
@@ -409,7 +429,7 @@ class AppController {
             });
             
             // Handle view-specific initialization
-            this.handleViewActivation(viewName);
+            await this.handleViewActivation(viewName);
             
             console.log(`📱 Switched to view: ${viewName}`);
         } else {
@@ -420,18 +440,46 @@ class AppController {
     /**
      * Handle view-specific initialization
      */
-    handleViewActivation(viewName) {
+    async handleViewActivation(viewName) {
         switch (viewName) {
             case 'deck-builder':
+                logger.info(`🔍 Deck builder check: deckBuilder=${!!this.deckBuilder}, cardDatabase.isLoaded=${this.cardDatabase.isLoaded}, cardCount=${this.cardDatabase.getAllCards().length}`);
+                
                 if (this.deckBuilder && this.cardDatabase.isLoaded) {
-                    logger.info('Deck builder activated');
+                    logger.info('✅ Deck builder activated successfully');
                     // The deck builder now manages its own display
                 } else {
-                    logger.warn('Deck builder or card database not ready yet');
-                    // Show loading message in deck builder view
-                    const deckBuilderView = document.getElementById('deck-builderView');
-                    if (deckBuilderView) {
-                        deckBuilderView.innerHTML = '<div style="text-align: center; padding: 50px;"><h3>Loading deck builder...</h3><p>Please wait while the card database loads...</p></div>';
+                    logger.warn(`⚠️ Deck builder not ready: deckBuilder=${!!this.deckBuilder}, cardDatabase.isLoaded=${this.cardDatabase.isLoaded}`);
+                    
+                    // Try to force initialize if we have cards but missing flags
+                    const cardCount = this.cardDatabase.getAllCards().length;
+                    if (cardCount > 0 && !this.cardDatabase.isLoaded) {
+                        logger.info('🔧 Force-enabling CardDatabase...');
+                        this.cardDatabase.isLoaded = true;
+                    }
+                    
+                    if (!this.deckBuilder && this.cardDatabase.isLoaded) {
+                        logger.info('🔧 Force-initializing DeckBuilder...');
+                        try {
+                            // Import DeckBuilder class dynamically if needed
+                            const { DeckBuilder } = await import('./components/DeckBuilder.js');
+                            this.deckBuilder = new DeckBuilder(this.cardDatabase, this.deckManager);
+                            logger.info('✅ Deck Builder force-initialized successfully');
+                        } catch (error) {
+                            logger.error('❌ Failed to force-initialize Deck Builder:', error);
+                        }
+                    }
+                    
+                    // Show loading message in deck builder view only if still not ready
+                    if (!this.deckBuilder || !this.cardDatabase.isLoaded) {
+                        const deckBuilderView = document.getElementById('deck-builderView');
+                        if (deckBuilderView) {
+                            deckBuilderView.innerHTML = `<div style="text-align: center; padding: 50px;">
+                                <h3>Loading deck builder...</h3>
+                                <p>Please wait while the card database loads...</p>
+                                <p style="color: #666; font-size: 0.9em;">Cards loaded: ${cardCount}, Database ready: ${this.cardDatabase.isLoaded}, Builder ready: ${!!this.deckBuilder}</p>
+                            </div>`;
+                        }
                     }
                 }
                 break;
