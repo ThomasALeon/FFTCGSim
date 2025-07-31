@@ -128,7 +128,6 @@ export class DeckBuilder {
         this.deckNameInput = document.getElementById('deckName');
         this.deckCardCount = document.getElementById('deckCardCount');
         this.saveDeckBtn = document.getElementById('saveDeckBtn');
-        this.addCardsBtn = document.getElementById('addCardsBtn');
         
         if (!this.deckManagerElement || !this.deckEditorElement) {
             throw new Error('Required deck builder elements not found in DOM');
@@ -1293,8 +1292,8 @@ export class DeckBuilder {
         if (this.deckEditorElement) {
             this.deckEditorElement.style.display = 'block';
         }
-        // Hide card search panel initially
-        this.hideCardSearch();
+        // Show card search panel immediately for deck building
+        this.showCardSearch();
     }
 
     /**
@@ -1314,9 +1313,6 @@ export class DeckBuilder {
             this.cardSearchPanel.style.display = 'block';
             this.refreshCardDisplay();
         }
-        if (this.addCardsBtn) {
-            this.addCardsBtn.style.display = 'none';
-        }
     }
 
     /**
@@ -1325,9 +1321,6 @@ export class DeckBuilder {
     hideCardSearch() {
         if (this.cardSearchPanel) {
             this.cardSearchPanel.style.display = 'none';
-        }
-        if (this.addCardsBtn) {
-            this.addCardsBtn.style.display = 'inline-block';
         }
     }
 
