@@ -774,79 +774,37 @@ export class ExternalCardAPI {
         ];
         let cardId = 1;
         
-        sets.forEach((set, setIndex) => {
-            this.debugLog('info', `Generating enhanced cards for ${set}`);
+        // Only add the real character cards - no generated fake cards
+        characterCards.forEach((template, index) => {
+            const cardNumber = (index + 1).toString().padStart(3, '0');
             
-            // Add character cards to each set with variations
-            characterCards.forEach((template, index) => {
-                const cardNumber = (index + 1).toString().padStart(3, '0');
-                
-                const card = {
-                    id: `${setIndex + 1}-${cardNumber}${template.rarity}`,
-                    name: template.name,
-                    element: template.element,
-                    type: template.type,
-                    cost: template.cost,
-                    power: template.power,
-                    job: template.job,
-                    category: template.category,
-                    rarity: template.rarity,
-                    text: template.text,
-                    set: set,
-                    cardNumber: cardNumber,
-                    image: this.generateCardImageUrl(template, setIndex + 1, cardNumber),
-                    imageUrls: this.generateMultipleImageUrls(template, setIndex + 1, cardNumber),
-                    source: 'enhanced-fallback',
-                    hasRealImage: true
-                };
-                
-                enhancedCards.push(card);
-                cardId++;
-            });
+            const card = {
+                id: `1-${cardNumber}${template.rarity}`,
+                name: template.name,
+                element: template.element,
+                type: template.type,
+                cost: template.cost,
+                power: template.power,
+                job: template.job,
+                category: template.category,
+                rarity: template.rarity,
+                text: template.text,
+                set: 'Opus I',
+                cardNumber: cardNumber,
+                image: this.generateCardImageUrl(template, 1, cardNumber),
+                imageUrls: this.generateMultipleImageUrls(template, 1, cardNumber),
+                source: 'real-cards-fallback',
+                hasRealImage: true
+            };
             
-            // Fill remaining slots with generated cards
-            const remainingSlots = 186 - characterCards.length;
-            for (let i = 0; i < remainingSlots; i++) {
-                const cardNumber = (characterCards.length + i + 1).toString().padStart(3, '0');
-                const elements = ['fire', 'ice', 'wind', 'lightning', 'water', 'earth', 'light', 'dark'];
-                const types = ['forward', 'backup', 'summon'];
-                const element = elements[i % elements.length];
-                const type = types[i % types.length];
-                
-                const rarity = this.determineRarity(i + characterCards.length);
-                const cardName = `${set} ${element} ${type} ${cardNumber}`;
-                
-                const card = {
-                    id: `${setIndex + 1}-${cardNumber}${rarity}`,
-                    name: cardName,
-                    element: element,
-                    type: type,
-                    cost: Math.min(Math.max(Math.floor(i / 20) + 1, 1), 8),
-                    power: type === 'forward' ? (Math.floor(i / 15) + 3) * 1000 : undefined,
-                    job: type === 'forward' ? 'Warrior' : type === 'backup' ? 'Mage' : null,
-                    category: 'Generic',
-                    rarity: rarity,
-                    text: `Enhanced ${type} ability for ${element} element.`,
-                    set: set,
-                    cardNumber: cardNumber,
-                    image: this.generateCardImageUrl({ name: cardName, element, type }, setIndex + 1, cardNumber),
-                    imageUrls: this.generateMultipleImageUrls({ name: cardName, element, type }, setIndex + 1, cardNumber),
-                    source: 'enhanced-fallback',
-                    hasRealImage: true
-                };
-                
-                enhancedCards.push(card);
-                cardId++;
-            }
+            enhancedCards.push(card);
+            cardId++;
         });
         
-        this.debugLog('info', 'Enhanced fallback data generation completed', {
+        this.debugLog('info', 'Real FFTCG character cards loaded (no fake cards)', {
             totalCards: enhancedCards.length,
-            sets: sets.length,
             realCharacters: characterCards.length,
-            setsGenerated: sets.length,
-            cardsPerSet: 186,
-            totalExpected: sets.length * 186
+            note: 'Only actual FFTCG characters included - no generated fake cards'
         });
         
         // Cache image URLs for future use

@@ -198,25 +198,65 @@
                                     <button class="btn btn-secondary btn-sm" onclick="window.app?.deckBuilder?.hideCardSearch()">Done</button>
                                 </div>
                                 <div class="search-controls">
-                                    <input type="text" id="cardSearch" placeholder="Search cards..." class="search-input">
-                                    <select id="elementFilter" class="filter-select">
-                                        <option value="">All Elements</option>
-                                        <option value="fire">Fire</option>
-                                        <option value="ice">Ice</option>
-                                        <option value="wind">Wind</option>
-                                        <option value="lightning">Lightning</option>
-                                        <option value="water">Water</option>
-                                        <option value="earth">Earth</option>
-                                        <option value="light">Light</option>
-                                        <option value="dark">Dark</option>
-                                    </select>
-                                    <select id="typeFilter" class="filter-select">
-                                        <option value="">All Types</option>
-                                        <option value="forward">Forward</option>
-                                        <option value="backup">Backup</option>
-                                        <option value="summon">Summon</option>
-                                        <option value="monster">Monster</option>
-                                    </select>
+                                    <div class="search-input-container">
+                                        <input type="text" id="cardSearch" placeholder="Search cards by name..." class="search-input">
+                                        <button class="search-clear-btn" id="clearSearch" style="display: none;" onclick="window.app?.deckBuilder?.clearSearch()">✕</button>
+                                    </div>
+                                    
+                                    <!-- Element Filter Buttons -->
+                                    <div class="filter-group">
+                                        <label class="filter-group-label">Element:</label>
+                                        <div class="filter-buttons" id="elementButtons">
+                                            <button class="filter-btn active" data-element="" onclick="window.app?.deckBuilder?.setElementFilter('')">All</button>
+                                            <button class="filter-btn element-fire" data-element="fire" onclick="window.app?.deckBuilder?.setElementFilter('fire')">🔥 Fire</button>
+                                            <button class="filter-btn element-ice" data-element="ice" onclick="window.app?.deckBuilder?.setElementFilter('ice')">❄️ Ice</button>
+                                            <button class="filter-btn element-wind" data-element="wind" onclick="window.app?.deckBuilder?.setElementFilter('wind')">🌪️ Wind</button>
+                                            <button class="filter-btn element-lightning" data-element="lightning" onclick="window.app?.deckBuilder?.setElementFilter('lightning')">⚡ Lightning</button>
+                                            <button class="filter-btn element-water" data-element="water" onclick="window.app?.deckBuilder?.setElementFilter('water')">💧 Water</button>
+                                            <button class="filter-btn element-earth" data-element="earth" onclick="window.app?.deckBuilder?.setElementFilter('earth')">🌍 Earth</button>
+                                            <button class="filter-btn element-light" data-element="light" onclick="window.app?.deckBuilder?.setElementFilter('light')">☀️ Light</button>
+                                            <button class="filter-btn element-dark" data-element="dark" onclick="window.app?.deckBuilder?.setElementFilter('dark')">🌑 Dark</button>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Type Filter Buttons -->
+                                    <div class="filter-group">
+                                        <label class="filter-group-label">Type:</label>
+                                        <div class="filter-buttons" id="typeButtons">
+                                            <button class="filter-btn active" data-type="" onclick="window.app?.deckBuilder?.setTypeFilter('')">All</button>
+                                            <button class="filter-btn" data-type="forward" onclick="window.app?.deckBuilder?.setTypeFilter('forward')">⚔️ Forward</button>
+                                            <button class="filter-btn" data-type="backup" onclick="window.app?.deckBuilder?.setTypeFilter('backup')">🛡️ Backup</button>
+                                            <button class="filter-btn" data-type="summon" onclick="window.app?.deckBuilder?.setTypeFilter('summon')">✨ Summon</button>
+                                            <button class="filter-btn" data-type="monster" onclick="window.app?.deckBuilder?.setTypeFilter('monster')">👹 Monster</button>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Cost Filter Buttons -->
+                                    <div class="filter-group">
+                                        <label class="filter-group-label">Cost:</label>
+                                        <div class="filter-buttons" id="costButtons">
+                                            <button class="filter-btn active" data-cost="" onclick="window.app?.deckBuilder?.setCostFilter('')">All</button>
+                                            <button class="filter-btn" data-cost="1" onclick="window.app?.deckBuilder?.setCostFilter('1')">1</button>
+                                            <button class="filter-btn" data-cost="2" onclick="window.app?.deckBuilder?.setCostFilter('2')">2</button>
+                                            <button class="filter-btn" data-cost="3" onclick="window.app?.deckBuilder?.setCostFilter('3')">3</button>
+                                            <button class="filter-btn" data-cost="4" onclick="window.app?.deckBuilder?.setCostFilter('4')">4</button>
+                                            <button class="filter-btn" data-cost="5" onclick="window.app?.deckBuilder?.setCostFilter('5')">5</button>
+                                            <button class="filter-btn" data-cost="6" onclick="window.app?.deckBuilder?.setCostFilter('6')">6</button>
+                                            <button class="filter-btn" data-cost="7+" onclick="window.app?.deckBuilder?.setCostFilter('7+')">7+</button>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Rarity Filter Buttons -->
+                                    <div class="filter-group">
+                                        <label class="filter-group-label">Rarity:</label>
+                                        <div class="filter-buttons" id="rarityButtons">
+                                            <button class="filter-btn active" data-rarity="" onclick="window.app?.deckBuilder?.setRarityFilter('')">All</button>
+                                            <button class="filter-btn rarity-c" data-rarity="C" onclick="window.app?.deckBuilder?.setRarityFilter('C')">C</button>
+                                            <button class="filter-btn rarity-r" data-rarity="R" onclick="window.app?.deckBuilder?.setRarityFilter('R')">R</button>
+                                            <button class="filter-btn rarity-h" data-rarity="H" onclick="window.app?.deckBuilder?.setRarityFilter('H')">H</button>
+                                            <button class="filter-btn rarity-l" data-rarity="L" onclick="window.app?.deckBuilder?.setRarityFilter('L')">L</button>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="card-grid" id="cardDatabase">
                                     <!-- Cards will be populated here -->

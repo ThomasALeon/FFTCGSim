@@ -298,3 +298,55 @@
 ::1 - - [30/Jul/2025 23:33:13] "GET /js/data/Opus1CardMapping.js HTTP/1.1" 200 -
 ::1 - - [30/Jul/2025 23:33:13] code 404, message File not found
 ::1 - - [30/Jul/2025 23:33:13] "GET /favicon.ico HTTP/1.1" 404 -
+::1 - - [30/Jul/2025 23:38:07] "GET / HTTP/1.1" 200 -
+::1 - - [30/Jul/2025 23:38:07] "GET /css/main.css HTTP/1.1" 200 -
+::1 - - [30/Jul/2025 23:38:07] code 404, message File not found
+::1 - - [30/Jul/2025 23:38:07] "GET /css/components/modals.css HTTP/1.1" 200 -
+::1 - - [30/Jul/2025 23:38:07] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
+::1 - - [30/Jul/2025 23:38:07] "GET /css/components/deck-builder.css HTTP/1.1" 200 -
+::1 - - [30/Jul/2025 23:38:07] "GET /css/accessibility.css HTTP/1.1" 200 -
+::1 - - [30/Jul/2025 23:38:07] "GET /js/main.js HTTP/1.1" 200 -
+::1 - - [30/Jul/2025 23:38:07] "GET /js/core/CardDatabase.js HTTP/1.1" 200 -
+::1 - - [30/Jul/2025 23:38:07] "GET /js/core/DeckManager.js HTTP/1.1" 200 -
+::1 - - [30/Jul/2025 23:38:07] "GET /js/core/GameEngine.js HTTP/1.1" 200 -
+::1 - - [30/Jul/2025 23:38:07] "GET /js/utils/Logger.js HTTP/1.1" 200 -
+::1 - - [30/Jul/2025 23:38:07] "GET /js/utils/LocalStorage.js HTTP/1.1" 200 -
+::1 - - [30/Jul/2025 23:38:07] "GET /js/utils/Notifications.js HTTP/1.1" 200 -
+::1 - - [30/Jul/2025 23:38:07] "GET /js/utils/Validation.js HTTP/1.1" 200 -
+::1 - - [30/Jul/2025 23:38:07] "GET /js/utils/Security.js HTTP/1.1" 200 -
+::1 - - [30/Jul/2025 23:38:07] "GET /js/utils/AccessibilitySettings.js HTTP/1.1" 200 -
+::1 - - [30/Jul/2025 23:38:07] "GET /js/data/ExtendedCardDatabase.js HTTP/1.1" 200 -
+::1 - - [30/Jul/2025 23:38:07] "GET /js/core/PlayerManager.js HTTP/1.1" 200 -
+::1 - - [30/Jul/2025 23:38:07] "GET /js/data/ExternalCardAPI.js HTTP/1.1" 200 -
+::1 - - [30/Jul/2025 23:38:07] "GET /js/components/Modal.js HTTP/1.1" 200 -
+::1 - - [30/Jul/2025 23:38:07] "GET /js/components/GameBoard.js HTTP/1.1" 200 -
+::1 - - [30/Jul/2025 23:38:07] "GET /js/components/DeckBuilder.js HTTP/1.1" 200 -
+::1 - - [30/Jul/2025 23:38:07] "GET /js/data/Opus1CardMapping.js HTTP/1.1" 200 -
+::1 - - [30/Jul/2025 23:38:07] code 404, message File not found
+::1 - - [30/Jul/2025 23:38:07] "GET /favicon.ico HTTP/1.1" 404 -
+::1 - - [30/Jul/2025 23:40:49] "GET / HTTP/1.1" 200 -
+::1 - - [30/Jul/2025 23:40:49] "GET /js/main.js HTTP/1.1" 200 -
+::1 - - [30/Jul/2025 23:40:49] "GET /css/components/modals.css HTTP/1.1" 200 -
+::1 - - [30/Jul/2025 23:40:49] "GET /css/accessibility.css HTTP/1.1" 200 -
+::1 - - [30/Jul/2025 23:40:49] "GET /css/components/deck-builder.css HTTP/1.1" 200 -
+::1 - - [30/Jul/2025 23:40:49] "GET /css/main.css HTTP/1.1" 200 -
+::1 - - [30/Jul/2025 23:40:49] "GET /js/core/DeckManager.js HTTP/1.1" 200 -
+::1 - - [30/Jul/2025 23:40:49] "GET /js/core/GameEngine.js HTTP/1.1" 200 -
+::1 - - [30/Jul/2025 23:40:49] "GET /js/utils/Logger.js HTTP/1.1" 200 -
+::1 - - [30/Jul/2025 23:40:49] "GET /js/utils/LocalStorage.js HTTP/1.1" 200 -
+::1 - - [30/Jul/2025 23:40:49] "GET /js/utils/Notifications.js HTTP/1.1" 200 -
+::1 - - [30/Jul/2025 23:40:49] "GET /js/core/CardDatabase.js HTTP/1.1" 200 -
+::1 - - [30/Jul/2025 23:40:49] "GET /js/utils/Validation.js HTTP/1.1" 200 -
+::1 - - [30/Jul/2025 23:40:49] "GET /js/utils/Security.js HTTP/1.1" 200 -
+::1 - - [30/Jul/2025 23:40:49] "GET /js/data/ExtendedCardDatabase.js HTTP/1.1" 200 -
+::1 - - [30/Jul/2025 23:40:49] "GET /js/utils/AccessibilitySettings.js HTTP/1.1" 200 -
+::1 - - [30/Jul/2025 23:40:49] "GET /js/data/ExternalCardAPI.js HTTP/1.1" 200 -
+::1 - - [30/Jul/2025 23:40:49] "GET /js/core/PlayerManager.js HTTP/1.1" 200 -
+::1 - - [30/Jul/2025 23:40:49] "GET /js/components/Modal.js HTTP/1.1" 200 -
+::1 - - [30/Jul/2025 23:40:49] "GET /js/components/DeckBuilder.js HTTP/1.1" 200 -
+::1 - - [30/Jul/2025 23:40:49] "GET /js/components/GameBoard.js HTTP/1.1" 200 -
+::1 - - [30/Jul/2025 23:40:49] "GET /js/data/Opus1CardMapping.js HTTP/1.1" 200 -
+::1 - - [30/Jul/2025 23:40:49] code 404, message File not found
+::1 - - [30/Jul/2025 23:40:49] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
+::1 - - [30/Jul/2025 23:40:49] code 404, message File not found
+::1 - - [30/Jul/2025 23:40:49] "GET /favicon.ico HTTP/1.1" 404 -

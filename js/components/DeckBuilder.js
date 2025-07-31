@@ -25,6 +25,8 @@ export class DeckBuilder {
         this.searchTerm = '';
         this.elementFilter = '';
         this.typeFilter = '';
+        this.costFilter = '';
+        this.rarityFilter = '';
         
         // UI elements
         this.cardGrid = null;
@@ -202,8 +204,32 @@ export class DeckBuilder {
             logger.debug(`🔍 After type filter "${this.typeFilter}": ${beforeType} → ${cards.length} cards`);
         }
 
-        // Sort cards by name
-        cards.sort((a, b) => a.name.localeCompare(b.name));
+        // Apply cost filter
+        if (this.costFilter) {
+            const beforeCost = cards.length;
+            if (this.costFilter === '7+') {
+                cards = cards.filter(card => card.cost >= 7);
+            } else {
+                const cost = parseInt(this.costFilter);
+                cards = cards.filter(card => card.cost === cost);
+            }
+            logger.debug(`🔍 After cost filter "${this.costFilter}": ${beforeCost} → ${cards.length} cards`);
+        }
+
+        // Apply rarity filter
+        if (this.rarityFilter) {
+            const beforeRarity = cards.length;
+            cards = cards.filter(card => card.rarity === this.rarityFilter);
+            logger.debug(`🔍 After rarity filter "${this.rarityFilter}": ${beforeRarity} → ${cards.length} cards`);
+        }
+
+        // Sort cards by cost first, then by name
+        cards.sort((a, b) => {
+            if (a.cost !== b.cost) {
+                return a.cost - b.cost;
+            }
+            return a.name.localeCompare(b.name);
+        });
 
         return cards;
     }
@@ -554,6 +580,7 @@ export class DeckBuilder {
      */
     handleSearch(event) {
         this.searchTerm = event.target.value.trim();
+        this.updateSearchClearButton();
         this.refreshCardDisplay();
     }
 
@@ -571,6 +598,87 @@ export class DeckBuilder {
     handleTypeFilter(event) {
         this.typeFilter = event.target.value;
         this.refreshCardDisplay();
+    }
+
+    /**
+     * Set element filter (for button-based filters)
+     */
+    setElementFilter(element) {
+        this.elementFilter = element;
+        this.updateFilterButtonStates('element', element);
+        this.refreshCardDisplay();
+    }
+
+    /**
+     * Set type filter (for button-based filters)
+     */
+    setTypeFilter(type) {
+        this.typeFilter = type;
+        this.updateFilterButtonStates('type', type);
+        this.refreshCardDisplay();
+    }
+
+    /**
+     * Set cost filter (for button-based filters)
+     */
+    setCostFilter(cost) {
+        this.costFilter = cost;
+        this.updateFilterButtonStates('cost', cost);
+        this.refreshCardDisplay();
+    }
+
+    /**
+     * Set rarity filter (for button-based filters)
+     */
+    setRarityFilter(rarity) {
+        this.rarityFilter = rarity;
+        this.updateFilterButtonStates('rarity', rarity);
+        this.refreshCardDisplay();
+    }
+
+    /**
+     * Clear search input
+     */
+    clearSearch() {
+        if (this.searchInput) {
+            this.searchInput.value = '';
+            this.searchTerm = '';
+            this.refreshCardDisplay();
+            this.updateSearchClearButton();
+        }
+    }
+
+    /**
+     * Update filter button states to show active filter
+     */
+    updateFilterButtonStates(filterType, value) {
+        const buttonContainer = document.getElementById(`${filterType}Buttons`);
+        if (!buttonContainer) return;
+
+        // Remove active class from all buttons in this group
+        buttonContainer.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+
+        // Add active class to selected button
+        const activeButton = buttonContainer.querySelector(`[data-${filterType}="${value}"]`);
+        if (activeButton) {
+            activeButton.classList.add('active');
+        }
+    }
+
+    /**
+     * Update search clear button visibility
+     */
+    updateSearchClearButton() {
+        const clearButton = document.getElementById('clearSearch');
+        if (clearButton) {
+            if (this.searchTerm && this.searchTerm.length > 0) {
+                clearButton.style.display = 'block';
+            } else {
+                clearButton.style.display = 'none';
+            }
+        }
     }
 
     /**
