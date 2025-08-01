@@ -130,7 +130,7 @@ export class Modal {
      */
     async loadCardImageMapping() {
         try {
-            const response = await fetch('./js/data/card_image_mapping.json');
+            const response = await fetch('./src/data/card_image_mapping.json');
             if (response.ok) {
                 this.cardImageMapping = await response.json();
             } else {

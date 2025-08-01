@@ -10,7 +10,7 @@
  * - Dynamic set detection and future-proofing for new releases
  * 
  * ADDING NEW SETS:
- * 1. Add new card data to js/data/fftcg_real_cards.json with proper "set" field
+ * 1. Add new card data to src/data/fftcg_real_cards.json with proper "set" field
  * 2. Update the namedOpusMap in CardDatabase.getAllSets() if it's Opus XV+ format
  * 3. Update the namedOpusMap in DeckBuilder.getOpusNumber() for display names
  * 4. Set filter buttons will be automatically generated
@@ -145,7 +145,7 @@ export class CardDatabase {
             console.log('🌐 Loading cards from JSON data file...');
             
             // Load the FFTCG real cards data directly
-            const response = await fetch('./js/data/fftcg_real_cards.json');
+            const response = await fetch('./src/data/fftcg_real_cards.json');
             if (response.ok) {
                 const realCards = await response.json();
                 console.log(`✅ Loaded ${realCards.length} real FFTCG cards from JSON data`);
