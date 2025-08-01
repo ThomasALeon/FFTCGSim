@@ -29,6 +29,7 @@ import { Modal } from './components/Modal.js';
 import { DeckBuilder } from './components/DeckBuilder.js';
 import { GameBoard } from './components/GameBoard.js';
 import { PracticeSetup } from './components/PracticeSetup.js';
+import { PracticeLobby } from './components/PracticeLobby.js';
 // import { Lobby } from './components/Lobby.js';
 // import { SocketClient } from './network/SocketClient.js';
 
@@ -58,6 +59,7 @@ class AppController {
         this.deckBuilder = null; // Will be initialized after card database loads
         this.gameBoard = null; // Will be initialized after card database loads
         this.practiceSetup = null; // Will be initialized after deck manager loads
+        this.practiceLobby = null; // Will be initialized after dependencies load
         // this.lobby = new Lobby();
         // this.socketClient = new SocketClient();
         
@@ -193,6 +195,16 @@ class AppController {
             } catch (practiceError) {
                 logger.error('Failed to initialize Practice Setup:', practiceError);
                 this.practiceSetup = null;
+            }
+            
+            // Initialize practice lobby
+            logger.info('🎮 Initializing Practice Lobby...');
+            try {
+                this.practiceLobby = new PracticeLobby(this.deckManager, this.playerManager, this.gameEngine);
+                logger.info('✅ Practice Lobby initialized successfully');
+            } catch (lobbyError) {
+                logger.error('Failed to initialize Practice Lobby:', lobbyError);
+                this.practiceLobby = null;
             }
             
         } catch (error) {
@@ -490,6 +502,14 @@ class AppController {
                     }
                 }
                 break;
+            case 'practice-lobby':
+                logger.info('🤖 Practice lobby activated');
+                if (this.practiceLobby) {
+                    this.practiceLobby.initialize();
+                } else {
+                    logger.warn('Practice lobby not yet initialized');
+                }
+                break;
             case 'game':
                 if (this.gameBoard) {
                     this.gameBoard.startGame();
@@ -741,11 +761,10 @@ window.showNotification = function(message, type = 'info') {
     notifications.show(message, type);
 };
 
+// Legacy practice game function - now redirects to lobby
 window.startPracticeGame = function() {
-    if (window.app && window.app.practiceSetup) {
-        window.app.practiceSetup.showSetupModal();
-    } else if (window.app) {
-        notifications.warning('Practice mode not yet initialized. Please wait for loading to complete.');
+    if (window.app) {
+        window.app.switchView('practice-lobby');
     } else {
         notifications.info('Application not yet loaded');
     }

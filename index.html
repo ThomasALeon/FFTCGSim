@@ -8,7 +8,7 @@
     <!-- Component CSS files -->
     <link rel="stylesheet" href="assets/css/components/modals.css">
     <link rel="stylesheet" href="assets/css/components/deck-builder.css">
-    <!-- <link rel="stylesheet" href="assets/css/components/lobby.css"> -->
+    <link rel="stylesheet" href="assets/css/components/lobby.css">
     <link rel="stylesheet" href="assets/css/components/game-board.css">
     <link rel="stylesheet" href="assets/css/accessibility.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -90,14 +90,14 @@
                     </div>
 
                     <!-- Practice vs AI -->
-                    <div class="menu-card" onclick="startPracticeGame()">
+                    <div class="menu-card" onclick="window.app.switchView('practice-lobby')">
                         <div class="menu-icon">🤖</div>
                         <h3 class="menu-title">Practice vs AI</h3>
                         <p class="menu-description">
                             Test your decks against AI opponents of varying difficulty levels.
                         </p>
                         <div class="menu-stats">
-                            Coming Soon
+                            Ready to Play
                         </div>
                     </div>
 
@@ -400,6 +400,10 @@
                 <div class="game-container">
                     <!-- Game Controls -->
                     <div class="game-controls">
+                        <div class="game-menu-btn" onclick="toggleGameMenu()">
+                            <span>☰</span>
+                        </div>
+                        
                         <div class="turn-indicator" id="turnIndicator">
                             <span>🎯</span>
                             <span id="currentPlayer">Your Turn</span>
@@ -409,7 +413,24 @@
                         <div class="game-actions">
                             <button class="phase-btn" id="endPhaseBtn">End Phase</button>
                             <button class="phase-btn" id="endTurnBtn">End Turn</button>
-                            <button class="phase-btn btn-secondary" onclick="window.app?.switchView('home')">Leave Game</button>
+                        </div>
+                    </div>
+
+                    <!-- Compact Game Menu (hidden by default) -->
+                    <div class="game-menu" id="gameMenu" style="display: none;">
+                        <div class="game-menu-content">
+                            <button class="game-menu-item" onclick="toggleGameMenu()">
+                                <span>⚙️</span> Settings
+                            </button>
+                            <button class="game-menu-item" onclick="showGameRules()">
+                                <span>📋</span> Rules
+                            </button>
+                            <button class="game-menu-item" onclick="confirmLeaveGame()">
+                                <span>🚪</span> Leave Game
+                            </button>
+                            <button class="game-menu-item" onclick="toggleGameMenu()">
+                                <span>✕</span> Close
+                            </button>
                         </div>
                     </div>
 
@@ -510,16 +531,17 @@
                             </div>
                         </div>
 
-                        <div class="player-area player-controlled player-hand" id="playerHand">
-                            <div class="zone-header" onclick="toggleHand()">
-                                <h3 class="zone-title">Your Hand</h3>
-                                <div style="display: flex; align-items: center; gap: 8px;">
-                                    <span class="zone-count" id="playerHandCount">5</span>
-                                    <button class="hand-toggle" id="handToggle">▼</button>
-                                </div>
+                        <!-- Floating Hand Toggle Bar -->
+                        <div class="hand-toggle-bar" onclick="toggleFloatingHand()" id="handToggleBar">
+                            <div class="hand-toggle-indicator">
+                                <span id="handCardCount">5</span> Cards ▲
                             </div>
+                        </div>
+
+                        <!-- Floating Hand Cards -->
+                        <div class="player-area player-controlled player-hand" id="playerHand">
                             <div class="zone-content horizontal" id="playerHandContent">
-                                <!-- Player hand cards -->
+                                <!-- Player hand cards will float here -->
                             </div>
                         </div>
                     </div>
@@ -531,6 +553,116 @@
                 <div class="profile-container">
                     <h2>Player Profile</h2>
                     <!-- Profile management interface -->
+                </div>
+            </section>
+
+            <!-- Practice Lobby View -->
+            <section id="practice-lobbyView" class="view">
+                <div class="lobby-container">
+                    <!-- Lobby Header -->
+                    <div class="lobby-header">
+                        <button class="btn btn-secondary" onclick="window.app.switchView('home')">
+                            ← Back to Home
+                        </button>
+                        <h2 class="lobby-title">Practice Game Lobby</h2>
+                        <div class="lobby-status">
+                            <span class="status-indicator ready">Ready</span>
+                        </div>
+                    </div>
+
+                    <!-- Main Lobby Content -->
+                    <div class="lobby-content">
+                        <!-- Player Section -->
+                        <div class="lobby-section player-section">
+                            <h3 class="section-title">You</h3>
+                            <div class="player-card player-card-you">
+                                <div class="player-avatar" id="lobbyPlayerAvatar">⚡</div>
+                                <div class="player-info">
+                                    <h4 class="player-name" id="lobbyPlayerName">Your Name</h4>
+                                    <p class="player-stats" id="lobbyPlayerStats">Games: 0 | Wins: 0</p>
+                                </div>
+                                <div class="player-deck-info">
+                                    <div class="deck-selector">
+                                        <label for="playerDeckSelect">Select Deck:</label>
+                                        <select id="playerDeckSelect" class="deck-select">
+                                            <option value="">Choose a deck...</option>
+                                        </select>
+                                        <button class="btn btn-secondary btn-small" onclick="window.app.switchView('deck-builder')">
+                                            Create Deck
+                                        </button>
+                                    </div>
+                                    <div class="selected-deck-preview" id="playerDeckPreview" style="display: none;">
+                                        <div class="deck-preview-header">
+                                            <h5 class="deck-name"></h5>
+                                            <span class="deck-card-count"></span>
+                                        </div>
+                                        <div class="deck-elements"></div>
+                                        <div class="deck-categories"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- VS Indicator -->
+                        <div class="lobby-vs">
+                            <div class="vs-circle">VS</div>
+                        </div>
+
+                        <!-- AI Opponent Section -->
+                        <div class="lobby-section opponent-section">
+                            <h3 class="section-title">AI Opponent</h3>
+                            <div class="player-card player-card-ai">
+                                <div class="player-avatar ai-avatar" id="aiAvatar">🤖</div>
+                                <div class="player-info">
+                                    <h4 class="player-name" id="aiName">AI Opponent</h4>
+                                    <p class="player-stats ai-difficulty" id="aiDifficulty">Select Difficulty</p>
+                                </div>
+                                <div class="ai-settings">
+                                    <div class="difficulty-selector">
+                                        <label for="aiDifficultySelect">Difficulty:</label>
+                                        <select id="aiDifficultySelect" class="difficulty-select">
+                                            <option value="">Choose difficulty...</option>
+                                            <option value="easy">Easy - Learning AI</option>
+                                            <option value="medium">Medium - Balanced AI</option>
+                                            <option value="hard">Hard - Competitive AI</option>
+                                        </select>
+                                    </div>
+                                    <div class="ai-deck-info" id="aiDeckInfo" style="display: none;">
+                                        <div class="ai-deck-preview">
+                                            <h5 class="ai-deck-name"></h5>
+                                            <p class="ai-deck-description"></p>
+                                            <div class="ai-deck-stats">
+                                                <span class="ai-deck-element"></span>
+                                                <span class="ai-deck-strategy"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lobby Actions -->
+                    <div class="lobby-actions">
+                        <div class="lobby-settings">
+                            <label>
+                                <input type="checkbox" id="enableTutorial" checked>
+                                Show tutorial hints
+                            </label>
+                            <label>
+                                <input type="checkbox" id="allowUndo">
+                                Allow undo moves
+                            </label>
+                        </div>
+                        <div class="lobby-buttons">
+                            <button class="btn btn-secondary" onclick="window.app.switchView('home')">
+                                Cancel
+                            </button>
+                            <button class="btn btn-primary" id="startPracticeBtn" disabled onclick="startPracticeFromLobby()">
+                                Start Practice Game
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </section>
         </main>
@@ -652,14 +784,134 @@
             }
         });
         
-        // Toggle hand visibility
-        function toggleHand() {
+        // Toggle floating hand visibility
+        function toggleFloatingHand() {
             const hand = document.getElementById('playerHand');
-            const toggle = document.getElementById('handToggle');
+            const toggleBar = document.getElementById('handToggleBar');
+            const indicator = toggleBar?.querySelector('.hand-toggle-indicator');
             
-            if (hand && toggle) {
+            if (hand && indicator) {
                 hand.classList.toggle('minimized');
-                toggle.textContent = hand.classList.contains('minimized') ? '▲' : '▼';
+                const isMinimized = hand.classList.contains('minimized');
+                const cardCount = document.getElementById('handCardCount')?.textContent || '5';
+                
+                if (isMinimized) {
+                    indicator.innerHTML = `${cardCount} Cards ▲`;
+                    toggleBar.style.background = 'linear-gradient(to top, rgba(255, 215, 0, 0.2) 0%, transparent 100%)';
+                } else {
+                    indicator.innerHTML = `${cardCount} Cards ▼`;
+                    toggleBar.style.background = 'linear-gradient(to top, rgba(255, 215, 0, 0.3) 0%, transparent 100%)';
+                }
+            }
+        }
+
+        // Legacy function for compatibility
+        function toggleHand() {
+            toggleFloatingHand();
+        }
+
+        // Card hover integration with preview
+        function handleCardHover(cardElement, isHovering) {
+            const previewArea = document.querySelector('.card-preview-content');
+            const previewImage = document.querySelector('.card-preview-image');
+            
+            if (isHovering) {
+                // Add hover effect to preview area
+                if (previewArea) previewArea.classList.add('card-hovered');
+                if (previewImage) previewImage.classList.add('card-hovered');
+                
+                // Update preview with card data (if GameBoard component has showCardPreview method)
+                if (window.app?.gameBoard?.showCardPreview) {
+                    const cardData = cardElement.cardData || {
+                        name: cardElement.querySelector('.card-name')?.textContent || 'Unknown Card',
+                        cost: cardElement.querySelector('.card-cost')?.textContent || '?',
+                        element: 'Unknown'
+                    };
+                    window.app.gameBoard.showCardPreview(cardData);
+                }
+            } else {
+                // Remove hover effects
+                if (previewArea) previewArea.classList.remove('card-hovered');
+                if (previewImage) previewImage.classList.remove('card-hovered');
+            }
+        }
+
+        // Set up card hover listeners when hand is populated
+        function setupFloatingHandHovers() {
+            const handCards = document.querySelectorAll('.player-hand .game-card');
+            handCards.forEach(card => {
+                card.addEventListener('mouseenter', () => handleCardHover(card, true));
+                card.addEventListener('mouseleave', () => handleCardHover(card, false));
+            });
+        }
+
+        // Call this when hand cards are added to the DOM
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set up mutation observer to detect when hand cards are added
+            const handContent = document.getElementById('playerHandContent');
+            if (handContent) {
+                const observer = new MutationObserver(function(mutations) {
+                    mutations.forEach(function(mutation) {
+                        if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                            // Cards were added, set up hover listeners
+                            setTimeout(setupFloatingHandHovers, 100);
+                        }
+                    });
+                });
+                
+                observer.observe(handContent, {
+                    childList: true,
+                    subtree: true
+                });
+            }
+        });
+
+        // Game menu functions
+        function toggleGameMenu() {
+            const menu = document.getElementById('gameMenu');
+            if (menu.style.display === 'none') {
+                menu.style.display = 'block';
+                setTimeout(() => menu.classList.add('show'), 10);
+            } else {
+                menu.classList.remove('show');
+                setTimeout(() => menu.style.display = 'none', 200);
+            }
+        }
+
+        function confirmLeaveGame() {
+            if (confirm('Are you sure you want to leave the current game?')) {
+                toggleGameMenu();
+                window.app?.switchView('home');
+            }
+        }
+
+        function showGameRules() {
+            toggleGameMenu();
+            if (window.app && window.app.modal) {
+                window.app.modal.open('gameRules');
+            }
+        }
+
+        // Close game menu when clicking outside
+        document.addEventListener('click', function(e) {
+            const menu = document.getElementById('gameMenu');
+            const menuBtn = document.querySelector('.game-menu-btn');
+            
+            if (menu && menu.classList.contains('show') && 
+                !menu.contains(e.target) && !menuBtn.contains(e.target)) {
+                toggleGameMenu();
+            }
+        });
+
+        // Simplified Practice Lobby Functions - Main logic now in PracticeLobby.js component
+        function startPracticeFromLobby() {
+            if (window.app?.practiceLobby) {
+                window.app.practiceLobby.startPracticeGame().catch(error => {
+                    console.error('Failed to start practice game:', error);
+                    alert('Failed to start practice game: ' + error.message);
+                });
+            } else {
+                alert('Practice lobby not ready. Please wait and try again.');
             }
         }
     </script>
