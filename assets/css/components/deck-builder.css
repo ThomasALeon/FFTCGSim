@@ -1137,9 +1137,15 @@ body.modal-open .card-item:focus {
 }
 
 .deck-card-count {
-    font-weight: 600;
+    font-weight: 700;
     color: var(--color-primary, #ffd700);
-    min-width: 20px;
+    background: rgba(255, 215, 0, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    min-width: 28px;
+    text-align: center;
+    border: 1px solid rgba(255, 215, 0, 0.3);
 }
 
 .deck-card-name {
@@ -1602,12 +1608,219 @@ body.modal-open .card-item:focus {
     transform: scale(1.02);
 }
 
+/* Minimal green + button positioned in corner */
+.add-to-deck-btn-minimal {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 24px;
+    height: 24px;
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Hide add buttons when modal is open */
+.modal-container.active ~ * .add-to-deck-btn-minimal,
+body.modal-open .add-to-deck-btn-minimal {
+    display: none;
+}
+
+.add-to-deck-btn-minimal:hover {
+    background: #218838;
+    transform: scale(1.1);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+}
+
+.add-to-deck-btn-minimal:active {
+    transform: scale(0.95);
+}
+
+/* Make sure card containers are positioned relative to contain the absolute button */
+.card-preview {
+    position: relative;
+}
+
+/* Clean Card Layout */
+.card-image-container {
+    position: relative;
+    margin-bottom: 8px;
+}
+
+.card-cost-overlay {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #ffd700;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    z-index: 5;
+    border: 1px solid #ffd700;
+    min-width: 24px;
+    text-align: center;
+}
+
+.card-info-clean {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 4px 4px 4px;
+}
+
+.card-name-clean {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-text-primary, #fff);
+    text-align: center;
+    line-height: 1.2;
+    min-height: 2.4em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-power-element {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-weight: bold;
+}
+
+.card-power-clean {
+    background: var(--color-primary, #ffd700);
+    color: var(--color-primary-text, #000);
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.card-element-clean {
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+}
+
+/* New Deck Card Layout */
+.deck-composition {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 12px 0;
+}
+
+.deck-elements {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.element-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: white;
+}
+
+.element-badge.element-fire { background: #ff4444; }
+.element-badge.element-ice { background: #4499ff; }
+.element-badge.element-wind { background: #44ff44; color: #000; }
+.element-badge.element-lightning { background: #ffff44; color: #000; }
+.element-badge.element-water { background: #44ffff; color: #000; }
+.element-badge.element-earth { background: #8b4513; }
+.element-badge.element-light { background: #ffd700; color: #000; }
+.element-badge.element-dark { background: #8B008B; }
+.element-badge.element-neutral { background: #888888; }
+
+.deck-categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.category-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    font-size: 0.75rem;
+    color: #ccc;
+    font-weight: 500;
+}
+
+/* Element-based deck card highlighting */
+.deck-card-fire {
+    border-left: 4px solid #ff4444;
+    background: linear-gradient(135deg, var(--color-surface-elevated, #2a2a3a), rgba(255, 68, 68, 0.05));
+}
+
+.deck-card-ice {
+    border-left: 4px solid #4499ff;
+    background: linear-gradient(135deg, var(--color-surface-elevated, #2a2a3a), rgba(68, 153, 255, 0.05));
+}
+
+.deck-card-wind {
+    border-left: 4px solid #44ff44;
+    background: linear-gradient(135deg, var(--color-surface-elevated, #2a2a3a), rgba(68, 255, 68, 0.05));
+}
+
+.deck-card-lightning {
+    border-left: 4px solid #ffff44;
+    background: linear-gradient(135deg, var(--color-surface-elevated, #2a2a3a), rgba(255, 255, 68, 0.05));
+}
+
+.deck-card-water {
+    border-left: 4px solid #44ffff;
+    background: linear-gradient(135deg, var(--color-surface-elevated, #2a2a3a), rgba(68, 255, 255, 0.05));
+}
+
+.deck-card-earth {
+    border-left: 4px solid #8b4513;
+    background: linear-gradient(135deg, var(--color-surface-elevated, #2a2a3a), rgba(139, 69, 19, 0.05));
+}
+
+.deck-card-light {
+    border-left: 4px solid #ffd700;
+    background: linear-gradient(135deg, var(--color-surface-elevated, #2a2a3a), rgba(255, 215, 0, 0.05));
+}
+
+.deck-card-dark {
+    border-left: 4px solid #8B008B;
+    background: linear-gradient(135deg, var(--color-surface-elevated, #2a2a3a), rgba(139, 0, 139, 0.05));
+}
+
+.deck-card-neutral {
+    border-left: 4px solid #888888;
+    background: linear-gradient(135deg, var(--color-surface-elevated, #2a2a3a), rgba(136, 136, 136, 0.05));
+}
+
 /* Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
     .card-item,
     .deck-card-item,
     .card-preview,
     .add-to-deck-btn,
+    .add-to-deck-btn-minimal,
     .deck-card-btn {
         transition: none;
     }
@@ -1618,6 +1831,10 @@ body.modal-open .card-item:focus {
     }
     
     .card-image:hover {
+        transform: none;
+    }
+    
+    .add-to-deck-btn-minimal:hover {
         transform: none;
     }
 }

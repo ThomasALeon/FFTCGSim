@@ -415,6 +415,18 @@
 
                     <!-- Game Board -->
                     <div class="game-board" id="gameBoard">
+                        <!-- Card Preview Area -->
+                        <div class="card-preview-area" id="cardPreviewArea">
+                            <div class="card-preview-header">
+                                <h3 class="card-preview-title">Card Preview</h3>
+                            </div>
+                            <div class="card-preview-content" id="cardPreviewContent">
+                                <div class="card-preview-placeholder">
+                                    Hover or click on a card to preview it here
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Opponent Areas -->
                         <div class="player-area opponent-controlled opponent-hand" id="opponentHand">
                             <div class="zone-header">
@@ -499,9 +511,12 @@
                         </div>
 
                         <div class="player-area player-controlled player-hand" id="playerHand">
-                            <div class="zone-header">
+                            <div class="zone-header" onclick="toggleHand()">
                                 <h3 class="zone-title">Your Hand</h3>
-                                <span class="zone-count" id="playerHandCount">5</span>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span class="zone-count" id="playerHandCount">5</span>
+                                    <button class="hand-toggle" id="handToggle">▼</button>
+                                </div>
                             </div>
                             <div class="zone-content horizontal" id="playerHandContent">
                                 <!-- Player hand cards -->
@@ -636,6 +651,17 @@
                 toggleDeckSidebar();
             }
         });
+        
+        // Toggle hand visibility
+        function toggleHand() {
+            const hand = document.getElementById('playerHand');
+            const toggle = document.getElementById('handToggle');
+            
+            if (hand && toggle) {
+                hand.classList.toggle('minimized');
+                toggle.textContent = hand.classList.contains('minimized') ? '▲' : '▼';
+            }
+        }
     </script>
 </body>
 </html>

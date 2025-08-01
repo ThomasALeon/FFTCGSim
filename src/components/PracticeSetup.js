@@ -87,7 +87,7 @@ export class PracticeSetup {
      * Handle deck selection
      */
     selectDeck(deckId) {
-        this.selectedDeck = this.deckManager.getDeck(deckId);
+        this.selectedDeck = this.deckManager.loadDeck(deckId);
         
         if (!this.selectedDeck) {
             logger.error('Selected deck not found:', deckId);
@@ -198,31 +198,63 @@ export class PracticeSetup {
      * Initialize the practice game with selected settings
      */
     async initializePracticeGame() {
+        logger.info('🎮 Initializing practice game...');
+        
         if (!window.app) {
             throw new Error('App not available');
         }
+        logger.info('✓ App is available');
+        
+        // Check if switchView method exists
+        if (typeof window.app.switchView !== 'function') {
+            throw new Error('App.switchView method not available');
+        }
         
         // Switch to game view
-        window.app.switchView('game');
+        logger.info('🔄 Switching to game view...');
+        try {
+            window.app.switchView('game');
+            logger.info('✓ Successfully switched to game view');
+        } catch (error) {
+            logger.error('❌ Failed to switch to game view:', error);
+            throw new Error(`Failed to switch to game view: ${error.message}`);
+        }
         
         // Wait for game view to load
         await new Promise(resolve => setTimeout(resolve, 100));
         
         // Setup practice game through GameEngine
+        // For now, use the player deck as AI deck since aiDecks only contains metadata
+        // TODO: Implement proper AI deck generation with actual card lists
         const gameConfig = {
             mode: 'practice',
             playerDeck: this.selectedDeck,
             aiDifficulty: this.selectedDifficulty,
-            aiDeck: this.aiDecks[this.selectedDifficulty]
+            aiDeck: this.selectedDeck // Use player deck as AI deck for now
         };
         
-        if (window.app.gameEngine) {
-            await window.app.gameEngine.startPracticeGame(gameConfig);
-        } else {
+        logger.info('🎯 Game config prepared:', gameConfig);
+        
+        if (!window.app.gameEngine) {
+            logger.error('❌ Game engine not available on window.app');
+            logger.info('Available app properties:', Object.keys(window.app));
             throw new Error('Game engine not available');
         }
         
-        logger.info('Practice game initialized successfully');
+        if (typeof window.app.gameEngine.startPracticeGame !== 'function') {
+            logger.error('❌ startPracticeGame method not available on game engine');
+            logger.info('Available gameEngine methods:', Object.keys(window.app.gameEngine));
+            throw new Error('startPracticeGame method not available on game engine');
+        }
+        
+        logger.info('🚀 Starting practice game through game engine...');
+        try {
+            await window.app.gameEngine.startPracticeGame(gameConfig);
+            logger.info('✅ Practice game initialized successfully');
+        } catch (error) {
+            logger.error('❌ Game engine failed to start practice game:', error);
+            throw new Error(`Game engine error: ${error.message}`);
+        }
     }
     
     /**

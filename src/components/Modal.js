@@ -96,6 +96,13 @@ export class Modal {
                 height: '500px',
                 closable: true,
                 backdrop: true
+            },
+            cardDetail: {
+                title: 'Card Details',
+                width: '1100px',
+                height: '600px',
+                closable: true,
+                backdrop: true
             }
         };
 

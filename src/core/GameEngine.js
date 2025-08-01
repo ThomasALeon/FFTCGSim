@@ -1806,4 +1806,111 @@ export class GameEngine {
                 throw new Error(`Unknown action type: ${action.type}`);
         }
     }
+
+    /**
+     * Start a practice game against AI
+     */
+    async startPracticeGame(gameConfig) {
+        try {
+            console.log('🤖 Starting practice game against AI...');
+            
+            if (!gameConfig || !gameConfig.playerDeck) {
+                throw new Error('Invalid game configuration - missing player deck');
+            }
+            
+            if (!gameConfig.aiDifficulty) {
+                throw new Error('Invalid game configuration - missing AI difficulty');
+            }
+            
+            console.log('🔍 Player deck format:', gameConfig.playerDeck);
+            console.log('🔍 Player deck keys:', Object.keys(gameConfig.playerDeck || {}));
+            console.log('🔍 Player deck type:', typeof gameConfig.playerDeck);
+            
+            // Convert deck format from DeckManager format to GameEngine format
+            const convertDeck = (deckData) => {
+                console.log('🔍 Converting deck data:', deckData);
+                console.log('🔍 Deck data keys:', Object.keys(deckData || {}));
+                console.log('🔍 Deck data type:', typeof deckData);
+                
+                if (!deckData) {
+                    throw new Error('No deck data provided');
+                }
+                
+                // If it already has mainDeck, use it
+                if (deckData.mainDeck && Array.isArray(deckData.mainDeck)) {
+                    console.log('✓ Using existing mainDeck format');
+                    return deckData;
+                }
+                
+                // Convert from DeckManager format (cards array) to GameEngine format (mainDeck array)
+                if (deckData.cards && Array.isArray(deckData.cards)) {
+                    console.log('✓ Converting from cards array to mainDeck');
+                    return {
+                        mainDeck: [...deckData.cards], // Copy the cards array
+                        lbDeck: deckData.lbDeck || []
+                    };
+                }
+                
+                // Check if the deck itself is just an array of cards
+                if (Array.isArray(deckData)) {
+                    console.log('✓ Converting from card array directly to mainDeck');
+                    return {
+                        mainDeck: [...deckData],
+                        lbDeck: []
+                    };
+                }
+                
+                console.error('❌ Invalid deck format. Expected: {cards: []} or {mainDeck: []} or []');
+                console.error('❌ Received:', deckData);
+                throw new Error(`Invalid deck format - no cards or mainDeck array found. Keys: ${Object.keys(deckData || {}).join(', ')}`);
+            };
+            
+            // Convert player deck
+            const playerDeck = convertDeck(gameConfig.playerDeck);
+            console.log(`✓ Player deck converted: ${playerDeck.mainDeck.length} cards`);
+            
+            // Create AI deck - for now use the player deck as AI deck
+            // TODO: Implement proper AI deck generation based on difficulty
+            const aiDeckData = gameConfig.aiDeck || gameConfig.playerDeck;
+            const aiDeck = convertDeck(aiDeckData);
+            console.log(`✓ AI deck converted: ${aiDeck.mainDeck.length} cards`);
+            
+            // Get player name from player manager or use default
+            const playerName = this.playerManager?.getProfile()?.name || 'Player';
+            const aiName = `AI (${gameConfig.aiDifficulty})`;
+            
+            // Start the game using the existing startGame method
+            const gameOptions = {
+                mode: this.GAME_MODES.CONSTRUCTED,
+                player1Name: playerName,
+                player2Name: aiName,
+                practiceMode: true,
+                aiDifficulty: gameConfig.aiDifficulty
+            };
+            
+            console.log('🎯 Starting practice game with config:', gameOptions);
+            
+            // Use the existing startGame method
+            this.startGame(playerDeck, aiDeck, gameOptions);
+            
+            // Mark player 2 as AI controlled
+            if (this.gameState && this.gameState.players && this.gameState.players[1]) {
+                this.gameState.players[1].isAI = true;
+                this.gameState.players[1].aiDifficulty = gameConfig.aiDifficulty;
+            }
+            
+            console.log('✅ Practice game started successfully');
+            
+            // Emit event for UI updates
+            this.emit('practiceGameStarted', {
+                gameId: this.gameState.id,
+                playerName: playerName,
+                aiDifficulty: gameConfig.aiDifficulty
+            });
+            
+        } catch (error) {
+            console.error('❌ Failed to start practice game:', error);
+            throw error;
+        }
+    }
 }

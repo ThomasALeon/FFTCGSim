@@ -839,23 +839,21 @@ export class DeckBuilder {
 
         cardDiv.innerHTML = `
             <div class="card-preview ${elementClass}">
-                <div class="card-image">
-                    ${this.getCardImageHTML(card)}
-                </div>
-                <div class="card-info">
-                    <div class="card-name">${card.name}</div>
-                    <div class="card-id">${card.id}</div>
-                    <div class="card-details">
-                        <span class="card-cost">${card.cost || '-'}</span>
-                        <span class="card-element">${this.getElementIcon(card.element)}</span>
-                        ${card.power ? `<span class="card-power">${card.power}</span>` : ''}
+                <div class="card-image-container">
+                    <div class="card-cost-overlay">${card.cost || '-'}</div>
+                    <div class="card-image">
+                        ${this.getCardImageHTML(card)}
                     </div>
-                    <div class="card-type">${this.capitalizeFirst(card.type)}</div>
-                </div>
-                <div class="card-actions">
-                    <button class="add-to-deck-btn" onclick="window.app?.deckBuilder?.addCardToDeck('${card.id}')">
-                        Add
+                    <button class="add-to-deck-btn-minimal" onclick="window.app?.deckBuilder?.addCardToDeck('${card.id}')" title="Add to deck">
+                        +
                     </button>
+                </div>
+                <div class="card-info-clean">
+                    <div class="card-name-clean">${card.name}</div>
+                    <div class="card-power-element">
+                        ${card.power ? `<span class="card-power-clean">${card.power}</span>` : ''}
+                        <span class="card-element-clean">${this.getElementIcon(card.element)}</span>
+                    </div>
                 </div>
             </div>
         `;
@@ -884,7 +882,7 @@ export class DeckBuilder {
 
         // Add click for card preview
         cardDiv.addEventListener('click', (e) => {
-            if (!e.target.classList.contains('add-to-deck-btn')) {
+            if (!e.target.classList.contains('add-to-deck-btn-minimal')) {
                 // Ensure dragging class is removed (safeguard)
                 cardDiv.classList.remove('dragging');
                 
@@ -2018,21 +2016,39 @@ export class DeckBuilder {
      */
     createDeckCard(deck) {
         const deckCard = document.createElement('div');
-        deckCard.className = 'deck-card';
         deckCard.dataset.deckId = deck.id;
 
         const cardCount = deck.cards ? deck.cards.length : 0;
         const lastModified = deck.dateModified ? new Date(deck.dateModified).toLocaleDateString() : 'Unknown';
+        
+        // Get deck composition analysis
+        const deckAnalysis = this.analyzeDeckComposition(deck);
+        const mainElement = deckAnalysis.mainElement;
+        const elementClass = `element-${mainElement}`;
+        
+        // Set deck card class with main element for styling
+        deckCard.className = `deck-card deck-card-${mainElement}`;
 
         deckCard.innerHTML = `
-            <div class="deck-card-content">
+            <div class="deck-card-content ${elementClass}">
                 <div class="deck-card-header">
                     <h3 class="deck-name">${deck.name}</h3>
                     <span class="deck-card-count">${cardCount}/50 cards</span>
                 </div>
+                
+                <div class="deck-composition">
+                    <div class="deck-elements">
+                        ${this.getDeckElementsDisplay(deckAnalysis.elements)}
+                    </div>
+                    <div class="deck-categories">
+                        ${this.getDeckCategoriesDisplay(deckAnalysis.categories)}
+                    </div>
+                </div>
+                
                 <div class="deck-card-meta">
                     <span class="deck-last-modified">Modified: ${lastModified}</span>
                 </div>
+                
                 <div class="deck-card-actions">
                     <button class="btn btn-primary btn-sm" onclick="window.app?.deckBuilder?.editDeck('${deck.id}')">
                         Edit
@@ -2056,6 +2072,82 @@ export class DeckBuilder {
         });
 
         return deckCard;
+    }
+
+    /**
+     * Analyze deck composition for elements and categories
+     */
+    analyzeDeckComposition(deck) {
+        if (!deck.cards || deck.cards.length === 0) {
+            return {
+                mainElement: 'neutral',
+                elements: {},
+                categories: {}
+            };
+        }
+
+        const elements = {};
+        const categories = {};
+        
+        // Count unique cards (not individual copies)
+        const uniqueCardIds = [...new Set(deck.cards)];
+        
+        uniqueCardIds.forEach(cardId => {
+            const card = this.cardDatabase.getCard(cardId);
+            if (card) {
+                // Count elements
+                elements[card.element] = (elements[card.element] || 0) + 1;
+                
+                // Count categories (handle multiple categories)
+                const cardCategories = this.getCardCategories(card.category);
+                cardCategories.forEach(category => {
+                    categories[category] = (categories[category] || 0) + 1;
+                });
+            }
+        });
+
+        // Find main element (most common)
+        const mainElement = Object.keys(elements).length > 0 
+            ? Object.entries(elements).sort(([,a], [,b]) => b - a)[0][0]
+            : 'neutral';
+
+        return {
+            mainElement,
+            elements,
+            categories
+        };
+    }
+
+    /**
+     * Get deck elements display HTML
+     */
+    getDeckElementsDisplay(elements) {
+        return Object.entries(elements)
+            .sort(([,a], [,b]) => b - a)
+            .slice(0, 3) // Show top 3 elements
+            .map(([element, count]) => `
+                <span class="element-badge element-${element}">
+                    ${this.getElementIcon(element)} ${count}
+                </span>
+            `).join('');
+    }
+
+    /**
+     * Get deck categories display HTML
+     */
+    getDeckCategoriesDisplay(categories) {
+        const topCategories = Object.entries(categories)
+            .sort(([,a], [,b]) => b - a)
+            .slice(0, 4); // Show top 4 categories
+
+        if (topCategories.length === 0) {
+            return '<span class="category-badge">Mixed</span>';
+        }
+
+        return topCategories
+            .map(([category, count]) => `
+                <span class="category-badge">${this.getCategoryDisplayName(category)}</span>
+            `).join('');
     }
 
     /**

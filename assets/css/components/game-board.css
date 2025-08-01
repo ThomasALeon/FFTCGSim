@@ -19,17 +19,16 @@
 .game-board {
     display: grid;
     grid-template-areas: 
-        "opponent-hand opponent-hand opponent-hand"
-        "opponent-damage opponent-backups opponent-summons"
-        "field field field"
-        "player-summons player-backups player-damage"
-        "player-hand player-hand player-hand";
-    grid-template-rows: 130px 220px 1fr 220px 130px;
-    grid-template-columns: 320px 1fr 320px;
+        "card-preview opponent-hand opponent-hand opponent-hand"
+        "card-preview opponent-damage opponent-backups opponent-summons"
+        "card-preview field field field"
+        "card-preview player-summons player-backups player-damage";
+    grid-template-rows: 120px 200px 1fr 200px;
+    grid-template-columns: 280px 300px 1fr 300px;
     gap: 12px;
     flex: 1;
     min-height: 0;
-    padding: 8px;
+    padding: 8px 8px 60px 8px; /* Reduced bottom padding */
     border-radius: 12px;
     background: rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(5px);
@@ -71,6 +70,83 @@
         0 6px 12px rgba(0, 0, 0, 0.4),
         0 0 20px rgba(255, 215, 0, 0.3),
         inset 0 1px 0 rgba(255, 215, 0, 0.15);
+}
+
+/* Player Hand Overlay */
+.player-hand {
+    position: fixed !important;
+    bottom: 0;
+    left: 280px; /* Start after card preview area */
+    right: 0;
+    height: 140px;
+    background: linear-gradient(to top, rgba(26, 26, 46, 0.95) 0%, rgba(26, 26, 46, 0.8) 100%);
+    backdrop-filter: blur(10px);
+    border-top: 2px solid var(--color-primary, #ffd700);
+    border-radius: 16px 16px 0 0;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.player-hand.minimized {
+    transform: translateY(110px);
+    height: 30px;
+}
+
+.player-hand.minimized .zone-content {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.player-hand .zone-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 20px;
+    background: rgba(255, 215, 0, 0.1);
+    border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+    cursor: pointer;
+}
+
+.player-hand .zone-title {
+    margin: 0;
+    font-size: 1rem;
+    color: var(--color-primary, #ffd700);
+    font-weight: 600;
+}
+
+.player-hand .zone-count {
+    background: var(--color-primary, #ffd700);
+    color: var(--color-primary-text, #000);
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.player-hand .hand-toggle {
+    background: none;
+    border: none;
+    color: var(--color-primary, #ffd700);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.player-hand .hand-toggle:hover {
+    background: rgba(255, 215, 0, 0.2);
+}
+
+.player-hand .zone-content {
+    padding: 12px 20px;
+    height: calc(100% - 40px);
+    overflow-x: auto;
+    overflow-y: hidden;
+    display: flex;
+    gap: 8px;
+    align-items: center;
 }
 
 .player-area.opponent-controlled {
@@ -172,6 +248,174 @@
     overflow-x: auto;
     overflow-y: hidden;
 }
+
+/* Card Preview Area */
+.card-preview-area {
+    grid-area: card-preview;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 280px;
+    background: linear-gradient(135deg, var(--color-surface, #2a2a3a) 0%, #1a1a2e 100%);
+    border-right: 2px solid var(--color-border, #444);
+    z-index: 900;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-preview-header {
+    padding: 16px;
+    border-bottom: 1px solid var(--color-border, #444);
+    background: rgba(255, 215, 0, 0.1);
+}
+
+.card-preview-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-primary, #ffd700);
+    margin: 0;
+    text-align: center;
+}
+
+.card-preview-content {
+    flex: 1;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-secondary, #ccc);
+}
+
+.card-preview-placeholder {
+    text-align: center;
+    font-style: italic;
+    opacity: 0.7;
+}
+
+.card-preview-image {
+    width: 200px;
+    height: 280px;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    position: relative;
+}
+
+.card-preview-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.card-preview-info {
+    width: 100%;
+    text-align: left;
+}
+
+.card-preview-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--color-text-primary, #fff);
+    margin-bottom: 8px;
+}
+
+.card-preview-details {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 0.9rem;
+}
+
+.card-preview-detail {
+    display: flex;
+    justify-content: space-between;
+}
+
+.card-preview-label {
+    color: var(--color-text-secondary, #ccc);
+}
+
+.card-preview-value {
+    color: var(--color-text-primary, #fff);
+    font-weight: 500;
+}
+
+/* Floating Action Menu */
+.floating-action-menu {
+    position: absolute;
+    background: rgba(42, 42, 58, 0.95);
+    backdrop-filter: blur(10px);
+    border: 2px solid var(--color-primary, #ffd700);
+    border-radius: 8px;
+    padding: 8px;
+    z-index: 2000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    display: flex;
+    gap: 4px;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.2s ease;
+    pointer-events: none;
+}
+
+.floating-action-menu.show {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: all;
+}
+
+.floating-action-btn {
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 6px;
+    background: linear-gradient(135deg, var(--color-surface, #2a2a3a) 0%, #252540 100%);
+    color: var(--color-text-primary, #fff);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.floating-action-btn:hover {
+    background: linear-gradient(135deg, var(--color-surface-elevated, #3a3a4a) 0%, #353550 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.floating-action-btn::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    top: -32px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}
+
+.floating-action-btn:hover::after {
+    opacity: 1;
+}
+
+/* Action Button Variants */
+.floating-action-btn.play { background: linear-gradient(135deg, #4CAF50, #66BB6A); }
+.floating-action-btn.attack { background: linear-gradient(135deg, #f44336, #ef5350); }
+.floating-action-btn.tap { background: linear-gradient(135deg, #FF9800, #FFB74D); }
+.floating-action-btn.activate { background: linear-gradient(135deg, #9C27B0, #BA68C8); }
 
 /* Zone Headers */
 .zone-header {
@@ -361,7 +605,25 @@
 .game-card.tapped {
     transform: rotate(90deg);
     margin-right: 48px;
-    opacity: 0.8;
+    opacity: 0.7;
+    filter: grayscale(0.3);
+    border-color: #666;
+}
+
+.game-card.tapped::after {
+    content: 'TAPPED';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-90deg);
+    background: rgba(0, 0, 0, 0.8);
+    color: #ffd700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.6rem;
+    font-weight: bold;
+    pointer-events: none;
+    z-index: 10;
 }
 
 .game-card.selected {
@@ -443,6 +705,48 @@
     color: var(--color-text-secondary, #ccc);
     font-size: 1.5rem;
     margin-bottom: 8px;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Real Card Images */
+.card-real-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 4px;
+    display: block;
+}
+
+/* Card Placeholders */
+.card-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--color-surface-elevated, #2a2a3a), var(--color-surface, #1a1a2e));
+    border-radius: 4px;
+    padding: 4px;
+    text-align: center;
+}
+
+.card-placeholder-icon {
+    font-size: 1.2rem;
+    margin-bottom: 2px;
+    opacity: 0.8;
+}
+
+.card-placeholder-text {
+    font-size: 0.6rem;
+    font-weight: 500;
+    line-height: 1.1;
+    max-height: 2.2em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--color-text-primary, #fff);
+    text-align: center;
 }
 
 .card-info {
@@ -766,6 +1070,7 @@
 .opponent-hand .game-card {
     margin: 0 -12px;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
 }
 
 .player-hand .game-card:hover,
@@ -773,6 +1078,67 @@
     margin: 0 8px;
     z-index: 10;
     transform: translateY(-12px) scale(1.08);
+}
+
+/* Playable Card Indicators */
+.game-card.playable {
+    border-color: #4CAF50;
+    box-shadow: 
+        0 4px 8px rgba(0, 0, 0, 0.3),
+        0 0 15px rgba(76, 175, 80, 0.3);
+}
+
+.game-card.playable::before {
+    content: '▶️';
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    font-size: 0.8rem;
+    z-index: 5;
+    animation: playablePulse 2s ease-in-out infinite;
+}
+
+@keyframes playablePulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+}
+
+/* Attack Ready State */
+.game-card.attack-ready {
+    border-color: #f44336;
+    box-shadow: 
+        0 4px 8px rgba(0, 0, 0, 0.3),
+        0 0 15px rgba(244, 67, 54, 0.4);
+}
+
+.game-card.attack-ready::before {
+    content: '⚔️';
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    font-size: 0.8rem;
+    z-index: 5;
+    animation: attackPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes attackPulse {
+    0%, 100% { opacity: 0.7; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.1); }
+}
+
+/* Enhanced Interaction Feedback */
+.game-card.interactive {
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.game-card.interactive:hover {
+    transform: translateY(-4px) scale(1.02);
+    border-color: var(--color-primary, #ffd700);
+}
+
+.game-card.interactive:active {
+    transform: translateY(-2px) scale(1.01);
 }
 
 /* Reduced Motion */

@@ -10,6 +10,7 @@
  */
 
 import { logger } from '../utils/Logger.js';
+import { imageMapping } from '../utils/ImageMapping.js';
 
 /**
  * GameBoard Class
@@ -231,6 +232,11 @@ export class GameBoard {
         cardDiv.className = `game-card element-${card.element}`;
         cardDiv.dataset.cardId = card.id;
         
+        // Add interactive class for cards that players can interact with
+        if (!isFaceDown) {
+            cardDiv.classList.add('interactive');
+        }
+        
         if (isPlayerCard && !isFaceDown) {
             cardDiv.draggable = true;
             
@@ -264,13 +270,15 @@ export class GameBoard {
                 </div>
             `;
         } else {
-            // Face-up card
+            // Face-up card with real image
             cardDiv.innerHTML = `
                 <div class="card-content">
-                    <div class="card-image-area">${this.getElementIcon(card.element)}</div>
+                    <div class="card-image-area">
+                        ${this.getCardImageHTML(card)}
+                    </div>
                     <div class="card-info">
                         <span class="card-name">${card.name}</span>
-                        <span class="card-cost">${card.cost}</span>
+                        <span class="card-cost">${card.cost || '?'}</span>
                     </div>
                 </div>
             `;
@@ -280,6 +288,13 @@ export class GameBoard {
         cardDiv.addEventListener('click', () => {
             this.handleCardClick(cardDiv, card);
         });
+
+        // Add hover handler for card preview (only if not face down)
+        if (!isFaceDown) {
+            cardDiv.addEventListener('mouseenter', () => {
+                this.showCardPreview(card);
+            });
+        }
 
         return cardDiv;
     }
@@ -302,7 +317,45 @@ export class GameBoard {
     }
 
     /**
-     * Handle card click (selection)
+     * Get the appropriate image HTML for a card in game
+     */
+    getCardImageHTML(card) {
+        // Check if we have a real image mapping for this card
+        const cardImageMapping = imageMapping.getCardImageMapping(card.id);
+        
+        // Use image mapping first, then fall back to card's built-in image property
+        let imageUrl = null;
+        if (cardImageMapping && cardImageMapping.image) {
+            imageUrl = cardImageMapping.image;
+        } else if (card.hasRealImage && card.image) {
+            imageUrl = card.image;
+        }
+        
+        if (imageUrl) {
+            return `
+                <img class="card-real-image" 
+                     src="${imageUrl}" 
+                     alt="${card.name}" 
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                     onload="this.style.display='block'; this.nextElementSibling.style.display='none';">
+                <div class="card-placeholder element-${card.element}" style="display: none;">
+                    <div class="card-placeholder-icon">${this.getElementIcon(card.element)}</div>
+                    <div class="card-placeholder-text">${card.name}</div>
+                </div>
+            `;
+        } else {
+            // Use placeholder with element styling
+            return `
+                <div class="card-placeholder element-${card.element}">
+                    <div class="card-placeholder-icon">${this.getElementIcon(card.element)}</div>
+                    <div class="card-placeholder-text">${card.name}</div>
+                </div>
+            `;
+        }
+    }
+
+    /**
+     * Handle card click (selection) - Game specific actions
      */
     handleCardClick(cardElement, card) {
         // Clear previous selection
@@ -310,16 +363,565 @@ export class GameBoard {
             el.classList.remove('selected');
         });
 
+        // Hide any existing floating menus
+        this.hideFloatingActionMenu();
+
         // Select new card
         cardElement.classList.add('selected');
         this.selectedCard = card;
         
         logger.debug(`Selected card: ${card.name}`);
         
-        // Show card preview modal
-        if (window.app && window.app.modal) {
-            window.app.modal.openCardPreview(card);
+        // Show card in preview area
+        this.showCardPreview(card);
+        
+        // Show floating action menu next to the card
+        this.showFloatingActionMenu(card, cardElement);
+    }
+
+    /**
+     * Show card preview in the left panel
+     */
+    showCardPreview(card) {
+        const previewContent = document.getElementById('cardPreviewContent');
+        if (!previewContent) return;
+
+        // Get card image URL
+        const cardImageMapping = imageMapping.getCardImageMapping(card.id);
+        let imageUrl = null;
+        if (cardImageMapping && cardImageMapping.image) {
+            imageUrl = cardImageMapping.image;
+        } else if (card.hasRealImage && card.image) {
+            imageUrl = card.image;
         }
+
+        previewContent.innerHTML = `
+            <div class="card-preview-image">
+                ${imageUrl ? 
+                    `<img src="${imageUrl}" alt="${card.name}" class="card-preview-img" 
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                     <div class="card-placeholder element-${card.element}" style="display: none;">
+                         <div class="card-placeholder-icon">${this.getElementIcon(card.element)}</div>
+                         <div class="card-placeholder-text">${card.name}</div>
+                     </div>` :
+                    `<div class="card-placeholder element-${card.element}">
+                         <div class="card-placeholder-icon">${this.getElementIcon(card.element)}</div>
+                         <div class="card-placeholder-text">${card.name}</div>
+                     </div>`
+                }
+            </div>
+            <div class="card-preview-info">
+                <div class="card-preview-name">${card.name}</div>
+                <div class="card-preview-details">
+                    <div class="card-preview-detail">
+                        <span class="card-preview-label">Cost:</span>
+                        <span class="card-preview-value">${card.cost || '-'}</span>
+                    </div>
+                    <div class="card-preview-detail">
+                        <span class="card-preview-label">Element:</span>
+                        <span class="card-preview-value">${this.getElementIcon(card.element)} ${this.capitalizeFirst(card.element)}</span>
+                    </div>
+                    <div class="card-preview-detail">
+                        <span class="card-preview-label">Type:</span>
+                        <span class="card-preview-value">${this.capitalizeFirst(card.type)}</span>
+                    </div>
+                    ${card.power ? `
+                        <div class="card-preview-detail">
+                            <span class="card-preview-label">Power:</span>
+                            <span class="card-preview-value">${card.power}</span>
+                        </div>
+                    ` : ''}
+                    ${card.job ? `
+                        <div class="card-preview-detail">
+                            <span class="card-preview-label">Job:</span>
+                            <span class="card-preview-value">${card.job}</span>
+                        </div>
+                    ` : ''}
+                </div>
+                ${card.text ? `
+                    <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #444;">
+                        <div style="font-size: 0.8rem; line-height: 1.4; color: var(--color-text-primary, #fff);">
+                            ${card.text}
+                        </div>
+                    </div>
+                ` : ''}
+            </div>
+        `;
+    }
+
+    /**
+     * Show floating action menu next to card
+     */
+    showFloatingActionMenu(card, cardElement) {
+        // Determine what zone the card is in and get available actions
+        const zone = this.getCardZone(cardElement);
+        const isPlayerCard = this.isPlayerCard(cardElement);
+        const actions = this.getAvailableCardActions(card, zone, isPlayerCard);
+        
+        // Filter out view action - we use the preview panel now
+        const filteredActions = actions.filter(action => action.id !== 'view');
+        
+        if (filteredActions.length === 0) return;
+
+        // Create floating menu
+        const menu = document.createElement('div');
+        menu.className = 'floating-action-menu';
+        menu.id = 'floatingActionMenu';
+        
+        // Add action buttons
+        filteredActions.forEach(action => {
+            const button = document.createElement('button');
+            button.className = `floating-action-btn ${this.getActionClass(action.id)}`;
+            button.innerHTML = action.icon;
+            button.setAttribute('data-tooltip', action.label);
+            button.onclick = () => {
+                this.handleCardAction(action.id, card.id);
+                this.hideFloatingActionMenu();
+            };
+            menu.appendChild(button);
+        });
+
+        // Position menu next to card
+        const rect = cardElement.getBoundingClientRect();
+        const gameBoard = document.getElementById('gameBoard');
+        const boardRect = gameBoard.getBoundingClientRect();
+        
+        // Position to the right of the card, or left if not enough space
+        let left = rect.right + 8 - boardRect.left;
+        if (left + 200 > boardRect.width) {
+            left = rect.left - 200 - 8 - boardRect.left;
+        }
+        
+        menu.style.left = `${Math.max(8, left)}px`;
+        menu.style.top = `${rect.top - boardRect.top}px`;
+
+        // Add to game board
+        gameBoard.appendChild(menu);
+        
+        // Show with animation
+        setTimeout(() => menu.classList.add('show'), 10);
+        
+        // Hide menu when clicking elsewhere
+        setTimeout(() => {
+            document.addEventListener('click', this.hideFloatingMenuOnClickOutside.bind(this), { once: true });
+        }, 100);
+    }
+
+    /**
+     * Hide floating action menu
+     */
+    hideFloatingActionMenu() {
+        const menu = document.getElementById('floatingActionMenu');
+        if (menu) {
+            menu.classList.remove('show');
+            setTimeout(() => menu.remove(), 200);
+        }
+    }
+
+    /**
+     * Hide floating menu when clicking outside
+     */
+    hideFloatingMenuOnClickOutside(event) {
+        const menu = document.getElementById('floatingActionMenu');
+        if (menu && !menu.contains(event.target) && !event.target.closest('.game-card')) {
+            this.hideFloatingActionMenu();
+        }
+    }
+
+    /**
+     * Get CSS class for action type
+     */
+    getActionClass(actionId) {
+        if (actionId.startsWith('play')) return 'play';
+        if (actionId.includes('attack')) return 'attack';
+        if (actionId.includes('tap')) return 'tap';
+        if (actionId === 'activate') return 'activate';
+        return '';
+    }
+
+    /**
+     * Capitalize first letter of string
+     */
+    capitalizeFirst(str) {
+        if (!str) return '';
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    /**
+     * Get the zone a card is currently in
+     */
+    getCardZone(cardElement) {
+        const zoneElement = cardElement.closest('[id$="Content"]');
+        if (!zoneElement) return 'unknown';
+        
+        const zoneId = zoneElement.id;
+        if (zoneId.includes('Hand')) return 'hand';
+        if (zoneId.includes('Backups')) return 'backups';
+        if (zoneId.includes('Summons')) return 'summons';
+        if (zoneId.includes('Damage')) return 'damage';
+        if (zoneId.includes('field')) return 'field';
+        
+        return 'unknown';
+    }
+
+    /**
+     * Check if a card belongs to the player
+     */
+    isPlayerCard(cardElement) {
+        const zoneElement = cardElement.closest('.player-area');
+        return zoneElement && zoneElement.classList.contains('player-controlled');
+    }
+
+    /**
+     * Get available actions for a card based on its state and location
+     */
+    getAvailableCardActions(card, zone, isPlayerCard) {
+        const actions = [];
+        
+        // Only allow actions on player's turn and player's cards (unless opponent's field cards for attacks)
+        const isPlayerTurn = this.currentPlayer === 'player1';
+        
+        if (!isPlayerCard && zone !== 'field') {
+            // Can only interact with opponent's field cards
+            actions.push({ 
+                id: 'view', 
+                label: 'View Card', 
+                icon: '👁️',
+                description: 'View card details'
+            });
+            return actions;
+        }
+
+        // Add view action for all cards
+        actions.push({ 
+            id: 'view', 
+            label: 'View Card', 
+            icon: '👁️',
+            description: 'View card details'
+        });
+
+        // Actions based on zone and game phase
+        if (isPlayerCard && isPlayerTurn) {
+            switch (zone) {
+                case 'hand':
+                    if (this.currentPhase === 'main') {
+                        if (card.type === 'forward') {
+                            actions.push({ 
+                                id: 'playForward', 
+                                label: 'Play as Forward', 
+                                icon: '⚔️',
+                                description: `Cost: ${card.cost || '?'} CP`
+                            });
+                        }
+                        if (card.type === 'backup') {
+                            actions.push({ 
+                                id: 'playBackup', 
+                                label: 'Play as Backup', 
+                                icon: '🛡️',
+                                description: `Cost: ${card.cost || '?'} CP`
+                            });
+                        }
+                        if (card.type === 'summon') {
+                            actions.push({ 
+                                id: 'playSummon', 
+                                label: 'Cast Summon', 
+                                icon: '✨',
+                                description: `Cost: ${card.cost || '?'} CP`
+                            });
+                        }
+                    }
+                    break;
+                    
+                case 'field':
+                    if (this.currentPhase === 'main') {
+                        actions.push({ 
+                            id: 'activate', 
+                            label: 'Activate Ability', 
+                            icon: '⚡',
+                            description: 'Use special ability'
+                        });
+                    }
+                    if (this.currentPhase === 'attack') {
+                        actions.push({ 
+                            id: 'attack', 
+                            label: 'Attack', 
+                            icon: '⚔️',
+                            description: 'Attack opponent or their forwards'
+                        });
+                    }
+                    if (!cardElement.classList.contains('tapped')) {
+                        actions.push({ 
+                            id: 'tap', 
+                            label: 'Tap', 
+                            icon: '🔄',
+                            description: 'Tap this card'
+                        });
+                    }
+                    break;
+                    
+                case 'backups':
+                    if (this.currentPhase === 'main' && !cardElement.classList.contains('tapped')) {
+                        actions.push({ 
+                            id: 'tapForCP', 
+                            label: 'Tap for CP', 
+                            icon: '💎',
+                            description: 'Generate Crystal Points'
+                        });
+                        actions.push({ 
+                            id: 'activate', 
+                            label: 'Activate Ability', 
+                            icon: '⚡',
+                            description: 'Use special ability'
+                        });
+                    }
+                    break;
+                    
+                case 'damage':
+                    // Damage cards are generally just for viewing
+                    break;
+            }
+        }
+
+        // Attack actions for opponent's forwards
+        if (!isPlayerCard && zone === 'field' && isPlayerTurn && this.currentPhase === 'attack') {
+            actions.push({ 
+                id: 'attackTarget', 
+                label: 'Attack This Forward', 
+                icon: '🎯',
+                description: 'Choose this as attack target'
+            });
+        }
+
+        return actions;
+    }
+
+    /**
+     * Handle card action selection from modal
+     */
+    handleCardAction(actionId, cardId) {
+        logger.info(`Handling card action: ${actionId} for card: ${cardId}`);
+        
+        // Hide any existing floating menus
+        this.hideFloatingActionMenu();
+        
+        const card = this.cardDatabase.getCard(cardId);
+        if (!card) {
+            logger.error('Card not found for action:', cardId);
+            return;
+        }
+        
+        // Handle different actions
+        switch (actionId) {
+            case 'view':
+                this.showCardDetails(card);
+                break;
+                
+            case 'playForward':
+                this.playCardAsForward(card);
+                break;
+                
+            case 'playBackup':
+                this.playCardAsBackup(card);
+                break;
+                
+            case 'playSummon':
+                this.castSummon(card);
+                break;
+                
+            case 'activate':
+                this.activateCardAbility(card);
+                break;
+                
+            case 'attack':
+                this.initializeAttack(card);
+                break;
+                
+            case 'attackTarget':
+                this.setAttackTarget(card);
+                break;
+                
+            case 'tap':
+                this.tapCard(card);
+                break;
+                
+            case 'tapForCP':
+                this.tapForCrystalPoints(card);
+                break;
+                
+            default:
+                logger.warn('Unknown card action:', actionId);
+                window.showNotification(`Action "${actionId}" not implemented yet`, 'warning');
+        }
+    }
+    
+    /**
+     * Show card details in preview panel (no longer uses modal)
+     */
+    showCardDetails(card) {
+        // Just update the preview panel - no modal needed
+        this.showCardPreview(card);
+    }
+    
+    /**
+     * Play a card as a Forward
+     */
+    playCardAsForward(card) {
+        logger.info(`Playing ${card.name} as Forward`);
+        // TODO: Implement proper CP checking and card playing through game engine
+        window.showNotification(`Played ${card.name} as Forward`, 'success');
+    }
+    
+    /**
+     * Play a card as a Backup
+     */
+    playCardAsBackup(card) {
+        logger.info(`Playing ${card.name} as Backup`);
+        // TODO: Implement proper CP checking and card playing through game engine
+        window.showNotification(`Played ${card.name} as Backup`, 'success');
+    }
+    
+    /**
+     * Cast a Summon card
+     */
+    castSummon(card) {
+        logger.info(`Casting ${card.name} summon`);
+        // TODO: Implement summon casting logic
+        window.showNotification(`Cast ${card.name}`, 'success');
+    }
+    
+    /**
+     * Activate a card's ability
+     */
+    activateCardAbility(card) {
+        logger.info(`Activating ${card.name} ability`);
+        // TODO: Implement ability activation
+        window.showNotification(`Activated ${card.name}`, 'info');
+    }
+    
+    /**
+     * Initialize attack with a Forward
+     */
+    initializeAttack(card) {
+        logger.info(`${card.name} is attacking`);
+        // TODO: Implement attack initialization
+        window.showNotification(`${card.name} is ready to attack`, 'info');
+    }
+    
+    /**
+     * Set attack target
+     */
+    setAttackTarget(card) {
+        logger.info(`Setting ${card.name} as attack target`);
+        // TODO: Implement attack targeting
+        window.showNotification(`Targeting ${card.name}`, 'info');
+    }
+    
+    /**
+     * Tap a card
+     */
+    tapCard(card) {
+        logger.info(`Tapping ${card.name}`);
+        
+        // Find the card element and add tapped class
+        const cardElements = document.querySelectorAll(`[data-card-id="${card.id}"]`);
+        cardElements.forEach(element => {
+            if (element.classList.contains('selected')) {
+                element.classList.add('tapped');
+                element.classList.remove('selected');
+            }
+        });
+        
+        window.showNotification(`Tapped ${card.name}`, 'info');
+    }
+    
+    /**
+     * Tap a backup for Crystal Points
+     */
+    tapForCrystalPoints(card) {
+        logger.info(`${card.name} tapped for CP`);
+        
+        // Find the card element and add tapped class
+        const cardElements = document.querySelectorAll(`[data-card-id="${card.id}"]`);
+        cardElements.forEach(element => {
+            if (element.classList.contains('selected')) {
+                element.classList.add('tapped');
+                element.classList.remove('selected');
+            }
+        });
+        
+        // TODO: Actually increase CP in game state
+        window.showNotification(`${card.name} generated CP`, 'success');
+    }
+
+    /**
+     * Update card interaction states based on current game phase
+     */
+    updateCardStates() {
+        const isPlayerTurn = this.currentPlayer === 'player1';
+        const isMainPhase = this.currentPhase === 'main';
+        const isAttackPhase = this.currentPhase === 'attack';
+        
+        // Update hand cards
+        if (isPlayerTurn && isMainPhase) {
+            this.updateHandCardStates();
+        }
+        
+        // Update field cards
+        if (isPlayerTurn && isAttackPhase) {
+            this.updateFieldCardStates();
+        }
+    }
+    
+    /**
+     * Update hand card states for playability
+     */
+    updateHandCardStates() {
+        const handCards = document.querySelectorAll('#playerHandContent .game-card');
+        handCards.forEach(cardElement => {
+            const cardId = cardElement.dataset.cardId;
+            const card = this.cardDatabase.getCard(cardId);
+            
+            if (card && this.canPlayCard(card)) {
+                cardElement.classList.add('playable');
+            } else {
+                cardElement.classList.remove('playable');
+            }
+        });
+    }
+    
+    /**
+     * Update field card states for attack readiness
+     */
+    updateFieldCardStates() {
+        const fieldCards = document.querySelectorAll('#gameField .game-card.player-controlled');
+        fieldCards.forEach(cardElement => {
+            if (!cardElement.classList.contains('tapped')) {
+                cardElement.classList.add('attack-ready');
+            } else {
+                cardElement.classList.remove('attack-ready');
+            }
+        });
+    }
+    
+    /**
+     * Check if a card can be played (simplified logic)
+     */
+    canPlayCard(card) {
+        // Simplified CP check - in a real game this would check actual CP availability
+        const currentCP = 3; // Placeholder - should come from game state
+        const cardCost = parseInt(card.cost) || 0;
+        
+        return cardCost <= currentCP;
+    }
+    
+    /**
+     * Clear all card state classes
+     */
+    clearCardStates() {
+        const allCards = document.querySelectorAll('.game-card');
+        allCards.forEach(card => {
+            card.classList.remove('playable', 'attack-ready');
+        });
     }
 
     /**
@@ -575,6 +1177,10 @@ export class GameBoard {
         if (this.turnIndicator) {
             this.turnIndicator.classList.toggle('active', this.currentPlayer === 'player1');
         }
+        
+        // Update card interaction states when turn/phase changes
+        this.clearCardStates();
+        this.updateCardStates();
     }
 
     /**
@@ -649,6 +1255,9 @@ export class GameBoard {
         // Render initial board
         this.renderEmptyBoard();
         this.updateTurnDisplay();
+        
+        // Initialize card states
+        this.updateCardStates();
         
         window.showNotification('New game started!', 'success');
     }
