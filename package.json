@@ -1,17 +1,23 @@
 {
   "name": "fftcg-simulator",
   "version": "1.0.0",
+  "type": "module",
   "description": "Final Fantasy Trading Card Game Simulator",
-  "main": "index.html",
+  "main": "src/main.js",
   "scripts": {
-    "start": "serve .",
-    "dev": "live-server ."
+    "start": "python3 -m http.server 8080",
+    "dev": "python3 -m http.server 8080",
+    "test": "node test-runner.js",
+    "serve": "python3 -m http.server 8080"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/ThomasALeon/FFTCGSim"
   },
-  "keywords": ["final-fantasy", "tcg", "card-game", "simulator"],
-  "author": "Your Name",
-  "license": "MIT"
+  "keywords": ["final-fantasy", "tcg", "card-game", "simulator", "web-app"],
+  "author": "Thomas Leon",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  }
 }

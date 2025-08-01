@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browser Functional Tests</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #fff;
+        }
+        .test-section {
+            background: #2a2a2a;
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+        .test-result {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+        }
+        .pass { background: #2d5a3d; }
+        .fail { background: #5a2d2d; }
+        .info { background: #2d3a5a; }
+        .controls {
+            margin: 20px 0;
+        }
+        button {
+            background: #4a90e2;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #357abd;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Browser Functional Tests</h1>
+    
+    <div class="controls">
+        <button onclick="runAllTests()">Run All Tests</button>
+        <button onclick="clearResults()">Clear Results</button>
+    </div>
+    
+    <div id="testResults"></div>
+    
+    <!-- Hidden iframe for testing the main app -->
+    <iframe id="testFrame" src="./index.html" class="hidden" onload="onFrameLoad()"></iframe>
+    
+    <script>
+        let testResults = [];
+        let appFrame;
+        let appLoaded = false;
+
+        function addResult(test, status, message = '') {
+            const result = { test, status, message, timestamp: new Date() };
+            testResults.push(result);
+            displayResults();
+        }
+
+        function displayResults() {
+            const container = document.getElementById('testResults');
+            container.innerHTML = testResults.map(result => `
+                <div class="test-result ${result.status}">
+                    <strong>${result.test}</strong>: ${result.status.toUpperCase()}
+                    ${result.message ? `<br><small>${result.message}</small>` : ''}
+                    <small style="float: right;">${result.timestamp.toLocaleTimeString()}</small>
+                </div>
+            `).join('');
+        }
+
+        function clearResults() {
+            testResults = [];
+            displayResults();
+        }
+
+        function onFrameLoad() {
+            appFrame = document.getElementById('testFrame');
+            
+            // Wait a bit for the app to initialize
+            setTimeout(() => {
+                appLoaded = true;
+                addResult('App Loading', 'pass', 'Main application loaded in iframe');
+                
+                // Test if the app object exists
+                try {
+                    const appWindow = appFrame.contentWindow;
+                    if (appWindow.app) {
+                        addResult('App Object', 'pass', 'App object is available');
+                    } else {
+                        addResult('App Object', 'info', 'App object not yet initialized (may load asynchronously)');
+                    }
+                } catch (error) {
+                    addResult('App Object', 'fail', 'Cannot access iframe content: ' + error.message);
+                }
+            }, 2000);
+        }
+
+        async function runAllTests() {
+            clearResults();
+            addResult('Test Suite Started', 'info', 'Running functional tests...');
+
+            // Test 1: Basic Resource Loading
+            await testResourceLoading();
+            
+            // Test 2: JavaScript Module Loading
+            await testModuleLoading();
+            
+            // Test 3: Data Loading
+            await testDataLoading();
+            
+            // Test 4: CSS Loading
+            await testCSSLoading();
+            
+            // Test 5: App Initialization (if iframe loaded)
+            if (appLoaded) {
+                await testAppInitialization();
+            }
+
+            addResult('Test Suite Complete', 'info', `${testResults.length} tests completed`);
+        }
+
+        async function testResourceLoading() {
+            const resources = [
+                { path: './index.html', name: 'Main HTML' },
+                { path: './src/main.js', name: 'Main JavaScript' },
+                { path: './src/data/fftcg_real_cards.json', name: 'Card Data' },
+                { path: './assets/css/main.css', name: 'Main CSS' }
+            ];
+
+            for (const resource of resources) {
+                try {
+                    const response = await fetch(resource.path);
+                    if (response.ok) {
+                        addResult(`Resource: ${resource.name}`, 'pass', `Status: ${response.status}`);
+                    } else {
+                        addResult(`Resource: ${resource.name}`, 'fail', `Status: ${response.status}`);
+                    }
+                } catch (error) {
+                    addResult(`Resource: ${resource.name}`, 'fail', error.message);
+                }
+            }
+        }
+
+        async function testModuleLoading() {
+            try {
+                const { CardDatabase } = await import('./src/core/CardDatabase.js');
+                if (CardDatabase) {
+                    addResult('Module: CardDatabase', 'pass', 'Module loaded successfully');
+                    
+                    // Test instantiation
+                    const db = new CardDatabase();
+                    if (db) {
+                        addResult('CardDatabase Instantiation', 'pass', 'Instance created');
+                    } else {
+                        addResult('CardDatabase Instantiation', 'fail', 'Failed to create instance');
+                    }
+                }
+            } catch (error) {
+                addResult('Module: CardDatabase', 'fail', error.message);
+            }
+
+            try {
+                const { DeckManager } = await import('./src/core/DeckManager.js');
+                if (DeckManager) {
+                    addResult('Module: DeckManager', 'pass', 'Module loaded successfully');
+                }
+            } catch (error) {
+                addResult('Module: DeckManager', 'fail', error.message);
+            }
+
+            try {
+                const { Modal } = await import('./src/components/Modal.js');
+                if (Modal) {
+                    addResult('Module: Modal', 'pass', 'Module loaded successfully');
+                }
+            } catch (error) {
+                addResult('Module: Modal', 'fail', error.message);
+            }
+        }
+
+        async function testDataLoading() {
+            try {
+                const response = await fetch('./src/data/fftcg_real_cards.json');
+                const data = await response.json();
+                
+                if (Array.isArray(data) && data.length > 0) {
+                    addResult('Card Data Loading', 'pass', `${data.length} cards loaded`);
+                    
+                    // Test first card structure
+                    const firstCard = data[0];
+                    const requiredFields = ['id', 'name', 'element', 'type'];
+                    const hasFields = requiredFields.every(field => firstCard.hasOwnProperty(field));
+                    
+                    if (hasFields) {
+                        addResult('Card Data Structure', 'pass', 'All required fields present');
+                    } else {
+                        addResult('Card Data Structure', 'fail', 'Missing required fields');
+                    }
+                } else {
+                    addResult('Card Data Loading', 'fail', 'Invalid data format');
+                }
+            } catch (error) {
+                addResult('Card Data Loading', 'fail', error.message);
+            }
+        }
+
+        async function testCSSLoading() {
+            const stylesheets = document.styleSheets;
+            let cssLoaded = false;
+            
+            for (let i = 0; i < stylesheets.length; i++) {
+                const sheet = stylesheets[i];
+                if (sheet.href && (sheet.href.includes('main.css') || sheet.href.includes('components'))) {
+                    cssLoaded = true;
+                    break;
+                }
+            }
+            
+            if (cssLoaded) {
+                addResult('CSS Loading', 'pass', 'CSS files loaded successfully');
+            } else {
+                addResult('CSS Loading', 'info', 'No CSS files detected in this page');
+            }
+        }
+
+        async function testAppInitialization() {
+            try {
+                const appWindow = appFrame.contentWindow;
+                
+                // Test if critical elements exist
+                const criticalElements = [
+                    '#app',
+                    '#loadingScreen',
+                    '#modalContainer',
+                    '#deck-builderView'
+                ];
+                
+                let elementsFound = 0;
+                criticalElements.forEach(selector => {
+                    const element = appWindow.document.querySelector(selector);
+                    if (element) {
+                        elementsFound++;
+                    }
+                });
+                
+                if (elementsFound === criticalElements.length) {
+                    addResult('DOM Structure', 'pass', 'All critical elements found');
+                } else {
+                    addResult('DOM Structure', 'fail', `Only ${elementsFound}/${criticalElements.length} elements found`);
+                }
+                
+                // Test if app object exists and has expected methods
+                if (appWindow.app) {
+                    const expectedMethods = ['switchView', 'handleError'];
+                    let methodsFound = 0;
+                    
+                    expectedMethods.forEach(method => {
+                        if (typeof appWindow.app[method] === 'function') {
+                            methodsFound++;
+                        }
+                    });
+                    
+                    if (methodsFound === expectedMethods.length) {
+                        addResult('App Methods', 'pass', 'All expected methods found');
+                    } else {
+                        addResult('App Methods', 'fail', `Only ${methodsFound}/${expectedMethods.length} methods found`);
+                    }
+                } else {
+                    addResult('App Object', 'info', 'App object not available (may still be loading)');
+                }
+                
+            } catch (error) {
+                addResult('App Initialization', 'fail', error.message);
+            }
+        }
+
+        // Auto-run tests when page loads
+        setTimeout(() => {
+            addResult('Test Page Loaded', 'info', 'Ready to run tests');
+        }, 1000);
+    </script>
+</body>
+</html>

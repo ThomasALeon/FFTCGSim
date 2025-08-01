@@ -3,8 +3,8 @@
  * Test-driven development approach for Modal functionality
  */
 
-import { testFramework } from '../utils/TestFramework.js';
-import { Modal } from '../components/Modal.js';
+import { testFramework } from '../src/utils/TestFramework.js';
+import { Modal } from '../src/components/Modal.js';
 
 export function runModalTests() {
     testFramework.describe('Modal Component', () => {

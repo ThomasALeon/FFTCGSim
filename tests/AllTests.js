@@ -5,14 +5,14 @@
  * and automated validation to catch issues early in development
  */
 
-import { testFramework } from '../utils/TestFramework.js';
-import { logger } from '../utils/Logger.js';
-import { LocalStorage } from '../utils/LocalStorage.js';
-import { notifications } from '../utils/Notifications.js';
-import { Validation, validate, validateCard, validateDeck } from '../utils/Validation.js';
-import { CardDatabase } from '../core/CardDatabase.js';
-import { DeckManager } from '../core/DeckManager.js';
-import { GameEngine } from '../core/GameEngine.js';
+import { testFramework } from '../src/utils/TestFramework.js';
+import { logger } from '../src/utils/Logger.js';
+import { LocalStorage } from '../src/utils/LocalStorage.js';
+import { notifications } from '../src/utils/Notifications.js';
+import { Validation, validate, validateCard, validateDeck } from '../src/utils/Validation.js';
+import { CardDatabase } from '../src/core/CardDatabase.js';
+import { DeckManager } from '../src/core/DeckManager.js';
+import { GameEngine } from '../src/core/GameEngine.js';
 
 /**
  * Run all test suites

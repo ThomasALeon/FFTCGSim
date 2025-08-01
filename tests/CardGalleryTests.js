@@ -3,7 +3,7 @@
  * Test cases for deck builder card display functionality
  */
 
-import { testFramework } from '../utils/TestFramework.js';
+import { testFramework } from '../src/utils/TestFramework.js';
 
 export function runCardGalleryTests() {
     testFramework.describe('Card Gallery Component', () => {

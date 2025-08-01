@@ -8,8 +8,8 @@
  * - Edge cases and unexpected scenarios
  */
 
-import { imageMapping } from '../utils/ImageMapping.js';
-import { logger } from '../utils/Logger.js';
+import { imageMapping } from '../src/utils/ImageMapping.js';
+import { logger } from '../src/utils/Logger.js';
 
 // Mock fetch for testing
 const originalFetch = window.fetch;
