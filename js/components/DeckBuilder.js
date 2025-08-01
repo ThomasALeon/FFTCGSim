@@ -39,6 +39,9 @@ export class DeckBuilder {
         this.elementSelect = null;
         this.typeSelect = null;
         
+        // Card preview elements
+        this.cardPreview = null;
+        
         // Event handlers
         this.boundHandlers = {};
         
@@ -65,17 +68,25 @@ export class DeckBuilder {
         // Check if we have a real image mapping for this card
         const cardImageMapping = imageMapping.getCardImageMapping(card.id);
         
+        // Use image mapping first, then fall back to card's built-in image property
+        let imageUrl = null;
         if (cardImageMapping && cardImageMapping.image) {
+            imageUrl = cardImageMapping.image;
+        } else if (card.hasRealImage && card.image) {
+            imageUrl = card.image;
+        }
+        
+        if (imageUrl) {
             return `
                 <img class="card-real-image" 
-                     src="${cardImageMapping.image}" 
+                     src="${imageUrl}" 
                      alt="${card.name}" 
-                     onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                     onerror="window.app?.deckBuilder?.handleImageError(this, '${card.id}')"
                      onload="this.style.display='block'; this.nextElementSibling.style.display='none';">
                 <div class="card-placeholder element-${card.element}" style="display: none;">
                     <div class="card-placeholder-icon">${this.getElementIcon(card.element)}</div>
                     <div class="card-placeholder-text">${card.name}</div>
-                    <div class="card-placeholder-meta">${card.set || 'Unknown'}</div>
+                    <div class="card-placeholder-meta">${card.set || 'Unknown'} - Image Failed</div>
                 </div>
             `;
         } else {
@@ -87,6 +98,21 @@ export class DeckBuilder {
                     <div class="card-placeholder-meta">${card.set || 'Unknown'}</div>
                 </div>
             `;
+        }
+    }
+
+    /**
+     * Handle image loading errors with fallback to card database image
+     */
+    handleImageError(imgElement, cardId) {
+        const card = this.cardDatabase.getCard(cardId);
+        if (card && card.hasRealImage && card.image) {
+            console.warn(`Image mapping failed for ${cardId}, falling back to card database image: ${card.image}`);
+            imgElement.src = card.image;
+        } else {
+            console.warn(`No fallback image available for ${cardId}`);
+            imgElement.style.display = 'none';
+            imgElement.nextElementSibling.style.display = 'block';
         }
     }
 
@@ -121,6 +147,123 @@ export class DeckBuilder {
         // Generate set filter buttons dynamically once card database is loaded
         this.generateSetFilterButtons();
         this.generateCategoryFilterButtons();
+        
+        // Initialize card preview
+        this.initializeCardPreview();
+    }
+
+    /**
+     * Initialize the card preview overlay system
+     */
+    initializeCardPreview() {
+        // Create the preview overlay element
+        this.cardPreview = document.createElement('div');
+        this.cardPreview.className = 'card-preview-overlay';
+        this.cardPreview.style.display = 'none';
+        document.body.appendChild(this.cardPreview);
+        
+        logger.debug('✅ Card preview overlay initialized');
+    }
+
+    /**
+     * Show simple card art hover preview
+     */
+    showCardArtHover(card, mouseEvent) {
+        if (!this.cardPreview || !card) return;
+        
+        // Get the card image URL using same fallback logic as getCardImageHTML
+        const cardImageMapping = imageMapping.getCardImageMapping(card.id);
+        let imageUrl = null;
+        
+        if (cardImageMapping && cardImageMapping.image) {
+            imageUrl = cardImageMapping.image;
+        } else if (card.hasRealImage && card.image) {
+            imageUrl = card.image;
+        }
+        
+        // If no image available, don't show preview
+        if (!imageUrl) return;
+        
+        this.displayCardArtPreview(imageUrl, mouseEvent, card);
+    }
+    
+    /**
+     * Display floating card art preview with text
+     */
+    displayCardArtPreview(imageUrl, mouseEvent, card) {
+        if (!this.cardPreview) return;
+        
+        // Calculate smart positioning (opposite side of screen from cursor)
+        const screenWidth = window.innerWidth;
+        const screenHeight = window.innerHeight;
+        const cursorX = mouseEvent.clientX;
+        const cursorY = mouseEvent.clientY;
+        
+        // Determine text class and estimate height based on content
+        let textClass = '';
+        let estimatedTextHeight = 0;
+        
+        if (card.text) {
+            const textLength = card.text.length;
+            if (textLength <= 100) {
+                textClass = 'short-text';
+                // Estimate: ~40-60px for short text
+                estimatedTextHeight = Math.min(60, Math.ceil(textLength / 50) * 20 + 20);
+            } else if (textLength <= 250) {
+                textClass = 'medium-text';
+                // Estimate: ~60-100px for medium text  
+                estimatedTextHeight = Math.min(100, Math.ceil(textLength / 40) * 16 + 30);
+            } else {
+                textClass = 'long-text';
+                // Estimate: ~100-150px for long text
+                estimatedTextHeight = Math.min(150, Math.ceil(textLength / 35) * 14 + 40);
+            }
+        }
+        
+        // Calculate total height: image (~320px) + padding (~16px) + text height
+        const adjustedHeight = 320 + 16 + estimatedTextHeight + 20; // +20 for container padding
+        
+        // Determine which side of screen cursor is on
+        const isLeftSide = cursorX < screenWidth / 2;
+        const isTopSide = cursorY < screenHeight / 2;
+        
+        // Position preview on opposite side with dynamic sizing
+        let left, top;
+        if (isLeftSide) {
+            // Cursor on left, show preview on right
+            left = screenWidth - 290; // estimated width + margin
+        } else {
+            // Cursor on right, show preview on left
+            left = 20;
+        }
+        
+        if (isTopSide) {
+            // Cursor on top, show preview toward bottom
+            top = Math.min(cursorY + 20, screenHeight - adjustedHeight);
+        } else {
+            // Cursor on bottom, show preview toward top
+            top = Math.max(cursorY - adjustedHeight, 20);
+        }
+        
+        // Floating card preview with art and dynamically sized text
+        this.cardPreview.innerHTML = `
+            <img src="${imageUrl}" alt="${card.name}">
+            ${card.text ? `<div class="card-preview-text ${textClass}">${card.text}</div>` : ''}
+        `;
+        
+        // Apply positioning and show
+        this.cardPreview.style.left = `${left}px`;
+        this.cardPreview.style.top = `${top}px`;
+        this.cardPreview.style.display = 'block';
+    }
+    
+    /**
+     * Hide card art preview
+     */
+    hideCardPreview() {
+        if (this.cardPreview) {
+            this.cardPreview.style.display = 'none';
+        }
     }
 
     /**
@@ -260,21 +403,78 @@ export class DeckBuilder {
     }
 
     /**
-     * Get consolidated categories from cards
+     * Get consolidated categories from cards with dual category support
      */
     getConsolidatedCategories(cards) {
-        const categoryMapping = this.getCategoryMapping();
         const consolidatedCounts = {};
         
         cards.forEach(card => {
-            const originalCategory = card.category;
-            const consolidatedCategory = categoryMapping[originalCategory] || 'Special';
-            consolidatedCounts[consolidatedCategory] = (consolidatedCounts[consolidatedCategory] || 0) + 1;
+            const cardCategories = this.getCardCategories(card.category);
+            cardCategories.forEach(category => {
+                consolidatedCounts[category] = (consolidatedCounts[category] || 0) + 1;
+            });
         });
         
         return Object.entries(consolidatedCounts)
             .map(([category, count]) => ({ category, count }))
             .filter(item => item.count > 0);
+    }
+
+    /**
+     * Get all categories for a card, splitting dual categories and mapping to consolidated names
+     */
+    getCardCategories(categoryString) {
+        if (!categoryString) return ['Special'];
+        
+        // Split dual categories on &middot; separator
+        const rawCategories = categoryString.includes('&middot;') 
+            ? categoryString.split('&middot;').map(cat => cat.trim())
+            : [categoryString.trim()];
+            
+        // Map each raw category to its consolidated form
+        const categoryMapping = this.getCategoryMapping();
+        const consolidatedCategories = rawCategories.map(rawCat => {
+            return categoryMapping[rawCat] || this.mapSingleCategory(rawCat);
+        });
+        
+        // Remove duplicates and return
+        return [...new Set(consolidatedCategories)];
+    }
+    
+    /**
+     * Map a single category to its consolidated form
+     */
+    mapSingleCategory(category) {
+        if (!category) return 'Special';
+        
+        // Roman numerals
+        if (/^[IVX]+$/.test(category)) return category;
+        
+        // Direct matches for known categories
+        const directMappings = {
+            'TYPE-0': 'Type-0',
+            'MOBIUS': 'Mobius',
+            'THEATRHYTHM': 'THEATRHYTHM',
+            'PICTLOGICA': 'Pictlogica',
+            'FFBE': 'FFBE',
+            'SOPFFO': 'SOPFFO',
+            'FFCC': 'FFCC',
+            'FFT': 'FFT',
+            'FFTA': 'FFTA',
+            'FFTA2': 'FFTA2',
+            'FFTS': 'FFTS',
+            'FFL': 'FFL',
+            'FFEX': 'FFEX',
+            'FFRK': 'FFRK',
+            'LOV': 'LOV',
+            'WOFF': 'WOFF',
+            'DFF': 'DFF',
+            'Crystal Hunt': 'Crystal Hunt',
+            'MQ': 'MQ',
+            'Special': 'Special'
+        };
+        
+        return directMappings[category] || 'Special';
     }
 
     /**
@@ -546,14 +746,12 @@ export class DeckBuilder {
             logger.debug(`🔍 After opus filter [${this.opusFilter.join(', ')}]: ${beforeOpus} → ${cards.length} cards`);
         }
 
-        // Apply category filter (multiple selection with consolidation)
+        // Apply category filter (multiple selection with dual category support)
         if (this.categoryFilter.length > 0) {
             const beforeCategory = cards.length;
-            const categoryMapping = this.getCategoryMapping();
             cards = cards.filter(card => {
-                const originalCategory = card.category;
-                const consolidatedCategory = categoryMapping[originalCategory] || 'Special';
-                return this.categoryFilter.includes(consolidatedCategory);
+                const cardCategories = this.getCardCategories(card.category);
+                return cardCategories.some(category => this.categoryFilter.includes(category));
             });
             logger.debug(`🔍 After category filter [${this.categoryFilter.join(', ')}]: ${beforeCategory} → ${cards.length} cards`);
         }
@@ -588,11 +786,11 @@ export class DeckBuilder {
                     valueB = b.cost || 0;
                     break;
                 case 'category':
-                    const categoryMapping = this.getCategoryMapping();
-                    const consolidatedA = categoryMapping[a.category] || 'Special';
-                    const consolidatedB = categoryMapping[b.category] || 'Special';
-                    valueA = consolidatedA.toLowerCase();
-                    valueB = consolidatedB.toLowerCase();
+                    const categoriesA = this.getCardCategories(a.category);
+                    const categoriesB = this.getCardCategories(b.category);
+                    // Use the first (primary) category for sorting
+                    valueA = categoriesA[0].toLowerCase();
+                    valueB = categoriesB[0].toLowerCase();
                     break;
                 default:
                     valueA = a.name.toLowerCase();
@@ -646,6 +844,7 @@ export class DeckBuilder {
                 </div>
                 <div class="card-info">
                     <div class="card-name">${card.name}</div>
+                    <div class="card-id">${card.id}</div>
                     <div class="card-details">
                         <span class="card-cost">${card.cost || '-'}</span>
                         <span class="card-element">${this.getElementIcon(card.element)}</span>
@@ -697,12 +896,99 @@ export class DeckBuilder {
                     el.blur();
                     el.classList.remove('dragging');
                 });
-                
-                this.showCardPreview(card);
             }
         });
 
+        // Add hover event listeners for card art preview
+        const cardImage = cardDiv.querySelector('.card-image');
+        if (cardImage) {
+            cardImage.addEventListener('mouseenter', (e) => {
+                this.showCardArtHover(card, e);
+            });
+            
+            cardImage.addEventListener('mouseleave', () => {
+                this.hideCardPreview();
+            });
+        }
+
+        // Add long-click and double-click event listeners
+        this.addCardInteractionListeners(cardDiv, card);
+
         return cardDiv;
+    }
+
+    /**
+     * Add interaction listeners for long-click and double-click
+     */
+    addCardInteractionListeners(cardDiv, card) {
+        let longClickTimer = null;
+        let isLongClick = false;
+        const longClickDuration = 500; // 500ms for long click
+
+        // Mouse/touch down - start long click timer
+        const startLongClick = (e) => {
+            isLongClick = false;
+            longClickTimer = setTimeout(() => {
+                isLongClick = true;
+                this.showCardDetailModal(card);
+            }, longClickDuration);
+        };
+
+        // Mouse/touch up - clear timer and handle clicks
+        const endLongClick = (e) => {
+            if (longClickTimer) {
+                clearTimeout(longClickTimer);
+                longClickTimer = null;
+            }
+        };
+
+        // Double click - add to deck or remove from deck
+        const handleDoubleClick = (e) => {
+            e.preventDefault();
+            if (isLongClick) return; // Don't process double click if it was a long click
+
+            // Check if this card is from the deck list or card grid
+            const isDeckCard = cardDiv.closest('#currentDeck') !== null;
+            
+            if (isDeckCard) {
+                this.removeCardFromDeck(card.id);
+            } else {
+                this.addCardToDeck(card.id);
+            }
+        };
+
+        // Mouse events
+        cardDiv.addEventListener('mousedown', startLongClick);
+        cardDiv.addEventListener('mouseup', endLongClick);
+        cardDiv.addEventListener('mouseleave', endLongClick); // Cancel long click if mouse leaves
+        cardDiv.addEventListener('dblclick', handleDoubleClick);
+
+        // Touch events for mobile
+        cardDiv.addEventListener('touchstart', startLongClick);
+        cardDiv.addEventListener('touchend', endLongClick);
+        cardDiv.addEventListener('touchcancel', endLongClick);
+    }
+
+    /**
+     * Show card detail modal
+     */
+    showCardDetailModal(card) {
+        if (window.app && window.app.modal) {
+            window.app.modal.open('cardDetail', { card: card });
+        }
+    }
+
+    /**
+     * Cleanup method to remove event listeners and DOM elements
+     */
+    cleanup() {
+        // Remove preview overlay from DOM
+        if (this.cardPreview && this.cardPreview.parentNode) {
+            this.cardPreview.parentNode.removeChild(this.cardPreview);
+            this.cardPreview = null;
+        }
+        
+        logger.debug('🧹 DeckBuilder cleanup completed');
     }
 
     /**
@@ -873,6 +1159,18 @@ export class DeckBuilder {
                 </div>
             </div>
         `;
+
+        // Add hover functionality for card preview
+        cardDiv.addEventListener('mouseenter', (e) => {
+            this.showCardArtHover(card, e);
+        });
+        
+        cardDiv.addEventListener('mouseleave', () => {
+            this.hideCardPreview();
+        });
+
+        // Add interaction listeners (long-click and double-click)
+        this.addCardInteractionListeners(cardDiv, card);
 
         // Add drag functionality for deck reordering
         cardDiv.addEventListener('dragstart', (e) => {
@@ -1824,6 +2122,352 @@ export class DeckBuilder {
         } catch (error) {
             logger.error('Error deleting deck:', error);
             window.showNotification('Error deleting deck', 'error');
+        }
+    }
+
+    /**
+     * Export current deck to text format
+     * Format: [#] x [CardID]
+     */
+    exportDeck() {
+        if (!this.currentDeck) {
+            window.showNotification('No deck to export', 'warning');
+            return;
+        }
+
+        try {
+            const deckText = this.generateDeckText(this.currentDeck);
+            
+            // Create modal with exportable text
+            if (window.app && window.app.modal) {
+                window.app.modal.open('deckExport', {
+                    deckName: this.currentDeck.name,
+                    deckText: deckText
+                });
+            } else {
+                // Fallback: copy to clipboard and show notification
+                this.copyToClipboard(deckText);
+                window.showNotification('Deck exported to clipboard!', 'success');
+            }
+            
+            logger.info(`Exported deck: ${this.currentDeck.name}`);
+        } catch (error) {
+            logger.error('Error exporting deck:', error);
+            window.showNotification('Error exporting deck', 'error');
+        }
+    }
+
+    /**
+     * Generate deck text in [#] x [CardID] format
+     */
+    generateDeckText(deck) {
+        if (!deck || !deck.cards || deck.cards.length === 0) {
+            return '// Empty deck';
+        }
+
+        // Count cards by ID
+        const cardCounts = {};
+        deck.cards.forEach(cardId => {
+            cardCounts[cardId] = (cardCounts[cardId] || 0) + 1;
+        });
+
+        // Sort by card ID for consistent output
+        const sortedEntries = Object.entries(cardCounts).sort(([a], [b]) => a.localeCompare(b));
+
+        // Generate text lines
+        const lines = sortedEntries.map(([cardId, count]) => {
+            return `${count} x ${cardId}`;
+        });
+
+        // Add header comment
+        const header = [
+            `// Deck: ${deck.name}`,
+            `// Cards: ${deck.cards.length}/50`,
+            `// Exported: ${new Date().toLocaleDateString()}`,
+            ''
+        ];
+
+        return header.concat(lines).join('\n');
+    }
+
+    /**
+     * Import deck from text format
+     */
+    importDeck() {
+        if (window.app && window.app.modal) {
+            window.app.modal.open('deckImport', {
+                onImport: (deckText, deckName) => this.processDeckImport(deckText, deckName)
+            });
+        } else {
+            // Fallback: prompt for text
+            const deckText = prompt('Paste deck text ([#] x [CardID] format):');
+            if (deckText) {
+                const deckName = prompt('Enter deck name:', 'Imported Deck');
+                this.processDeckImport(deckText, deckName || 'Imported Deck');
+            }
+        }
+    }
+
+    /**
+     * Process imported deck text
+     */
+    processDeckImport(deckText, deckName = 'Imported Deck') {
+        try {
+            const cards = this.parseDeckText(deckText);
+            
+            if (cards.length === 0) {
+                window.showNotification('No valid cards found in import text', 'warning');
+                return;
+            }
+
+            // Create new deck
+            const newDeck = this.deckManager.createNewDeck(deckName);
+            newDeck.cards = cards;
+
+            // Set as current deck and update display
+            this.currentDeck = newDeck;
+            this.updateDeckDisplay();
+            this.showDeckEditor();
+
+            logger.info(`Imported deck: ${deckName} with ${cards.length} cards`);
+            window.showNotification(`Imported "${deckName}" with ${cards.length} cards`, 'success');
+
+        } catch (error) {
+            logger.error('Error importing deck:', error);
+            window.showNotification(`Error importing deck: ${error.message}`, 'error');
+        }
+    }
+
+    /**
+     * Parse deck text in [#] x [CardID] format with flexible parsing
+     */
+    parseDeckText(deckText) {
+        if (!deckText || typeof deckText !== 'string') {
+            throw new Error('Invalid deck text');
+        }
+
+        // Sanitize input first
+        const sanitizedText = this.sanitizeInput(deckText);
+        
+        const cards = [];
+        const lines = sanitizedText.split('\n');
+        let lineNumber = 0;
+        const errors = [];
+
+        for (const line of lines) {
+            lineNumber++;
+            const trimmedLine = line.trim();
+            
+            // Skip empty lines and comments
+            if (!trimmedLine || trimmedLine.startsWith('//') || trimmedLine.startsWith('#')) {
+                continue;
+            }
+
+            // Flexible parsing: Handle multiple deck list formats
+            // Format 1: "3 x 1-001L" or "3 x 1-001L Lightning"
+            // Format 2: "3 Valigarmanda (24-073H)" (Materia Hunter format)
+            
+            let match = trimmedLine.match(/^(\d+)\s*[x×]\s*([^\s]+)/i);
+            
+            // If no match with 'x' format, try Materia Hunter format: "# CardName (CardID)"
+            if (!match) {
+                match = trimmedLine.match(/^(\d+)\s+.+?\(([^)]+)\)\s*$/i);
+            }
+            
+            if (!match) {
+                errors.push(`Line ${lineNumber}: Invalid format "${this.truncateForDisplay(trimmedLine)}"`);
+                continue;
+            }
+
+            const count = parseInt(match[1]);
+            const cardId = this.sanitizeCardId(match[2]);
+
+            // Validate count
+            if (count < 1 || count > 3) {
+                errors.push(`Line ${lineNumber}: Invalid card count ${count} (must be 1-3)`);
+                continue;
+            }
+
+            // Validate card ID format (basic check for suspicious patterns)
+            if (!this.isValidCardIdFormat(cardId)) {
+                errors.push(`Line ${lineNumber}: Invalid card ID format "${this.truncateForDisplay(cardId)}"`);
+                continue;
+            }
+
+            // Validate card exists in database
+            let card = this.cardDatabase.getCard(cardId);
+            let actualCardId = cardId;
+            
+            if (!card) {
+                // Try some common variations if the exact ID doesn't work
+                const variations = [
+                    cardId.toUpperCase(),
+                    cardId.toLowerCase(),
+                    cardId.replace('-', '_'),
+                    cardId.replace('_', '-')
+                ];
+                
+                for (const variation of variations) {
+                    card = this.cardDatabase.getCard(variation);
+                    if (card) {
+                        actualCardId = card.id; // Use the actual card ID from database
+                        break;
+                    }
+                }
+            }
+            
+            if (!card) {
+                errors.push(`Line ${lineNumber}: Card "${this.truncateForDisplay(cardId)}" not found in database`);
+                continue;
+            }
+
+            // Add cards to array using the actual card ID
+            for (let i = 0; i < count; i++) {
+                cards.push(actualCardId);
+            }
+        }
+
+        // Check for errors
+        if (errors.length > 0) {
+            logger.warn('Deck import warnings:', errors);
+            
+            if (cards.length === 0) {
+                throw new Error('No valid cards found:\n' + errors.slice(0, 5).join('\n'));
+            } else {
+                // Show warnings but continue with valid cards
+                window.showNotification(
+                    `Import completed with ${errors.length} warnings. Check console for details.`,
+                    'warning'
+                );
+            }
+        }
+
+        // Check deck size
+        if (cards.length > 50) {
+            throw new Error(`Deck too large: ${cards.length} cards (maximum 50)`);
+        }
+
+        return cards;
+    }
+
+    /**
+     * Sanitize input text to prevent XSS and other attacks
+     */
+    sanitizeInput(text) {
+        if (typeof text !== 'string') {
+            return '';
+        }
+
+        // Remove any HTML tags
+        let sanitized = text.replace(/<[^>]*>/g, '');
+        
+        // Remove any script-like content
+        sanitized = sanitized.replace(/javascript:/gi, '');
+        sanitized = sanitized.replace(/data:/gi, '');
+        sanitized = sanitized.replace(/vbscript:/gi, '');
+        
+        // Remove any event handlers
+        sanitized = sanitized.replace(/on\w+\s*=/gi, '');
+        
+        // Limit length to prevent DoS
+        if (sanitized.length > 50000) { // ~50KB limit
+            throw new Error('Input too large (maximum 50,000 characters)');
+        }
+
+        // Limit number of lines
+        const lines = sanitized.split('\n');
+        if (lines.length > 1000) {
+            throw new Error('Too many lines (maximum 1,000 lines)');
+        }
+
+        return sanitized;
+    }
+
+    /**
+     * Sanitize card ID to remove any potentially harmful characters
+     */
+    sanitizeCardId(cardId) {
+        if (typeof cardId !== 'string') {
+            return '';
+        }
+
+        // Keep only alphanumeric characters, hyphens, and underscores
+        // This should cover all legitimate FFTCG card IDs
+        return cardId.replace(/[^a-zA-Z0-9\-_]/g, '').substring(0, 20); // Limit length
+    }
+
+    /**
+     * Validate card ID format (basic security check)
+     */
+    isValidCardIdFormat(cardId) {
+        if (!cardId || typeof cardId !== 'string') {
+            return false;
+        }
+        
+        // Card ID should be reasonable length and format
+        if (cardId.length < 2 || cardId.length > 20) {
+            return false;
+        }
+        
+        // Should contain only safe characters
+        if (!/^[a-zA-Z0-9\-_]+$/.test(cardId)) {
+            return false;
+        }
+        
+        // Should not be suspicious patterns
+        const suspiciousPatterns = [
+            /script/i,
+            /javascript/i,
+            /eval/i,
+            /function/i,
+            /alert/i,
+            /document/i,
+            /window/i
+        ];
+        
+        return !suspiciousPatterns.some(pattern => pattern.test(cardId));
+    }
+
+    /**
+     * Truncate text for safe display in error messages
+     */
+    truncateForDisplay(text, maxLength = 50) {
+        if (!text || typeof text !== 'string') {
+            return '[invalid]';
+        }
+        
+        // Remove any remaining HTML and control characters
+        const clean = text.replace(/[<>&"']/g, '').replace(/[\x00-\x1F\x7F]/g, '');
+        
+        return clean.length > maxLength 
+            ? clean.substring(0, maxLength) + '...' 
+            : clean;
+    }
+
+    /**
+     * Copy text to clipboard
+     */
+    async copyToClipboard(text) {
+        try {
+            if (navigator.clipboard && window.isSecureContext) {
+                await navigator.clipboard.writeText(text);
+            } else {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                textArea.style.position = 'fixed';
+                textArea.style.left = '-999999px';
+                textArea.style.top = '-999999px';
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                document.execCommand('copy');
+                textArea.remove();
+            }
+            return true;
+        } catch (error) {
+            logger.error('Failed to copy to clipboard:', error);
+            return false;
         }
     }
 

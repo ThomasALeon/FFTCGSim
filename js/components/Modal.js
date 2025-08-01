@@ -75,6 +75,27 @@ export class Modal {
                 width: '800px',
                 closable: true,
                 backdrop: true
+            },
+            practiceSetup: {
+                title: 'Practice vs AI Setup',
+                width: '900px',
+                height: '70vh',
+                closable: true,
+                backdrop: true
+            },
+            deckExport: {
+                title: 'Export Deck',
+                width: '600px',
+                height: '500px',
+                closable: true,
+                backdrop: true
+            },
+            deckImport: {
+                title: 'Import Deck',
+                width: '600px',
+                height: '500px',
+                closable: true,
+                backdrop: true
             }
         };
 
@@ -279,6 +300,18 @@ export class Modal {
                 break;
             case 'tournament':
                 this.createTournamentModal(bodyElement, footerElement, options);
+                break;
+            case 'practiceSetup':
+                this.createPracticeSetupModal(bodyElement, footerElement, options);
+                break;
+            case 'deckExport':
+                this.createDeckExportModal(bodyElement, footerElement, options);
+                break;
+            case 'deckImport':
+                this.createDeckImportModal(bodyElement, footerElement, options);
+                break;
+            case 'cardDetail':
+                this.createCardDetailModal(bodyElement, footerElement, options);
                 break;
             default:
                 bodyElement.innerHTML = '<p>Modal content not implemented</p>';
@@ -647,6 +680,213 @@ export class Modal {
                 }
             }
         });
+    }
+
+    /**
+     * Create practice setup modal content
+     */
+    createPracticeSetupModal(body, footer, options) {
+        const playerDecks = options.playerDecks || [];
+        const aiDecks = options.aiDecks || {};
+        const selectedDifficulty = options.selectedDifficulty || 'medium';
+        
+        body.innerHTML = `
+            <div class="practice-setup-container">
+                <!-- Deck Selection Section -->
+                <div class="setup-section">
+                    <div class="section-header">
+                        <h3>Choose Your Deck</h3>
+                        <p>Select a deck to play against the AI</p>
+                    </div>
+                    <div class="deck-selection-grid" id="deckSelectionGrid">
+                        ${this.createDeckSelectionHTML(playerDecks)}
+                    </div>
+                    ${playerDecks.length === 0 ? `
+                        <div class="no-decks-message">
+                            <p>No decks available. Create a deck in the Deck Builder first.</p>
+                            <button class="btn btn-primary" onclick="window.app?.switchView('deckBuilder'); window.app?.modal?.close();">
+                                Go to Deck Builder
+                            </button>
+                        </div>
+                    ` : ''}
+                </div>
+                
+                <!-- AI Difficulty Section -->
+                <div class="setup-section">
+                    <div class="section-header">
+                        <h3>Choose AI Difficulty</h3>
+                        <p>Select the challenge level for your practice game</p>
+                    </div>
+                    <div class="difficulty-selection-grid">
+                        ${this.createDifficultySelectionHTML(aiDecks, selectedDifficulty)}
+                    </div>
+                </div>
+                
+                <!-- AI Deck Preview Section -->
+                <div class="setup-section">
+                    <div class="section-header">
+                        <h3>AI Opponent Preview</h3>
+                    </div>
+                    <div class="ai-deck-preview" id="aiDeckPreview">
+                        ${this.createAIDeckPreviewHTML(aiDecks[selectedDifficulty])}
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        footer.innerHTML = `
+            <div class="modal-footer-actions">
+                <button class="btn btn-secondary" onclick="window.app?.modal?.close()">Cancel</button>
+                <button class="btn btn-primary btn-disabled" id="startPracticeButton" 
+                        onclick="window.app?.practiceSetup?.startPracticeGame()" disabled>
+                    Start Practice Game
+                </button>
+            </div>
+        `;
+    }
+    
+    /**
+     * Create deck selection HTML for practice setup
+     */
+    createDeckSelectionHTML(decks) {
+        if (decks.length === 0) return '';
+        
+        return decks.map(deck => `
+            <div class="deck-selection-card" data-deck-id="${deck.id}" 
+                 onclick="window.app?.practiceSetup?.selectDeck('${deck.id}')">
+                <div class="deck-card-header">
+                    <h4 class="deck-card-name">${deck.name}</h4>
+                    <span class="deck-card-count">${deck.cards?.length || 0} cards</span>
+                </div>
+                <div class="deck-card-preview">
+                    ${this.getDeckElementsPreview(deck)}
+                </div>
+                <div class="deck-card-footer">
+                    <span class="deck-created">Created: ${new Date(deck.created || Date.now()).toLocaleDateString()}</span>
+                </div>
+                <div class="selection-indicator">
+                    <div class="checkmark">✓</div>
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    /**
+     * Create difficulty selection HTML
+     */
+    createDifficultySelectionHTML(aiDecks, selectedDifficulty) {
+        const difficulties = ['easy', 'medium', 'hard'];
+        
+        return difficulties.map(difficulty => `
+            <div class="difficulty-card ${difficulty} ${difficulty === selectedDifficulty ? 'selected' : ''}" 
+                 data-difficulty="${difficulty}"
+                 onclick="window.app?.practiceSetup?.selectDifficulty('${difficulty}')">
+                <div class="difficulty-icon">
+                    ${this.getDifficultyIcon(difficulty)}
+                </div>
+                <h4 class="difficulty-name">${difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}</h4>
+                <p class="difficulty-description">${this.getDifficultyDescription(difficulty)}</p>
+                <div class="difficulty-features">
+                    ${this.getDifficultyFeatures(difficulty)}
+                </div>
+                <div class="selection-indicator">
+                    <div class="checkmark">✓</div>
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    /**
+     * Create AI deck preview HTML
+     */
+    createAIDeckPreviewHTML(aiDeck) {
+        if (!aiDeck) return '<p>Select a difficulty to see AI deck info</p>';
+        
+        return `
+            <div class="ai-deck-info">
+                <div class="ai-deck-header">
+                    <h4>${aiDeck.name}</h4>
+                    <span class="ai-strategy-tag">${aiDeck.strategy}</span>
+                </div>
+                <p class="ai-deck-description">${aiDeck.description}</p>
+                <div class="ai-deck-stats">
+                    <div class="ai-stat">
+                        <span class="stat-label">Difficulty:</span>
+                        <span class="stat-value">${aiDeck.difficulty}</span>
+                    </div>
+                    <div class="ai-stat">
+                        <span class="stat-label">Strategy:</span>
+                        <span class="stat-value">${aiDeck.strategy}</span>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+    
+    /**
+     * Get deck elements preview
+     */
+    getDeckElementsPreview(deck) {
+        if (!deck.cards || deck.cards.length === 0) return '';
+        
+        const elements = {};
+        deck.cards.forEach(cardEntry => {
+            const element = cardEntry.card?.element;
+            if (element) {
+                elements[element] = (elements[element] || 0) + cardEntry.count;
+            }
+        });
+        
+        const elementIcons = {
+            fire: '🔥', ice: '❄️', wind: '🌪️', lightning: '⚡',
+            water: '💧', earth: '🌍', light: '☀️', dark: '🌑'
+        };
+        
+        return Object.entries(elements)
+            .sort(([,a], [,b]) => b - a)
+            .slice(0, 4)
+            .map(([element, count]) => `
+                <span class="element-preview">${elementIcons[element] || element} ${count}</span>
+            `).join('');
+    }
+    
+    /**
+     * Get difficulty icon
+     */
+    getDifficultyIcon(difficulty) {
+        const icons = {
+            easy: '🎯',
+            medium: '⚔️',
+            hard: '🏆'
+        };
+        return icons[difficulty] || '🤖';
+    }
+    
+    /**
+     * Get difficulty description
+     */
+    getDifficultyDescription(difficulty) {
+        const descriptions = {
+            easy: 'Perfect for learning and testing new decks',
+            medium: 'Balanced challenge with strategic play',
+            hard: 'Advanced AI with optimal decision making'
+        };
+        return descriptions[difficulty] || '';
+    }
+    
+    /**
+     * Get difficulty features
+     */
+    getDifficultyFeatures(difficulty) {
+        const features = {
+            easy: ['Basic plays', 'Predictable', 'Forgiving'],
+            medium: ['Strategic', 'Adaptive', 'Challenging'],
+            hard: ['Optimal plays', 'Complex', 'Unforgiving']
+        };
+        
+        return (features[difficulty] || [])
+            .map(feature => `<span class="feature-tag">${feature}</span>`)
+            .join('');
     }
 
     /**
@@ -1255,6 +1495,588 @@ export class Modal {
 
         // Close modal
         this.close(modalId);
+    }
+
+    /**
+     * Create deck export modal content
+     */
+    createDeckExportModal(body, footer, options) {
+        const deckName = options.deckName || 'Unnamed Deck';
+        const deckText = options.deckText || '';
+
+        body.innerHTML = `
+            <div class="deck-export-content">
+                <div class="export-header">
+                    <h3>Export: ${deckName}</h3>
+                    <p>Copy the text below to share your deck or import it into other applications.</p>
+                </div>
+                
+                <div class="export-text-container">
+                    <textarea id="deckExportText" class="export-textarea" readonly>${deckText}</textarea>
+                </div>
+                
+                <div class="export-actions">
+                    <button type="button" class="btn btn-secondary" id="copyDeckBtn">
+                        📋 Copy to Clipboard
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="downloadDeckBtn">
+                        💾 Download as File
+                    </button>
+                </div>
+            </div>
+        `;
+
+        footer.innerHTML = `
+            <button type="button" class="btn btn-primary" onclick="app.modal.close('${body.closest('.modal').id}')">
+                Close
+            </button>
+        `;
+
+        // Set up copy functionality
+        const copyBtn = body.querySelector('#copyDeckBtn');
+        const downloadBtn = body.querySelector('#downloadDeckBtn');
+        const textArea = body.querySelector('#deckExportText');
+
+        copyBtn.addEventListener('click', async () => {
+            try {
+                await navigator.clipboard.writeText(deckText);
+                copyBtn.textContent = '✅ Copied!';
+                setTimeout(() => {
+                    copyBtn.innerHTML = '📋 Copy to Clipboard';
+                }, 2000);
+                window.showNotification('Deck copied to clipboard!', 'success');
+            } catch (error) {
+                // Fallback method
+                textArea.select();
+                document.execCommand('copy');
+                copyBtn.textContent = '✅ Copied!';
+                setTimeout(() => {
+                    copyBtn.innerHTML = '📋 Copy to Clipboard';
+                }, 2000);
+                window.showNotification('Deck copied to clipboard!', 'success');
+            }
+        });
+
+        downloadBtn.addEventListener('click', () => {
+            const blob = new Blob([deckText], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${deckName.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            window.showNotification('Deck downloaded!', 'success');
+        });
+
+        // Auto-select text on focus
+        textArea.addEventListener('focus', () => {
+            textArea.select();
+        });
+    }
+
+    /**
+     * Create deck import modal content
+     */
+    createDeckImportModal(body, footer, options) {
+        body.innerHTML = `
+            <div class="deck-import-content">
+                <div class="import-header">
+                    <h3>Import Deck</h3>
+                    <p>Paste deck text in formats: <code>[#] x [CardID]</code> or <code>[#] CardName (CardID)</code></p>
+                </div>
+                
+                <form id="deckImportForm" class="modal-form">
+                    <div class="form-group">
+                        <label for="deckImportName">Deck Name</label>
+                        <input type="text" id="deckImportName" name="deckName" value="Imported Deck" 
+                               placeholder="Enter deck name" required maxlength="50" 
+                               pattern="[a-zA-Z0-9 \-_]{1,50}" 
+                               title="Only letters, numbers, spaces, hyphens, and underscores allowed">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="deckImportText">Deck Text</label>
+                        <textarea id="deckImportText" name="deckText" class="import-textarea" 
+                                  placeholder="Paste your deck list here...
+Supported formats:
+Standard: 3 x 1-001L
+With names: 3 x 1-001L Lightning
+Materia Hunter: 3 Valigarmanda (24-073H)
+FFDB: 3 × 1-001L - Cloud
+
+Comments starting with // or # are ignored."
+                                  required rows="15"></textarea>
+                        <div class="form-hint">Supports standard "x" format and Materia Hunter "(CardID)" format</div>
+                    </div>
+                </form>
+                
+                <div class="import-preview" id="importPreview" style="display: none;">
+                    <h4>Import Preview</h4>
+                    <div class="preview-stats">
+                        <span id="previewCardCount">0 cards</span>
+                        <span id="previewErrors">0 errors</span>
+                    </div>
+                    <div class="preview-details" id="previewDetails"></div>
+                </div>
+            </div>
+        `;
+
+        footer.innerHTML = `
+            <button type="button" class="btn btn-secondary" onclick="app.modal.close('${body.closest('.modal').id}')">
+                Cancel
+            </button>
+            <button type="button" class="btn btn-secondary" id="previewBtn">
+                Preview
+            </button>
+            <button type="submit" form="deckImportForm" class="btn btn-primary" id="importBtn" disabled>
+                Import Deck
+            </button>
+        `;
+
+        // Set up form handling
+        const form = body.querySelector('#deckImportForm');
+        const previewBtn = footer.querySelector('#previewBtn');
+        const importBtn = footer.querySelector('#importBtn');
+        const textArea = body.querySelector('#deckImportText');
+        const nameInput = body.querySelector('#deckImportName');
+        const previewDiv = body.querySelector('#importPreview');
+
+        let lastPreviewText = '';
+
+        // Preview functionality
+        previewBtn.addEventListener('click', () => {
+            const deckText = textArea.value.trim();
+            if (!deckText) {
+                window.showNotification('Please enter deck text to preview', 'warning');
+                return;
+            }
+
+            try {
+                const preview = this.previewDeckImport(deckText);
+                this.showImportPreview(previewDiv, preview);
+                // Enable import if we have any valid cards, even with some errors
+                importBtn.disabled = preview.cards.length === 0;
+                lastPreviewText = deckText;
+            } catch (error) {
+                window.showNotification(`Preview error: ${error.message}`, 'error');
+                importBtn.disabled = true;
+            }
+        });
+
+        // Auto-preview on text change (debounced)
+        let previewTimeout;
+        textArea.addEventListener('input', () => {
+            clearTimeout(previewTimeout);
+            previewTimeout = setTimeout(() => {
+                if (textArea.value.trim() && textArea.value.trim() !== lastPreviewText) {
+                    previewBtn.click();
+                }
+            }, 1000);
+        });
+
+        // Form submission
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = new FormData(form);
+            let deckText = formData.get('deckText');
+            let deckName = formData.get('deckName');
+
+            // Sanitize inputs
+            deckText = this.sanitizeTextInput(deckText);
+            deckName = this.sanitizeDeckName(deckName);
+
+            if (!deckText) {
+                window.showNotification('Please enter deck text', 'warning');
+                return;
+            }
+
+            if (!deckName) {
+                window.showNotification('Please enter a valid deck name', 'warning');
+                return;
+            }
+
+            if (options.onImport) {
+                options.onImport(deckText, deckName);
+                this.close(body.closest('.modal').id);
+            }
+        });
+    }
+
+    /**
+     * Preview deck import without actually importing
+     */
+    previewDeckImport(deckText) {
+        const cards = [];
+        const errors = [];
+        const warnings = [];
+        let lineNumber = 0;
+
+        // Sanitize input first
+        const sanitizedText = this.sanitizePreviewInput(deckText);
+        const lines = sanitizedText.split('\n');
+
+        for (const line of lines) {
+            lineNumber++;
+            const trimmedLine = line.trim();
+            
+            // Skip empty lines and comments
+            if (!trimmedLine || trimmedLine.startsWith('//') || trimmedLine.startsWith('#')) {
+                continue;
+            }
+
+            // Flexible parsing: Handle multiple deck list formats
+            // Format 1: "3 x 1-001L" or "3 x 1-001L Lightning"
+            // Format 2: "3 Valigarmanda (24-073H)" (Materia Hunter format)
+            
+            let match = trimmedLine.match(/^(\d+)\s*[x×]\s*([^\s]+)/i);
+            
+            // If no match with 'x' format, try Materia Hunter format: "# CardName (CardID)"
+            if (!match) {
+                match = trimmedLine.match(/^(\d+)\s+.+?\(([^)]+)\)\s*$/i);
+            }
+            
+            if (!match) {
+                errors.push(`Line ${lineNumber}: Invalid format "${this.truncateForPreview(trimmedLine)}"`);
+                continue;
+            }
+
+            const count = parseInt(match[1]);
+            const cardId = this.sanitizeCardIdForPreview(match[2]);
+
+            // Validate count
+            if (count < 1 || count > 3) {
+                errors.push(`Line ${lineNumber}: Invalid card count ${count} (must be 1-3)`);
+                continue;
+            }
+
+            // Validate card ID format
+            if (!this.isValidCardIdFormatPreview(cardId)) {
+                errors.push(`Line ${lineNumber}: Invalid card ID format "${this.truncateForPreview(cardId)}"`);
+                continue;
+            }
+
+            // Check if card exists (if we have access to card database)
+            if (window.app?.cardDatabase) {
+                const card = window.app.cardDatabase.getCard(cardId);
+                
+                if (!card) {
+                    // Try some common variations if the exact ID doesn't work
+                    const variations = [
+                        cardId.toUpperCase(),
+                        cardId.toLowerCase(),
+                        cardId.replace('-', '_'),
+                        cardId.replace('_', '-')
+                    ];
+                    
+                    let foundCard = null;
+                    for (const variation of variations) {
+                        foundCard = window.app.cardDatabase.getCard(variation);
+                        if (foundCard) {
+                            break;
+                        }
+                    }
+                    
+                    if (!foundCard) {
+                        errors.push(`Line ${lineNumber}: Card "${this.truncateForPreview(cardId)}" not found in database`);
+                        continue;
+                    } else {
+                        // Use the found variation
+                        for (let i = 0; i < count; i++) {
+                            cards.push({ cardId: foundCard.id, name: foundCard.name, element: foundCard.element });
+                        }
+                    }
+                } else {
+                    // Add valid cards
+                    for (let i = 0; i < count; i++) {
+                        cards.push({ cardId, name: card.name, element: card.element });
+                    }
+                }
+            } else {
+                // Without database, just add the IDs
+                for (let i = 0; i < count; i++) {
+                    cards.push({ cardId, name: cardId, element: 'unknown' });
+                }
+            }
+        }
+
+        // Check deck size
+        if (cards.length > 50) {
+            errors.push(`Deck too large: ${cards.length} cards (maximum 50)`);
+        }
+
+        return { cards, errors, warnings };
+    }
+
+    /**
+     * Sanitize input for preview (lighter version)
+     */
+    sanitizePreviewInput(text) {
+        if (typeof text !== 'string') {
+            return '';
+        }
+
+        // Remove HTML tags and dangerous content
+        let sanitized = text.replace(/<[^>]*>/g, '');
+        sanitized = sanitized.replace(/javascript:/gi, '');
+        sanitized = sanitized.replace(/data:/gi, '');
+        sanitized = sanitized.replace(/on\w+\s*=/gi, '');
+
+        // Limit length
+        if (sanitized.length > 50000) {
+            return sanitized.substring(0, 50000);
+        }
+
+        return sanitized;
+    }
+
+    /**
+     * Sanitize card ID for preview
+     */
+    sanitizeCardIdForPreview(cardId) {
+        if (typeof cardId !== 'string') {
+            return '';
+        }
+        return cardId.replace(/[^a-zA-Z0-9\-_]/g, '').substring(0, 20);
+    }
+
+    /**
+     * Validate card ID format for preview
+     */
+    isValidCardIdFormatPreview(cardId) {
+        if (!cardId || typeof cardId !== 'string') {
+            return false;
+        }
+        
+        if (cardId.length < 2 || cardId.length > 20) {
+            return false;
+        }
+        
+        return /^[a-zA-Z0-9\-_]+$/.test(cardId);
+    }
+
+    /**
+     * Truncate text for preview display
+     */
+    truncateForPreview(text, maxLength = 50) {
+        if (!text || typeof text !== 'string') {
+            return '[invalid]';
+        }
+        
+        const clean = text.replace(/[<>&"']/g, '').replace(/[\x00-\x1F\x7F]/g, '');
+        return clean.length > maxLength ? clean.substring(0, maxLength) + '...' : clean;
+    }
+
+    /**
+     * Create card detail modal
+     */
+    createCardDetailModal(body, footer, options) {
+        const card = options.card;
+        if (!card) {
+            body.innerHTML = '<p>No card data provided</p>';
+            return;
+        }
+
+        // Get card image URL using same logic as DeckBuilder
+        let imageUrl = null;
+        if (window.app && window.app.deckBuilder) {
+            // Try to get image through the same system as deck builder
+            const cardImageMapping = window.imageMapping?.getCardImageMapping(card.id);
+            if (cardImageMapping && cardImageMapping.image) {
+                imageUrl = cardImageMapping.image;
+            } else if (card.hasRealImage && card.image) {
+                imageUrl = card.image;
+            }
+        }
+
+        body.innerHTML = `
+            <div class="card-detail-modal">
+                <div class="card-detail-image">
+                    ${imageUrl ? 
+                        `<img src="${imageUrl}" alt="${card.name}" class="card-detail-img" 
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                         <div class="card-detail-placeholder" style="display: none;">
+                             <div class="card-placeholder-icon">${this.getElementIcon(card.element)}</div>
+                             <div class="card-placeholder-text">${card.name}</div>
+                         </div>` :
+                        `<div class="card-detail-placeholder">
+                             <div class="card-placeholder-icon">${this.getElementIcon(card.element)}</div>
+                             <div class="card-placeholder-text">${card.name}</div>
+                         </div>`
+                    }
+                </div>
+                <div class="card-detail-info">
+                    <div class="card-detail-header">
+                        <h2 class="card-detail-name">${card.name}</h2>
+                        <div class="card-detail-cost">${card.cost || '-'}</div>
+                    </div>
+                    
+                    <div class="card-detail-stats">
+                        <div class="card-detail-row">
+                            <span class="card-detail-label">ID:</span>
+                            <span class="card-detail-value">${card.id}</span>
+                        </div>
+                        <div class="card-detail-row">
+                            <span class="card-detail-label">Element:</span>
+                            <span class="card-detail-value">
+                                ${this.getElementIcon(card.element)} ${this.capitalizeFirst(card.element)}
+                            </span>
+                        </div>
+                        <div class="card-detail-row">
+                            <span class="card-detail-label">Type:</span>
+                            <span class="card-detail-value">${this.capitalizeFirst(card.type)}</span>
+                        </div>
+                        ${card.power ? `
+                            <div class="card-detail-row">
+                                <span class="card-detail-label">Power:</span>
+                                <span class="card-detail-value">${card.power}</span>
+                            </div>
+                        ` : ''}
+                        ${card.job ? `
+                            <div class="card-detail-row">
+                                <span class="card-detail-label">Job:</span>
+                                <span class="card-detail-value">${card.job}</span>
+                            </div>
+                        ` : ''}
+                        ${card.category ? `
+                            <div class="card-detail-row">
+                                <span class="card-detail-label">Category:</span>
+                                <span class="card-detail-value">${card.category}</span>
+                            </div>
+                        ` : ''}
+                        ${card.rarity ? `
+                            <div class="card-detail-row">
+                                <span class="card-detail-label">Rarity:</span>
+                                <span class="card-detail-value">${card.rarity}</span>
+                            </div>
+                        ` : ''}
+                        ${card.set ? `
+                            <div class="card-detail-row">
+                                <span class="card-detail-label">Set:</span>
+                                <span class="card-detail-value">${card.set}</span>
+                            </div>
+                        ` : ''}
+                    </div>
+                    
+                    ${card.text ? `
+                        <div class="card-detail-text">
+                            <h4>Card Text:</h4>
+                            <div class="card-text-content">${card.text}</div>
+                        </div>
+                    ` : ''}
+                </div>
+            </div>
+        `;
+
+        footer.innerHTML = `
+            <button type="button" class="btn btn-primary" onclick="app.modal.close('${body.closest('.modal').id}')">
+                Close
+            </button>
+        `;
+    }
+
+    /**
+     * Sanitize text input (for deck text)
+     */
+    sanitizeTextInput(text) {
+        if (!text || typeof text !== 'string') {
+            return '';
+        }
+
+        // Remove HTML tags and dangerous content
+        let sanitized = text.replace(/<[^>]*>/g, '');
+        sanitized = sanitized.replace(/javascript:/gi, '');
+        sanitized = sanitized.replace(/data:/gi, '');
+        sanitized = sanitized.replace(/vbscript:/gi, '');
+        sanitized = sanitized.replace(/on\w+\s*=/gi, '');
+
+        // Trim and limit length
+        sanitized = sanitized.trim();
+        if (sanitized.length > 50000) {
+            sanitized = sanitized.substring(0, 50000);
+        }
+
+        return sanitized;
+    }
+
+    /**
+     * Sanitize deck name input
+     */
+    sanitizeDeckName(name) {
+        if (!name || typeof name !== 'string') {
+            return '';
+        }
+
+        // Remove HTML and dangerous characters, keep only safe characters
+        let sanitized = name.replace(/<[^>]*>/g, '');
+        sanitized = sanitized.replace(/[^\w\s\-_]/g, ''); // Only word chars, spaces, hyphens, underscores
+        sanitized = sanitized.trim();
+        
+        // Limit length
+        if (sanitized.length > 50) {
+            sanitized = sanitized.substring(0, 50);
+        }
+
+        // Ensure it's not empty after sanitization
+        if (!sanitized) {
+            return 'Imported Deck';
+        }
+
+        return sanitized;
+    }
+
+    /**
+     * Show import preview in modal
+     */
+    showImportPreview(previewDiv, preview) {
+        const cardCount = preview.cards.length;
+        const errorCount = preview.errors.length;
+
+        previewDiv.style.display = 'block';
+        
+        // Update stats
+        previewDiv.querySelector('#previewCardCount').textContent = `${cardCount} cards`;
+        previewDiv.querySelector('#previewErrors').textContent = `${errorCount} errors`;
+        
+        // Color code the stats
+        const cardCountEl = previewDiv.querySelector('#previewCardCount');
+        const errorCountEl = previewDiv.querySelector('#previewErrors');
+        
+        cardCountEl.style.color = cardCount === 0 ? '#ff4444' : cardCount > 50 ? '#ffaa00' : '#44aa44';
+        errorCountEl.style.color = errorCount > 0 ? '#ff4444' : '#44aa44';
+
+        // Show details
+        const detailsDiv = previewDiv.querySelector('#previewDetails');
+        
+        if (errorCount > 0) {
+            detailsDiv.innerHTML = `
+                <div class="preview-errors">
+                    <h5>Errors (${errorCount}):</h5>
+                    <ul>${preview.errors.slice(0, 10).map(error => `<li>${error}</li>`).join('')}</ul>
+                    ${preview.errors.length > 10 ? `<p>... and ${preview.errors.length - 10} more errors</p>` : ''}
+                </div>
+            `;
+        } else if (cardCount > 0) {
+            // Group cards by ID for display
+            const cardCounts = {};
+            preview.cards.forEach(card => {
+                cardCounts[card.cardId] = (cardCounts[card.cardId] || 0) + 1;
+            });
+
+            const sortedEntries = Object.entries(cardCounts).sort();
+            const displayCards = sortedEntries.slice(0, 10);
+
+            detailsDiv.innerHTML = `
+                <div class="preview-cards">
+                    <h5>Cards Preview (${Object.keys(cardCounts).length} unique):</h5>
+                    <ul>${displayCards.map(([cardId, count]) => `<li>${count} x ${cardId}</li>`).join('')}</ul>
+                    ${sortedEntries.length > 10 ? `<p>... and ${sortedEntries.length - 10} more cards</p>` : ''}
+                </div>
+            `;
+        } else {
+            detailsDiv.innerHTML = '<p>No valid cards found in the text.</p>';
+        }
     }
 
     /**

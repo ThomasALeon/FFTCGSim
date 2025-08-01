@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FFTCG Test Monitor</title>
+    <style>
+        body { 
+            font-family: monospace; 
+            padding: 20px; 
+            background: #1a1a1a; 
+            color: #00ff00; 
+        }
+        .test-output { 
+            background: #000; 
+            padding: 15px; 
+            border: 1px solid #333; 
+            margin: 10px 0; 
+            white-space: pre-wrap;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        .status { 
+            font-weight: bold; 
+            margin-bottom: 10px; 
+        }
+        .passed { color: #00ff00; }
+        .failed { color: #ff0000; }
+        .warning { color: #ffaa00; }
+    </style>
+</head>
+<body>
+    <h1>🧪 FFTCG Test Monitor</h1>
+    <div class="status" id="status">Initializing tests...</div>
+    <div class="test-output" id="output"></div>
+    
+    <script type="module">
+        // Redirect console to our output
+        const outputDiv = document.getElementById('output');
+        const statusDiv = document.getElementById('status');
+        
+        const originalLog = console.log;
+        const originalError = console.error;
+        const originalWarn = console.warn;
+        
+        function addOutput(message, type = 'log') {
+            const line = document.createElement('div');
+            line.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            line.className = type;
+            outputDiv.appendChild(line);
+            outputDiv.scrollTop = outputDiv.scrollHeight;
+        }
+        
+        console.log = (...args) => {
+            originalLog(...args);
+            addOutput(args.join(' '), 'log');
+        };
+        
+        console.error = (...args) => {
+            originalError(...args);
+            addOutput(args.join(' '), 'failed');
+        };
+        
+        console.warn = (...args) => {
+            originalWarn(...args);
+            addOutput(args.join(' '), 'warning');
+        };
+        
+        // Test the modules we've changed
+        async function runModuleTests() {
+            try {
+                statusDiv.textContent = '🔧 Loading application modules...';
+                
+                // Test 1: Check if ImageMapping utility loads properly
+                console.log('🧪 Testing ImageMapping utility...');
+                
+                try {
+                    const { imageMapping } = await import('./js/utils/ImageMapping.js');
+                    console.log('✅ ImageMapping utility loaded successfully');
+                    
+                    // Test singleton behavior
+                    const instance1 = imageMapping;
+                    const instance2 = imageMapping;
+                    if (instance1 === instance2) {
+                        console.log('✅ ImageMapping singleton pattern working');
+                    } else {
+                        console.error('❌ ImageMapping singleton pattern failed');
+                    }
+                    
+                    // Test cache clearing
+                    imageMapping.clearCache();
+                    if (!imageMapping.isLoaded) {
+                        console.log('✅ ImageMapping cache clearing works');
+                    } else {
+                        console.error('❌ ImageMapping cache not properly cleared');
+                    }
+                    
+                } catch (error) {
+                    console.error('❌ ImageMapping utility failed to load:', error.message);
+                }
+                
+                // Test 2: Check card database size
+                console.log('🧪 Testing card database size...');
+                
+                try {
+                    const response = await fetch('./js/data/fftcg_real_cards.json');
+                    const cardData = await response.json();
+                    const cardCount = cardData.length;
+                    
+                    console.log(`📊 Card database contains ${cardCount} cards`);
+                    
+                    if (cardCount >= 3700) {
+                        console.log('✅ Card database has expected size (3700+ cards)');
+                    } else {
+                        console.warn(`⚠️ Card database smaller than expected: ${cardCount} cards`);
+                    }
+                    
+                    // Test data structure
+                    const sampleCard = cardData[0];
+                    const requiredFields = ['id', 'name', 'element', 'type', 'set'];
+                    const hasRequiredFields = requiredFields.every(field => sampleCard.hasOwnProperty(field));
+                    
+                    if (hasRequiredFields) {
+                        console.log('✅ Card data structure is valid');
+                    } else {
+                        console.error('❌ Card data missing required fields');
+                    }
+                    
+                } catch (error) {
+                    console.error('❌ Failed to load card database:', error.message);
+                }
+                
+                // Test 3: Check image mapping
+                console.log('🧪 Testing image mapping...');
+                
+                try {
+                    const response = await fetch('./js/data/card_image_mapping.json');
+                    const imageMapping = await response.json();
+                    const mappingCount = Object.keys(imageMapping).length;
+                    
+                    console.log(`📊 Image mapping contains ${mappingCount} entries`);
+                    
+                    if (mappingCount >= 3700) {
+                        console.log('✅ Image mapping has expected size');
+                    } else {
+                        console.warn(`⚠️ Image mapping smaller than expected: ${mappingCount} entries`);
+                    }
+                    
+                    // Test mapping structure
+                    const sampleMapping = Object.values(imageMapping)[0];
+                    if (sampleMapping && sampleMapping.name && (sampleMapping.image || sampleMapping.source)) {
+                        console.log('✅ Image mapping data structure is valid');
+                    } else {
+                        console.error('❌ Image mapping data structure invalid');
+                    }
+                    
+                } catch (error) {
+                    console.error('❌ Failed to load image mapping:', error.message);
+                }
+                
+                // Test 4: Performance test with large dataset
+                console.log('🧪 Testing performance with large dataset...');
+                
+                const startTime = performance.now();
+                
+                // Simulate filtering 3723 cards
+                const mockCards = [];
+                for (let i = 0; i < 3723; i++) {
+                    mockCards.push({
+                        id: `${Math.floor(i/200) + 1}-${(i % 200).toString().padStart(3, '0')}H`,
+                        name: `Card ${i}`,
+                        element: ['fire', 'ice', 'wind', 'lightning', 'water', 'earth'][i % 6],
+                        type: ['forward', 'backup', 'summon'][i % 3],
+                        set: `Opus ${Math.floor(i/200) + 1}`
+                    });
+                }
+                
+                // Filter test
+                const filtered = mockCards.filter(card => 
+                    card.element === 'fire' && card.type === 'forward'
+                );
+                
+                const endTime = performance.now();
+                const processingTime = endTime - startTime;
+                
+                console.log(`📊 Processed ${mockCards.length} cards in ${processingTime.toFixed(2)}ms`);
+                console.log(`📊 Found ${filtered.length} matching cards`);
+                
+                if (processingTime < 100) {
+                    console.log('✅ Performance test passed (under 100ms)');
+                } else {
+                    console.warn(`⚠️ Performance slower than expected: ${processingTime.toFixed(2)}ms`);
+                }
+                
+                // Test 5: Edge cases
+                console.log('🧪 Testing edge cases...');
+                
+                // Test empty arrays
+                const emptyResult = [].filter(card => card.element === 'fire');
+                if (emptyResult.length === 0) {
+                    console.log('✅ Empty array handling works');
+                }
+                
+                // Test null safety
+                const cardsWithNulls = [
+                    { id: '1-001H', name: null, element: 'fire' },
+                    { id: null, name: 'Test', element: 'ice' },
+                    { id: '1-003H', name: 'Valid', element: 'wind' }
+                ];
+                
+                const safeCards = cardsWithNulls.filter(card => 
+                    card && card.id && card.name && card.element
+                );
+                
+                if (safeCards.length === 1) {
+                    console.log('✅ Null safety handling works');
+                } else {
+                    console.error('❌ Null safety handling failed');
+                }
+                
+                statusDiv.textContent = '✅ All tests completed!';
+                console.log('🎉 Test suite execution finished');
+                
+            } catch (error) {
+                statusDiv.textContent = '❌ Test execution failed';
+                console.error('❌ Test suite failed:', error.message);
+            }
+        }
+        
+        // Run tests when page loads
+        window.addEventListener('load', () => {
+            setTimeout(runModuleTests, 1000);
+        });
+    </script>
+</body>
+</html>

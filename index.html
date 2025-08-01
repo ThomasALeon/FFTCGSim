@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="css/components/modals.css">
     <link rel="stylesheet" href="css/components/deck-builder.css">
     <!-- <link rel="stylesheet" href="css/components/lobby.css"> -->
-    <!-- <link rel="stylesheet" href="css/components/game-board.css"> -->
+    <link rel="stylesheet" href="css/components/game-board.css">
     <link rel="stylesheet" href="css/accessibility.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -141,16 +141,21 @@
                     <div class="deck-manager" id="deckManager">
                         <div class="deck-manager-header">
                             <h2>My Decks</h2>
-                            <button class="btn btn-primary" onclick="
-                                if (window.app && window.app.deckBuilder) {
-                                    window.app.deckBuilder.showCreateNewDeck();
-                                } else {
-                                    console.error('App or deck builder not available:', {app: !!window.app, deckBuilder: !!window.app?.deckBuilder});
-                                    alert('Deck builder is still loading. Please wait a moment and try again.');
-                                }
-                            ">
-                                + New Deck
-                            </button>
+                            <div class="deck-manager-actions">
+                                <button class="btn btn-secondary" onclick="window.importDeck()" title="Import deck from text">
+                                    📥 Import Deck
+                                </button>
+                                <button class="btn btn-primary" onclick="
+                                    if (window.app && window.app.deckBuilder) {
+                                        window.app.deckBuilder.showCreateNewDeck();
+                                    } else {
+                                        console.error('App or deck builder not available:', {app: !!window.app, deckBuilder: !!window.app?.deckBuilder});
+                                        alert('Deck builder is still loading. Please wait a moment and try again.');
+                                    }
+                                ">
+                                    + New Deck
+                                </button>
+                            </div>
                         </div>
                         
                         <div class="deck-list-container" id="deckListContainer">
@@ -186,6 +191,12 @@
                                 <span class="deck-count"><span id="deckCardCount">0</span>/50 cards</span>
                             </div>
                             <div class="deck-actions">
+                                <button class="btn btn-secondary" onclick="window.importDeck()" title="Import deck from text">
+                                    📥 Import
+                                </button>
+                                <button class="btn btn-secondary" onclick="window.exportDeck()" title="Export deck as text">
+                                    📤 Export
+                                </button>
                                 <button class="btn btn-primary" onclick="window.app?.deckBuilder?.saveDeck()" id="saveDeckBtn" disabled>Save Deck</button>
                             </div>
                         </div>

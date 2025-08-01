@@ -36,6 +36,12 @@
     font-size: 1.5rem;
 }
 
+.deck-manager-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
 .deck-list-container {
     flex: 1;
     display: grid;
@@ -929,8 +935,16 @@ body.modal-open .card-item:focus {
     font-weight: 600;
     color: var(--color-text-primary, #fff);
     font-size: 0.9rem;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
     line-height: 1.2;
+}
+
+.card-id {
+    font-size: 0.75rem;
+    color: var(--color-text-secondary, #aaa);
+    font-weight: 400;
+    margin-bottom: 6px;
+    opacity: 0.8;
 }
 
 .card-details {
@@ -1523,6 +1537,71 @@ body.modal-open .card-item:focus {
     }
 }
 
+/* Card Art Preview with floating effect */
+.card-preview-overlay {
+    position: fixed;
+    z-index: 10000;
+    pointer-events: none; /* Prevent interference with mouse events */
+    background: rgba(26, 26, 46, 0.95);
+    border: 2px solid var(--color-primary, #ffd700);
+    border-radius: 8px;
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.8),
+        0 0 20px rgba(255, 215, 0, 0.3);
+    padding: 8px;
+    backdrop-filter: blur(2px);
+}
+
+.card-preview-overlay img {
+    display: block;
+    max-width: 250px;
+    max-height: 320px;
+    width: auto;
+    height: auto;
+    border-radius: 4px;
+}
+
+/* Only add margin if there's text below */
+.card-preview-overlay img:not(:last-child) {
+    margin-bottom: 8px;
+}
+
+.card-preview-text {
+    color: var(--color-text-primary, #fff);
+    font-size: 0.8rem;
+    line-height: 1.4;
+    max-width: 250px;
+    padding: 8px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    box-sizing: border-box;
+    /* No max-height or overflow - let text expand naturally */
+}
+
+/* Dynamic font sizing for different text lengths */
+.card-preview-text.short-text {
+    font-size: 0.8rem;
+}
+
+.card-preview-text.medium-text {
+    font-size: 0.75rem; /* Slightly smaller for medium text */
+}
+
+.card-preview-text.long-text {
+    font-size: 0.7rem; /* Smaller font for long text to keep it manageable */
+}
+
+/* Enhanced hover effect for card images */
+.card-image {
+    cursor: pointer;
+    transition: transform 0.2s ease-out;
+}
+
+.card-image:hover {
+    transform: scale(1.02);
+}
+
 /* Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
     .card-item,
@@ -1535,6 +1614,10 @@ body.modal-open .card-item:focus {
     
     .card-item:hover,
     .deck-card-item:hover {
+        transform: none;
+    }
+    
+    .card-image:hover {
         transform: none;
     }
 }

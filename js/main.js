@@ -28,6 +28,7 @@ import { PlayerManager } from './core/PlayerManager.js';
 import { Modal } from './components/Modal.js';
 import { DeckBuilder } from './components/DeckBuilder.js';
 import { GameBoard } from './components/GameBoard.js';
+import { PracticeSetup } from './components/PracticeSetup.js';
 // import { Lobby } from './components/Lobby.js';
 // import { SocketClient } from './network/SocketClient.js';
 
@@ -56,6 +57,7 @@ class AppController {
         this.modal = new Modal();
         this.deckBuilder = null; // Will be initialized after card database loads
         this.gameBoard = null; // Will be initialized after card database loads
+        this.practiceSetup = null; // Will be initialized after deck manager loads
         // this.lobby = new Lobby();
         // this.socketClient = new SocketClient();
         
@@ -181,6 +183,16 @@ class AppController {
             } catch (boardError) {
                 logger.error('Failed to initialize Game Board:', boardError);
                 this.gameBoard = null;
+            }
+            
+            // Initialize practice setup after deck manager and modal are loaded
+            logger.info('🤖 Initializing Practice Setup...');
+            try {
+                this.practiceSetup = new PracticeSetup(this.deckManager, this.modal);
+                logger.info('✅ Practice Setup initialized successfully');
+            } catch (practiceError) {
+                logger.error('Failed to initialize Practice Setup:', practiceError);
+                this.practiceSetup = null;
             }
             
         } catch (error) {
@@ -730,8 +742,10 @@ window.showNotification = function(message, type = 'info') {
 };
 
 window.startPracticeGame = function() {
-    if (window.app) {
-        window.app.switchView('game');
+    if (window.app && window.app.practiceSetup) {
+        window.app.practiceSetup.showSetupModal();
+    } else if (window.app) {
+        notifications.warning('Practice mode not yet initialized. Please wait for loading to complete.');
     } else {
         notifications.info('Application not yet loaded');
     }
@@ -758,6 +772,22 @@ window.loadDeck = function() {
 window.saveDeck = function() {
     if (window.app && window.app.deckBuilder) {
         window.app.deckBuilder.saveDeck();
+    } else {
+        notifications.warning('Deck Builder not yet initialized. Please wait for loading to complete.');
+    }
+};
+
+window.exportDeck = function() {
+    if (window.app && window.app.deckBuilder) {
+        window.app.deckBuilder.exportDeck();
+    } else {
+        notifications.warning('Deck Builder not yet initialized. Please wait for loading to complete.');
+    }
+};
+
+window.importDeck = function() {
+    if (window.app && window.app.deckBuilder) {
+        window.app.deckBuilder.importDeck();
     } else {
         notifications.warning('Deck Builder not yet initialized. Please wait for loading to complete.');
     }
