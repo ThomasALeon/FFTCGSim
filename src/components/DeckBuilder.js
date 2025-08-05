@@ -45,7 +45,7 @@ export class DeckBuilder {
         // Event handlers
         this.boundHandlers = {};
         
-        this.initialize();
+        // Note: initialize() must be called separately with await
     }
 
     /**

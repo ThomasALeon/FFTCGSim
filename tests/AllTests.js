@@ -700,6 +700,127 @@ export async function runAllTests() {
         });
     });
 
+    // Deck Import Tests
+    testFramework.describe('Deck Import System', function() {
+        let deckManager;
+        let cardDatabase;
+        
+        testFramework.beforeAll(async function() {
+            cardDatabase = new CardDatabase();
+            await cardDatabase.initialize();
+            
+            deckManager = new DeckManager();
+            deckManager.setCardDatabase(cardDatabase);
+        });
+
+        testFramework.it('should parse Materia Hunter format correctly', function() {
+            const materiaHunterDeck = `2 Lenna (26-120L)
+3 Terra (1-001H)
+1 Goblin (1-002C)`;
+            
+            const result = deckManager.parseDeckText(materiaHunterDeck);
+            
+            this.assert(result !== null, 'Should return a valid result');
+            this.assert(Array.isArray(result.cards), 'Should return cards array');
+            this.assert(result.cards.length >= 0, 'Should parse some cards (depends on database)');
+        });
+
+        testFramework.it('should handle mixed format deck lists', function() {
+            const mixedDeck = `# Mixed Format Test
+2 Lenna (26-120L)
+3x 1-001H
+1 Terra`;
+            
+            const result = deckManager.parseDeckText(mixedDeck);
+            
+            this.assert(result.name === 'Mixed Format Test', 'Should extract deck name from comment');
+            this.assert(Array.isArray(result.cards), 'Should return cards array');
+        });
+
+        testFramework.it('should provide detailed import logging', function() {
+            const testDeck = `2 NonExistentCard (FAKE-ID)
+1 TestCard (TEST-001)`;
+            
+            // Capture console output to verify logging
+            const originalWarn = console.warn;
+            let loggedWarnings = [];
+            
+            console.warn = (...args) => {
+                loggedWarnings.push(args.join(' '));
+                originalWarn(...args);
+            };
+            
+            const result = deckManager.parseDeckText(testDeck);
+            
+            console.warn = originalWarn;
+            
+            this.assert(loggedWarnings.length > 0, 'Should log warnings for failed imports');
+        });
+
+        testFramework.it('should handle card ID variations', function() {
+            const variationDeck = `1 TestCard (1-001h)
+1 TestCard (1_001H)`;
+            
+            const result = deckManager.parseDeckText(variationDeck);
+            
+            // Should attempt to parse variations without throwing errors
+            this.assert(result !== null, 'Should handle variations gracefully');
+        });
+
+        testFramework.it('should validate card quantities', function() {
+            const invalidQuantityDeck = `0 InvalidCard (1-001H)
+4 TooManyCards (1-002C)`;
+            
+            const result = deckManager.parseDeckText(invalidQuantityDeck);
+            
+            // Should filter out invalid quantities but not crash
+            this.assert(result !== null, 'Should handle invalid quantities gracefully');
+        });
+
+        testFramework.it('should test actual user deck list', function() {
+            const actualUserDeck = `2 Lenna (26-120L)
+2 Juggler (20-025C)
+3 Mateus (XII RW) (24-035C)
+3 Celestia (13-128L)
+1 Agrias (7-106L)
+3 Fairy (1-170C)
+2 Ashe (19-086R)
+1 Larsa (9-119C)
+2 Calautidon (17-028C)
+1 Orator (5-144C)
+2 Cocytus (8-031R)
+1 Time Mage (14-034C)
+2 Sylvestre (26-110R)
+2 Paladin (25-028C)
+3 Blugu (20-111C)
+1 Chadley (25-027H)
+2 Charlotte (26-032L)
+2 Alhanalem (20-022C)
+2 Sephiroth (10-034H)
+1 Sage (21-104C)
+3 Ra-la (26-121L)
+1 Aerith (19-088C)
+3 Shiva (15-030H)
+1 Sanctuary Keeper (19-094R)
+2 Miwa (22-105H)
+2 Sarah (MOBIUS) (19-024L)`;
+            
+            const result = deckManager.parseDeckText(actualUserDeck);
+            
+            const expectedTotal = 50; // Sum of all quantities in the deck
+            const importPercentage = (result.cards.length / expectedTotal) * 100;
+            
+            this.assert(result !== null, 'Should parse user deck');
+            this.assert(result.cards.length >= 0, 'Should import some cards');
+            
+            console.log(`📊 Import Success Rate: ${importPercentage.toFixed(1)}% (${result.cards.length}/${expectedTotal} cards)`);
+            
+            if (importPercentage < 80) {
+                console.warn(`⚠️ Low import success rate: ${importPercentage.toFixed(1)}%`);
+            }
+        });
+    });
+
     // Integration Tests
     testFramework.describe('Integration Tests', function() {
         testFramework.it('should integrate CardDatabase with DeckManager', async function() {

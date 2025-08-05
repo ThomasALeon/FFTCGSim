@@ -258,6 +258,7 @@ class AppController {
             // Skip card database initialization - already loaded in loadExtendedCardData()
             // { name: 'Loading card database', action: () => this.cardDatabase.initialize() },
             { name: 'Loading saved decks', action: () => this.deckManager.loadDecks() },
+            { name: 'Initializing image mapping', action: () => this.deckBuilder ? this.deckBuilder.initialize() : Promise.resolve() },
             { name: 'Initializing game engine', action: () => this.gameEngine.initialize() },
             { name: 'Setting up UI components', action: () => this.setupInitialUI() }
         ];
@@ -366,9 +367,6 @@ class AppController {
     setupUIComponents() {
         // Initialize modals
         this.modal.initialize();
-        
-        // TODO: Initialize deck builder when implemented
-        // this.deckBuilder.initialize();
         
         // TODO: Initialize lobby when implemented
         // this.lobby.initialize();
@@ -511,11 +509,19 @@ class AppController {
                 }
                 break;
             case 'game':
-                if (this.gameBoard) {
-                    this.gameBoard.startGame();
-                    logger.info('Game board activated');
+                if (this.gameBoard && this.gameEngine) {
+                    // Check if GameEngine has an active game state
+                    if (this.gameEngine.isActive && this.gameEngine.gameState) {
+                        // Use the actual game state from GameEngine
+                        this.gameBoard.setGameState(this.gameEngine.gameState);
+                        logger.info('Game board activated with GameEngine state');
+                    } else {
+                        // Fallback to test mode if no active game
+                        this.gameBoard.startGame();
+                        logger.info('Game board activated in test mode');
+                    }
                 } else {
-                    logger.warn('Game board not yet initialized');
+                    logger.warn('Game board or game engine not yet initialized');
                 }
                 break;
             case 'profile':

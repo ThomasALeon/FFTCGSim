@@ -643,10 +643,13 @@ export class DeckManager {
 
         const lines = text.split('\n').map(line => line.trim()).filter(line => line);
         const cards = [];
+        const importLog = [];
         let deckName = 'Imported Deck';
         let deckDescription = '';
 
-        lines.forEach(line => {
+        lines.forEach((line, index) => {
+            const lineNumber = index + 1;
+            
             // Skip comments and empty lines
             if (line.startsWith('#') || line.startsWith('//') || line === '') {
                 if (line.includes('#') && !deckName) {
@@ -655,25 +658,119 @@ export class DeckManager {
                 return;
             }
 
-            // Parse card lines (format: "3x Card Name" or "3 Card Name")
-            const match = line.match(/^(\d+)x?\s+(.+)$/);
+            // Parse card lines - Handle multiple formats:
+            // Format 1: "3x Card Name" or "3 Card Name"
+            // Format 2: "3 Card Name (CardID)" (Materia Hunter format)
+            let match = line.match(/^(\d+)x?\s+(.+?)(?:\s*\(([^)]+)\))?$/);
+            
             if (match) {
                 const quantity = parseInt(match[1]);
                 const cardName = match[2].trim();
+                const cardId = match[3] ? match[3].trim() : null;
+                
+                let foundCard = null;
+                let searchMethod = '';
 
-                // Find card by name
-                const matchingCards = this.cardDatabase.searchCards(cardName);
-                const exactMatch = matchingCards.find(card => 
-                    card.name.toLowerCase() === cardName.toLowerCase()
-                );
-
-                if (exactMatch) {
-                    for (let i = 0; i < quantity; i++) {
-                        cards.push(exactMatch.id);
+                // First try to find by card ID if provided (Materia Hunter format)
+                if (cardId) {
+                    foundCard = this.cardDatabase.getCard(cardId);
+                    if (foundCard) {
+                        searchMethod = `card ID "${cardId}"`;
+                    } else {
+                        // Try variations of the card ID
+                        const idVariations = [
+                            cardId.toUpperCase(),
+                            cardId.toLowerCase(),
+                            cardId.replace('-', '_'),
+                            cardId.replace('_', '-')
+                        ];
+                        
+                        for (const variation of idVariations) {
+                            foundCard = this.cardDatabase.getCard(variation);
+                            if (foundCard) {
+                                searchMethod = `card ID variation "${variation}" (original: "${cardId}")`;
+                                break;
+                            }
+                        }
                     }
-                } else {
-                    console.warn(`Card not found: ${cardName}`);
                 }
+
+                // If not found by ID, try to find by name
+                if (!foundCard) {
+                    const matchingCards = this.cardDatabase.searchCards(cardName);
+                    foundCard = matchingCards.find(card => 
+                        card.name.toLowerCase() === cardName.toLowerCase()
+                    );
+                    if (foundCard) {
+                        searchMethod = `exact name match "${cardName}"`;
+                    } else if (matchingCards.length > 0) {
+                        // Try fuzzy matching
+                        foundCard = matchingCards.find(card => 
+                            card.name.toLowerCase().includes(cardName.toLowerCase()) ||
+                            cardName.toLowerCase().includes(card.name.toLowerCase())
+                        );
+                        if (foundCard) {
+                            searchMethod = `fuzzy name match "${cardName}" -> "${foundCard.name}"`;
+                        }
+                    }
+                }
+
+                if (foundCard) {
+                    for (let i = 0; i < quantity; i++) {
+                        cards.push(foundCard.id);
+                    }
+                    importLog.push({
+                        line: lineNumber,
+                        status: 'success',
+                        original: line,
+                        quantity: quantity,
+                        cardName: cardName,
+                        cardId: cardId,
+                        foundCard: foundCard.name,
+                        foundId: foundCard.id,
+                        searchMethod: searchMethod
+                    });
+                } else {
+                    const errorMsg = cardId 
+                        ? `Card not found: "${cardName}" (${cardId})`
+                        : `Card not found: "${cardName}"`;
+                    console.warn(`Line ${lineNumber}: ${errorMsg}`);
+                    importLog.push({
+                        line: lineNumber,
+                        status: 'failed',
+                        original: line,
+                        quantity: quantity,
+                        cardName: cardName,
+                        cardId: cardId,
+                        error: errorMsg
+                    });
+                }
+            } else {
+                console.warn(`Line ${lineNumber}: Invalid format "${line}"`);
+                importLog.push({
+                    line: lineNumber,
+                    status: 'invalid',
+                    original: line,
+                    error: 'Invalid line format'
+                });
+            }
+        });
+
+        // Log import summary
+        const successful = importLog.filter(log => log.status === 'success').length;
+        const failed = importLog.filter(log => log.status === 'failed').length;
+        const invalid = importLog.filter(log => log.status === 'invalid').length;
+        
+        console.log(`📥 Import Summary: ${successful} successful, ${failed} failed, ${invalid} invalid format`);
+        
+        // Log detailed results
+        importLog.forEach(log => {
+            if (log.status === 'success') {
+                console.log(`✅ Line ${log.line}: ${log.quantity}x ${log.foundCard} (found via ${log.searchMethod})`);
+            } else if (log.status === 'failed') {
+                console.error(`❌ Line ${log.line}: ${log.error}`);
+            } else {
+                console.error(`⚠️ Line ${log.line}: ${log.error} - "${log.original}"`);
             }
         });
 

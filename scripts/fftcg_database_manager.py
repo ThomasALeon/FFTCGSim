@@ -67,11 +67,16 @@ def safe_int(value, default=0):
 
 def get_materia_hunter_url(card_id):
     """Generate MateriaHunter URL if supported"""
+    # Skip cards with slash notation - they don't work with Materia Hunter URL structure
+    if '/' in card_id:
+        return None
+        
     opus_match = re.match(r'^(\d+)-', card_id)
     if opus_match:
         opus_num = int(opus_match.group(1))
         if 1 <= opus_num <= 19:  # MateriaHunter coverage
             opus_dir = f"{opus_num:02d}"
+            # Remove rarity suffix (H, R, L, C) for URL
             card_number = re.sub(r'[A-Z]+$', '', card_id)
             return f"https://storage.googleapis.com/materiahunter-prod.appspot.com/images/cards/{opus_dir}/{card_number}.jpg"
     return None
@@ -150,10 +155,10 @@ def fetch_all_sets():
     # Sort and save
     all_cards.sort(key=lambda x: (x["set"], x["cardNumber"]))
     
-    with open('js/data/fftcg_real_cards.json', 'w', encoding='utf-8') as f:
+    with open('src/data/fftcg_real_cards.json', 'w', encoding='utf-8') as f:
         json.dump(all_cards, f, indent=2, ensure_ascii=False)
     
-    print(f"✅ Saved to js/data/fftcg_real_cards.json")
+    print(f"✅ Saved to src/data/fftcg_real_cards.json")
     return all_cards
 
 def fetch_missing_sets(missing_sets):
@@ -162,7 +167,7 @@ def fetch_missing_sets(missing_sets):
     
     # Load existing cards
     try:
-        with open('js/data/fftcg_real_cards.json', 'r') as f:
+        with open('src/data/fftcg_real_cards.json', 'r') as f:
             existing_cards = json.load(f)
         print(f"📊 Loaded {len(existing_cards)} existing cards")
     except Exception as e:
@@ -188,7 +193,7 @@ def fetch_missing_sets(missing_sets):
         
         unique_cards.sort(key=lambda x: (x["set"], x["cardNumber"]))
         
-        with open('js/data/fftcg_real_cards.json', 'w', encoding='utf-8') as f:
+        with open('src/data/fftcg_real_cards.json', 'w', encoding='utf-8') as f:
             json.dump(unique_cards, f, indent=2, ensure_ascii=False)
         
         print(f"✅ Added {len(new_cards)} new cards, total: {len(unique_cards)}")
@@ -200,12 +205,12 @@ def update_image_mappings():
     print("🎨 Updating image mappings...")
     
     # Load cards
-    with open('js/data/fftcg_real_cards.json', 'r') as f:
+    with open('src/data/fftcg_real_cards.json', 'r') as f:
         cards = json.load(f)
     
     # Load existing mappings
     try:
-        with open('js/data/card_image_mapping.json', 'r') as f:
+        with open('src/data/card_image_mapping.json', 'r') as f:
             existing_mapping = json.load(f)
     except:
         existing_mapping = {}
@@ -217,10 +222,22 @@ def update_image_mappings():
     for card in cards:
         card_id = card['id']
         
-        # Keep existing MateriaHunter mappings
+        # Keep existing MateriaHunter mappings only if they're valid
         if card_id in existing_mapping and existing_mapping[card_id].get('source') == 'materia-hunter':
-            new_mappings[card_id] = existing_mapping[card_id]
-            continue
+            opus_match = re.match(r'^(\d+)-', card_id)
+            if opus_match:
+                opus_num = int(opus_match.group(1))
+                # Only keep Materia Hunter mappings for Opus 1-19 (supported range)
+                # AND exclude slash cards (they have malformed URLs)
+                # AND exclude URLs with rarity suffixes in the filename (indicates old broken format)
+                existing_url = existing_mapping[card_id].get('image', '')
+                has_rarity_in_url = bool(re.search(r'[0-9]+[A-Z]+\.jpg$', existing_url))
+                
+                if 1 <= opus_num <= 19 and '/' not in card_id and not has_rarity_in_url:
+                    new_mappings[card_id] = existing_mapping[card_id]
+                    materia_count += 1
+                    continue
+            # Fall through to regenerate invalid Materia Hunter mappings
         
         # Try MateriaHunter first
         materia_url = get_materia_hunter_url(card_id)
@@ -239,7 +256,7 @@ def update_image_mappings():
             }
             square_count += 1
     
-    with open('js/data/card_image_mapping.json', 'w') as f:
+    with open('src/data/card_image_mapping.json', 'w') as f:
         json.dump(new_mappings, f, indent=2)
     
     print(f"✅ Updated {len(new_mappings)} image mappings")
