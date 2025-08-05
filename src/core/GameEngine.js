@@ -413,18 +413,22 @@ export class GameEngine {
     performActivePhase() {
         const currentPlayer = this.gameState.players[this.gameState.currentPlayer];
         
-        // Activate all dull characters
-        currentPlayer.field.forwards.forEach(forward => {
-            if (forward.status === 'dull') {
-                forward.status = 'active';
-            }
-        });
+        // Activate all dull characters - Updated for simplified zones
+        if (currentPlayer.field.battlefield) {
+            currentPlayer.field.battlefield.forEach(character => {
+                if (character.status === 'dull') {
+                    character.status = 'active';
+                }
+            });
+        }
         
-        currentPlayer.field.backups.forEach(backup => {
-            if (backup.status === 'dull') {
-                backup.status = 'active';
-            }
-        });
+        if (currentPlayer.field.backups) {
+            currentPlayer.field.backups.forEach(backup => {
+                if (backup.status === 'dull') {
+                    backup.status = 'active';
+                }
+            });
+        }
         
         // Check for triggered abilities
         this.checkTriggeredAbilities('beginningOfActivePhase');
@@ -885,22 +889,41 @@ export class GameEngine {
      * Initialize damage zone with 7 cards from deck (life points)
      */
     initializeDamageZone(playerIndex) {
+        if (!this.gameState || !this.gameState.players || !this.gameState.players[playerIndex]) {
+            console.warn(`Cannot initialize damage zone: player ${playerIndex} not found`);
+            return;
+        }
+        
         const player = this.gameState.players[playerIndex];
+        
+        // Initialize zones if they don't exist
+        if (!player.zones[this.ZONES.DECK]) {
+            player.zones[this.ZONES.DECK] = [];
+        }
+        if (!player.zones[this.ZONES.DAMAGE]) {
+            player.zones[this.ZONES.DAMAGE] = [];
+        }
         
         // Take first 7 cards from deck as life points
         if (player.zones[this.ZONES.DECK].length < 7) {
-            throw new Error('Not enough cards in deck to initialize damage zone');
+            console.warn(`Not enough cards in deck to initialize damage zone. Deck has ${player.zones[this.ZONES.DECK].length} cards`);
+            // For practice mode, create placeholder cards
+            const placeholderCards = [];
+            for (let i = 0; i < 7; i++) {
+                placeholderCards.push(`placeholder-life-${playerIndex}-${i}`);
+            }
+            player.zones[this.ZONES.DAMAGE] = placeholderCards;
+        } else {
+            const lifeCards = player.zones[this.ZONES.DECK].splice(0, 7);
+            player.zones[this.ZONES.DAMAGE] = lifeCards;
         }
-        
-        const lifeCards = player.zones[this.ZONES.DECK].splice(0, 7);
-        player.zones[this.ZONES.DAMAGE] = lifeCards;
         
         this.emit('damageZoneInitialized', {
             player: playerIndex,
-            lifePoints: lifeCards.length
+            lifePoints: player.zones[this.ZONES.DAMAGE].length
         });
         
-        console.log(`💔 Player ${playerIndex + 1} initialized with ${lifeCards.length} life points`);
+        console.log(`💔 Player ${playerIndex + 1} initialized with ${player.zones[this.ZONES.DAMAGE].length} life points`);
     }
 
     /**
@@ -1007,20 +1030,20 @@ export class GameEngine {
         for (let playerIndex = 0; playerIndex < 2; playerIndex++) {
             const player = this.gameState.players[playerIndex];
             
-            // Check forwards
-            const forward = player.field.forwards.find(f => f.id === characterId);
-            if (forward) {
-                forward.damage += damage;
+            // Check battlefield characters
+            const character = player.field.battlefield?.find(c => c.id === characterId);
+            if (character) {
+                character.damage += damage;
                 
                 // Check if character is destroyed
-                if (forward.damage >= forward.power) {
-                    this.destroyCharacter(playerIndex, forward, 'forwards');
+                if (character.damage >= character.power) {
+                    this.destroyCharacter(playerIndex, character, 'battlefield');
                 }
                 
                 this.emit('damageDealt', {
-                    target: forward,
+                    target: character,
                     damage: damage,
-                    totalDamage: forward.damage
+                    totalDamage: character.damage
                 });
                 return;
             }
@@ -1097,7 +1120,7 @@ export class GameEngine {
         
         // Validate and collect attackers
         forwardIds.forEach(forwardId => {
-            const forward = player.field.forwards.find(f => f.id === forwardId);
+            const forward = player.field.battlefield?.find(f => f.id === forwardId);
             
             if (!forward) {
                 throw new Error('Forward not found');
@@ -1159,7 +1182,7 @@ export class GameEngine {
         let blocker = null;
         
         if (forwardId) {
-            blocker = player.field.forwards.find(f => f.id === forwardId);
+            blocker = player.field.battlefield?.find(f => f.id === forwardId);
             
             if (!blocker) {
                 throw new Error('Blocker not found');
@@ -1480,10 +1503,13 @@ export class GameEngine {
     clearTurnFlags() {
         // Clear "entered this turn" flags
         for (const player of this.gameState.players) {
-            [...player.field.forwards, ...player.field.backups, ...player.field.monsters]
-                .forEach(character => {
-                    character.enteredThisTurn = false;
-                });
+            const allCharacters = [
+                ...(player.field.battlefield || []),
+                ...(player.field.backups || [])
+            ];
+            allCharacters.forEach(character => {
+                character.enteredThisTurn = false;
+            });
         }
     }
 
@@ -1492,10 +1518,13 @@ export class GameEngine {
      */
     clearDamage() {
         for (const player of this.gameState.players) {
-            [...player.field.forwards, ...player.field.backups, ...player.field.monsters]
-                .forEach(character => {
-                    character.damage = 0;
-                });
+            const allCharacters = [
+                ...(player.field.battlefield || []),
+                ...(player.field.backups || [])
+            ];
+            allCharacters.forEach(character => {
+                character.damage = 0;
+            });
         }
     }
 
@@ -1506,9 +1535,12 @@ export class GameEngine {
         for (const player of this.gameState.players) {
             player.effects.temporary = [];
             
-            [...player.field.forwards, ...player.field.backups, ...player.field.monsters]
-                .forEach(character => {
-                    character.effects = character.effects.filter(effect => !effect.temporary);
+            const allCharacters = [
+                ...(player.field.battlefield || []),
+                ...(player.field.backups || [])
+            ];
+            allCharacters.forEach(character => {
+                character.effects = character.effects.filter(effect => !effect.temporary);
                 });
         }
     }

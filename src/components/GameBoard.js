@@ -1527,14 +1527,24 @@ export class GameBoard {
         this.updateCardStates();
         
         // Initialize GameEngine if available
-        if (this.gameEngine) {
+        if (this.gameEngine && this.gameEngine.gameState) {
             try {
-                this.gameEngine.initializeDamageZone(0); // Player
-                this.gameEngine.initializeDamageZone(1); // Opponent
-                this.syncFromGameEngine();
+                // Wait a bit for game state to be properly initialized
+                setTimeout(() => {
+                    this.gameEngine.initializeDamageZone(0); // Player
+                    this.gameEngine.initializeDamageZone(1); // Opponent
+                    this.syncFromGameEngine();
+                }, 100);
             } catch (error) {
                 logger.warn('GameEngine integration failed:', error.message);
+                // Fall back to GameBoard's own initialization
+                this.initializeDamageZone('player');
+                this.initializeDamageZone('opponent');
             }
+        } else {
+            // Use GameBoard's own damage zone initialization
+            this.initializeDamageZone('player');
+            this.initializeDamageZone('opponent');
         }
         
         window.showNotification('New game started! Both players start with 7 life points.', 'success');
