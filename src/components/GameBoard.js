@@ -36,6 +36,32 @@ export class GameBoard {
         // Event handlers
         this.boundHandlers = {};
         
+        // Performance optimization
+        this.previewDebounceTimer = null;
+        
+        // CP tracking
+        this.playerCP = {
+            fire: 0,
+            ice: 0,
+            wind: 0,
+            lightning: 0,
+            water: 0,
+            earth: 0,
+            light: 0,
+            dark: 0
+        };
+        
+        // Deck elements for modular CP display
+        this.deckElements = new Set();
+        
+        // Event log system
+        this.eventLog = {
+            container: null,
+            content: null,
+            entries: [],
+            maxEntries: 100
+        };
+        
         this.initialize();
     }
 
@@ -46,6 +72,7 @@ export class GameBoard {
         this.setupUIElements();
         this.setupEventListeners();
         this.setupDragAndDrop();
+        this.setupEventLog();
         
         logger.info('🎮 Game Board initialized');
     }
@@ -65,10 +92,12 @@ export class GameBoard {
             playerBackups: document.getElementById('playerBackupsContent'),
             playerSummons: document.getElementById('playerSummonsContent'),
             playerDamage: document.getElementById('playerDamageContent'),
+            playerBreak: document.getElementById('playerBreakContent'),
             opponentHand: document.getElementById('opponentHandContent'),
             opponentBackups: document.getElementById('opponentBackupsContent'),
             opponentSummons: document.getElementById('opponentSummonsContent'),
             opponentDamage: document.getElementById('opponentDamageContent'),
+            opponentBreak: document.getElementById('opponentBreakContent'),
             field: document.getElementById('gameField')
         };
         
@@ -78,13 +107,13 @@ export class GameBoard {
             playerBackupsCount: document.getElementById('playerBackupsCount'),
             playerSummonsCount: document.getElementById('playerSummonsCount'),
             playerDamageCount: document.getElementById('playerDamageCount'),
+            playerBreakCount: document.getElementById('playerBreakCount'),
             opponentHandCount: document.getElementById('opponentHandCount'),
             opponentBackupsCount: document.getElementById('opponentBackupsCount'),
             opponentSummonsCount: document.getElementById('opponentSummonsCount'),
             opponentDamageCount: document.getElementById('opponentDamageCount'),
-            fieldCount: document.getElementById('fieldCount'),
-            playerCP: document.getElementById('playerCP'),
-            opponentCP: document.getElementById('opponentCP')
+            opponentBreakCount: document.getElementById('opponentBreakCount'),
+            fieldCount: document.getElementById('fieldCount')
         };
         
         if (!this.gameBoard) {
@@ -112,6 +141,14 @@ export class GameBoard {
         
         // Card selection
         this.boundHandlers.cardClick = this.handleCardClick.bind(this);
+
+        // Context menu setup
+        this.setupContextMenu();
+
+        // Hide context menu when clicking elsewhere
+        document.addEventListener('click', () => {
+            this.hideCardContextMenu();
+        });
     }
 
     /**
@@ -289,10 +326,18 @@ export class GameBoard {
             this.handleCardClick(cardDiv, card);
         });
 
+        // Add right-click context menu for player cards
+        if (isPlayerCard && !isFaceDown) {
+            cardDiv.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+                this.showCardContextMenu(e, card);
+            });
+        }
+
         // Add hover handler for card preview (only if not face down)
         if (!isFaceDown) {
             cardDiv.addEventListener('mouseenter', () => {
-                this.showCardPreview(card);
+                this.showCardPreviewDebounced(card);
             });
         }
 
@@ -377,6 +422,18 @@ export class GameBoard {
         
         // Show floating action menu next to the card
         this.showFloatingActionMenu(card, cardElement);
+    }
+
+    /**
+     * Debounced card preview to improve performance
+     */
+    showCardPreviewDebounced(card) {
+        if (this.previewDebounceTimer) {
+            clearTimeout(this.previewDebounceTimer);
+        }
+        this.previewDebounceTimer = setTimeout(() => {
+            this.showCardPreview(card);
+        }, 50);
     }
 
     /**
@@ -629,6 +686,16 @@ export class GameBoard {
                                 description: `Cost: ${card.cost || '?'} CP`
                             });
                         }
+                        
+                        // Add discard for CP option for non-Light/Dark cards
+                        if (card.element !== 'light' && card.element !== 'dark') {
+                            actions.push({ 
+                                id: 'discardForCP', 
+                                label: 'Discard for CP', 
+                                icon: '🔥',
+                                description: `Generate 2 ${card.element} CP`
+                            });
+                        }
                     }
                     break;
                     
@@ -748,6 +815,10 @@ export class GameBoard {
                 this.tapForCrystalPoints(card);
                 break;
                 
+            case 'discardForCP':
+                this.discardCardForCP(card);
+                break;
+                
             default:
                 logger.warn('Unknown card action:', actionId);
                 window.showNotification(`Action "${actionId}" not implemented yet`, 'warning');
@@ -767,8 +838,25 @@ export class GameBoard {
      */
     playCardAsForward(card) {
         logger.info(`Playing ${card.name} as Forward`);
-        // TODO: Implement proper CP checking and card playing through game engine
-        window.showNotification(`Played ${card.name} as Forward`, 'success');
+        
+        // Check and fix phase if needed
+        this.ensurePlayablePhase();
+        
+        try {
+            // Use GameEngine to play the card
+            this.gameEngine.playCard(0, card.id, { playType: 'forward' });
+            window.showNotification(`Played ${card.name} as Forward`, 'success');
+            
+            // Log the card play event
+            this.logCardPlay(card.name, 'Forward', 'You', 'Field');
+            
+            // Update the display with new game state
+            this.setGameState(this.gameEngine.gameState);
+        } catch (error) {
+            logger.error('Error playing card as forward:', error);
+            window.showNotification(`Cannot play ${card.name}: ${error.message}`, 'error');
+            this.logError(`Failed to play ${card.name} as Forward: ${error.message}`, { cardName: card.name, playType: 'forward' });
+        }
     }
     
     /**
@@ -776,8 +864,25 @@ export class GameBoard {
      */
     playCardAsBackup(card) {
         logger.info(`Playing ${card.name} as Backup`);
-        // TODO: Implement proper CP checking and card playing through game engine
-        window.showNotification(`Played ${card.name} as Backup`, 'success');
+        
+        // Check and fix phase if needed
+        this.ensurePlayablePhase();
+        
+        try {
+            // Use GameEngine to play the card
+            this.gameEngine.playCard(0, card.id, { playType: 'backup' });
+            window.showNotification(`Played ${card.name} as Backup`, 'success');
+            
+            // Log the card play event
+            this.logCardPlay(card.name, 'Backup', 'You', 'Backup Zone');
+            
+            // Update the display with new game state
+            this.setGameState(this.gameEngine.gameState);
+        } catch (error) {
+            logger.error('Error playing card as backup:', error);
+            window.showNotification(`Cannot play ${card.name}: ${error.message}`, 'error');
+            this.logError(`Failed to play ${card.name} as Backup: ${error.message}`, { cardName: card.name, playType: 'backup' });
+        }
     }
     
     /**
@@ -785,8 +890,21 @@ export class GameBoard {
      */
     castSummon(card) {
         logger.info(`Casting ${card.name} summon`);
-        // TODO: Implement summon casting logic
-        window.showNotification(`Cast ${card.name}`, 'success');
+        
+        // Check and fix phase if needed
+        this.ensurePlayablePhase();
+        
+        try {
+            // Use GameEngine to cast the summon
+            this.gameEngine.playCard(0, card.id, { playType: 'summon' });
+            window.showNotification(`Cast ${card.name}`, 'success');
+            
+            // Update the display with new game state
+            this.setGameState(this.gameEngine.gameState);
+        } catch (error) {
+            logger.error('Error casting summon:', error);
+            window.showNotification(`Cannot cast ${card.name}: ${error.message}`, 'error');
+        }
     }
     
     /**
@@ -907,11 +1025,25 @@ export class GameBoard {
      * Check if a card can be played (simplified logic)
      */
     canPlayCard(card) {
-        // Simplified CP check - in a real game this would check actual CP availability
-        const currentCP = 3; // Placeholder - should come from game state
-        const cardCost = parseInt(card.cost) || 0;
+        if (!this.gameState || !card) return false;
         
-        return cardCost <= currentCP;
+        const player = this.gameState.players[0]; // Player 1
+        if (!player) return false;
+        
+        const cardCost = parseInt(card.cost) || 0;
+        const cardElement = card.element;
+        
+        // Check if we have enough CP of the card's element
+        if (player.cpPool && player.cpPool[cardElement] !== undefined) {
+            return player.cpPool[cardElement] >= cardCost;
+        }
+        
+        // Fallback to local tracking if GameEngine CP not available
+        if (this.playerCP && this.playerCP[cardElement] !== undefined) {
+            return this.playerCP[cardElement] >= cardCost;
+        }
+        
+        return false;
     }
     
     /**
@@ -933,18 +1065,69 @@ export class GameBoard {
             return;
         }
 
-        // Update zones with cards
-        this.renderPlayerHand(this.gameState.player1.hand);
-        this.renderPlayerBackups(this.gameState.player1.backups);
-        this.renderPlayerDamage(this.gameState.player1.damage);
-        this.renderOpponentHand(this.gameState.player2.hand);
-        this.renderOpponentBackups(this.gameState.player2.backups);
-        this.renderOpponentDamage(this.gameState.player2.damage);
-        this.renderField(this.gameState.field);
+        // Update zones with cards (using correct GameEngine structure)
+        const player1 = this.gameState.players[0];
+        const player2 = this.gameState.players[1];
+        
+        // Debug logging to see what's in the zones
+        console.log('Player 1 zones:', player1.zones);
+        console.log('Player 2 zones:', player2.zones);
+        
+        this.renderPlayerHand(player1.zones.hand || []);
+        this.renderPlayerBackups(player1.zones.field ? player1.zones.field.filter(cardId => {
+            const card = this.cardDatabase.getCard(cardId);
+            return card && card.type === 'backup';
+        }) : []);
+        this.renderPlayerDamage(player1.zones.damage || []);
+        
+        // Opponent hand - show face down cards based on count
+        const opponentHandCount = player2.zones.hand ? player2.zones.hand.length : 0;
+        this.renderOpponentHand(new Array(opponentHandCount).fill('face-down'));
+        
+        this.renderOpponentBackups(player2.zones.field ? player2.zones.field.filter(cardId => {
+            const card = this.cardDatabase.getCard(cardId);
+            return card && card.type === 'backup';
+        }) : []);
+        this.renderOpponentDamage(player2.zones.damage || []);
+        
+        // Field area - forwards from both players
+        const player1Forwards = player1.zones.field ? player1.zones.field.filter(cardId => {
+            const card = this.cardDatabase.getCard(cardId);
+            return card && card.type === 'forward';
+        }) : [];
+        const player2Forwards = player2.zones.field ? player2.zones.field.filter(cardId => {
+            const card = this.cardDatabase.getCard(cardId);
+            return card && card.type === 'forward';
+        }) : [];
+        this.renderField([...player1Forwards, ...player2Forwards]);
+        
+        // Update hidden zone content for modals
+        this.updateHiddenZoneContent('playerDamageContent', player1.zones.damage || []);
+        this.updateHiddenZoneContent('playerBreakContent', player1.zones.break || []);
+        this.updateHiddenZoneContent('opponentDamageContent', player2.zones.damage || []);
+        this.updateHiddenZoneContent('opponentBreakContent', player2.zones.break || []);
         
         // Update counters and CP
         this.updateCounters();
         this.updateTurnDisplay();
+    }
+
+    /**
+     * Update hidden zone content for modals
+     */
+    updateHiddenZoneContent(containerId, cardIds) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        
+        container.innerHTML = '';
+        
+        cardIds.forEach(cardId => {
+            const card = this.cardDatabase.getCard(cardId);
+            if (card) {
+                const cardElement = this.createGameCard(card, true, false);
+                container.appendChild(cardElement);
+            }
+        });
     }
 
     /**
@@ -1133,22 +1316,19 @@ export class GameBoard {
         this.updateCounter('playerHandCount', this.zones.playerHand);
         this.updateCounter('playerBackupsCount', this.zones.playerBackups);
         this.updateCounter('playerDamageCount', this.zones.playerDamage);
+        this.updateCounter('playerBreakCount', this.zones.playerBreak);
         
         // Update opponent counters
         this.updateCounter('opponentHandCount', this.zones.opponentHand);
         this.updateCounter('opponentBackupsCount', this.zones.opponentBackups);
         this.updateCounter('opponentDamageCount', this.zones.opponentDamage);
+        this.updateCounter('opponentBreakCount', this.zones.opponentBreak);
         
         // Update field counter
         this.updateCounter('fieldCount', this.zones.field);
         
         // Update CP (placeholder values)
-        if (this.counters.playerCP) {
-            this.counters.playerCP.textContent = 'CP: 3';
-        }
-        if (this.counters.opponentCP) {
-            this.counters.opponentCP.textContent = 'CP: 2';
-        }
+        // CP display is now handled by the modular CP system
     }
 
     /**
@@ -1166,16 +1346,35 @@ export class GameBoard {
      * Update turn and phase display
      */
     updateTurnDisplay() {
-        if (this.currentPlayerElement) {
-            this.currentPlayerElement.textContent = this.currentPlayer === 'player1' ? 'Your Turn' : 'Opponent Turn';
-        }
-        
-        if (this.phaseIndicator) {
-            this.phaseIndicator.textContent = this.getPhaseDisplayName(this.currentPhase);
-        }
-        
-        if (this.turnIndicator) {
-            this.turnIndicator.classList.toggle('active', this.currentPlayer === 'player1');
+        // Use GameEngine state if available
+        if (this.gameEngine && this.gameEngine.gameState) {
+            const gameState = this.gameEngine.gameState;
+            const isPlayerTurn = gameState.currentPlayer === 0;
+            
+            if (this.currentPlayerElement) {
+                this.currentPlayerElement.textContent = isPlayerTurn ? 'Your Turn' : 'Opponent Turn';
+            }
+            
+            if (this.phaseIndicator) {
+                this.phaseIndicator.textContent = this.getPhaseDisplayName(gameState.currentPhase);
+            }
+            
+            if (this.turnIndicator) {
+                this.turnIndicator.classList.toggle('active', isPlayerTurn);
+            }
+        } else {
+            // Fallback to local state
+            if (this.currentPlayerElement) {
+                this.currentPlayerElement.textContent = this.currentPlayer === 'player1' ? 'Your Turn' : 'Opponent Turn';
+            }
+            
+            if (this.phaseIndicator) {
+                this.phaseIndicator.textContent = this.getPhaseDisplayName(this.currentPhase);
+            }
+            
+            if (this.turnIndicator) {
+                this.turnIndicator.classList.toggle('active', this.currentPlayer === 'player1');
+            }
         }
         
         // Update card interaction states when turn/phase changes
@@ -1188,35 +1387,66 @@ export class GameBoard {
      */
     getPhaseDisplayName(phase) {
         const phaseNames = {
-            main: 'Main Phase',
+            // GameEngine phases
+            active: 'Active Phase',
+            draw: 'Draw Phase', 
+            main1: 'Main Phase 1',
             attack: 'Attack Phase',
+            main2: 'Main Phase 2',
+            end: 'End Phase',
+            // Legacy phases
+            main: 'Main Phase',
             block: 'Block Phase',
-            damage: 'Damage Phase',
-            end: 'End Phase'
+            damage: 'Damage Phase'
         };
-        return phaseNames[phase] || phase;
+        return phaseNames[phase] || phase.charAt(0).toUpperCase() + phase.slice(1);
     }
 
     /**
      * End current phase
      */
     endPhase() {
-        // This would integrate with the game engine
         logger.info('Ending phase');
-        window.showNotification('Phase ended', 'info');
         
-        // Placeholder phase progression
-        const phases = ['main', 'attack', 'block', 'damage', 'end'];
-        const currentIndex = phases.indexOf(this.currentPhase);
-        
-        if (currentIndex < phases.length - 1) {
-            this.currentPhase = phases[currentIndex + 1];
-        } else {
-            this.endTurn();
+        if (!this.gameEngine || !this.gameEngine.gameState) {
+            window.showNotification('No active game', 'warning');
             return;
         }
         
-        this.updateTurnDisplay();
+        const currentPhase = this.gameEngine.gameState.currentPhase;
+        
+        try {
+            // Advance phase based on current phase
+            switch (currentPhase) {
+                case 'active':
+                    this.gameEngine.beginPhase('draw');
+                    break;
+                case 'draw':
+                    this.gameEngine.beginPhase('main1');
+                    break;
+                case 'main1':
+                    this.gameEngine.beginPhase('attack');
+                    break;
+                case 'attack':
+                    this.gameEngine.beginPhase('main2');
+                    break;
+                case 'main2':
+                    this.gameEngine.beginPhase('end');
+                    break;
+                case 'end':
+                    this.endTurn();
+                    return;
+                default:
+                    this.gameEngine.beginPhase('main1');
+            }
+            
+            window.showNotification('Phase advanced', 'info');
+            this.setGameState(this.gameEngine.gameState);
+            
+        } catch (error) {
+            logger.error('Error advancing phase:', error);
+            window.showNotification('Cannot advance phase', 'error');
+        }
     }
 
     /**
@@ -1238,7 +1468,10 @@ export class GameBoard {
      */
     setGameState(gameState) {
         this.gameState = gameState;
+        this.analyzeDeckElements();
+        this.updateModularCPDisplay();
         this.updateGameDisplay();
+        this.syncCPFromGameEngine();
     }
 
     /**
@@ -1247,19 +1480,453 @@ export class GameBoard {
     startGame() {
         logger.info('Starting new game');
         
+        // Log game start
+        this.addEventLogEntry('game-start', 'New practice game started');
+        
         // Reset game state
         this.currentPlayer = 'player1';
         this.currentPhase = 'main';
         this.selectedCard = null;
         
+        // Reset CP
+        Object.keys(this.playerCP).forEach(element => {
+            this.playerCP[element] = 0;
+        });
+        
         // Render initial board
         this.renderEmptyBoard();
         this.updateTurnDisplay();
+        
+        // For test mode, analyze elements from sample cards
+        this.analyzeDeckElements();
+        this.updateModularCPDisplay();
         
         // Initialize card states
         this.updateCardStates();
         
         window.showNotification('New game started!', 'success');
+    }
+
+    /**
+     * Set up context menu event handlers
+     */
+    setupContextMenu() {
+        // Get context menu elements
+        this.contextMenu = document.getElementById('cardContextMenu');
+        this.playCardOption = document.getElementById('playCardOption');
+        this.discardForCPOption = document.getElementById('discardForCPOption');
+        this.tapBackupOption = document.getElementById('tapBackupOption');
+        this.viewCardOption = document.getElementById('viewCardOption');
+        
+        // Bind event handlers
+        if (this.playCardOption) {
+            this.playCardOption.addEventListener('click', () => {
+                if (this.selectedContextCard) {
+                    this.playCardFromContext(this.selectedContextCard);
+                }
+                this.hideCardContextMenu();
+            });
+        }
+        
+        if (this.discardForCPOption) {
+            this.discardForCPOption.addEventListener('click', () => {
+                if (this.selectedContextCard) {
+                    this.discardCardForCP(this.selectedContextCard);
+                }
+                this.hideCardContextMenu();
+            });
+        }
+        
+        if (this.tapBackupOption) {
+            this.tapBackupOption.addEventListener('click', () => {
+                if (this.selectedContextCard) {
+                    this.tapBackupForCP(this.selectedContextCard);
+                }
+                this.hideCardContextMenu();
+            });
+        }
+        
+        if (this.viewCardOption) {
+            this.viewCardOption.addEventListener('click', () => {
+                if (this.selectedContextCard) {
+                    this.showCardPreview(this.selectedContextCard);
+                }
+                this.hideCardContextMenu();
+            });
+        }
+    }
+
+    /**
+     * Show context menu for a card
+     */
+    showCardContextMenu(event, card) {
+        if (!this.contextMenu) return;
+        
+        this.selectedContextCard = card;
+        
+        // Update menu options based on card and context
+        this.updateContextMenuOptions(card);
+        
+        // Position menu at click location
+        const rect = this.gameBoard.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+        
+        this.contextMenu.style.left = `${x}px`;
+        this.contextMenu.style.top = `${y}px`;
+        this.contextMenu.classList.add('show');
+        
+        logger.debug(`Showing context menu for ${card.name}`);
+    }
+
+    /**
+     * Hide context menu
+     */
+    hideCardContextMenu() {
+        if (this.contextMenu) {
+            this.contextMenu.classList.remove('show');
+            this.selectedContextCard = null;
+        }
+    }
+
+    /**
+     * Update context menu options based on card type and game state
+     */
+    updateContextMenuOptions(card) {
+        if (!card) return;
+        
+        // Show/hide play option based on card type and current phase
+        const canPlay = this.canPlayCard(card) && this.currentPhase === 'main';
+        this.playCardOption.style.display = canPlay ? 'flex' : 'none';
+        
+        // Show discard for CP option for non-Light/Dark cards in hand
+        const canDiscardForCP = card.element !== 'light' && card.element !== 'dark';
+        this.discardForCPOption.style.display = canDiscardForCP ? 'flex' : 'none';
+        
+        // Show tap for CP option only for backup cards on field
+        const isBackupOnField = card.type === 'backup'; // Would need to check if it's actually on field
+        this.tapBackupOption.style.display = isBackupOnField ? 'flex' : 'none';
+        
+        // Always show view option
+        this.viewCardOption.style.display = 'flex';
+        
+        // Update text to show CP generation amounts
+        if (this.discardForCPOption) {
+            this.discardForCPOption.querySelector('.context-text').textContent = `Discard for 2 ${card.element} CP`;
+        }
+        
+        if (this.tapBackupOption && card.type === 'backup') {
+            this.tapBackupOption.querySelector('.context-text').textContent = `Tap for 1 ${card.element} CP`;
+        }
+    }
+
+    /**
+     * Ensure the game is in a phase where cards can be played
+     */
+    ensurePlayablePhase() {
+        if (!this.gameEngine || !this.gameEngine.gameState) return;
+        
+        const gameState = this.gameEngine.gameState;
+        console.log('Current phase:', gameState.currentPhase);
+        console.log('Can player act:', this.gameEngine.canPlayerAct(0));
+        
+        // If stuck in ACTIVE phase, manually advance to MAIN_1
+        if (gameState.currentPhase === 'active' && gameState.isActive) {
+            console.log('Advancing from ACTIVE to MAIN_1 phase');
+            this.logPhaseChange('active', 'main1', 'You');
+            this.gameEngine.beginPhase('main1');
+            window.showNotification('Advanced to Main Phase', 'info');
+        }
+        
+        // If in DRAW phase, advance to MAIN_1
+        else if (gameState.currentPhase === 'draw' && gameState.isActive) {
+            console.log('Advancing from DRAW to MAIN_1 phase');
+            this.logPhaseChange('draw', 'main1', 'You');
+            this.gameEngine.beginPhase('main1');
+            window.showNotification('Advanced to Main Phase', 'info');
+        }
+        
+        // Ensure player has priority
+        if (gameState.priorityPlayer !== 0) {
+            console.log('Giving priority to player 1');
+            this.gameEngine.givePriority(0);
+        }
+    }
+
+    /**
+     * Play card from context menu
+     */
+    playCardFromContext(card) {
+        logger.info(`Playing ${card.name} from context menu`);
+        
+        // Check and fix phase if needed
+        this.ensurePlayablePhase();
+        
+        try {
+            // Determine play type based on card type
+            let playType = 'field';
+            if (card.type === 'forward' || card.type === 'backup') {
+                playType = card.type;
+            } else if (card.type === 'summon') {
+                playType = 'summon';
+            }
+            
+            // Use GameEngine to play the card
+            this.gameEngine.playCard(0, card.id, { playType });
+            window.showNotification(`Played ${card.name}`, 'success');
+            
+            // Update the display with new game state
+            this.setGameState(this.gameEngine.gameState);
+            
+        } catch (error) {
+            logger.error('Error playing card:', error);
+            window.showNotification(`Cannot play ${card.name}: ${error.message}`, 'error');
+        }
+    }
+
+    /**
+     * Discard card for CP
+     */
+    discardCardForCP(card) {
+        logger.info(`Discarding ${card.name} for CP`);
+        
+        try {
+            // Check if card can be discarded for CP
+            if (card.element === 'light' || card.element === 'dark') {
+                window.showNotification('Cannot discard Light/Dark cards for CP', 'warning');
+                return;
+            }
+            
+            // Integrate with GameEngine
+            this.gameEngine.generateCPFromDiscard(0, card.id);
+            
+            // Update local CP tracking
+            this.addCP(card.element, 2);
+            
+            // Log the discard event
+            this.logCardDiscardForCP(card.name, card.element, 2, 'You');
+            
+            window.showNotification(`Discarded ${card.name} for 2 ${card.element} CP`, 'success');
+            
+            // Update display with new game state
+            this.setGameState(this.gameEngine.gameState);
+            
+        } catch (error) {
+            logger.error('Error discarding card for CP:', error);
+            window.showNotification('Cannot discard card', 'error');
+        }
+    }
+
+    /**
+     * Tap backup for CP
+     */
+    tapBackupForCP(card) {
+        logger.info(`Tapping ${card.name} for CP`);
+        
+        try {
+            if (card.type !== 'backup') {
+                window.showNotification('Only backup cards can be tapped for CP', 'warning');
+                return;
+            }
+            
+            // Integrate with GameEngine
+            this.gameEngine.generateCPFromBackup(0, card.id);
+            
+            // Update local CP tracking
+            this.addCP(card.element, 1);
+            
+            window.showNotification(`Tapped ${card.name} for 1 ${card.element} CP`, 'success');
+            
+            // Visually tap the card
+            this.tapCard(card);
+            
+        } catch (error) {
+            logger.error('Error tapping card for CP:', error);
+            window.showNotification('Cannot tap card', 'error');
+        }
+    }
+
+    /**
+     * Move card to break zone (visual representation)
+     */
+    moveCardToBreakZone(card) {
+        // Remove from current zone (hand)
+        const handCards = document.querySelectorAll('#playerHandContent .game-card');
+        handCards.forEach(cardElement => {
+            if (cardElement.dataset.cardId === card.id) {
+                cardElement.remove();
+            }
+        });
+        
+        // Add to break zone
+        const breakZone = this.zones.playerBreak;
+        if (breakZone) {
+            // Clear empty message if present
+            const emptyMsg = breakZone.querySelector('.zone-empty');
+            if (emptyMsg) {
+                emptyMsg.remove();
+            }
+            
+            // Create new card element for break zone
+            const cardElement = this.createGameCard(card, true, false);
+            cardElement.classList.add('in-break-zone');
+            breakZone.appendChild(cardElement);
+        }
+        
+        // Update counters
+        this.updateCounters();
+    }
+
+    /**
+     * Add CP to the player's pool and update display
+     */
+    addCP(element, amount) {
+        this.playerCP[element] += amount;
+        this.updateCPDisplay();
+        logger.info(`Added ${amount} ${element} CP. Total: ${this.playerCP[element]}`);
+    }
+
+    /**
+     * Update the visual CP display
+     */
+    updateCPDisplay() {
+        // Use modular display that only shows deck elements
+        this.deckElements.forEach(element => {
+            const amount = this.playerCP[element] || 0;
+            const cpElement = document.getElementById(`cp${element.charAt(0).toUpperCase() + element.slice(1)}`);
+            if (cpElement) {
+                cpElement.textContent = amount;
+                
+                // Add visual feedback for CP changes
+                cpElement.classList.add('cp-updated');
+                setTimeout(() => {
+                    cpElement.classList.remove('cp-updated');
+                }, 1000);
+            }
+        });
+        
+        // Update total CP
+        const totalCP = Array.from(this.deckElements).reduce((sum, element) => {
+            return sum + (this.playerCP[element] || 0);
+        }, 0);
+        
+        const totalElement = document.getElementById('cpTotalValue');
+        if (totalElement) {
+            totalElement.textContent = totalCP;
+        }
+    }
+
+    /**
+     * Sync CP display with GameEngine state
+     */
+    syncCPFromGameEngine() {
+        if (this.gameState && this.gameState.players && this.gameState.players[0]) {
+            const gameCP = this.gameState.players[0].cpPool;
+            Object.entries(gameCP).forEach(([element, amount]) => {
+                this.playerCP[element] = amount;
+            });
+            this.updateCPDisplay();
+        }
+    }
+
+    /**
+     * Analyze deck to determine which elements are present
+     */
+    analyzeDeckElements() {
+        this.deckElements.clear();
+        
+        if (this.gameState && this.gameState.players && this.gameState.players[0]) {
+            const player = this.gameState.players[0];
+            
+            // Check all zones for cards
+            const allPlayerCards = [
+                ...(player.zones.hand || []),
+                ...(player.zones.field || []),
+                ...(player.zones.deck || []),
+                ...(player.zones.damage || []),
+                ...(player.zones.break || [])
+            ];
+            
+            // Analyze each card's element
+            allPlayerCards.forEach(cardId => {
+                const card = this.cardDatabase.getCard(cardId);
+                if (card && card.element) {
+                    this.deckElements.add(card.element);
+                }
+            });
+        } else {
+            // Fallback: check visible cards on board (test mode)
+            const handCards = document.querySelectorAll('#playerHandContent .game-card');
+            handCards.forEach(cardElement => {
+                const cardId = cardElement.dataset.cardId;
+                const card = this.cardDatabase.getCard(cardId);
+                if (card && card.element) {
+                    this.deckElements.add(card.element);
+                }
+            });
+        }
+        
+        // Always include at least fire if no elements found (fallback)
+        if (this.deckElements.size === 0) {
+            this.deckElements.add('fire');
+            this.deckElements.add('ice');
+            this.deckElements.add('wind');
+        }
+        
+        console.log('Deck elements detected:', Array.from(this.deckElements));
+    }
+
+    /**
+     * Update CP display to show only deck elements
+     */
+    updateModularCPDisplay() {
+        const cpDisplayArea = document.getElementById('cpDisplayArea');
+        const cpElementsGrid = document.getElementById('cpElementsGrid');
+        
+        if (!cpElementsGrid) return;
+        
+        // Clear existing elements
+        cpElementsGrid.innerHTML = '';
+        
+        // Element configurations
+        const elementConfig = {
+            fire: { icon: '🔥', color: '#ff4444' },
+            ice: { icon: '❄️', color: '#44aaff' },
+            wind: { icon: '🌪️', color: '#44ff44' },
+            lightning: { icon: '⚡', color: '#ffff44' },
+            water: { icon: '💧', color: '#4444ff' },
+            earth: { icon: '🌍', color: '#aa8844' },
+            light: { icon: '✨', color: '#ffddaa' },
+            dark: { icon: '🌑', color: '#aa44aa' }
+        };
+        
+        // Create elements only for deck elements
+        this.deckElements.forEach(element => {
+            const config = elementConfig[element];
+            if (!config) return;
+            
+            const cpElement = document.createElement('div');
+            cpElement.className = 'cp-element';
+            cpElement.setAttribute('data-element', element);
+            cpElement.style.borderColor = config.color;
+            
+            cpElement.innerHTML = `
+                <div class="cp-element-icon">${config.icon}</div>
+                <div class="cp-element-value" id="cp${element.charAt(0).toUpperCase() + element.slice(1)}">${this.playerCP[element] || 0}</div>
+            `;
+            
+            cpElementsGrid.appendChild(cpElement);
+        });
+        
+        // Update total CP
+        const totalCP = Array.from(this.deckElements).reduce((sum, element) => {
+            return sum + (this.playerCP[element] || 0);
+        }, 0);
+        
+        const totalElement = document.getElementById('cpTotalValue');
+        if (totalElement) {
+            totalElement.textContent = totalCP;
+        }
     }
 
     /**
@@ -1272,6 +1939,215 @@ export class GameBoard {
         this.boundHandlers = {};
         
         logger.info('🎮 Game Board destroyed');
+    }
+    
+    /**
+     * Set up event log system
+     */
+    setupEventLog() {
+        this.eventLog.container = document.getElementById('eventLogArea');
+        this.eventLog.content = document.getElementById('eventLogContent');
+        
+        // Set up clear button
+        const clearButton = document.getElementById('clearEventLog');
+        if (clearButton) {
+            clearButton.addEventListener('click', () => this.clearEventLog());
+        }
+        
+        logger.info('📝 Event log system initialized');
+    }
+    
+    /**
+     * Add an event to the log
+     */
+    addEventLogEntry(type, message, data = {}) {
+        if (!this.eventLog.content) return;
+        
+        const now = new Date();
+        const time = now.toLocaleTimeString('en-US', { 
+            hour12: false, 
+            hour: '2-digit', 
+            minute: '2-digit', 
+            second: '2-digit' 
+        });
+        
+        const entry = {
+            id: Date.now() + Math.random(),
+            type,
+            message,
+            time,
+            timestamp: now,
+            data
+        };
+        
+        // Add to entries array
+        this.eventLog.entries.push(entry);
+        
+        // Keep only max entries
+        if (this.eventLog.entries.length > this.eventLog.maxEntries) {
+            this.eventLog.entries.shift();
+        }
+        
+        // Remove empty message if present
+        const emptyMessage = this.eventLog.content.querySelector('.event-log-empty');
+        if (emptyMessage) {
+            emptyMessage.remove();
+        }
+        
+        // Create DOM element
+        const entryElement = this.createEventLogElement(entry);
+        this.eventLog.content.appendChild(entryElement);
+        
+        // Scroll to bottom
+        this.eventLog.content.scrollTop = this.eventLog.content.scrollHeight;
+        
+        // Mark as recent temporarily
+        entryElement.classList.add('recent');
+        setTimeout(() => {
+            entryElement.classList.remove('recent');
+        }, 3000);
+        
+        logger.debug(`Event logged: ${type} - ${message}`);
+    }
+    
+    /**
+     * Create DOM element for event log entry
+     */
+    createEventLogElement(entry) {
+        const element = document.createElement('div');
+        element.className = `event-log-entry ${entry.type}`;
+        element.setAttribute('data-entry-id', entry.id);
+        
+        const icon = this.getEventIcon(entry.type);
+        
+        element.innerHTML = `
+            <span class="event-log-time">${entry.time}</span>
+            <span class="event-log-icon">${icon}</span>
+            <span class="event-log-message">${this.formatEventMessage(entry)}</span>
+        `;
+        
+        return element;
+    }
+    
+    /**
+     * Get icon for event type
+     */
+    getEventIcon(type) {
+        const icons = {
+            'phase-change': '⏰',
+            'turn-change': '🔄',
+            'card-play': '🃏',
+            'card-discard': '🗑️',
+            'cp-gain': '💎',
+            'cp-spend': '💸',
+            'game-start': '🚀',
+            'game-end': '🏁',
+            'error': '❌',
+            'info': 'ℹ️'
+        };
+        return icons[type] || '📝';
+    }
+    
+    /**
+     * Format event message with styled elements
+     */
+    formatEventMessage(entry) {
+        let message = entry.message;
+        
+        // Style player names
+        message = message.replace(/\b(Player|You|Opponent|AI)\b/g, '<span class="event-log-player">$1</span>');
+        
+        // Style card names (assuming they're in quotes or specific format)
+        if (entry.data.cardName) {
+            message = message.replace(entry.data.cardName, `<span class="event-log-card">${entry.data.cardName}</span>`);
+        }
+        
+        // Style elements
+        const elements = ['fire', 'ice', 'wind', 'lightning', 'water', 'earth', 'light', 'dark'];
+        elements.forEach(element => {
+            const regex = new RegExp(`\\b${element}\\b`, 'gi');
+            message = message.replace(regex, `<span class="event-log-element ${element}">${element}</span>`);
+        });
+        
+        return message;
+    }
+    
+    /**
+     * Clear event log
+     */
+    clearEventLog() {
+        if (!this.eventLog.content) return;
+        
+        this.eventLog.entries = [];
+        this.eventLog.content.innerHTML = '<div class="event-log-empty">Game events will appear here...</div>';
+        
+        this.addEventLogEntry('info', 'Event log cleared');
+        logger.info('📝 Event log cleared');
+    }
+    
+    /**
+     * Log game phase change
+     */
+    logPhaseChange(fromPhase, toPhase, player = 'You') {
+        this.addEventLogEntry('phase-change', `${player} entered ${toPhase.replace('_', ' ')} phase`, {
+            fromPhase,
+            toPhase,
+            player
+        });
+    }
+    
+    /**
+     * Log turn change
+     */
+    logTurnChange(newTurn, player = 'Opponent') {
+        this.addEventLogEntry('turn-change', `Turn ${newTurn}: ${player}'s turn begins`, {
+            turn: newTurn,
+            player
+        });
+    }
+    
+    /**
+     * Log card play
+     */
+    logCardPlay(cardName, playType, player = 'You', zone = '') {
+        const zoneText = zone ? ` to ${zone}` : '';
+        this.addEventLogEntry('card-play', `${player} played ${cardName} as ${playType}${zoneText}`, {
+            cardName,
+            playType,
+            player,
+            zone
+        });
+    }
+    
+    /**
+     * Log card discard for CP
+     */
+    logCardDiscardForCP(cardName, element, cpAmount, player = 'You') {
+        this.addEventLogEntry('card-discard', `${player} discarded ${cardName} for ${cpAmount} ${element} CP`, {
+            cardName,
+            element,
+            cpAmount,
+            player
+        });
+    }
+    
+    /**
+     * Log CP spending
+     */
+    logCPSpend(amount, element, reason, player = 'You') {
+        this.addEventLogEntry('cp-spend', `${player} spent ${amount} ${element} CP for ${reason}`, {
+            amount,
+            element,
+            reason,
+            player
+        });
+    }
+    
+    /**
+     * Log error events
+     */
+    logError(message, details = {}) {
+        this.addEventLogEntry('error', message, details);
     }
 }
 
