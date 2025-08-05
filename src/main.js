@@ -181,6 +181,13 @@ class AppController {
             logger.info('🎮 Initializing Game Board...');
             try {
                 this.gameBoard = new GameBoard(this.gameEngine, this.cardDatabase);
+                
+                // Connect GameBoard to GameEngine for event synchronization
+                if (this.gameBoard && this.gameEngine) {
+                    this.gameBoard.connectToGameEngine(this.gameEngine);
+                    logger.info('🔗 GameBoard connected to GameEngine');
+                }
+                
                 logger.info('✅ Game Board initialized successfully');
             } catch (boardError) {
                 logger.error('Failed to initialize Game Board:', boardError);

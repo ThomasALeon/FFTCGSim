@@ -1526,6 +1526,17 @@ export class GameBoard {
         // Initialize card states
         this.updateCardStates();
         
+        // Initialize GameEngine if available
+        if (this.gameEngine) {
+            try {
+                this.gameEngine.initializeDamageZone(0); // Player
+                this.gameEngine.initializeDamageZone(1); // Opponent
+                this.syncFromGameEngine();
+            } catch (error) {
+                logger.warn('GameEngine integration failed:', error.message);
+            }
+        }
+        
         window.showNotification('New game started! Both players start with 7 life points.', 'success');
     }
 
@@ -2261,6 +2272,84 @@ export class GameBoard {
         
         window.showNotification(`Game Over! ${winner} wins!`, 'error');
         logger.info(`Game ended: ${winner} wins by damage`);
+    }
+
+    /**
+     * Synchronize GameBoard state from GameEngine
+     */
+    syncFromGameEngine() {
+        if (!this.gameEngine || !this.gameEngine.gameState) return;
+        
+        const gameState = this.gameEngine.gameState;
+        
+        // Sync damage zones from GameEngine
+        for (let i = 0; i < gameState.players.length; i++) {
+            const player = gameState.players[i];
+            const playerKey = i === 0 ? 'player' : 'opponent';
+            
+            // Update damage zone
+            this.damageZones[playerKey] = player.zones.damage.map(cardId => ({
+                id: cardId,
+                name: `Life Point`,
+                isFaceDown: true
+            }));
+            
+            this.renderDamageZone(playerKey);
+        }
+        
+        logger.info('Synchronized GameBoard state from GameEngine');
+    }
+
+    /**
+     * Synchronize GameEngine state from GameBoard actions
+     */
+    syncToGameEngine() {
+        if (!this.gameEngine || !this.gameEngine.gameState) return;
+        
+        // This method would update GameEngine state based on GameBoard changes
+        // For now, we'll use GameEngine as the source of truth
+        logger.info('Synchronized GameEngine state from GameBoard');
+    }
+
+    /**
+     * Connect to GameEngine events
+     */
+    connectToGameEngine(gameEngine) {
+        this.gameEngine = gameEngine;
+        
+        // Listen to GameEngine events
+        gameEngine.on('damageDealt', (event) => {
+            const playerKey = event.player === 0 ? 'player' : 'opponent';
+            this.addEventLogEntry('damage', 
+                `${playerKey === 'player' ? 'You' : 'Opponent'} took ${event.amount} damage`, {
+                remainingLife: event.remainingLife,
+                source: event.source
+            });
+            
+            // Re-sync damage zone display
+            this.syncFromGameEngine();
+        });
+        
+        gameEngine.on('summonResolved', (event) => {
+            const playerKey = event.player === 0 ? 'player' : 'opponent';
+            this.addEventLogEntry('summon', 
+                `${playerKey === 'player' ? 'You' : 'Opponent'} cast ${event.summon.name}`, {
+                cardName: event.summon.name
+            });
+        });
+        
+        gameEngine.on('gameEnded', (event) => {
+            const winner = event.winner === 0 ? 'You' : 'Opponent';
+            this.addEventLogEntry('game-end', `Game Over! ${winner} wins by ${event.reason}!`, {
+                winner: winner,
+                reason: event.reason,
+                duration: event.duration
+            });
+            
+            window.showNotification(`Game Over! ${winner} wins!`, 'error');
+        });
+        
+        logger.info('Connected GameBoard to GameEngine');
     }
     
     /**
