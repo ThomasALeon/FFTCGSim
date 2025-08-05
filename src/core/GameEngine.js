@@ -48,9 +48,10 @@ export class GameEngine {
         };
 
         this.ZONES = {
-            FIELD: 'field',
             HAND: 'hand',
             DECK: 'deck',
+            BACKUPS: 'backups',
+            BATTLEFIELD: 'battlefield',
             DAMAGE: 'damage',
             BREAK: 'break',
             REMOVED: 'removed',
@@ -157,11 +158,12 @@ export class GameEngine {
             damageZone: [],
             maxDamage: 7, // Changes to 6 in limited
             
-            // Zones
+            // Zones - Updated for simplified layout
             zones: {
                 [this.ZONES.HAND]: [],
                 [this.ZONES.DECK]: [],
-                [this.ZONES.FIELD]: [],
+                [this.ZONES.BACKUPS]: [],
+                [this.ZONES.BATTLEFIELD]: [],
                 [this.ZONES.DAMAGE]: [],
                 [this.ZONES.BREAK]: [],
                 [this.ZONES.REMOVED]: []
@@ -180,11 +182,10 @@ export class GameEngine {
                 generic: 0
             },
             
-            // Field state
+            // Field state - Updated for simplified zones
             field: {
-                forwards: [],
-                backups: [],
-                monsters: []
+                backups: [],    // Cards in backup zone
+                battlefield: [] // Forwards in battlefield zone
             },
             
             // Temporary effects
@@ -733,20 +734,25 @@ export class GameEngine {
             enteredThisTurn: true
         };
         
-        // Add to appropriate field zone
+        // Add to appropriate field zone - Updated for simplified layout
         switch (card.type) {
             case 'forward':
-                player.field.forwards.push(character);
+                // Forwards go to battlefield zone
+                player.field.battlefield.push(character);
+                player.zones[this.ZONES.BATTLEFIELD].push(card.id);
                 break;
             case 'backup':
-                // Check backup limit (max 5)
-                if (player.field.backups.length >= 5) {
-                    throw new Error('Maximum 5 backups allowed');
+                // Check backup limit (max 7 slots)
+                if (player.field.backups.length >= 7) {
+                    throw new Error('Maximum 7 backups allowed');
                 }
                 player.field.backups.push(character);
+                player.zones[this.ZONES.BACKUPS].push(card.id);
                 break;
             case 'monster':
-                player.field.monsters.push(character);
+                // Monsters also go to battlefield (they're like forwards)
+                player.field.battlefield.push(character);
+                player.zones[this.ZONES.BATTLEFIELD].push(card.id);
                 break;
         }
         
@@ -760,10 +766,30 @@ export class GameEngine {
     }
 
     /**
-     * Cast a summon
+     * Cast a summon (works like instant spell)
      */
     castSummon(playerIndex, card, options) {
-        // Add summon to stack
+        // Validate player can cast summon
+        if (!this.canPlayerAct(playerIndex)) {
+            throw new Error('Player cannot act');
+        }
+        
+        // Remove card from hand
+        const player = this.gameState.players[playerIndex];
+        const handIndex = player.zones[this.ZONES.HAND].indexOf(card.id);
+        if (handIndex === -1) {
+            throw new Error('Card not in hand');
+        }
+        player.zones[this.ZONES.HAND].splice(handIndex, 1);
+        
+        // Pay CP cost
+        if (!this.payCP(playerIndex, card.cost, card.element)) {
+            // Return card to hand if payment fails
+            player.zones[this.ZONES.HAND].push(card.id);
+            throw new Error('Insufficient CP to cast summon');
+        }
+        
+        // Add summon to stack (it will resolve immediately as instant)
         const summonEffect = {
             type: 'summon',
             card: card,
@@ -778,6 +804,14 @@ export class GameEngine {
             player: playerIndex,
             summon: card,
             stackSize: this.gameState.stack.length
+        });
+        
+        // Add action to history
+        this.addAction({
+            type: 'cast_summon',
+            player: playerIndex,
+            card: card.id,
+            timestamp: Date.now()
         });
     }
 
@@ -824,17 +858,115 @@ export class GameEngine {
     }
 
     /**
-     * Resolve a summon effect
+     * Resolve a summon effect (instant spell-like)
      */
     resolveSummon(summonEffect) {
         const card = summonEffect.card;
+        const player = this.gameState.players[summonEffect.controller];
         
-        // Parse and execute summon text
+        console.log(`🌟 Resolving summon: ${card.name}`);
+        
+        // Execute summon effect immediately
         this.executeCardText(card.text, summonEffect.controller, summonEffect.targets, summonEffect.choices);
         
-        // Move summon to break zone
-        const player = this.gameState.players[summonEffect.controller];
+        // Summon goes directly to break zone (graveyard) after resolving
         player.zones[this.ZONES.BREAK].push(card.id);
+        
+        this.emit('summonResolved', {
+            player: summonEffect.controller,
+            summon: card,
+            movedToBreakZone: true
+        });
+        
+        console.log(`📚 ${card.name} moved to break zone`);
+    }
+
+    /**
+     * Initialize damage zone with 7 cards from deck (life points)
+     */
+    initializeDamageZone(playerIndex) {
+        const player = this.gameState.players[playerIndex];
+        
+        // Take first 7 cards from deck as life points
+        if (player.zones[this.ZONES.DECK].length < 7) {
+            throw new Error('Not enough cards in deck to initialize damage zone');
+        }
+        
+        const lifeCards = player.zones[this.ZONES.DECK].splice(0, 7);
+        player.zones[this.ZONES.DAMAGE] = lifeCards;
+        
+        this.emit('damageZoneInitialized', {
+            player: playerIndex,
+            lifePoints: lifeCards.length
+        });
+        
+        console.log(`💔 Player ${playerIndex + 1} initialized with ${lifeCards.length} life points`);
+    }
+
+    /**
+     * Deal damage to a player (move cards from damage zone to break zone)
+     */
+    dealDamage(playerIndex, amount = 1, source = null) {
+        const player = this.gameState.players[playerIndex];
+        const damageZone = player.zones[this.ZONES.DAMAGE];
+        
+        if (damageZone.length === 0) {
+            // Player is already defeated
+            this.declareWinner(playerIndex === 0 ? 1 : 0, 'damage');
+            return;
+        }
+        
+        const damageDealt = Math.min(amount, damageZone.length);
+        const damagedCards = [];
+        
+        for (let i = 0; i < damageDealt; i++) {
+            const cardId = damageZone.pop(); // Remove from damage zone
+            player.zones[this.ZONES.BREAK].push(cardId); // Move to break zone
+            damagedCards.push(cardId);
+        }
+        
+        this.emit('damageDealt', {
+            player: playerIndex,
+            amount: damageDealt,
+            source: source,
+            remainingLife: damageZone.length,
+            damagedCards: damagedCards
+        });
+        
+        // Check for game over
+        if (damageZone.length === 0) {
+            this.declareWinner(playerIndex === 0 ? 1 : 0, 'damage');
+        }
+        
+        console.log(`💔 Player ${playerIndex + 1} took ${damageDealt} damage, ${damageZone.length} life points remaining`);
+        
+        return damageDealt;
+    }
+
+    /**
+     * Get remaining life points for a player
+     */
+    getRemainingLife(playerIndex) {
+        return this.gameState.players[playerIndex].zones[this.ZONES.DAMAGE].length;
+    }
+
+    /**
+     * Declare game winner
+     */
+    declareWinner(winnerIndex, reason = 'unknown') {
+        if (this.gameState.winner !== null) return; // Game already ended
+        
+        this.gameState.winner = winnerIndex;
+        this.gameState.endTime = Date.now();
+        
+        this.emit('gameEnded', {
+            winner: winnerIndex,
+            loser: winnerIndex === 0 ? 1 : 0,
+            reason: reason,
+            duration: this.gameState.endTime - this.gameState.startTime
+        });
+        
+        console.log(`🏆 Player ${winnerIndex + 1} wins by ${reason}!`);
     }
 
     /**
