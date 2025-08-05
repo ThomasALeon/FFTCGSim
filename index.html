@@ -1318,7 +1318,120 @@
         // Zone Overview Modal System
         let zoneOverviewModalOpen = false;
 
-        // Open zone modal for damage/break zones
+        // Open unified zone modal for graveyard and removed cards
+        function openUnifiedZoneModal(player) {
+            const modal = document.getElementById('zoneOverviewModal');
+            const title = document.getElementById('zoneOverviewTitle');
+            const content = document.getElementById('zoneOverviewContent');
+            
+            if (!modal || !title || !content) {
+                console.error('Zone modal elements not found');
+                return;
+            }
+            
+            // Set title
+            title.textContent = `${player === 'player' ? 'Your' : 'Opponent'} Graveyard & Removed Cards`;
+            
+            // Create tabbed interface
+            content.innerHTML = `
+                <div class="zone-tabs">
+                    <button class="zone-tab active" onclick="showZoneTab('graveyard', '${player}')">
+                        <span class="tab-icon">🪦</span>
+                        <span class="tab-text">Graveyard</span>
+                        <span class="tab-count" id="${player}GraveyardTabCount">0</span>
+                    </button>
+                    <button class="zone-tab" onclick="showZoneTab('removed', '${player}')">
+                        <span class="tab-icon">🚫</span>
+                        <span class="tab-text">Removed</span>
+                        <span class="tab-count" id="${player}RemovedTabCount">0</span>
+                    </button>
+                </div>
+                <div class="zone-tab-content">
+                    <div id="graveyardContent" class="tab-panel active">
+                        <div class="zone-empty">No cards in graveyard</div>
+                    </div>
+                    <div id="removedContent" class="tab-panel">
+                        <div class="zone-empty">No cards removed from game</div>
+                    </div>
+                </div>
+            `;
+            
+            // Load initial content
+            showZoneTab('graveyard', player);
+            
+            // Show modal
+            modal.style.display = 'flex';
+            zoneOverviewModalOpen = true;
+        }
+        
+        // Show specific tab in unified zone modal
+        function showZoneTab(tabType, player) {
+            // Update tab buttons
+            const tabs = document.querySelectorAll('.zone-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            event?.target.closest('.zone-tab')?.classList.add('active');
+            
+            // Update tab panels
+            const panels = document.querySelectorAll('.tab-panel');
+            panels.forEach(panel => panel.classList.remove('active'));
+            document.getElementById(`${tabType}Content`).classList.add('active');
+            
+            // Load content based on tab type
+            const content = document.getElementById(`${tabType}Content`);
+            if (tabType === 'graveyard') {
+                loadGraveyardContent(content, player);
+            } else if (tabType === 'removed') {
+                loadRemovedContent(content, player);
+            }
+        }
+        
+        // Load graveyard content
+        function loadGraveyardContent(container, player) {
+            // This would load from the game board's break zone
+            if (window.app?.gameBoard?.breakZones) {
+                const cards = window.app.gameBoard.breakZones[player] || [];
+                if (cards.length === 0) {
+                    container.innerHTML = '<div class="zone-empty">No cards in graveyard</div>';
+                } else {
+                    container.innerHTML = cards.map(card => 
+                        `<div class="zone-card" onclick="viewCard('${card.id}')">
+                            <div class="card-mini">${card.name || 'Unknown Card'}</div>
+                        </div>`
+                    ).join('');
+                }
+                
+                // Update tab count
+                const tabCount = document.getElementById(`${player}GraveyardTabCount`);
+                if (tabCount) tabCount.textContent = cards.length;
+            } else {
+                container.innerHTML = '<div class="zone-empty">No cards in graveyard</div>';
+            }
+        }
+        
+        // Load removed content
+        function loadRemovedContent(container, player) {
+            // This would load from the game board's removed zone
+            if (window.app?.gameBoard?.removedZones) {
+                const cards = window.app.gameBoard.removedZones[player] || [];
+                if (cards.length === 0) {
+                    container.innerHTML = '<div class="zone-empty">No cards removed from game</div>';
+                } else {
+                    container.innerHTML = cards.map(card => 
+                        `<div class="zone-card" onclick="viewCard('${card.id}')">
+                            <div class="card-mini">${card.name || 'Unknown Card'}</div>
+                        </div>`
+                    ).join('');
+                }
+                
+                // Update tab count
+                const tabCount = document.getElementById(`${player}RemovedTabCount`);
+                if (tabCount) tabCount.textContent = cards.length;
+            } else {
+                container.innerHTML = '<div class="zone-empty">No cards removed from game</div>';
+            }
+        }
+
+        // Legacy function for backward compatibility
         function openZoneModal(zoneType) {
             const zoneNames = {
                 'player-damage': { 

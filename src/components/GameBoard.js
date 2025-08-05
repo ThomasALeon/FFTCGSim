@@ -62,6 +62,12 @@ export class GameBoard {
             maxEntries: 100
         };
         
+        // Damage zone management
+        this.damageZones = {
+            player: [],
+            opponent: []
+        };
+        
         this.initialize();
     }
 
@@ -86,34 +92,31 @@ export class GameBoard {
         this.phaseIndicator = document.getElementById('turnPhase');
         this.currentPlayerElement = document.getElementById('currentPlayer');
         
-        // Zone references
+        // Zone references - Updated for simplified layout
         this.zones = {
             playerHand: document.getElementById('playerHandContent'),
             playerBackups: document.getElementById('playerBackupsContent'),
-            playerSummons: document.getElementById('playerSummonsContent'),
+            playerBattlefield: document.getElementById('playerBattlefieldContent'),
             playerDamage: document.getElementById('playerDamageContent'),
             playerBreak: document.getElementById('playerBreakContent'),
-            opponentHand: document.getElementById('opponentHandContent'),
+            playerRemoved: document.getElementById('playerRemovedContent'),
             opponentBackups: document.getElementById('opponentBackupsContent'),
-            opponentSummons: document.getElementById('opponentSummonsContent'),
+            opponentBattlefield: document.getElementById('opponentBattlefieldContent'),
             opponentDamage: document.getElementById('opponentDamageContent'),
             opponentBreak: document.getElementById('opponentBreakContent'),
-            field: document.getElementById('gameField')
+            opponentRemoved: document.getElementById('opponentRemovedContent')
         };
         
-        // Zone counters
+        // Zone counters - Updated for simplified layout
         this.counters = {
             playerHandCount: document.getElementById('playerHandCount'),
             playerBackupsCount: document.getElementById('playerBackupsCount'),
-            playerSummonsCount: document.getElementById('playerSummonsCount'),
+            playerBattlefieldCount: document.getElementById('playerBattlefieldCount'),
             playerDamageCount: document.getElementById('playerDamageCount'),
-            playerBreakCount: document.getElementById('playerBreakCount'),
             opponentHandCount: document.getElementById('opponentHandCount'),
             opponentBackupsCount: document.getElementById('opponentBackupsCount'),
-            opponentSummonsCount: document.getElementById('opponentSummonsCount'),
-            opponentDamageCount: document.getElementById('opponentDamageCount'),
-            opponentBreakCount: document.getElementById('opponentBreakCount'),
-            fieldCount: document.getElementById('fieldCount')
+            opponentBattlefieldCount: document.getElementById('opponentBattlefieldCount'),
+            opponentDamageCount: document.getElementById('opponentDamageCount')
         };
         
         if (!this.gameBoard) {
@@ -1090,7 +1093,7 @@ export class GameBoard {
         }) : []);
         this.renderOpponentDamage(player2.zones.damage || []);
         
-        // Field area - forwards from both players
+        // Battlefield areas - forwards for each player separately
         const player1Forwards = player1.zones.field ? player1.zones.field.filter(cardId => {
             const card = this.cardDatabase.getCard(cardId);
             return card && card.type === 'forward';
@@ -1099,7 +1102,9 @@ export class GameBoard {
             const card = this.cardDatabase.getCard(cardId);
             return card && card.type === 'forward';
         }) : [];
-        this.renderField([...player1Forwards, ...player2Forwards]);
+        
+        this.renderPlayerBattlefield(player1Forwards);
+        this.renderOpponentBattlefield(player2Forwards);
         
         // Update hidden zone content for modals
         this.updateHiddenZoneContent('playerDamageContent', player1.zones.damage || []);
@@ -1278,32 +1283,47 @@ export class GameBoard {
     }
 
     /**
-     * Render field with forwards
+     * Render player battlefield with forwards
      */
-    renderField(fieldCards) {
-        const fieldZone = this.zones.field;
-        if (!fieldZone) return;
+    renderPlayerBattlefield(forwardCards) {
+        const battlefieldZone = this.zones.playerBattlefield;
+        if (!battlefieldZone) return;
 
-        // Clear existing field cards but keep header
-        const header = fieldZone.querySelector('.zone-header');
-        fieldZone.innerHTML = '';
-        if (header) {
-            fieldZone.appendChild(header);
-        }
+        battlefieldZone.innerHTML = '';
         
-        if (fieldCards.length === 0) {
-            const emptyMsg = document.createElement('div');
-            emptyMsg.className = 'zone-empty';
-            emptyMsg.textContent = 'No forwards on the field';
-            fieldZone.appendChild(emptyMsg);
+        if (forwardCards.length === 0) {
+            battlefieldZone.innerHTML = '<div class="zone-empty">No forwards</div>';
             return;
         }
 
-        fieldCards.forEach(cardId => {
+        forwardCards.forEach(cardId => {
             const card = this.cardDatabase.getCard(cardId);
             if (card) {
                 const cardElement = this.createGameCard(card, true, false);
-                fieldZone.appendChild(cardElement);
+                battlefieldZone.appendChild(cardElement);
+            }
+        });
+    }
+
+    /**
+     * Render opponent battlefield with forwards
+     */
+    renderOpponentBattlefield(forwardCards) {
+        const battlefieldZone = this.zones.opponentBattlefield;
+        if (!battlefieldZone) return;
+
+        battlefieldZone.innerHTML = '';
+        
+        if (forwardCards.length === 0) {
+            battlefieldZone.innerHTML = '<div class="zone-empty">No forwards</div>';
+            return;
+        }
+
+        forwardCards.forEach(cardId => {
+            const card = this.cardDatabase.getCard(cardId);
+            if (card) {
+                const cardElement = this.createGameCard(card, false, false);
+                battlefieldZone.appendChild(cardElement);
             }
         });
     }
@@ -1315,20 +1335,15 @@ export class GameBoard {
         // Update player counters
         this.updateCounter('playerHandCount', this.zones.playerHand);
         this.updateCounter('playerBackupsCount', this.zones.playerBackups);
-        this.updateCounter('playerDamageCount', this.zones.playerDamage);
-        this.updateCounter('playerBreakCount', this.zones.playerBreak);
+        this.updateCounter('playerBattlefieldCount', this.zones.playerBattlefield);
         
         // Update opponent counters
         this.updateCounter('opponentHandCount', this.zones.opponentHand);
-        this.updateCounter('opponentBackupsCount', this.zones.opponentBackups);
-        this.updateCounter('opponentDamageCount', this.zones.opponentDamage);
-        this.updateCounter('opponentBreakCount', this.zones.opponentBreak);
+        this.updateCounter('opponentBackupsCount', this.zones.opponentBackups);  
+        this.updateCounter('opponentBattlefieldCount', this.zones.opponentBattlefield);
         
-        // Update field counter
-        this.updateCounter('fieldCount', this.zones.field);
-        
-        // Update CP (placeholder values)
-        // CP display is now handled by the modular CP system
+        // Damage zone counters are updated by renderDamageZone method
+        // CP display is handled by the modular CP system
     }
 
     /**
@@ -1493,6 +1508,13 @@ export class GameBoard {
             this.playerCP[element] = 0;
         });
         
+        // Initialize damage zones (life points)
+        this.initializeDamageZone('player');
+        this.initializeDamageZone('opponent');
+        
+        // Reset break zones
+        this.breakZones = { player: [], opponent: [] };
+        
         // Render initial board
         this.renderEmptyBoard();
         this.updateTurnDisplay();
@@ -1504,7 +1526,7 @@ export class GameBoard {
         // Initialize card states
         this.updateCardStates();
         
-        window.showNotification('New game started!', 'success');
+        window.showNotification('New game started! Both players start with 7 life points.', 'success');
     }
 
     /**
@@ -2083,6 +2105,173 @@ export class GameBoard {
         
         this.addEventLogEntry('info', 'Event log cleared');
         logger.info('📝 Event log cleared');
+    }
+    
+    /**
+     * Initialize damage zone with 7 cards from deck (life points)
+     */
+    initializeDamageZone(player = 'player') {
+        const deckCards = this.getDeckCards(player);
+        const damageCards = deckCards.slice(0, 7); // Take first 7 cards as life points
+        
+        this.damageZones[player] = damageCards;
+        this.renderDamageZone(player);
+        
+        logger.info(`Initialized ${player} damage zone with 7 life points`);
+    }
+    
+    /**
+     * Get deck cards for a player (placeholder implementation)
+     */
+    getDeckCards(player) {
+        // This would normally come from the game engine
+        // For now, generate placeholder cards
+        const placeholderCards = [];
+        for (let i = 0; i < 50; i++) {
+            placeholderCards.push({
+                id: `${player}-deck-${i}`,
+                name: `Deck Card ${i}`,
+                element: 'unknown',
+                isFaceDown: true
+            });
+        }
+        return placeholderCards;
+    }
+    
+    /**
+     * Render damage zone (life points)
+     */
+    renderDamageZone(player) {
+        const damageContainer = player === 'player' 
+            ? document.getElementById('playerDamageContent')
+            : document.getElementById('opponentDamageContent');
+            
+        if (!damageContainer) return;
+        
+        damageContainer.innerHTML = '';
+        
+        const damageCards = this.damageZones[player];
+        damageCards.forEach((card, index) => {
+            const damageCard = document.createElement('div');
+            damageCard.className = 'damage-card';
+            damageCard.dataset.cardId = card.id;
+            damageCard.dataset.damageIndex = index;
+            damageCard.title = `Life point ${index + 1}`;
+            
+            // Add click handler for damage interaction
+            damageCard.addEventListener('click', () => {
+                this.handleDamageCardClick(player, index, card);
+            });
+            
+            damageContainer.appendChild(damageCard);
+        });
+        
+        // Update counter
+        const counter = this.counters[`${player}DamageCount`];
+        if (counter) {
+            counter.textContent = damageCards.length;
+        }
+    }
+    
+    /**
+     * Handle damage card click (for taking damage or viewing)
+     */
+    handleDamageCardClick(player, index, card) {
+        if (player === 'player') {
+            // Player can interact with their own damage zone
+            const actions = [
+                { text: 'View Card', action: () => this.viewDamageCard(player, index) },
+                { text: 'Take as Damage', action: () => this.takeDamage(player, index) }
+            ];
+            
+            // Show context menu or modal for actions
+            this.showDamageCardActions(actions, card);
+        } else {
+            // Just view opponent's damage cards
+            this.viewDamageCard(player, index);
+        }
+    }
+    
+    /**
+     * View a damage card (reveal it)
+     */
+    viewDamageCard(player, index) {
+        const card = this.damageZones[player][index];
+        if (card) {
+            // For now, just show in preview
+            if (this.cardDatabase && !card.isFaceDown) {
+                const realCard = this.cardDatabase.getCard(card.id);
+                if (realCard) {
+                    this.showCardPreview(realCard);
+                }
+            } else {
+                // Show face-down card info
+                this.showCardPreview({
+                    name: 'Face-down Card',
+                    element: 'unknown',
+                    type: 'damage',
+                    text: 'This card is face-down in the damage zone.'
+                });
+            }
+        }
+    }
+    
+    /**
+     * Take damage (move card from damage zone to break zone)
+     */
+    takeDamage(player, index) {
+        const damageCard = this.damageZones[player][index];
+        if (!damageCard) return;
+        
+        // Remove from damage zone
+        this.damageZones[player].splice(index, 1);
+        
+        // Add to break zone (graveyard)
+        if (!this.breakZones) {
+            this.breakZones = { player: [], opponent: [] };
+        }
+        this.breakZones[player].push(damageCard);
+        
+        // Re-render damage zone
+        this.renderDamageZone(player);
+        
+        // Log the damage taken
+        this.addEventLogEntry('card-discard', `${player === 'player' ? 'You' : 'Opponent'} took 1 damage`, {
+            cardName: damageCard.name || 'Face-down card',
+            player: player === 'player' ? 'You' : 'Opponent'
+        });
+        
+        // Check for game over (no more life points)
+        if (this.damageZones[player].length === 0) {
+            this.handlePlayerDefeat(player);
+        }
+        
+        logger.info(`${player} took damage: ${this.damageZones[player].length} life points remaining`);
+    }
+    
+    /**
+     * Handle player defeat (no more life points)
+     */
+    handlePlayerDefeat(player) {
+        const winner = player === 'player' ? 'Opponent' : 'You';
+        this.addEventLogEntry('game-end', `Game Over! ${winner} wins!`, {
+            winner,
+            reason: 'No life points remaining'
+        });
+        
+        window.showNotification(`Game Over! ${winner} wins!`, 'error');
+        logger.info(`Game ended: ${winner} wins by damage`);
+    }
+    
+    /**
+     * Show damage card action menu
+     */
+    showDamageCardActions(actions, card) {
+        // For now, just execute the first available action
+        // In a full implementation, this would show a context menu
+        if (actions.length > 0) {
+            actions[0].action();
+        }
     }
     
     /**
