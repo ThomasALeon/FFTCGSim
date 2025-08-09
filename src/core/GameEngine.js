@@ -365,6 +365,15 @@ export class GameEngine {
             });
         }
         
+        // Check if this is an AI deck with predefined elements (fallback for when card analysis fails)
+        if (Object.keys(elementCounts).length === 0 && deck.aiDeckElements) {
+            console.log(`💎 Using AI deck elements fallback for player ${playerIndex + 1}:`, deck.aiDeckElements);
+            // Convert array to element count object for CP display
+            deck.aiDeckElements.forEach(element => {
+                elementCounts[element] = 1; // Just mark as present for CP display
+            });
+        }
+        
         // Store deck elements in player data
         player.deckElements = elementCounts;
         
@@ -2621,12 +2630,17 @@ export class GameEngine {
         // Generate a 50-card deck with the selected elements
         const aiDeck = this.buildAIDeckFromTemplate(selectedTemplate);
         
-        return {
+        // Store the AI deck elements for proper CP display
+        const aiDeckData = {
             mainDeck: aiDeck,
             lbDeck: [],
             name: selectedTemplate.name,
-            elements: selectedTemplate.elements
+            elements: selectedTemplate.elements,
+            aiDeckElements: selectedTemplate.elements // Store for later analysis
         };
+        
+        console.log(`🤖 AI deck generated with elements:`, selectedTemplate.elements);
+        return aiDeckData;
     }
 
     /**
@@ -2683,7 +2697,10 @@ export class GameEngine {
      * Add mock cards to database for AI deck element analysis
      */
     addMockCardsToDatabase(elements) {
-        if (!this.cardDatabase || !this.cardDatabase.addCard) return;
+        if (!this.cardDatabase || !this.cardDatabase.addCard) {
+            console.warn('💎 Card database not available or no addCard method - relying on AI deck elements fallback');
+            return;
+        }
 
         elements.forEach(element => {
             // Add a variety of mock cards for this element
