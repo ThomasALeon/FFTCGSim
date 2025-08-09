@@ -1659,9 +1659,140 @@ export class DeckBuilder {
     }
 
     /**
+     * Setup global deck builder hotkeys
+     */
+    setupDeckBuilderHotkeys() {
+        document.addEventListener('keydown', (event) => {
+            // Ignore if user is typing in an input
+            if (event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA' || event.target.isContentEditable) {
+                // Allow hotkeys for search focus
+                if (event.key === 'f' && !event.ctrlKey) {
+                    return;
+                }
+                return;
+            }
+            
+            // Check if we're in deck builder context
+            if (!document.querySelector('.deck-builder-container, .deck-builder')) {
+                return;
+            }
+            
+            switch (true) {
+                case event.ctrlKey && event.key === 's': // Ctrl+S - Save deck
+                    event.preventDefault();
+                    this.saveDeck();
+                    break;
+                    
+                case event.ctrlKey && event.key === 'o': // Ctrl+O - Load deck
+                    event.preventDefault();
+                    this.loadDeck();
+                    break;
+                    
+                case event.ctrlKey && event.key === 'n': // Ctrl+N - New deck
+                    event.preventDefault();
+                    this.newDeck();
+                    break;
+                    
+                case event.key === 'f' && !event.ctrlKey: // F - Focus search
+                    event.preventDefault();
+                    this.focusSearch();
+                    break;
+                    
+                case event.key === 'r' && !event.ctrlKey: // R - Reset filters
+                    event.preventDefault();
+                    this.resetFilters();
+                    break;
+                    
+                case event.key === 'Delete': // Delete - Remove selected card
+                    event.preventDefault();
+                    this.removeSelectedCard();
+                    break;
+            }
+        });
+    }
+    
+    saveDeck() {
+        // Implement save deck functionality or trigger existing save button
+        const saveButton = document.querySelector('.save-deck-btn, [data-action="save-deck"]');
+        if (saveButton) {
+            saveButton.click();
+            console.log('⌨️ Hotkey: Save Deck');
+        }
+    }
+    
+    loadDeck() {
+        // Implement load deck functionality or trigger existing load button  
+        const loadButton = document.querySelector('.load-deck-btn, [data-action="load-deck"]');
+        if (loadButton) {
+            loadButton.click();
+            console.log('⌨️ Hotkey: Load Deck');
+        }
+    }
+    
+    newDeck() {
+        // Implement new deck functionality or trigger existing new button
+        const newButton = document.querySelector('.new-deck-btn, [data-action="new-deck"]');
+        if (newButton) {
+            newButton.click();
+            console.log('⌨️ Hotkey: New Deck');
+        } else {
+            // Clear current deck if no button found
+            this.clearDeck();
+        }
+    }
+    
+    focusSearch() {
+        if (this.searchInput) {
+            this.searchInput.focus();
+            this.searchInput.select();
+            console.log('⌨️ Hotkey: Focus Search');
+        }
+    }
+    
+    resetFilters() {
+        // Reset all filters
+        this.elementFilter = [];
+        this.typeFilter = [];
+        this.costFilter = [];
+        this.rarityFilter = [];
+        this.opusFilter = [];
+        this.categoryFilter = [];
+        this.searchTerm = '';
+        
+        if (this.searchInput) {
+            this.searchInput.value = '';
+        }
+        
+        // Update UI and refresh cards
+        this.updateFilterUI();
+        this.filterAndDisplayCards();
+        console.log('⌨️ Hotkey: Reset Filters');
+    }
+    
+    removeSelectedCard() {
+        const selectedCard = document.querySelector('.deck-card-item:focus, .deck-card-item.selected');
+        if (selectedCard) {
+            // Trigger remove functionality
+            const removeButton = selectedCard.querySelector('.remove-card-btn, [data-action="remove"]');
+            if (removeButton) {
+                removeButton.click();
+                console.log('⌨️ Hotkey: Remove Selected Card');
+            }
+        }
+    }
+
+    /**
      * Setup keyboard navigation for deck builder
      */
     setupKeyboardNavigation() {
+        // Set context for hotkey help
+        if (window.hotkeyHelp) {
+            window.hotkeyHelp.setContext('deckbuilder');
+        }
+        
+        // Setup global deck builder hotkeys
+        this.setupDeckBuilderHotkeys();
+        
         // Card grid navigation
         if (this.cardGrid) {
             this.cardGrid.addEventListener('keydown', (e) => {

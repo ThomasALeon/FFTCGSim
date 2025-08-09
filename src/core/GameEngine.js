@@ -32,6 +32,7 @@ export class GameEngine {
         };
 
         this.PHASES = {
+            MULLIGAN: 'mulligan',
             ACTIVE: 'active',
             DRAW: 'draw',
             MAIN_1: 'main1',
@@ -135,6 +136,21 @@ export class GameEngine {
                 confirmActions: true,
                 showAllZones: false
             },
+
+            // Payment Mode System
+            paymentMode: {
+                active: false,
+                playerId: null,
+                cardToCast: null,
+                costToPay: 0,
+                elementRequired: null,
+                selectedPayments: [],
+                onComplete: null
+            },
+
+            // FFTCG Rules
+            maxLifePoints: 7, // Standard FFTCG life points
+            isActive: false,
             
             // Rule enforcement
             ruleEnforcement: {
@@ -243,12 +259,12 @@ export class GameEngine {
             // Perform opening hands
             this.dealOpeningHands();
             
-            // Start first turn
+            // Start with mulligan phase
             this.gameState.isActive = true;
             this.isActive = true;
             
-            // Begin active phase
-            this.beginPhase(this.PHASES.ACTIVE);
+            // Begin mulligan phase to offer hand redraw
+            this.beginPhase(this.PHASES.MULLIGAN);
             
             this.emit('gameStarted', {
                 gameId: this.gameState.id,
@@ -317,8 +333,48 @@ export class GameEngine {
             // LB deck goes face down (implementation specific)
             player.lbDeck = [...deck.lbDeck];
         }
+
+        // Analyze deck elements for CP display
+        this.analyzeDeckElements(playerIndex, deck);
         
         console.log(`👤 Player ${playerIndex + 1} (${playerName}) set up with ${shuffledDeck.length} cards`);
+    }
+
+    /**
+     * Analyze deck elements for CP display
+     */
+    analyzeDeckElements(playerIndex, deck) {
+        const player = this.gameState.players[playerIndex];
+        const elementCounts = {};
+        
+        // Analyze main deck cards
+        if (deck.mainDeck && this.cardDatabase) {
+            deck.mainDeck.forEach(cardId => {
+                try {
+                    // Get card from database
+                    const card = this.cardDatabase.getCard(cardId);
+                    if (card && card.element) {
+                        // Exclude Light/Dark elements from CP generation (FFTCG rule)
+                        if (card.element !== 'light' && card.element !== 'dark') {
+                            elementCounts[card.element] = (elementCounts[card.element] || 0) + 1;
+                        }
+                    }
+                } catch (error) {
+                    console.warn(`💎 Could not analyze card ${cardId} for elements:`, error);
+                }
+            });
+        }
+        
+        // Store deck elements in player data
+        player.deckElements = elementCounts;
+        
+        console.log(`💎 Player ${playerIndex + 1} deck elements analyzed:`, elementCounts);
+        
+        // Emit event for GameBoard to update CP display
+        this.emit('deckElementsAnalyzed', {
+            player: playerIndex,
+            elements: elementCounts
+        });
     }
 
     /**
@@ -361,6 +417,26 @@ export class GameEngine {
         
         this.emit('handRedrawn', { player: playerIndex });
         console.log(`🔄 Player ${playerIndex + 1} mulligan`);
+    }
+
+    /**
+     * Complete the mulligan phase and proceed to active play
+     */
+    completeMulliganPhase() {
+        if (this.gameState.currentPhase !== this.PHASES.MULLIGAN) {
+            console.warn('⚠️ Not in mulligan phase, ignoring completion request');
+            return;
+        }
+
+        console.log('✅ Mulligan phase completed, proceeding to active play');
+        
+        // Proceed to active phase to begin first turn
+        this.beginPhase(this.PHASES.ACTIVE);
+        
+        this.emit('mulliganPhaseCompleted', {
+            gameId: this.gameState.id,
+            currentPlayer: this.gameState.currentPlayer
+        });
     }
 
     /**
@@ -433,17 +509,29 @@ export class GameEngine {
         // Check for triggered abilities
         this.checkTriggeredAbilities('beginningOfActivePhase');
         
-        // Auto-advance to draw phase (no player actions in active phase)
-        setTimeout(() => {
-            this.beginPhase(this.PHASES.DRAW);
-        }, 1000);
+        // Auto-advance to draw phase only for AI or after a short delay
+        if (currentPlayer.isAI) {
+            setTimeout(() => {
+                this.beginPhase(this.PHASES.DRAW);
+            }, 1000);
+        } else {
+            // For human players, advance immediately since Active phase has no player actions
+            setTimeout(() => {
+                this.beginPhase(this.PHASES.DRAW);
+            }, 500);
+        }
     }
 
     /**
      * Perform Draw Phase
      */
     performDrawPhase() {
-        const drawCount = this.gameState.isFirstTurn && this.gameState.currentPlayer === this.gameState.players[0] ? 1 : 2;
+        const currentPlayer = this.gameState.players[this.gameState.currentPlayer];
+        // FFTCG Rule: First player draws 1 card on their first turn only
+        // Turn 1 = first player draws 1, Turn 2+ = everyone draws 2
+        const drawCount = (this.gameState.turnNumber === 1) ? 1 : 2;
+        
+        console.log(`🎴 Draw Phase: Turn ${this.gameState.turnNumber}, Player ${this.gameState.currentPlayer + 1} draws ${drawCount} cards`);
         
         // Draw cards
         this.drawCards(this.gameState.currentPlayer, drawCount);
@@ -451,10 +539,17 @@ export class GameEngine {
         // Check for triggered abilities
         this.checkTriggeredAbilities('afterDraw');
         
-        // Auto-advance to main phase 1
-        setTimeout(() => {
-            this.beginPhase(this.PHASES.MAIN_1);
-        }, 1000);
+        // Auto-advance to main phase 1 only for AI players
+        if (currentPlayer.isAI) {
+            setTimeout(() => {
+                this.beginPhase(this.PHASES.MAIN_1);
+            }, 1000);
+        } else {
+            // For human players, advance immediately since Draw phase has no decisions
+            setTimeout(() => {
+                this.beginPhase(this.PHASES.MAIN_1);
+            }, 500);
+        }
     }
 
     /**
@@ -464,8 +559,35 @@ export class GameEngine {
         // Check for triggered abilities
         this.checkTriggeredAbilities('beginningOfMainPhase');
         
-        // Give priority to current player
-        this.givePriority(this.gameState.currentPlayer);
+        // Check if current player is AI
+        const currentPlayer = this.gameState.players[this.gameState.currentPlayer];
+        if (currentPlayer && currentPlayer.isAI) {
+            console.log('🤖 AI Main Phase - starting AI turn automation');
+            // AI should make decisions automatically
+            this.performAIMainPhase();
+        } else {
+            // Give priority to human player
+            this.givePriority(this.gameState.currentPlayer);
+        }
+    }
+
+    /**
+     * Perform AI Main Phase actions
+     */
+    performAIMainPhase() {
+        const playerIndex = this.gameState.currentPlayer;
+        
+        setTimeout(() => {
+            console.log('🤖 AI making main phase decisions...');
+            
+            // AI decision logic - simplified for now
+            // TODO: Integrate with AIOpponent class for better decision making
+            
+            // For now, AI just advances to next phase
+            console.log('🤖 AI passing main phase');
+            this.advancePhase();
+            
+        }, 1500); // AI thinking delay
     }
 
     /**
@@ -475,8 +597,30 @@ export class GameEngine {
         // Initialize combat
         this.gameState.combat.isActive = true;
         
-        // Start with attack preparation step
-        this.beginAttackStep(this.ATTACK_STEPS.PREPARATION);
+        // Check if current player is AI
+        const currentPlayer = this.gameState.players[this.gameState.currentPlayer];
+        if (currentPlayer && currentPlayer.isAI) {
+            console.log('🤖 AI Attack Phase - starting AI combat automation');
+            this.performAIAttackPhase();
+        } else {
+            // Start with attack preparation step for human player
+            this.beginAttackStep(this.ATTACK_STEPS.PREPARATION);
+        }
+    }
+
+    /**
+     * Perform AI Attack Phase actions
+     */
+    performAIAttackPhase() {
+        setTimeout(() => {
+            console.log('🤖 AI deciding whether to attack...');
+            
+            // AI decision logic - simplified for now
+            // For now, AI skips attack phase
+            console.log('🤖 AI skipping attack phase');
+            this.advancePhase();
+            
+        }, 2000); // AI thinking delay for combat
     }
 
     /**
@@ -527,6 +671,9 @@ export class GameEngine {
             cards: drawnCards,
             remainingDeck: player.zones[this.ZONES.DECK].length
         });
+
+        console.log(`🃏 Player ${playerIndex + 1} drew ${count} cards:`, drawnCards);
+        console.log(`🃏 Hand size now: ${player.zones[this.ZONES.HAND].length}`);
         
         return drawnCards;
     }
@@ -575,42 +722,19 @@ export class GameEngine {
                 throw new Error(`Cannot play ${card.type} in ${this.gameState.currentPhase} phase`);
             }
             
-            // Check CP cost
-            if (!this.canPayCost(playerIndex, card.cost, card.element)) {
-                throw new Error('Insufficient CP to play card');
+            // Check if card has cost and requires payment
+            if (card.cost && card.cost > 0) {
+                // Enter payment mode instead of automatic payment
+                console.log(`💰 Card ${card.name} requires ${card.cost} CP - entering payment mode`);
+                return this.enterPaymentMode(playerIndex, card, () => {
+                    // This callback will execute after payment is complete
+                    this.completeCardPlay(playerIndex, card, cardIndex, options);
+                });
             }
             
-            // Pay cost
-            this.payCost(playerIndex, card.cost, card.element);
-            
-            // Remove from hand
-            player.zones[this.ZONES.HAND].splice(cardIndex, 1);
-            
-            // Play the card based on type
-            switch (card.type) {
-                case 'forward':
-                case 'backup':
-                case 'monster':
-                    this.deployCharacter(playerIndex, card, options);
-                    break;
-                    
-                case 'summon':
-                    this.castSummon(playerIndex, card, options);
-                    break;
-                    
-                default:
-                    throw new Error(`Unknown card type: ${card.type}`);
-            }
-            
-            player.stats.cardsPlayed++;
-            
-            this.emit('cardPlayed', {
-                player: playerIndex,
-                card: card,
-                options: options
-            });
-            
-            console.log(`🃏 Player ${playerIndex + 1} played ${card.name}`);
+            // Free cards (cost 0) - play immediately without payment
+            console.log(`🆓 Playing free card ${card.name} (cost: ${card.cost})`);
+            return this.completeCardPlay(playerIndex, card, cardIndex, options);
             
         } catch (error) {
             console.error('Failed to play card:', error);
@@ -681,11 +805,326 @@ export class GameEngine {
     }
 
     /**
-     * Pay CP cost for a card
+     * Enter payment mode for card casting
+     */
+    enterPaymentMode(playerIndex, cardToCast, onComplete) {
+        console.log(`💰 Entering payment mode for player ${playerIndex} to cast card:`, cardToCast);
+        
+        const paymentMode = this.gameState.paymentMode;
+        paymentMode.active = true;
+        paymentMode.playerId = playerIndex;
+        paymentMode.cardToCast = cardToCast;
+        paymentMode.costToPay = cardToCast.cost || 0;
+        paymentMode.elementRequired = cardToCast.element;
+        paymentMode.selectedPayments = [];
+        paymentMode.onComplete = onComplete;
+        
+        this.emit('paymentModeStarted', {
+            player: playerIndex,
+            card: cardToCast,
+            cost: paymentMode.costToPay,
+            element: paymentMode.elementRequired
+        });
+        
+        return true;
+    }
+    
+    /**
+     * Add a payment source in payment mode
+     */
+    addPaymentSource(source) {
+        const paymentMode = this.gameState.paymentMode;
+        if (!paymentMode.active) {
+            console.error('Cannot add payment source: payment mode not active');
+            return false;
+        }
+        
+        paymentMode.selectedPayments.push(source);
+        
+        this.emit('paymentSourceAdded', {
+            source: source,
+            totalSelected: paymentMode.selectedPayments.length,
+            remainingCost: this.getRemainingPaymentCost()
+        });
+        
+        return true;
+    }
+    
+    /**
+     * Remove a payment source in payment mode
+     */
+    removePaymentSource(source) {
+        const paymentMode = this.gameState.paymentMode;
+        if (!paymentMode.active) {
+            console.error('Cannot remove payment source: payment mode not active');
+            return false;
+        }
+        
+        const index = paymentMode.selectedPayments.findIndex(s => 
+            s.type === source.type && s.id === source.id);
+        if (index >= 0) {
+            paymentMode.selectedPayments.splice(index, 1);
+            
+            this.emit('paymentSourceRemoved', {
+                source: source,
+                totalSelected: paymentMode.selectedPayments.length,
+                remainingCost: this.getRemainingPaymentCost()
+            });
+            return true;
+        }
+        
+        return false;
+    }
+    
+    /**
+     * Calculate remaining cost to pay in payment mode
+     */
+    getRemainingPaymentCost() {
+        const paymentMode = this.gameState.paymentMode;
+        if (!paymentMode.active) return 0;
+        
+        let totalPaid = 0;
+        let elementPaid = 0;
+        
+        for (const source of paymentMode.selectedPayments) {
+            if (source.type === 'discard') {
+                if (source.element === paymentMode.elementRequired) {
+                    elementPaid += 2; // Discarding for matching element gives 2 CP
+                } else {
+                    totalPaid += 1; // Non-matching element gives 1 CP
+                }
+            } else if (source.type === 'tap_backup') {
+                if (source.element === paymentMode.elementRequired) {
+                    elementPaid += 1; // Tapping backup for matching element
+                } else {
+                    totalPaid += 1; // Non-matching element gives 1 CP
+                }
+            }
+        }
+        
+        // For non-Light/Dark cards, must pay at least 1 of the matching element
+        const needsElement = paymentMode.elementRequired !== 'light' && 
+                            paymentMode.elementRequired !== 'dark' && 
+                            elementPaid === 0;
+        
+        const totalNeeded = paymentMode.costToPay;
+        const totalAvailable = elementPaid + totalPaid;
+        
+        if (needsElement && elementPaid === 0) {
+            return { remaining: totalNeeded - totalAvailable, needsElement: true };
+        }
+        
+        return { remaining: Math.max(0, totalNeeded - totalAvailable), needsElement: false };
+    }
+    
+    /**
+     * Complete payment and exit payment mode
+     */
+    completePayment() {
+        const paymentMode = this.gameState.paymentMode;
+        if (!paymentMode.active) {
+            console.error('Cannot complete payment: payment mode not active');
+            return false;
+        }
+        
+        const remainingCost = this.getRemainingPaymentCost();
+        if (remainingCost.remaining > 0 || remainingCost.needsElement) {
+            console.error('Cannot complete payment: insufficient cost paid');
+            return false;
+        }
+        
+        // Execute payment sources
+        for (const source of paymentMode.selectedPayments) {
+            if (source.type === 'discard') {
+                this.discardCardForCP(paymentMode.playerId, source.id);
+            } else if (source.type === 'tap_backup') {
+                this.tapCardForCP(paymentMode.playerId, source.id);
+            }
+        }
+        
+        // Call completion callback
+        if (paymentMode.onComplete) {
+            paymentMode.onComplete();
+        }
+        
+        // Emit completion event
+        this.emit('paymentCompleted', {
+            player: paymentMode.playerId,
+            card: paymentMode.cardToCast,
+            sources: [...paymentMode.selectedPayments]
+        });
+        
+        // Exit payment mode
+        this.exitPaymentMode();
+        
+        return true;
+    }
+    
+    /**
+     * Cancel payment and exit payment mode
+     */
+    cancelPayment() {
+        const paymentMode = this.gameState.paymentMode;
+        if (!paymentMode.active) return false;
+        
+        this.emit('paymentCancelled', {
+            player: paymentMode.playerId,
+            card: paymentMode.cardToCast
+        });
+        
+        this.exitPaymentMode();
+        return true;
+    }
+    
+    /**
+     * Exit payment mode and reset state
+     */
+    exitPaymentMode() {
+        const paymentMode = this.gameState.paymentMode;
+        paymentMode.active = false;
+        paymentMode.playerId = null;
+        paymentMode.cardToCast = null;
+        paymentMode.costToPay = 0;
+        paymentMode.elementRequired = null;
+        paymentMode.selectedPayments = [];
+        paymentMode.onComplete = null;
+        
+        this.emit('paymentModeEnded');
+    }
+
+    /**
+     * Complete card play after payment is finished
+     */
+    completeCardPlay(playerIndex, card, cardIndex, options = {}) {
+        console.log(`💰 Completing card play for ${card.name} after payment`);
+        
+        const player = this.gameState.players[playerIndex];
+        
+        // Remove from hand (use original index, but validate it still exists)
+        const currentCardIndex = player.zones[this.ZONES.HAND].indexOf(card.id);
+        if (currentCardIndex === -1) {
+            console.error('Card no longer in hand during payment completion:', card.id);
+            return false;
+        }
+        
+        player.zones[this.ZONES.HAND].splice(currentCardIndex, 1);
+        
+        // Play the card based on type
+        switch (card.type) {
+            case 'forward':
+            case 'backup':
+            case 'monster':
+                this.deployCharacter(playerIndex, card, options);
+                break;
+                
+            case 'summon':
+                this.castSummon(playerIndex, card, options);
+                break;
+                
+            default:
+                console.error(`Unknown card type: ${card.type}`);
+                return false;
+        }
+        
+        player.stats.cardsPlayed++;
+        
+        this.emit('cardPlayed', {
+            player: playerIndex,
+            card: card,
+            zone: this.getCardZone(card)
+        });
+        
+        console.log(`✅ Card play completed for ${card.name}`);
+        return true;
+    }
+
+    /**
+     * Discard a card from hand for CP in payment mode
+     */
+    discardCardForCP(playerIndex, cardId) {
+        const player = this.gameState.players[playerIndex];
+        const handIndex = player.zones[this.ZONES.HAND].findIndex(id => id === cardId);
+        
+        if (handIndex === -1) {
+            console.error('Card not in hand for CP discard:', cardId);
+            return false;
+        }
+        
+        // Remove from hand and add to break zone
+        const removedCardId = player.zones[this.ZONES.HAND].splice(handIndex, 1)[0];
+        player.zones[this.ZONES.BREAK].push(removedCardId);
+        
+        // Get card data for CP calculation
+        const card = this.cardDatabase ? this.cardDatabase.getCard(removedCardId) : null;
+        const element = card ? card.element : 'unknown';
+        
+        // Add CP to pool based on element
+        if (element !== 'unknown') {
+            if (element === 'light' || element === 'dark') {
+                // Light/Dark cards generate 1 CP of their element
+                player.cpPool[element] = (player.cpPool[element] || 0) + 1;
+            } else {
+                // Other elements generate 2 CP of their element
+                player.cpPool[element] = (player.cpPool[element] || 0) + 2;
+            }
+        }
+        
+        this.emit('cpGenerated', {
+            player: playerIndex,
+            amount: (element === 'light' || element === 'dark') ? 1 : 2,
+            element: element,
+            source: 'discard',
+            cardId: removedCardId
+        });
+        
+        return true;
+    }
+
+    /**
+     * Tap a backup card for CP in payment mode
+     */
+    tapCardForCP(playerIndex, cardId) {
+        const player = this.gameState.players[playerIndex];
+        const backupIndex = player.zones[this.ZONES.BACKUPS].findIndex(id => id === cardId);
+        
+        if (backupIndex === -1) {
+            console.error('Card not in backups for CP tap:', cardId);
+            return false;
+        }
+        
+        // Check if card is already tapped (if we have tap state tracking)
+        // For now, assume it's valid to tap
+        
+        // Get card data for CP calculation
+        const card = this.cardDatabase ? this.cardDatabase.getCard(cardId) : null;
+        const element = card ? card.element : 'unknown';
+        
+        // Add CP to pool
+        if (element !== 'unknown') {
+            player.cpPool[element] = (player.cpPool[element] || 0) + 1;
+        }
+        
+        // TODO: Add tap state tracking for the card
+        
+        this.emit('cpGenerated', {
+            player: playerIndex,
+            amount: 1,
+            element: element,
+            source: 'tap_backup',
+            cardId: cardId
+        });
+        
+        return true;
+    }
+
+    /**
+     * Pay CP cost for a card (LEGACY - will be replaced by payment mode)
      */
     payCost(playerIndex, cost, element) {
+        console.log(`💰 Paying cost: ${cost} ${element} CP for player ${playerIndex}`);
         const player = this.gameState.players[playerIndex];
         const cpPool = player.cpPool;
+        console.log(`💰 CP pool before payment:`, cpPool);
         
         let remainingCost = cost;
         
@@ -705,6 +1144,9 @@ export class GameEngine {
             cpPool[elem] -= cpToUse;
             remainingCost -= cpToUse;
         }
+        
+        console.log(`💰 CP pool after payment:`, cpPool);
+        console.log(`💰 Total CP remaining:`, Object.values(cpPool).reduce((sum, cp) => sum + cp, 0));
         
         this.emit('cpSpent', {
             player: playerIndex,
@@ -778,20 +1220,10 @@ export class GameEngine {
             throw new Error('Player cannot act');
         }
         
-        // Remove card from hand
-        const player = this.gameState.players[playerIndex];
-        const handIndex = player.zones[this.ZONES.HAND].indexOf(card.id);
-        if (handIndex === -1) {
-            throw new Error('Card not in hand');
-        }
-        player.zones[this.ZONES.HAND].splice(handIndex, 1);
+        // Note: Payment and hand removal is now handled by completeCardPlay
+        // This method now only handles the actual summon resolution
         
-        // Pay CP cost
-        if (!this.payCP(playerIndex, card.cost, card.element)) {
-            // Return card to hand if payment fails
-            player.zones[this.ZONES.HAND].push(card.id);
-            throw new Error('Insufficient CP to cast summon');
-        }
+        const player = this.gameState.players[playerIndex];
         
         // Add summon to stack (it will resolve immediately as instant)
         const summonEffect = {
@@ -809,6 +1241,12 @@ export class GameEngine {
             summon: card,
             stackSize: this.gameState.stack.length
         });
+        
+        // Auto-resolve summons immediately in practice/single-player mode
+        if (this.gameState.players[1].isAI || this.gameState.mode === 'practice' || this.gameState.options.autoResolve !== false) {
+            console.log('🔄 Auto-resolving summon in practice mode');
+            this.resolveStackTop();
+        }
         
         // Add action to history
         this.addAction({
@@ -1292,6 +1730,7 @@ export class GameEngine {
      */
     dealDamageToPlayer(playerIndex, damage) {
         const player = this.gameState.players[playerIndex];
+        const damagedCards = [];
         
         for (let i = 0; i < damage; i++) {
             if (player.zones[this.ZONES.DECK].length === 0) {
@@ -1303,6 +1742,7 @@ export class GameEngine {
             // Move top card of deck to damage zone
             const card = player.zones[this.ZONES.DECK].shift();
             player.zones[this.ZONES.DAMAGE].push(card);
+            damagedCards.push(card);
             
             // Check for EX Burst
             if (this.hasEXBurst(card)) {
@@ -1316,11 +1756,20 @@ export class GameEngine {
             }
         }
         
+        // Emit both events for backward compatibility and animation
         this.emit('playerDamaged', {
             player: playerIndex,
             damage: damage,
             totalDamage: player.zones[this.ZONES.DAMAGE].length,
             maxDamage: player.maxDamage
+        });
+
+        this.emit('damageDealt', {
+            player: playerIndex,
+            amount: damage,
+            source: 'combat',
+            remainingLife: player.maxDamage - player.zones[this.ZONES.DAMAGE].length,
+            damagedCards: damagedCards
         });
     }
 
@@ -1476,6 +1925,13 @@ export class GameEngine {
     }
 
     /**
+     * Next phase method (alias for advancePhase)
+     */
+    nextPhase() {
+        this.advancePhase();
+    }
+
+    /**
      * End current turn
      */
     endTurn() {
@@ -1501,6 +1957,8 @@ export class GameEngine {
      * Clear turn-specific flags and effects
      */
     clearTurnFlags() {
+        const previousPlayer = 1 - this.gameState.currentPlayer; // Player whose turn is ending
+        
         // Clear "entered this turn" flags
         for (const player of this.gameState.players) {
             const allCharacters = [
@@ -1509,6 +1967,25 @@ export class GameEngine {
             ];
             allCharacters.forEach(character => {
                 character.enteredThisTurn = false;
+            });
+        }
+        
+        // CRITICAL FIX: Clear CP pool of the player whose turn is ending
+        if (this.gameState.players[previousPlayer]) {
+            const playerEndingTurn = this.gameState.players[previousPlayer];
+            const elements = ['fire', 'ice', 'wind', 'lightning', 'water', 'earth', 'light', 'dark'];
+            
+            // Reset all CP to 0
+            elements.forEach(element => {
+                playerEndingTurn.cpPool[element] = 0;
+            });
+            
+            console.log(`💎 Cleared CP pool for player ${previousPlayer + 1} at end of turn`);
+            console.log(`💎 Remaining CP:`, playerEndingTurn.cpPool);
+            
+            this.emit('cpCleared', {
+                player: previousPlayer,
+                cpPool: playerEndingTurn.cpPool
             });
         }
     }
@@ -1733,10 +2210,19 @@ export class GameEngine {
      */
     getCardData(cardId) {
         if (this.cardDatabase) {
-            return this.cardDatabase.getCard(cardId);
+            const card = this.cardDatabase.getCard(cardId);
+            if (card) {
+                console.log(`🃏 Found card data for ${cardId}:`, card);
+                return card;
+            } else {
+                console.error(`🃏 Card not found in database: ${cardId}`);
+            }
+        } else {
+            console.error('🃏 CardDatabase not available in GameEngine');
         }
         
-        // Fallback: return minimal card data
+        // Fallback: return minimal card data with error indication
+        console.error(`🃏 Using fallback data for card: ${cardId}`);
         return {
             id: cardId,
             name: 'Unknown Card',
@@ -2033,11 +2519,10 @@ export class GameEngine {
             const playerDeck = convertDeck(gameConfig.playerDeck);
             console.log(`✓ Player deck converted: ${playerDeck.mainDeck.length} cards`);
             
-            // Create AI deck - for now use the player deck as AI deck
-            // TODO: Implement proper AI deck generation based on difficulty
-            const aiDeckData = gameConfig.aiDeck || gameConfig.playerDeck;
+            // Create AI deck - generate a proper AI deck instead of copying player deck
+            const aiDeckData = gameConfig.aiDeck || this.generateAIDeck(gameConfig.aiDifficulty);
             const aiDeck = convertDeck(aiDeckData);
-            console.log(`✓ AI deck converted: ${aiDeck.mainDeck.length} cards`);
+            console.log(`✓ AI deck generated: ${aiDeck.mainDeck.length} cards`);
             
             // Get player name from player manager or use default
             const playerName = this.playerManager?.getProfile()?.name || 'Player';
@@ -2076,5 +2561,153 @@ export class GameEngine {
             console.error('❌ Failed to start practice game:', error);
             throw error;
         }
+    }
+    
+    /**
+     * Set the first player for the game
+     */
+    setFirstPlayer(firstPlayer) {
+        if (this.gameState) {
+            this.gameState.currentPlayer = firstPlayer === 'player' ? 'player1' : 'player2';
+            this.gameState.firstPlayer = firstPlayer === 'player' ? 'player1' : 'player2';
+            
+            // Emit state change
+            this.emit('gameStateChanged', {
+                type: 'firstPlayerSet',
+                firstPlayer: this.gameState.firstPlayer,
+                currentPlayer: this.gameState.currentPlayer
+            });
+            
+            logger.info(`First player set to: ${this.gameState.firstPlayer}`);
+        } else {
+            logger.warn('Cannot set first player: no active game state');
+        }
+    }
+
+    /**
+     * Generate a simple AI deck for practice games
+     */
+    generateAIDeck(difficulty = 'normal') {
+        // Simple AI deck templates based on elements
+        const deckTemplates = {
+            fireIce: {
+                name: 'Fire/Ice AI Deck',
+                elements: ['fire', 'ice'],
+                strategy: 'aggressive'
+            },
+            windLightning: {
+                name: 'Wind/Lightning AI Deck', 
+                elements: ['wind', 'lightning'],
+                strategy: 'tempo'
+            },
+            waterEarth: {
+                name: 'Water/Earth AI Deck',
+                elements: ['water', 'earth'],
+                strategy: 'control'
+            },
+            monoFire: {
+                name: 'Mono Fire AI Deck',
+                elements: ['fire'],
+                strategy: 'aggressive'
+            }
+        };
+
+        // Select template based on difficulty (for now, random selection)
+        const templates = Object.values(deckTemplates);
+        const selectedTemplate = templates[Math.floor(Math.random() * templates.length)];
+
+        console.log(`🤖 Generating ${selectedTemplate.name} for AI`);
+
+        // Generate a 50-card deck with the selected elements
+        const aiDeck = this.buildAIDeckFromTemplate(selectedTemplate);
+        
+        return {
+            mainDeck: aiDeck,
+            lbDeck: [],
+            name: selectedTemplate.name,
+            elements: selectedTemplate.elements
+        };
+    }
+
+    /**
+     * Build AI deck from template
+     */
+    buildAIDeckFromTemplate(template) {
+        const deck = [];
+        
+        // Try to use actual cards from database if available
+        if (this.cardDatabase) {
+            try {
+                const availableCards = this.getCardsByElements(template.elements);
+                if (availableCards.length >= 50) {
+                    return this.buildDeckFromCards(availableCards, template.elements);
+                }
+            } catch (error) {
+                console.warn('Could not build deck from database, using mock cards:', error);
+            }
+        }
+
+        // Fallback: Create mock cards that will be recognized by analyzeDeckElements
+        const deck50Cards = this.createMockDeck(template.elements);
+        
+        console.log(`🤖 Generated AI deck with ${deck50Cards.length} cards, elements: ${template.elements.join(', ')}`);
+        return deck50Cards;
+    }
+
+    /**
+     * Create a mock deck with proper element distribution
+     */
+    createMockDeck(elements) {
+        const deck = [];
+        const cardsPerElement = Math.floor(50 / elements.length);
+        const remainder = 50 % elements.length;
+
+        elements.forEach((element, index) => {
+            const cardCount = cardsPerElement + (index < remainder ? 1 : 0);
+            
+            // Create cards for this element with proper naming for database lookup
+            for (let i = 0; i < cardCount; i++) {
+                const cardType = i % 3 === 0 ? 'forward' : (i % 3 === 1 ? 'backup' : 'summon');
+                const cardNumber = Math.floor(i / 3) + 1;
+                deck.push(`mock_${element}_${cardType}_${cardNumber}`);
+            }
+        });
+
+        // Add mock cards to database for element analysis
+        this.addMockCardsToDatabase(elements);
+
+        return deck;
+    }
+
+    /**
+     * Add mock cards to database for AI deck element analysis
+     */
+    addMockCardsToDatabase(elements) {
+        if (!this.cardDatabase || !this.cardDatabase.addCard) return;
+
+        elements.forEach(element => {
+            // Add a variety of mock cards for this element
+            ['forward', 'backup', 'summon'].forEach(type => {
+                for (let i = 1; i <= 10; i++) {
+                    const cardId = `mock_${element}_${type}_${i}`;
+                    const mockCard = {
+                        id: cardId,
+                        name: `${element.charAt(0).toUpperCase() + element.slice(1)} ${type.charAt(0).toUpperCase() + type.slice(1)} ${i}`,
+                        element: element,
+                        type: type,
+                        cost: Math.min(i, 7), // Reasonable cost distribution
+                        power: type === 'forward' ? 1000 + (i * 1000) : undefined
+                    };
+
+                    try {
+                        this.cardDatabase.addCard(mockCard);
+                    } catch (error) {
+                        // Card might already exist, ignore error
+                    }
+                }
+            });
+        });
+
+        console.log(`🃏 Added mock cards for elements: ${elements.join(', ')}`);
     }
 }

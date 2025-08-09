@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="assets/css/components/deck-builder.css">
     <link rel="stylesheet" href="assets/css/components/lobby.css">
     <link rel="stylesheet" href="assets/css/components/game-board.css">
+    <link rel="stylesheet" href="assets/css/components/hotkey-help.css">
     <link rel="stylesheet" href="assets/css/accessibility.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -404,16 +405,7 @@
                             <span>☰</span>
                         </div>
                         
-                        <div class="turn-indicator" id="turnIndicator">
-                            <span>🎯</span>
-                            <span id="currentPlayer">Your Turn</span>
-                            <span id="turnPhase" class="phase-indicator">Main Phase</span>
-                        </div>
-                        
-                        <div class="game-actions">
-                            <button class="phase-btn" id="endPhaseBtn">End Phase</button>
-                            <button class="phase-btn" id="endTurnBtn">End Turn</button>
-                        </div>
+                        <!-- Removed duplicate turn indicators and buttons - using the ones in game-controls instead -->
                     </div>
 
                     <!-- Compact Game Menu (hidden by default) -->
@@ -434,10 +426,51 @@
                         </div>
                     </div>
 
+                    <!-- Right-side Event Log (Toggleable) -->
+                    <div class="right-event-log" id="rightEventLog">
+                        <div class="event-log-toggle" id="eventLogToggle" onclick="toggleEventLog()">
+                            <span class="toggle-icon">📋</span>
+                            <span class="toggle-text">Game Log</span>
+                        </div>
+                        <div class="event-log-panel" id="eventLogPanel">
+                            <div class="event-log-panel-header">
+                                <h3>Game Event Log</h3>
+                                <div class="event-log-controls">
+                                    <button class="event-log-filter" id="eventLogFilter" title="Filter Events">🔍</button>
+                                    <button class="event-log-clear" id="clearRightEventLog" title="Clear Log">🗑️</button>
+                                    <button class="event-log-close" id="closeEventLog" onclick="toggleEventLog()" title="Close">×</button>
+                                </div>
+                            </div>
+                            <div class="event-log-panel-content" id="eventLogPanelContent">
+                                <div class="event-log-empty">Game events will appear here...</div>
+                            </div>
+                            <div class="event-log-panel-footer">
+                                <div class="event-log-stats">
+                                    <span id="eventLogCount">0 events</span>
+                                    <span id="eventLogPhase">Main Phase 1</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Game Board - Simplified Layout -->
                     <div class="game-board" id="gameBoard">
                         <!-- Left Sidebar -->
                         <div class="game-sidebar-left">
+                            <!-- Damage Zone Area Buttons -->
+                            <div class="life-area-container">
+                                <button class="life-area-btn opponent-life" onclick="openDamageZoneModal('opponent')" id="opponentLifeBtn">
+                                    <div class="life-icon">💔</div>
+                                    <div class="life-count" id="opponentLifeCount">0</div>
+                                    <div class="life-label">Opp Damage</div>
+                                </button>
+                                <button class="life-area-btn player-life" onclick="openDamageZoneModal('player')" id="playerLifeBtn">
+                                    <div class="life-icon">❤️</div>
+                                    <div class="life-count" id="playerLifeCount">0</div>
+                                    <div class="life-label">Your Damage</div>
+                                </button>
+                            </div>
+
                             <!-- Card Preview Area -->
                             <div class="card-preview-area" id="cardPreviewArea">
                                 <div class="card-preview-header">
@@ -498,153 +531,134 @@
                             <div class="event-log-area" id="eventLogArea">
                                 <div class="event-log-header">
                                     <h4 class="event-log-title">Game Log</h4>
-                                    <button class="event-log-clear" id="clearEventLog" title="Clear Log">🗑️</button>
+                                    <div class="event-log-controls">
+                                        <button class="event-log-expand" id="expandEventLog" title="Open Event Log Viewer">📋</button>
+                                        <button class="event-log-minimize" id="minimizeEventLog" title="Minimize/Expand Log">➖</button>
+                                        <button class="event-log-clear" id="clearEventLog" title="Clear Log">🗑️</button>
+                                    </div>
                                 </div>
                                 <div class="event-log-content" id="eventLogContent">
-                                    <div class="event-log-empty">Game events will appear here...</div>
+                                    <div class="event-log-inner-wrapper">
+                                        <div class="event-log-empty">Game events will appear here...</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Main Game Area -->
                         <div class="game-main-area">
-                            <!-- Game Controls -->
-                            <div class="game-controls" id="gameControls">
-                                <div class="turn-indicator" id="turnIndicator">
-                                    <div class="turn-info">
-                                        <span class="current-player" id="currentPlayer">Your Turn</span>
-                                        <span class="turn-phase" id="turnPhase">Main Phase</span>
+                            <!-- Opponent Hand and CP Area -->
+                            <div class="opponent-hand-cp-area">
+                                <div class="hand-area opponent-hand-area">
+                                    <div class="hand-header">Opponent Hand</div>
+                                    <div class="hand-count" id="opponentHandCount">7 cards</div>
+                                </div>
+                                <div class="cp-display opponent-cp" id="opponentCP">
+                                    <!-- CP icons will be dynamically generated based on deck elements -->
+                                </div>
+                                <!-- Opponent Damage Zone Display -->
+                                <div class="damage-zone-display opponent-damage-zone">
+                                    <div class="damage-zone-header">Opponent Damage Zone</div>
+                                    <div class="damage-zone-grid" id="opponentDamageZone">
+                                        <!-- Damage cards will appear here -->
                                     </div>
-                                    <div class="turn-actions">
-                                        <button class="control-btn" id="endPhaseBtn">End Phase</button>
-                                        <button class="control-btn" id="endTurnBtn">End Turn</button>
-                                    </div>
+                                </div>
+                                <div class="zone-buttons opponent-zone-buttons">
+                                    <button class="zone-btn break-zone-btn" onclick="openZoneModal('opponent-break')" id="opponentBreakBtn" title="View Opponent Break Zone">
+                                        <div class="zone-icon">📚</div>
+                                        <div class="zone-count" id="opponentBreakCount">0</div>
+                                        <div class="zone-label">Break</div>
+                                    </button>
+                                    <button class="zone-btn removed-zone-btn" onclick="openZoneModal('opponent-removed')" id="opponentRemovedBtn" title="View Opponent Removed">
+                                        <div class="zone-icon">🚫</div>
+                                        <div class="zone-count" id="opponentRemovedCount">0</div>
+                                        <div class="zone-label">Removed</div>
+                                    </button>
                                 </div>
                             </div>
 
-                            <!-- Opponent Side -->
-                            <div class="opponent-side">
-                                <!-- Opponent Info -->
-                                <div class="opponent-info-bar" id="opponentInfo">
-                                    <div class="opponent-avatar">
-                                        <span class="avatar-icon">🤖</span>
-                                    </div>
-                                    <div class="opponent-stats">
-                                        <div class="stat-item">
-                                            <span class="stat-label">Hand:</span>
-                                            <span class="stat-value" id="opponentHandCount">7</span>
-                                        </div>
-                                    </div>
-                                    <div class="opponent-zone-buttons">
-                                        <button class="zone-toggle-btn" onclick="openUnifiedZoneModal('opponent')" title="View Opponent Graveyard & Removed">
-                                            <span class="zone-icon">🪦</span>
-                                            <span class="zone-text">Graveyard</span>
-                                        </button>
-                                    </div>
+                            <!-- Opponent Backups -->
+                            <div class="game-zone opponent-backups" id="opponentBackups">
+                                <div class="zone-content" id="opponentBackupsContent">
+                                    <div class="zone-empty">Backup Area</div>
                                 </div>
-
-                                <!-- Opponent Damage Zone (Life Points) -->
-                                <div class="damage-zone opponent-damage" id="opponentDamage">
-                                    <div class="zone-header">
-                                        <h3 class="zone-title">Opponent Life</h3>
-                                        <span class="zone-count" id="opponentDamageCount">7</span>
-                                    </div>
-                                    <div class="damage-cards" id="opponentDamageContent">
-                                        <!-- 7 face-down cards representing life points -->
-                                    </div>
-                                </div>
-
-                                <!-- Opponent Game Zones -->
-                                <div class="opponent-zones">
-                                    <div class="zone-row">
-                                        <div class="game-zone opponent-backups" id="opponentBackups">
-                                            <div class="zone-header">
-                                                <h3 class="zone-title">Opponent Backups</h3>
-                                                <span class="zone-count" id="opponentBackupsCount">0</span>
-                                            </div>
-                                            <div class="zone-content" id="opponentBackupsContent">
-                                                <div class="zone-empty">No backup cards</div>
-                                            </div>
-                                        </div>
-                                        <div class="game-zone opponent-battlefield" id="opponentBattlefield">
-                                            <div class="zone-header">
-                                                <h3 class="zone-title">Opponent Battlefield</h3>
-                                                <span class="zone-count" id="opponentBattlefieldCount">0</span>
-                                            </div>
-                                            <div class="zone-content" id="opponentBattlefieldContent">
-                                                <div class="zone-empty">No forwards</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <span class="zone-count hidden" id="opponentBackupsCount">0</span>
                             </div>
 
-                            <!-- Player Side -->
-                            <div class="player-side">
-                                <!-- Player Game Zones -->
-                                <div class="player-zones">
-                                    <div class="zone-row">
-                                        <div class="game-zone player-backups" id="playerBackups">
-                                            <div class="zone-header">
-                                                <h3 class="zone-title">Your Backups</h3>
-                                                <span class="zone-count" id="playerBackupsCount">0</span>
-                                            </div>
-                                            <div class="zone-content" id="playerBackupsContent">
-                                                <div class="zone-empty">No backup cards</div>
-                                            </div>
-                                        </div>
-                                        <div class="game-zone player-battlefield" id="playerBattlefield">
-                                            <div class="zone-header">
-                                                <h3 class="zone-title">Your Battlefield</h3>
-                                                <span class="zone-count" id="playerBattlefieldCount">0</span>
-                                            </div>
-                                            <div class="zone-content" id="playerBattlefieldContent">
-                                                <div class="zone-empty">No forwards</div>
-                                            </div>
-                                        </div>
+                            <!-- Opponent Forwards -->
+                            <div class="game-zone opponent-forwards" id="opponentBattlefield">
+                                <div class="zone-content" id="opponentBattlefieldContent">
+                                    <div class="zone-empty">Forward Area</div>
+                                </div>
+                                <span class="zone-count hidden" id="opponentBattlefieldCount">0</span>
+                            </div>
+
+                            <!-- Dynamic Switch Phase/End Turn Button -->
+                            <div class="dynamic-action-area">
+                                <div class="turn-info">
+                                    <span class="current-player" id="currentPlayer">Your Turn</span>
+                                    <span class="turn-phase" id="turnPhase">Main Phase</span>
+                                </div>
+                                <button class="dynamic-action-btn" id="dynamicActionBtn" onclick="handleDynamicAction()">Switch Phase</button>
+                            </div>
+
+                            <!-- Player Forwards -->
+                            <div class="game-zone player-forwards" id="playerBattlefield">
+                                <div class="zone-content" id="playerBattlefieldContent">
+                                    <div class="zone-empty">Forward Area</div>
+                                </div>
+                                <span class="zone-count hidden" id="playerBattlefieldCount">0</span>
+                            </div>
+
+                            <!-- Player Backups -->
+                            <div class="game-zone player-backups" id="playerBackups">
+                                <div class="zone-content" id="playerBackupsContent">
+                                    <div class="zone-empty">Backup Area</div>
+                                </div>
+                                <span class="zone-count hidden" id="playerBackupsCount">0</span>
+                            </div>
+
+                            <!-- Player Hand and CP Area -->
+                            <div class="player-hand-cp-area">
+                                <div class="hand-area player-hand-area" id="playerHand">
+                                    <div class="hand-header">Your Hand</div>
+                                    <div class="hand-content" id="playerHandContent">
+                                        <!-- Player hand cards will appear here -->
                                     </div>
                                 </div>
-
-                                <!-- Player Damage Zone (Life Points) -->
-                                <div class="damage-zone player-damage" id="playerDamage">
-                                    <div class="zone-header">
-                                        <h3 class="zone-title">Your Life</h3>
-                                        <span class="zone-count" id="playerDamageCount">7</span>
-                                    </div>
-                                    <div class="damage-cards" id="playerDamageContent">
-                                        <!-- 7 face-down cards representing life points -->
+                                <div class="cp-display player-cp" id="playerCP">
+                                    <!-- CP icons will be dynamically generated based on deck elements -->
+                                </div>
+                                <!-- Player Damage Zone Display -->
+                                <div class="damage-zone-display player-damage-zone">
+                                    <div class="damage-zone-header">Your Damage Zone</div>
+                                    <div class="damage-zone-grid" id="playerDamageZone">
+                                        <!-- Damage cards will appear here -->
                                     </div>
                                 </div>
-
-                                <!-- Player Zone Controls -->
-                                <div class="player-zone-controls" id="playerZoneControls">
-                                    <div class="zone-toggle-buttons">
-                                        <button class="zone-toggle-btn" onclick="openUnifiedZoneModal('player')" title="View Your Graveyard & Removed">
-                                            <span class="zone-icon">🪦</span>
-                                            <span class="zone-text">Graveyard</span>
-                                        </button>
-                                    </div>
-                                    
-                                    <div class="hand-toggle-bar" onclick="toggleFloatingHand()" id="handToggleBar">
-                                        <div class="hand-toggle-indicator">
-                                            <span id="handCardCount">5</span> Cards ▲
-                                        </div>
-                                    </div>
+                                <div class="zone-buttons player-zone-buttons">
+                                    <button class="zone-btn break-zone-btn" onclick="openZoneModal('player-break')" id="playerBreakBtn" title="View Break Zone (Graveyard)">
+                                        <div class="zone-icon">📚</div>
+                                        <div class="zone-count" id="playerBreakCount">0</div>
+                                        <div class="zone-label">Break</div>
+                                    </button>
+                                    <button class="zone-btn removed-zone-btn" onclick="openZoneModal('player-removed')" id="playerRemovedBtn" title="View Removed from Game">
+                                        <div class="zone-icon">🚫</div>
+                                        <div class="zone-count" id="playerRemovedCount">0</div>
+                                        <div class="zone-label">Removed</div>
+                                    </button>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Floating Hand Cards -->
-                        <div class="player-hand" id="playerHand">
-                            <div class="zone-content horizontal improved-spacing" id="playerHandContent">
-                                <!-- Player hand cards will float here -->
-                            </div>
-                        </div>
+                        <!-- NOTE: Floating Hand Cards removed - now integrated into game board layout -->
 
                         <!-- Hidden Zone Content for Unified Modal -->
                         <div style="display: none;">
+                            <div id="playerDamageContent"></div>
                             <div id="playerBreakContent"></div>
                             <div id="playerRemovedContent"></div>
+                            <div id="opponentDamageContent"></div>
                             <div id="opponentBreakContent"></div>
                             <div id="opponentRemovedContent"></div>
                         </div>
@@ -867,6 +881,71 @@
     <!-- Notification Container -->
     <div id="notificationContainer" class="notification-container"></div>
 
+    <!-- Event Log Viewer Modal -->
+    <div class="event-log-viewer-modal" id="eventLogViewerModal">
+        <div class="event-log-viewer-overlay"></div>
+        <div class="event-log-viewer-content">
+            <div class="event-log-viewer-header">
+                <h2 class="event-log-viewer-title">📋 Game Event Log Viewer</h2>
+                <div class="event-log-viewer-controls">
+                    <button class="event-log-filter-btn" id="eventLogFilterBtn" title="Filter Events">🔍</button>
+                    <button class="event-log-export-btn" id="eventLogExportBtn" title="Export Log">📤</button>
+                    <button class="event-log-viewer-close" id="closeEventLogViewer" title="Close (Esc)">×</button>
+                </div>
+            </div>
+            <div class="event-log-viewer-body">
+                <div class="event-log-viewer-stats">
+                    <span id="eventLogViewerCount">0 events</span>
+                    <span>•</span>
+                    <span id="eventLogViewerPhase">Loading...</span>
+                </div>
+                <div class="event-log-viewer-content-area" id="eventLogViewerContent">
+                    <!-- Event entries will be populated here -->
+                </div>
+            </div>
+            <div class="event-log-viewer-footer">
+                <div class="event-log-viewer-tip">💡 Use filters to narrow down events, or export the full log</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mulligan Modal -->
+    <div class="mulligan-modal" id="mulliganModal">
+        <div class="mulligan-overlay"></div>
+        <div class="mulligan-content">
+            <div class="mulligan-header">
+                <h2 class="mulligan-title">🔄 Opening Hand - Mulligan Decision</h2>
+                <div class="mulligan-subtitle">Review your starting hand and decide if you want to mulligan (shuffle and draw 5 new cards)</div>
+            </div>
+            <div class="mulligan-body">
+                <div class="mulligan-hand-preview" id="mulliganHandPreview">
+                    <div class="mulligan-hand-label">Your Opening Hand (5 cards):</div>
+                    <div class="mulligan-hand-cards" id="mulliganHandCards">
+                        <!-- Current hand cards will be displayed here -->
+                    </div>
+                </div>
+                <div class="mulligan-decision">
+                    <div class="mulligan-explanation">
+                        <p><strong>Keep this hand?</strong></p>
+                        <ul>
+                            <li>✅ <strong>Keep:</strong> Start the game with this hand</li>
+                            <li>🔄 <strong>Mulligan:</strong> Shuffle this hand back into your deck and draw 5 new cards</li>
+                        </ul>
+                        <p class="mulligan-note">💡 <em>You can only mulligan once per game</em></p>
+                    </div>
+                </div>
+            </div>
+            <div class="mulligan-footer">
+                <button class="btn btn-primary mulligan-keep-btn" id="mulliganKeepBtn" onclick="keepOpeningHand()">
+                    ✅ Keep This Hand
+                </button>
+                <button class="btn btn-secondary mulligan-redraw-btn" id="mulliganRedrawBtn" onclick="mulliganOpeningHand()">
+                    🔄 Mulligan (Redraw)
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- JavaScript Modules -->
     <script type="module" src="src/main.js"></script>
     
@@ -977,31 +1056,8 @@
             }
         });
         
-        // Toggle floating hand visibility
-        function toggleFloatingHand() {
-            const hand = document.getElementById('playerHand');
-            const toggleBar = document.getElementById('handToggleBar');
-            const indicator = toggleBar?.querySelector('.hand-toggle-indicator');
-            
-            if (hand && indicator) {
-                hand.classList.toggle('minimized');
-                const isMinimized = hand.classList.contains('minimized');
-                const cardCount = document.getElementById('handCardCount')?.textContent || '5';
-                
-                if (isMinimized) {
-                    indicator.innerHTML = `${cardCount} Cards ▲`;
-                    toggleBar.style.background = 'linear-gradient(to top, rgba(255, 215, 0, 0.2) 0%, transparent 100%)';
-                } else {
-                    indicator.innerHTML = `${cardCount} Cards ▼`;
-                    toggleBar.style.background = 'linear-gradient(to top, rgba(255, 215, 0, 0.3) 0%, transparent 100%)';
-                }
-            }
-        }
-
-        // Legacy function for compatibility
-        function toggleHand() {
-            toggleFloatingHand();
-        }
+        // NOTE: toggleFloatingHand() and toggleHand() functions removed - 
+        // Hand display is now integrated directly into the game board layout
 
         // Card hover integration with preview
         function handleCardHover(cardElement, isHovering) {
@@ -1029,14 +1085,7 @@
             }
         }
 
-        // Set up card hover listeners when hand is populated
-        function setupFloatingHandHovers() {
-            const handCards = document.querySelectorAll('.player-hand .game-card');
-            handCards.forEach(card => {
-                card.addEventListener('mouseenter', () => handleCardHover(card, true));
-                card.addEventListener('mouseleave', () => handleCardHover(card, false));
-            });
-        }
+        // NOTE: setupFloatingHandHovers() removed - card hover is now handled by GameBoard.js
 
         // Call this when hand cards are added to the DOM
         document.addEventListener('DOMContentLoaded', function() {
@@ -1047,7 +1096,7 @@
                     mutations.forEach(function(mutation) {
                         if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
                             // Cards were added, set up hover listeners
-                            setTimeout(setupFloatingHandHovers, 100);
+                            // NOTE: Card hover setup now handled by GameBoard.js
                         }
                     });
                 });
@@ -1453,6 +1502,16 @@
                     name: 'opponentBreakContent', 
                     title: 'Opponent Break Zone',
                     type: 'opponent-break'
+                },
+                'player-removed': { 
+                    name: 'playerRemovedContent', 
+                    title: 'Your Removed Cards',
+                    type: 'player-removed'
+                },
+                'opponent-removed': { 
+                    name: 'opponentRemovedContent', 
+                    title: 'Opponent Removed Cards',
+                    type: 'opponent-removed'
                 }
             };
             
@@ -1603,12 +1662,11 @@
             return nameMap[zoneName] || zoneName;
         }
 
-        // Set up zone header click handlers
+        // Set up zone click handlers
         function setupZoneClickHandlers() {
-            // Define zones that should be clickable
+            // Define zones that should be clickable (excluding field zones which no longer have headers)
             const clickableZones = [
-                'playerBackups', 'playerSummons', 'playerDamage',
-                'opponentBackups', 'opponentSummons', 'opponentDamage'
+                'playerDamage', 'opponentDamage'
             ];
 
             clickableZones.forEach(zoneName => {
@@ -1658,10 +1716,346 @@
             }
         });
 
+        // Handle dynamic action button (Next Phase / End Turn)
+        function handleDynamicAction() {
+            if (window.app && window.app.gameEngine) {
+                window.app.gameEngine.nextPhase();
+            } else {
+                console.error('Game Engine not available');
+                window.showNotification('Game not active', 'error');
+            }
+        }
+
+        // Open damage zone modal to view life points
+        function openDamageZoneModal(player) {
+            if (window.app && window.app.gameBoard) {
+                window.app.gameBoard.showDamageZoneModal(player);
+            } else {
+                console.error('GameBoard not available');
+                window.showNotification('Cannot view damage zone - game not active', 'error');
+            }
+        }
+
+        // Toggle event log panel
+        let eventLogOpen = false;
+        function toggleEventLog() {
+            const eventLog = document.getElementById('rightEventLog');
+            const panel = document.getElementById('eventLogPanel');
+            const toggle = document.getElementById('eventLogToggle');
+            
+            eventLogOpen = !eventLogOpen;
+            
+            if (eventLogOpen) {
+                eventLog.classList.add('open');
+                toggle.style.display = 'none';
+            } else {
+                eventLog.classList.remove('open');
+                toggle.style.display = 'flex';
+            }
+            
+            // Update event count when opening
+            if (eventLogOpen && window.app && window.app.gameBoard) {
+                window.app.gameBoard.updateEventLogStats();
+            }
+        }
+
+        // Clear event log
+        function clearRightEventLog() {
+            if (window.app && window.app.gameBoard) {
+                window.app.gameBoard.clearEventLog();
+                document.getElementById('eventLogPanelContent').innerHTML = '<div class="event-log-empty">Event log cleared...</div>';
+            }
+        }
+
+        // Test function to simulate damage (for testing FFTCG damage system)
+        function testTakeDamage(player, amount = 1) {
+            if (window.app && window.app.gameBoard) {
+                window.app.gameBoard.takeDamage(player, amount);
+            } else {
+                console.warn('GameBoard not initialized yet');
+            }
+        }
+
+        // Test function to check event log functionality
+        function testEventLog() {
+            console.log('=== EVENT LOG DEBUG TEST ===');
+            
+            // Check DOM elements first
+            const eventLogArea = document.getElementById('eventLogArea');
+            const eventLogContent = document.getElementById('eventLogContent');
+            const eventLogPanelContent = document.getElementById('eventLogPanelContent');
+            
+            console.log('Event log area:', eventLogArea);
+            console.log('Event log content (main):', eventLogContent);
+            console.log('Event log panel content (right):', eventLogPanelContent);
+            
+            // Test basic container functionality FIRST
+            console.log('=== BASIC CONTAINER TEST ===');
+            const testEntry = document.createElement('div');
+            testEntry.textContent = 'MANUAL TEST ENTRY - Should appear INSIDE the Game Events Log box';
+            testEntry.style.background = 'red';
+            testEntry.style.color = 'white';
+            testEntry.style.padding = '10px';
+            testEntry.style.margin = '5px';
+            testEntry.style.border = '2px solid yellow';
+            
+            console.log('Adding manual test entry to eventLogContent...');
+            eventLogContent.appendChild(testEntry);
+            
+            // Check where it appeared
+            console.log('Container rect:', eventLogContent.getBoundingClientRect());
+            console.log('Test entry rect:', testEntry.getBoundingClientRect());
+            
+            if (window.app && window.app.gameBoard) {
+                const gameBoard = window.app.gameBoard;
+                console.log('GameBoard event log content:', gameBoard.eventLog.content);
+                console.log('Are they the same element?', eventLogContent === gameBoard.eventLog.content);
+                
+                // Test GameBoard method
+                console.log('=== GAMEBOARD METHOD TEST ===');
+                gameBoard.addEventLogEntry('phase-change', 'Test phase change message via GameBoard', {});
+                
+                // Check final state
+                console.log('Final eventLogContent children:', eventLogContent.children);
+            } else {
+                console.warn('GameBoard not initialized yet');
+            }
+        }
+
+        // Simple direct test without GameBoard
+        function testDirectDOM() {
+            console.log('=== DIRECT DOM TEST ===');
+            const eventLogArea = document.getElementById('eventLogArea');
+            const eventLogContent = document.getElementById('eventLogContent');
+            
+            if (!eventLogContent) {
+                console.error('eventLogContent not found!');
+                return;
+            }
+            
+            console.log('Found eventLogArea:', eventLogArea);
+            console.log('Found eventLogContent:', eventLogContent);
+            console.log('eventLogContent parent:', eventLogContent.parentElement);
+            
+            // CHECK SCROLL STATE - This is key!
+            console.log('🔍 SCROLL INVESTIGATION:');
+            console.log('eventLogContent.scrollTop:', eventLogContent.scrollTop);
+            console.log('eventLogContent.scrollHeight:', eventLogContent.scrollHeight);
+            console.log('eventLogContent.clientHeight:', eventLogContent.clientHeight);
+            console.log('Is container scrolled?', eventLogContent.scrollTop > 0);
+            
+            // Check the exact position and size
+            const containerRect = eventLogContent.getBoundingClientRect();
+            const areaRect = eventLogArea.getBoundingClientRect();
+            
+            console.log('eventLogArea position:', areaRect);
+            console.log('eventLogContent position:', containerRect);
+            
+            // Add a very obvious test element
+            const directTest = document.createElement('div');
+            directTest.style.cssText = `
+                background: lime !important; 
+                color: black !important; 
+                padding: 15px !important; 
+                border: 3px solid red !important; 
+                margin: 10px !important;
+                position: relative !important;
+                z-index: 9999 !important;
+            `;
+            directTest.textContent = '⭐ DIRECT TEST - This should be INSIDE the box ⭐';
+            
+            eventLogContent.appendChild(directTest);
+            
+            // Check where it ended up
+            const testRect = directTest.getBoundingClientRect();
+            console.log('Test element position (viewport):', testRect);
+            
+            // CORRECT TEST: Check if element is within container's CLIENT AREA
+            // Not viewport coordinates, but relative to the container's scrollable area
+            const isVisibleInContainer = testRect.top >= containerRect.top && 
+                                       testRect.bottom <= containerRect.bottom &&
+                                       testRect.left >= containerRect.left && 
+                                       testRect.right <= containerRect.right;
+            
+            console.log('Is test element VISIBLE in container viewport?', isVisibleInContainer);
+            
+            // BETTER TEST: Check if element is actually contained within the DOM hierarchy
+            const isContainedInDOM = eventLogContent.contains(directTest);
+            console.log('✅ Is element CONTAINED in DOM hierarchy?', isContainedInDOM);
+            
+            // ULTIMATE TEST: Check if any elements are actually escaping by testing overflow
+            const containerStyle = window.getComputedStyle(eventLogContent);
+            console.log('Container overflow-y:', containerStyle.overflowY);
+            console.log('Container height:', containerStyle.height);
+            
+            if (eventLogContent.scrollHeight > eventLogContent.clientHeight) {
+                console.log('📝 Container is scrollable - this is NORMAL behavior');
+                console.log('Scroll height:', eventLogContent.scrollHeight);
+                console.log('Client height:', eventLogContent.clientHeight);
+                console.log('Elements with negative Y are just scrolled out of view - NOT escaped!');
+            }
+        }
+
+        // Debug function to find all event log related elements
+        function debugEventLogDOM() {
+            console.log('=== EVENT LOG DOM ANALYSIS ===');
+            
+            // Find all elements with eventLog in ID
+            const allEventLogElements = document.querySelectorAll('[id*="eventLog"]');
+            console.log('All elements with eventLog in ID:', allEventLogElements);
+            
+            // Check for duplicates
+            const eventLogContent = document.querySelectorAll('#eventLogContent');
+            console.log('Elements with ID eventLogContent:', eventLogContent.length, eventLogContent);
+            
+            const eventLogArea = document.querySelectorAll('#eventLogArea');
+            console.log('Elements with ID eventLogArea:', eventLogArea.length, eventLogArea);
+            
+            // Check current structure
+            const mainContainer = document.getElementById('eventLogContent');
+            if (mainContainer) {
+                console.log('Main container children:', mainContainer.children);
+                console.log('Main container innerHTML:', mainContainer.innerHTML);
+                
+                // Check if there are any absolutely positioned children
+                Array.from(mainContainer.children).forEach((child, index) => {
+                    const style = window.getComputedStyle(child);
+                    console.log(`Child ${index}:`, child);
+                    console.log(`  Position: ${style.position}`);
+                    console.log(`  Display: ${style.display}`);
+                    console.log(`  Location:`, child.getBoundingClientRect());
+                });
+            }
+        }
+
+        // Mulligan System Functions
+        function showMulliganModal() {
+            const modal = document.getElementById('mulliganModal');
+            if (!modal) {
+                console.error('Mulligan modal not found');
+                return;
+            }
+
+            // Get current player hand from game engine
+            if (window.app && window.app.gameEngine && window.app.gameEngine.gameState) {
+                const playerHandIds = window.app.gameEngine.gameState.players[0].zones.hand || [];
+                console.log('🃏 Player hand card IDs:', playerHandIds);
+                populateMulliganHand(playerHandIds);
+            }
+
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+            console.log('🔄 Showing mulligan modal');
+        }
+
+        function hideMulliganModal() {
+            const modal = document.getElementById('mulliganModal');
+            if (modal) {
+                modal.classList.remove('show');
+                document.body.style.overflow = '';
+                console.log('✅ Hiding mulligan modal');
+            }
+        }
+
+        function populateMulliganHand(handCardIds) {
+            const container = document.getElementById('mulliganHandCards');
+            if (!container) return;
+
+            container.innerHTML = '';
+
+            handCardIds.forEach((cardId, index) => {
+                // Look up the actual card data from the card database
+                let card = null;
+                if (window.app && window.app.gameBoard && window.app.gameBoard.cardDatabase) {
+                    card = window.app.gameBoard.cardDatabase.getCard(cardId);
+                }
+
+                const cardElement = document.createElement('div');
+                cardElement.className = 'mulligan-card';
+                
+                if (card) {
+                    // Get card image HTML using the same logic as GameBoard
+                    let cardImageHTML = '';
+                    if (window.app && window.app.gameBoard && window.app.gameBoard.getCardImageHTML) {
+                        cardImageHTML = window.app.gameBoard.getCardImageHTML(card);
+                    }
+
+                    cardElement.innerHTML = `
+                        <div class="mulligan-card-image">
+                            ${cardImageHTML || 
+                                `<div class="mulligan-card-placeholder">
+                                    <div class="placeholder-icon">🎴</div>
+                                    <div class="placeholder-text">${card.name}</div>
+                                </div>`
+                            }
+                        </div>
+                        <div class="mulligan-card-info">
+                            <div class="mulligan-card-name">${card.name}</div>
+                            <div class="mulligan-card-cost">${card.cost || '?'}</div>
+                        </div>
+                    `;
+                } else {
+                    // Fallback if card lookup fails
+                    cardElement.innerHTML = `
+                        <div class="mulligan-card-image">
+                            <div class="mulligan-card-placeholder">
+                                <div class="placeholder-icon">❓</div>
+                            </div>
+                        </div>
+                        <div class="mulligan-card-info">
+                            <div class="mulligan-card-name">Card ${cardId}</div>
+                            <div class="mulligan-card-cost">?</div>
+                        </div>
+                    `;
+                }
+                
+                container.appendChild(cardElement);
+            });
+
+            console.log(`📋 Populated mulligan preview with ${handCardIds.length} cards`);
+        }
+
+        function keepOpeningHand() {
+            console.log('✅ Player chose to keep opening hand');
+            
+            // Complete mulligan phase and proceed to active play
+            if (window.app && window.app.gameEngine) {
+                window.app.gameEngine.completeMulliganPhase();
+            }
+            
+            hideMulliganModal();
+            
+            // Add event log entry
+            if (window.app && window.app.gameBoard) {
+                window.app.gameBoard.addEventLogEntry('mulligan', 'Player kept their opening hand');
+            }
+        }
+
+        function mulliganOpeningHand() {
+            console.log('🔄 Player chose to mulligan opening hand');
+            
+            // Perform mulligan through game engine
+            if (window.app && window.app.gameEngine) {
+                window.app.gameEngine.redrawHand(0); // Player index 0
+                
+                // Complete mulligan phase and proceed to active play
+                window.app.gameEngine.completeMulliganPhase();
+            }
+            
+            hideMulliganModal();
+            
+            // Add event log entry
+            if (window.app && window.app.gameBoard) {
+                window.app.gameBoard.addEventLogEntry('mulligan', 'Player mulliganed their opening hand');
+            }
+        }
+
         // Initialize card hover tracking when DOM is ready
         document.addEventListener('DOMContentLoaded', function() {
             setupCardHoverTracking();
             setupZoneClickHandlers();
+            
+            // Event log positioning has been fixed - no automatic testing needed
         });
     </script>
 </body>

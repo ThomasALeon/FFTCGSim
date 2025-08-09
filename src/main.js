@@ -18,6 +18,7 @@ import { GameEngine } from './core/GameEngine.js';
 import { logger } from './utils/Logger.js';
 import { LocalStorage } from './utils/LocalStorage.js';
 import { notifications } from './utils/Notifications.js';
+import HotkeyHelp from './utils/HotkeyHelp.js';
 import { validate, validateCard, validateDeck } from './utils/Validation.js';
 import { security } from './utils/Security.js';
 import { accessibilitySettings } from './utils/AccessibilitySettings.js';
@@ -46,7 +47,7 @@ class AppController {
         // Core managers
         this.deckManager = new DeckManager();
         this.cardDatabase = new CardDatabase();
-        this.gameEngine = new GameEngine();
+        this.gameEngine = new GameEngine(); // Will be connected to CardDatabase after it's loaded
         this.security = security;
         this.accessibilitySettings = accessibilitySettings;
         
@@ -100,9 +101,10 @@ class AppController {
             logger.info('📋 Step 4: Loading application data...');
             await this.loadApplicationData();
             
-            // Connect deck manager to card database
-            logger.info('📋 Step 5: Connecting deck manager to card database...');
+            // Connect components to card database
+            logger.info('📋 Step 5: Connecting components to card database...');
             this.deckManager.setCardDatabase(this.cardDatabase);
+            this.gameEngine.cardDatabase = this.cardDatabase;
             
             // Set up event listeners
             logger.info('📋 Step 6: Setting up event listeners...');
@@ -825,6 +827,108 @@ window.importDeck = function() {
     }
 };
 
+// Game UI functions
+window.openDamageZoneModal = function(player) {
+    if (window.app && window.app.gameBoard) {
+        window.app.gameBoard.openDamageZoneModal(player);
+    } else {
+        notifications.warning('Game not yet initialized');
+    }
+};
+
+window.showDeckCount = function(player) {
+    if (window.app && window.app.gameBoard) {
+        const deckCount = window.app.gameBoard.getDeckCount(player);
+        const playerName = player === 'player' ? 'Your' : "Opponent's";
+        notifications.info(`${playerName} deck: ${deckCount} cards remaining`);
+    } else {
+        notifications.warning('Game not yet initialized');
+    }
+};
+
+window.coinFlip = function() {
+    const result = Math.random() < 0.5 ? 'heads' : 'tails';
+    const winner = result === 'heads' ? 'Player' : 'Opponent';
+    
+    // Show coin flip animation modal
+    if (window.app && window.app.modal) {
+        const coinFlipModal = document.createElement('div');
+        coinFlipModal.className = 'modal coin-flip-modal';
+        coinFlipModal.innerHTML = `
+            <div class="modal-content">
+                <h3>Coin Flip</h3>
+                <div class="coin-animation" data-result="${result}">
+                    <div class="coin"></div>
+                </div>
+                <p class="coin-result">Result: <strong>${result.toUpperCase()}</strong></p>
+                <p class="first-player">${winner} wins the coin flip!</p>
+                <div class="coin-flip-actions">
+                    <button onclick="chooseFirstPlayer('player')" class="btn primary">Player Goes First</button>
+                    <button onclick="chooseFirstPlayer('opponent')" class="btn secondary">Opponent Goes First</button>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(coinFlipModal);
+        coinFlipModal.classList.add('active');
+        
+        // Add coin flip animation
+        setTimeout(() => {
+            const coin = coinFlipModal.querySelector('.coin');
+            coin.classList.add('flipping');
+            coin.classList.add(result);
+        }, 100);
+    }
+    
+    return result;
+};
+
+window.chooseFirstPlayer = function(firstPlayer) {
+    // Close coin flip modal
+    const modal = document.querySelector('.coin-flip-modal');
+    if (modal) {
+        modal.remove();
+    }
+    
+    // Set first player in game engine
+    if (window.app && window.app.gameEngine) {
+        window.app.gameEngine.setFirstPlayer(firstPlayer);
+    }
+    
+    notifications.success(`${firstPlayer === 'player' ? 'Player' : 'Opponent'} will go first!`);
+};
+
+// Dynamic action button functionality
+window.handleDynamicAction = function() {
+    if (!window.app || !window.app.gameEngine) {
+        notifications.warning('Game not initialized');
+        return;
+    }
+    
+    const currentPhase = window.app.gameEngine.gameState?.currentPhase || 'main';
+    const button = document.getElementById('dynamicActionBtn');
+    
+    if (currentPhase === 'main') {
+        // Switch to end phase
+        window.app.gameEngine.switchPhase('end');
+        if (button) button.textContent = 'End Turn';
+    } else if (currentPhase === 'end') {
+        // End turn
+        window.app.gameEngine.endTurn();
+        if (button) button.textContent = 'Switch Phase';
+    } else {
+        // Fallback - advance phase
+        window.app.gameEngine.nextPhase();
+    }
+};
+
+// Deck loading function for GameBoard integration
+window.loadDeckIntoGame = function(player, deck) {
+    if (window.app && window.app.gameBoard) {
+        window.app.gameBoard.loadPlayerDeck(player, deck);
+    }
+};
+
 // Enhanced debugging functions
 window.debug = {
     app: null, // Will be set when app is created
@@ -853,6 +957,24 @@ window.debug = {
         const deck = window.debug.app?.deckManager?.createNewDeck('Debug Test Deck');
         logger.info('Created test deck:', deck);
         return deck;
+    },
+    
+    testDeckElements: () => {
+        if (window.debug.app?.deckManager?.currentDeck) {
+            const deck = window.debug.app.deckManager.currentDeck;
+            const analysis = window.debug.app?.deckBuilder?.analyzeDeckComposition(deck);
+            logger.info('Current deck analysis:', analysis);
+            
+            if (window.debug.app?.gameBoard) {
+                window.debug.app.gameBoard.loadPlayerDeck('player', deck);
+                logger.info('Loaded deck into game board');
+            }
+            
+            return analysis;
+        } else {
+            logger.warn('No current deck found');
+            return null;
+        }
     },
     
     showStats: () => {
