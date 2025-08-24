@@ -1,0 +1,26 @@
+{
+  "enabled": true,
+  "strictMode": true,
+  "criticalFunctions": [
+    "toggleFilter",
+    "validateCard", 
+    "validateDeck",
+    "sanitize",
+    "authenticate",
+    "authorize",
+    "applyDeckBuilderFilters",
+    "updateFilterButtonStates"
+  ],
+  "securityPatterns": [
+    "validate*",
+    "sanitize*",
+    "auth*",
+    "security*",
+    "permission*"
+  ],
+  "autoBlock": {
+    "functionRemovals": true,
+    "securityChanges": true,
+    "criticalFunctions": true
+  }
+}

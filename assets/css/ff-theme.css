@@ -1,0 +1,330 @@
+/**
+ * FINAL FANTASY THEME ENHANCEMENTS
+ * Advanced styling for FF-inspired UI elements
+ */
+
+/* ==================== ENHANCED MENU STYLING ==================== */
+
+/* Menu containers with FF-style borders and backgrounds */
+.menu-container,
+.nav-menu,
+.main-menu {
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(51, 65, 85, 0.9) 100%);
+    border: 2px solid transparent;
+    border-image: linear-gradient(45deg, #d4af37, transparent, #1e3a8a) 1;
+    border-radius: 12px;
+    box-shadow: 
+        0 8px 32px rgba(15, 23, 42, 0.7),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        0 0 40px rgba(212, 175, 55, 0.15);
+    backdrop-filter: blur(10px);
+    position: relative;
+}
+
+/* Glowing border effect for active elements */
+.menu-container::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(45deg, 
+        rgba(212, 175, 55, 0.3) 0%, 
+        transparent 25%, 
+        rgba(30, 58, 138, 0.3) 50%, 
+        transparent 75%, 
+        rgba(212, 175, 55, 0.3) 100%);
+    border-radius: inherit;
+    z-index: -1;
+    animation: borderPulse 3s ease-in-out infinite;
+}
+
+@keyframes borderPulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.7; }
+}
+
+/* Menu items with FF-style hover effects */
+.menu-item,
+.nav-item,
+.menu-button {
+    position: relative;
+    padding: 12px 20px;
+    margin: 4px 0;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    color: var(--text-secondary);
+    font-family: var(--font-fftcg-ui);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+}
+
+.menu-item:hover,
+.nav-item:hover,
+.menu-button:hover {
+    color: var(--text-primary);
+    background: linear-gradient(90deg, 
+        rgba(212, 175, 55, 0.1) 0%, 
+        rgba(212, 175, 55, 0.05) 50%, 
+        transparent 100%);
+    border-color: rgba(212, 175, 55, 0.3);
+    transform: translateX(5px);
+    box-shadow: 0 4px 16px rgba(212, 175, 55, 0.2);
+}
+
+/* Active menu item styling */
+.menu-item.active,
+.nav-item.active {
+    color: var(--color-primary);
+    background: linear-gradient(90deg, 
+        rgba(212, 175, 55, 0.2) 0%, 
+        rgba(212, 175, 55, 0.1) 100%);
+    border-color: var(--color-primary);
+    box-shadow: 
+        0 0 20px rgba(212, 175, 55, 0.3),
+        inset 0 1px 0 rgba(212, 175, 55, 0.2);
+}
+
+/* ==================== FF-STYLE CARDS ==================== */
+
+.ff-card,
+.info-card,
+.stats-card {
+    background: linear-gradient(135deg, 
+        rgba(30, 41, 59, 0.9) 0%, 
+        rgba(51, 65, 85, 0.8) 50%,
+        rgba(30, 41, 59, 0.9) 100%);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 16px;
+    padding: 24px;
+    backdrop-filter: blur(8px);
+    position: relative;
+    overflow: hidden;
+}
+
+.ff-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(212, 175, 55, 0.5) 50%, 
+        transparent 100%);
+}
+
+.ff-card:hover {
+    border-color: rgba(212, 175, 55, 0.4);
+    box-shadow: 0 8px 32px rgba(15, 23, 42, 0.4);
+    transform: translateY(-2px);
+}
+
+/* ==================== ENHANCED BUTTONS ==================== */
+
+.ff-button,
+.btn-ff-primary,
+.btn-ff-secondary {
+    position: relative;
+    padding: 14px 28px;
+    border: 2px solid;
+    border-radius: 8px;
+    font-family: var(--font-fftcg-ui);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-ff-primary {
+    background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);
+    border-color: #b8941f;
+    color: #0f172a;
+    box-shadow: 
+        0 4px 16px rgba(212, 175, 55, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.btn-ff-primary:hover {
+    background: linear-gradient(135deg, #f4d03f 0%, #d4af37 100%);
+    box-shadow: 
+        0 8px 24px rgba(212, 175, 55, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+.btn-ff-secondary {
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    border-color: #1e40af;
+    color: var(--text-primary);
+    box-shadow: 
+        0 4px 16px rgba(30, 58, 138, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.btn-ff-secondary:hover {
+    background: linear-gradient(135deg, #3b82f6 0%, #1e3a8a 100%);
+    box-shadow: 
+        0 8px 24px rgba(30, 58, 138, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+/* ==================== MODAL ENHANCEMENTS ==================== */
+
+.ff-modal,
+.modal.ff-styled {
+    background: linear-gradient(135deg, 
+        rgba(15, 23, 42, 0.98) 0%, 
+        rgba(30, 41, 59, 0.95) 100%);
+    border: 2px solid rgba(212, 175, 55, 0.3);
+    border-radius: 16px;
+    backdrop-filter: blur(16px);
+    box-shadow: 
+        0 20px 60px rgba(15, 23, 42, 0.8),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.ff-modal .modal-header {
+    border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+    background: linear-gradient(90deg, 
+        rgba(212, 175, 55, 0.1) 0%, 
+        transparent 100%);
+}
+
+.ff-modal .modal-title {
+    font-family: var(--font-fftcg-title);
+    color: var(--color-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+}
+
+/* ==================== LOADING SCREEN ENHANCEMENTS ==================== */
+
+.loading-screen.ff-styled {
+    background: linear-gradient(135deg, 
+        #0f172a 0%, 
+        #1e293b 50%, 
+        #334155 100%);
+    color: var(--text-primary);
+}
+
+.loading-logo.ff-styled {
+    color: var(--color-primary);
+    text-shadow: 0 0 20px rgba(212, 175, 55, 0.8);
+    animation: logoGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes logoGlow {
+    0% { 
+        text-shadow: 0 0 20px rgba(212, 175, 55, 0.8);
+        transform: scale(1);
+    }
+    100% { 
+        text-shadow: 0 0 30px rgba(212, 175, 55, 1), 0 0 40px rgba(212, 175, 55, 0.5);
+        transform: scale(1.05);
+    }
+}
+
+.loading-progress.ff-styled {
+    background: linear-gradient(90deg, 
+        var(--color-primary) 0%, 
+        var(--color-primary-light) 50%, 
+        var(--color-primary) 100%);
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+    animation: progressGlow 1.5s ease-in-out infinite;
+}
+
+@keyframes progressGlow {
+    0%, 100% { box-shadow: 0 0 20px rgba(212, 175, 55, 0.6); }
+    50% { box-shadow: 0 0 30px rgba(212, 175, 55, 0.9); }
+}
+
+/* ==================== TEXT EFFECTS ==================== */
+
+.ff-title-large {
+    font-family: var(--font-fftcg-title);
+    font-size: 3rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    background: linear-gradient(45deg, 
+        var(--color-primary) 0%, 
+        var(--color-primary-light) 50%, 
+        var(--color-primary) 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
+    animation: titleShimmer 3s ease-in-out infinite;
+}
+
+@keyframes titleShimmer {
+    0%, 100% { 
+        background-position: 0% 50%;
+        text-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
+    }
+    50% { 
+        background-position: 100% 50%;
+        text-shadow: 0 0 40px rgba(212, 175, 55, 0.8);
+    }
+}
+
+/* ==================== RESPONSIVE ADJUSTMENTS ==================== */
+
+@media (max-width: 768px) {
+    .ff-button,
+    .btn-ff-primary,
+    .btn-ff-secondary {
+        padding: 12px 24px;
+        font-size: 0.9rem;
+        letter-spacing: 0.03em;
+    }
+    
+    .ff-title-large {
+        font-size: 2rem;
+        letter-spacing: 0.05em;
+    }
+    
+    .menu-container {
+        border-radius: 8px;
+        padding: 16px;
+    }
+    
+    .ff-card {
+        padding: 16px;
+        border-radius: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .ff-button,
+    .btn-ff-primary,
+    .btn-ff-secondary {
+        padding: 10px 20px;
+        font-size: 0.85rem;
+    }
+    
+    .ff-title-large {
+        font-size: 1.5rem;
+    }
+    
+    .menu-item,
+    .nav-item,
+    .menu-button {
+        padding: 10px 16px;
+        font-size: 0.9rem;
+    }
+}

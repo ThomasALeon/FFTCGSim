@@ -33,7 +33,7 @@
 .hotkey-help-content {
     position: relative;
     background: linear-gradient(145deg, #1a1a2e 0%, #2a2a3e 100%);
-    border: 2px solid var(--color-primary, #ffd700);
+    border: 2px solid var(--color-primary);
     border-radius: 12px;
     box-shadow: 
         0 20px 40px rgba(0, 0, 0, 0.8),
@@ -43,7 +43,7 @@
     width: 90vw;
     display: flex;
     flex-direction: column;
-    color: var(--color-text, #fff);
+    color: var(--text-primary);
     animation: hotkeyModalSlideIn 0.3s ease-out;
 }
 
@@ -71,25 +71,25 @@
     font-size: 1.5rem;
     font-weight: 700;
     margin: 0;
-    color: var(--color-primary, #ffd700);
+    color: var(--color-primary);
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .hotkey-help-context {
     font-size: 0.9rem;
-    color: var(--color-text-secondary, #ccc);
+    color: var(--text-secondary);
     font-weight: 500;
 }
 
 .hotkey-help-context span {
-    color: var(--color-primary, #ffd700);
+    color: var(--color-primary);
     font-weight: 600;
 }
 
 .hotkey-help-close {
     background: none;
     border: none;
-    color: var(--color-text-secondary, #ccc);
+    color: var(--text-secondary);
     font-size: 1.5rem;
     cursor: pointer;
     padding: 4px 8px;
@@ -100,7 +100,7 @@
 
 .hotkey-help-close:hover {
     background: rgba(255, 255, 255, 0.1);
-    color: var(--color-text, #fff);
+    color: var(--text-primary);
     transform: scale(1.1);
 }
 
@@ -122,7 +122,7 @@
 .hotkey-section-title {
     font-size: 1.1rem;
     font-weight: 600;
-    color: var(--color-primary, #ffd700);
+    color: var(--color-primary);
     margin: 0 0 12px 0;
     padding-bottom: 6px;
     border-bottom: 1px solid rgba(255, 215, 0, 0.2);
@@ -157,7 +157,7 @@
     display: flex;
     align-items: center;
     gap: 6px;
-    font-family: 'Courier New', monospace;
+    font-family: var(--font-fftcg-mono);
 }
 
 .hotkey-keys kbd {
@@ -171,7 +171,7 @@
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
     font-size: 0.85rem;
     font-weight: 600;
-    color: var(--color-text, #fff);
+    color: var(--text-primary);
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
     min-width: 24px;
     text-align: center;
@@ -182,7 +182,7 @@
     align-items: center;
     gap: 8px;
     font-size: 0.95rem;
-    color: var(--color-text-secondary, #ccc);
+    color: var(--text-secondary);
 }
 
 .hotkey-icon {
@@ -221,7 +221,7 @@
     border: 1px solid rgba(255, 215, 0, 0.3);
     border-radius: 3px;
     font-size: 0.8rem;
-    color: var(--color-primary, #ffd700);
+    color: var(--color-primary);
     font-weight: 600;
 }
 
@@ -261,7 +261,7 @@
 @media (prefers-color-scheme: dark) {
     .hotkey-help-content {
         background: linear-gradient(145deg, #0a0a1a 0%, #1a1a2a 100%);
-        border-color: var(--color-primary, #ffd700);
+        border-color: var(--color-primary);
     }
     
     .hotkey-keys kbd {

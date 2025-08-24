@@ -1,0 +1,335 @@
+/**
+ * CLASSIC FINAL FANTASY MENU
+ * Elegant, refined menu design with traditional FF aesthetics
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Spectral:wght@400;700&display=swap');
+
+/* Base Styles */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+}
+
+#homeView.view.active {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-family: 'Spectral', 'Times New Roman', serif !important;
+    color: white !important;
+}
+
+/* Override app-container hidden state for Classic FF menu */
+.app-container.hidden #homeView.active {
+    display: flex !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    z-index: 9999 !important;
+}
+
+/* Force visibility for debugging - temporary */
+body #homeView.view.active {
+    display: flex !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    z-index: 9999 !important;
+    background: rgba(0, 0, 0, 0.1) !important; /* Slight background for debugging */
+}
+
+body #homeView.view.active .ff-menu-container {
+    display: block !important;
+    opacity: 1 !important;
+    transform: none !important;
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important; /* Subtle debug border */
+}
+
+/* Starfield Canvas */
+#starfield {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    background: #000000;
+}
+
+/* Menu Container */
+.ff-menu-container {
+    text-align: left;
+    width: 700px;
+    max-width: 90vw;
+    z-index: 10;
+    position: relative;
+    opacity: 0;
+    transform: translateY(20px);
+    color: white;
+    display: block;
+    animation: ff-menu-fade-in 500ms ease-out 300ms forwards;
+}
+
+/* Game Title */
+.ff-game-title {
+    font-family: 'Spectral', 'Times New Roman', serif;
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 40px;
+    color: #E0E0E0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    text-transform: uppercase;
+    line-height: 1.2;
+}
+
+.ff-subtitle {
+    font-size: 0.6em;
+    letter-spacing: 1px;
+    color: #C0C0C0;
+    font-weight: 400;
+    display: block;
+    margin-top: 0.2em;
+}
+
+/* Menu List */
+.ff-menu-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.ff-menu-item {
+    font-family: 'Spectral', 'Times New Roman', serif;
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    font-weight: 400;
+    padding: 12px 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: all 0.2s ease;
+    color: #FFFFFF;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    position: relative;
+    border: 2px solid transparent;
+    border-radius: 4px;
+    padding-left: 8px;
+    margin: 2px 0;
+}
+
+/* Pointer Icon */
+.ff-pointer {
+    visibility: hidden;
+    margin-right: 12px;
+    color: #80CFFF;
+    font-size: 1.2em;
+    animation: ff-pointer-bounce 1s infinite ease-in-out;
+    text-shadow: 0 0 8px rgba(128, 207, 255, 0.6);
+    font-family: monospace;
+    font-weight: bold;
+}
+
+.ff-menu-item.selected .ff-pointer,
+.ff-menu-item:hover .ff-pointer {
+    visibility: visible;
+}
+
+/* Pointer Bounce Animation */
+@keyframes ff-pointer-bounce {
+    0%, 100% { 
+        transform: translateX(0) translateY(0); 
+        opacity: 1;
+    }
+    25% { 
+        transform: translateX(2px) translateY(-1px); 
+        opacity: 0.9;
+    }
+    50% { 
+        transform: translateX(4px) translateY(-2px); 
+        opacity: 0.8;
+    }
+    75% { 
+        transform: translateX(2px) translateY(-1px); 
+        opacity: 0.9;
+    }
+}
+
+/* Menu Item Hover Effects */
+.ff-menu-item:hover,
+.ff-menu-item.selected {
+    color: #80CFFF;
+    text-shadow: 0 0 8px rgba(128, 207, 255, 0.5);
+    background: linear-gradient(90deg, 
+        rgba(128, 207, 255, 0.05) 0%, 
+        rgba(128, 207, 255, 0.02) 50%,
+        transparent 100%);
+    border-color: rgba(128, 207, 255, 0.2);
+    transform: translateX(4px);
+}
+
+.ff-menu-item:focus {
+    outline: none;
+    color: #80CFFF;
+    text-shadow: 0 0 8px rgba(128, 207, 255, 0.5);
+}
+
+/* Status Text */
+.ff-status {
+    font-size: 0.75em;
+    color: #C0C0C0;
+    margin-left: auto;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    text-transform: none;
+    opacity: 0.8;
+    transition: all 0.2s ease;
+}
+
+.ff-menu-item:hover .ff-status,
+.ff-menu-item.selected .ff-status {
+    color: rgba(128, 207, 255, 0.8);
+    opacity: 1;
+}
+
+/* Footer */
+.ff-footer {
+    font-family: 'Spectral', 'Times New Roman', serif;
+    font-size: clamp(0.7rem, 1.5vw, 0.8rem);
+    font-weight: 400;
+    margin-top: 50px;
+    color: #808080;
+    text-align: center;
+    letter-spacing: 0.5px;
+    opacity: 0.6;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+/* Menu Fade In Animation */
+@keyframes ff-menu-fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .ff-menu-container {
+        width: 90vw;
+        text-align: center;
+    }
+    
+    .ff-game-title {
+        font-size: 2rem;
+        margin-bottom: 30px;
+        letter-spacing: 1px;
+    }
+    
+    .ff-menu-item {
+        font-size: 1rem;
+        padding: 10px 0;
+        justify-content: center;
+        text-align: center;
+    }
+    
+    .ff-status {
+        display: none; /* Hide status on mobile for cleaner look */
+    }
+    
+    .ff-pointer {
+        margin-right: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .ff-menu-container {
+        width: 95vw;
+    }
+    
+    .ff-game-title {
+        font-size: 1.6rem;
+        line-height: 1.1;
+    }
+    
+    .ff-menu-item {
+        font-size: 0.9rem;
+        padding: 8px 0;
+        letter-spacing: 0.5px;
+    }
+    
+    .ff-footer {
+        font-size: 0.7rem;
+        margin-top: 30px;
+    }
+}
+
+/* High Contrast Support */
+@media (prefers-contrast: high) {
+    .ff-menu-item {
+        color: #FFFFFF;
+    }
+    
+    .ff-menu-item:hover,
+    .ff-menu-item.selected {
+        color: #FFFF00;
+        background: rgba(255, 255, 0, 0.1);
+    }
+    
+    .ff-pointer {
+        color: #FFFF00;
+    }
+    
+    .ff-status {
+        color: #FFFFFF;
+    }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+    .ff-pointer {
+        animation: none;
+    }
+    
+    .ff-menu-container {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+    
+    .ff-menu-item {
+        transition: none;
+    }
+}
+
+/* Print Styles */
+@media print {
+    #starfield,
+    .ff-menu-container {
+        display: none;
+    }
+}
+
+/* Dark vignette effect around edges */
+#homeView.active::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.3) 80%);
+    pointer-events: none;
+    z-index: 1;
+}

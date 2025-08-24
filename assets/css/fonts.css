@@ -1,0 +1,205 @@
+/**
+ * FFTCG Typography System
+ * Based on Final Fantasy Trading Card Game official fonts
+ */
+
+/* Import web fonts that closely match FFTCG typography */
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+
+/* Fallback font stacks for FFTCG typography */
+:root {
+    /* Primary font for card names, headers, and logos */
+    --font-fftcg-title: 'Nunito Sans', 'Avenir Next', 'Helvetica Neue', 'Arial', sans-serif;
+    
+    /* Body text font for rules text and descriptions */
+    --font-fftcg-body: 'Crimson Text', 'Georgia', 'Times New Roman', serif;
+    
+    /* Numbers and stats font (costs, power, etc.) */
+    --font-fftcg-numbers: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+    
+    /* UI elements and buttons */
+    --font-fftcg-ui: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    
+    /* Monospace for debug/technical text */
+    --font-fftcg-mono: 'SF Mono', 'Monaco', 'Consolas', monospace;
+}
+
+/* Base typography classes */
+.fftcg-title {
+    font-family: var(--font-fftcg-title);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+}
+
+.fftcg-subtitle {
+    font-family: var(--font-fftcg-title);
+    font-weight: 400;
+    letter-spacing: 0.01em;
+}
+
+.fftcg-body {
+    font-family: var(--font-fftcg-body);
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+.fftcg-numbers {
+    font-family: var(--font-fftcg-numbers);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+.fftcg-ui {
+    font-family: var(--font-fftcg-ui);
+    font-weight: 400;
+}
+
+/* Specific FFTCG element typography */
+
+/* Card names should use title font */
+.card-name,
+.card-preview-name,
+.payment-card-name {
+    font-family: var(--font-fftcg-title) !important;
+    font-weight: 600;
+    text-transform: capitalize;
+    letter-spacing: 0.015em;
+}
+
+/* Card text should use body font */
+.card-text,
+.card-text-content,
+.card-preview-info .card-text-content {
+    font-family: var(--font-fftcg-body) !important;
+    font-weight: 400;
+    line-height: 1.6;
+}
+
+/* Costs, power, and numbers */
+.card-cost,
+.card-power,
+.cp-value,
+.damage-count,
+.life-counter,
+.payment-cost-display,
+.payment-stat-value {
+    font-family: var(--font-fftcg-numbers) !important;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Headers and titles */
+.game-title,
+.modal-title,
+.section-title,
+.zone-header,
+.payment-mode-header h2 {
+    font-family: var(--font-fftcg-title) !important;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* UI buttons and labels */
+.btn,
+.button,
+.floating-action-btn,
+.dynamic-action-btn,
+.complete-btn,
+.cancel-btn,
+.context-menu-item {
+    font-family: var(--font-fftcg-ui) !important;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+}
+
+/* Phase and turn indicators */
+.turn-phase,
+.current-player,
+.phase-indicator {
+    font-family: var(--font-fftcg-ui) !important;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+/* Element names and types */
+.element-name,
+.card-element,
+.card-type,
+.payment-element {
+    font-family: var(--font-fftcg-ui) !important;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+    font-size: 0.85em;
+}
+
+/* Stats and counters */
+.counter,
+.stat-value,
+.deck-count,
+.hand-count {
+    font-family: var(--font-fftcg-numbers) !important;
+    font-weight: 700;
+    font-size: 1.1em;
+}
+
+/* Special FFTCG styling for logos and branding */
+.fftcg-logo {
+    font-family: var(--font-fftcg-title);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 2em;
+    background: linear-gradient(45deg, #d4af37, #fff, #d4af37);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+}
+
+/* Responsive font scaling */
+@media (max-width: 768px) {
+    .fftcg-title {
+        font-size: 0.9em;
+        letter-spacing: 0.015em;
+    }
+    
+    .fftcg-body {
+        font-size: 0.95em;
+        line-height: 1.4;
+    }
+    
+    .fftcg-numbers {
+        font-size: 0.95em;
+    }
+}
+
+@media (max-width: 480px) {
+    .fftcg-title {
+        font-size: 0.85em;
+        letter-spacing: 0.01em;
+    }
+    
+    .fftcg-body {
+        font-size: 0.9em;
+        line-height: 1.3;
+    }
+    
+    .fftcg-numbers {
+        font-size: 0.9em;
+    }
+}
+
+/* High DPI display optimizations */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .fftcg-title,
+    .fftcg-numbers {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+}

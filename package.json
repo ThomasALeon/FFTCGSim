@@ -8,13 +8,23 @@
     "start": "python3 -m http.server 8080",
     "dev": "python3 -m http.server 8080",
     "test": "node test-runner.js",
-    "serve": "python3 -m http.server 8080"
+    "serve": "python3 -m http.server 8080",
+    "safety:analyze": "node tools/safe-refactor.sh",
+    "safety:security": "node tools/security-validator.js .",
+    "safety:test": "echo \"Run: new FFTCGTestSuite().runTests() in browser console\"",
+    "safety:install": "./tools/install-safety-hooks.sh"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/ThomasALeon/FFTCGSim"
   },
-  "keywords": ["final-fantasy", "tcg", "card-game", "simulator", "web-app"],
+  "keywords": [
+    "final-fantasy",
+    "tcg",
+    "card-game",
+    "simulator",
+    "web-app"
+  ],
   "author": "Thomas Leon",
   "license": "MIT",
   "engines": {

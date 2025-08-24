@@ -1,0 +1,407 @@
+/**
+ * CLASSIC FINAL FANTASY MENU
+ * Elegant, refined menu design with traditional FF aesthetics
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Spectral:wght@400;700&display=swap');
+
+/* Main Menu Container */
+.ffxv-main-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Animated Background Layers */
+.ffxv-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.ffxv-bg-layer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+/* Starfield Animation */
+.ffxv-bg-stars {
+    background: 
+        radial-gradient(2px 2px at 20px 30px, rgba(255, 255, 255, 0.3), transparent),
+        radial-gradient(2px 2px at 40px 70px, rgba(255, 255, 255, 0.2), transparent),
+        radial-gradient(1px 1px at 90px 40px, rgba(255, 255, 255, 0.4), transparent),
+        radial-gradient(1px 1px at 130px 80px, rgba(255, 255, 255, 0.2), transparent),
+        radial-gradient(2px 2px at 160px 30px, rgba(255, 255, 255, 0.3), transparent);
+    background-repeat: repeat;
+    background-size: 200px 100px;
+    animation: ffxv-stars-drift 60s linear infinite;
+}
+
+/* Mist/Cloud Layer */
+.ffxv-bg-mist {
+    background: 
+        linear-gradient(45deg, 
+            rgba(212, 175, 55, 0.05) 0%, 
+            transparent 30%, 
+            rgba(30, 58, 138, 0.03) 60%, 
+            transparent 100%);
+    animation: ffxv-mist-flow 40s ease-in-out infinite;
+}
+
+/* Main Background Gradient */
+.ffxv-bg-gradient {
+    background: 
+        radial-gradient(ellipse at center top, rgba(30, 58, 138, 0.2) 0%, transparent 50%),
+        linear-gradient(180deg, 
+            rgba(15, 23, 42, 0.9) 0%, 
+            rgba(30, 41, 59, 0.95) 40%, 
+            rgba(51, 65, 85, 0.98) 70%, 
+            rgba(15, 23, 42, 1) 100%);
+}
+
+/* Logo Container */
+.ffxv-logo-container {
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    z-index: 10;
+    opacity: 0.85;
+}
+
+.ffxv-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.ffxv-title {
+    font-family: var(--font-fftcg-title);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    background: linear-gradient(135deg, 
+        #d4af37 0%, 
+        #f4d03f 25%, 
+        #ffffff 50%, 
+        #f4d03f 75%, 
+        #d4af37 100%);
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: ffxv-title-shimmer 4s ease-in-out infinite;
+    text-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
+    margin: 0;
+}
+
+.ffxv-subtitle {
+    font-family: var(--font-fftcg-body);
+    font-size: clamp(1rem, 2.5vw, 1.8rem);
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(241, 245, 249, 0.9);
+    margin: 0;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+}
+
+.ffxv-title-ornament {
+    font-family: var(--font-fftcg-ui);
+    font-size: clamp(0.8rem, 1.8vw, 1.2rem);
+    font-weight: 400;
+    letter-spacing: 0.3em;
+    color: rgba(212, 175, 55, 0.8);
+    margin-top: 0.5rem;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+/* Menu Container */
+.ffxv-menu-container {
+    position: absolute;
+    right: 8%;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 15;
+}
+
+.ffxv-menu {
+    position: relative;
+}
+
+/* Menu Cursor/Hand */
+.ffxv-cursor {
+    position: absolute;
+    left: -2.5rem;
+    top: 0;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+    transform: translateX(-10px);
+    z-index: 20;
+}
+
+.ffxv-cursor.active {
+    opacity: 1;
+    transform: translateX(0);
+    animation: ffxv-cursor-pulse 2s ease-in-out infinite;
+}
+
+.ffxv-hand-sprite {
+    font-size: 1.2rem;
+    filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.6));
+}
+
+/* Menu List */
+.ffxv-menu-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* Menu Items */
+.ffxv-menu-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1rem 2rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    border-left: 3px solid transparent;
+    min-width: 280px;
+}
+
+.ffxv-menu-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        rgba(212, 175, 55, 0.1) 0%, 
+        rgba(212, 175, 55, 0.05) 70%, 
+        transparent 100%);
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ffxv-menu-item:hover::before,
+.ffxv-menu-item:focus::before,
+.ffxv-menu-item.selected::before {
+    width: 100%;
+}
+
+.ffxv-menu-item:hover,
+.ffxv-menu-item:focus,
+.ffxv-menu-item.selected {
+    border-left-color: var(--color-primary);
+    transform: translateX(8px);
+    background: rgba(212, 175, 55, 0.03);
+}
+
+.ffxv-menu-text {
+    font-family: var(--font-fftcg-title);
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(241, 245, 249, 0.9);
+    transition: all 0.3s ease;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+    position: relative;
+    z-index: 2;
+}
+
+.ffxv-menu-item:hover .ffxv-menu-text,
+.ffxv-menu-item:focus .ffxv-menu-text,
+.ffxv-menu-item.selected .ffxv-menu-text {
+    color: var(--color-primary);
+    text-shadow: 
+        0 2px 8px rgba(0, 0, 0, 0.8),
+        0 0 20px rgba(212, 175, 55, 0.4);
+    transform: translateY(-2px);
+}
+
+.ffxv-menu-desc {
+    font-family: var(--font-fftcg-body);
+    font-size: clamp(0.7rem, 1.2vw, 0.9rem);
+    font-weight: 400;
+    color: rgba(203, 213, 225, 0.6);
+    margin-top: 0.3rem;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 2;
+}
+
+.ffxv-menu-item:hover .ffxv-menu-desc,
+.ffxv-menu-item:focus .ffxv-menu-desc,
+.ffxv-menu-item.selected .ffxv-menu-desc {
+    color: rgba(212, 175, 55, 0.8);
+}
+
+/* Footer */
+.ffxv-footer {
+    position: absolute;
+    bottom: 3%;
+    left: 5%;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.ffxv-version,
+.ffxv-copyright {
+    font-family: var(--font-fftcg-ui);
+    font-size: 0.75rem;
+    color: rgba(148, 163, 184, 0.6);
+    margin: 0;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+/* Animations */
+@keyframes ffxv-stars-drift {
+    0% { transform: translateX(0) translateY(0); }
+    100% { transform: translateX(-200px) translateY(-100px); }
+}
+
+@keyframes ffxv-mist-flow {
+    0%, 100% { transform: translateX(0) scale(1); opacity: 1; }
+    50% { transform: translateX(30px) scale(1.05); opacity: 0.7; }
+}
+
+@keyframes ffxv-title-shimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+@keyframes ffxv-cursor-pulse {
+    0%, 100% { transform: translateX(0) scale(1); }
+    50% { transform: translateX(3px) scale(1.1); }
+}
+
+/* Focus and Accessibility */
+.ffxv-menu-item:focus {
+    outline: none;
+}
+
+.ffxv-menu-item:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .ffxv-logo-container {
+        top: 12%;
+    }
+    
+    .ffxv-menu-container {
+        right: 5%;
+    }
+    
+    .ffxv-menu-item {
+        min-width: 240px;
+        padding: 0.8rem 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .ffxv-logo-container {
+        top: 10%;
+    }
+    
+    .ffxv-menu-container {
+        right: 50%;
+        transform: translateX(50%) translateY(-50%);
+        text-align: center;
+    }
+    
+    .ffxv-menu-item {
+        align-items: center;
+        min-width: 200px;
+    }
+    
+    .ffxv-cursor {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .ffxv-cursor.active {
+        transform: translateX(-50%) translateY(-3rem);
+    }
+}
+
+@media (max-width: 480px) {
+    .ffxv-logo-container {
+        top: 8%;
+    }
+    
+    .ffxv-menu-item {
+        padding: 0.6rem 1rem;
+        min-width: 180px;
+    }
+    
+    .ffxv-footer {
+        bottom: 2%;
+        left: 3%;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .ffxv-menu-text {
+        color: #ffffff;
+    }
+    
+    .ffxv-menu-item:hover .ffxv-menu-text,
+    .ffxv-menu-item.selected .ffxv-menu-text {
+        color: #ffff00;
+    }
+    
+    .ffxv-menu-desc {
+        color: #cccccc;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .ffxv-bg-stars,
+    .ffxv-bg-mist,
+    .ffxv-title,
+    .ffxv-cursor {
+        animation: none;
+    }
+    
+    .ffxv-menu-item,
+    .ffxv-menu-text,
+    .ffxv-menu-desc,
+    .ffxv-cursor {
+        transition: none;
+    }
+}

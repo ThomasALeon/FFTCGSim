@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Card Browser — FFTCG Mockup</title>
+<link rel="stylesheet" href="ff_style.css">
+</head>
+<body>
+<canvas id="starfield"></canvas>
+<div class="container">
+  <header class="title-block"><h1>CARD BROWSER</h1></header>
+  <main class="panel-layout">
+    <aside class="panel filters">
+      <h3>FILTERS</h3>
+      <label>Element</label><select><option>All</option><option>Fire</option><option>Ice</option></select>
+      <label>Cost</label><input type="range" min="0" max="8" value="3" />
+      <label>Type</label><select><option>All</option><option>Forward</option><option>Backup</option></select>
+      <div style="height:20px"></div><button class="ff-button">CLEAR FILTERS</button>
+    </aside>
+    <section class="panel grid-panel"><div class="card-grid" id="cardGrid"><div class="card-thumb"><div class="thumb-img">1</div><div class="thumb-title">Card 1</div></div><div class="card-thumb"><div class="thumb-img">2</div><div class="thumb-title">Card 2</div></div><div class="card-thumb"><div class="thumb-img">3</div><div class="thumb-title">Card 3</div></div><div class="card-thumb"><div class="thumb-img">4</div><div class="thumb-title">Card 4</div></div><div class="card-thumb"><div class="thumb-img">5</div><div class="thumb-title">Card 5</div></div><div class="card-thumb"><div class="thumb-img">6</div><div class="thumb-title">Card 6</div></div><div class="card-thumb"><div class="thumb-img">7</div><div class="thumb-title">Card 7</div></div><div class="card-thumb"><div class="thumb-img">8</div><div class="thumb-title">Card 8</div></div><div class="card-thumb"><div class="thumb-img">9</div><div class="thumb-title">Card 9</div></div><div class="card-thumb"><div class="thumb-img">10</div><div class="thumb-title">Card 10</div></div><div class="card-thumb"><div class="thumb-img">11</div><div class="thumb-title">Card 11</div></div><div class="card-thumb"><div class="thumb-img">12</div><div class="thumb-title">Card 12</div></div><div class="card-thumb"><div class="thumb-img">13</div><div class="thumb-title">Card 13</div></div><div class="card-thumb"><div class="thumb-img">14</div><div class="thumb-title">Card 14</div></div><div class="card-thumb"><div class="thumb-img">15</div><div class="thumb-title">Card 15</div></div><div class="card-thumb"><div class="thumb-img">16</div><div class="thumb-title">Card 16</div></div><div class="card-thumb"><div class="thumb-img">17</div><div class="thumb-title">Card 17</div></div><div class="card-thumb"><div class="thumb-img">18</div><div class="thumb-title">Card 18</div></div><div class="card-thumb"><div class="thumb-img">19</div><div class="thumb-title">Card 19</div></div><div class="card-thumb"><div class="thumb-img">20</div><div class="thumb-title">Card 20</div></div><div class="card-thumb"><div class="thumb-img">21</div><div class="thumb-title">Card 21</div></div><div class="card-thumb"><div class="thumb-img">22</div><div class="thumb-title">Card 22</div></div><div class="card-thumb"><div class="thumb-img">23</div><div class="thumb-title">Card 23</div></div><div class="card-thumb"><div class="thumb-img">24</div><div class="thumb-title">Card 24</div></div><div class="card-thumb"><div class="thumb-img">25</div><div class="thumb-title">Card 25</div></div><div class="card-thumb"><div class="thumb-img">26</div><div class="thumb-title">Card 26</div></div><div class="card-thumb"><div class="thumb-img">27</div><div class="thumb-title">Card 27</div></div><div class="card-thumb"><div class="thumb-img">28</div><div class="thumb-title">Card 28</div></div><div class="card-thumb"><div class="thumb-img">29</div><div class="thumb-title">Card 29</div></div><div class="card-thumb"><div class="thumb-img">30</div><div class="thumb-title">Card 30</div></div><div class="card-thumb"><div class="thumb-img">31</div><div class="thumb-title">Card 31</div></div><div class="card-thumb"><div class="thumb-img">32</div><div class="thumb-title">Card 32</div></div><div class="card-thumb"><div class="thumb-img">33</div><div class="thumb-title">Card 33</div></div><div class="card-thumb"><div class="thumb-img">34</div><div class="thumb-title">Card 34</div></div><div class="card-thumb"><div class="thumb-img">35</div><div class="thumb-title">Card 35</div></div><div class="card-thumb"><div class="thumb-img">36</div><div class="thumb-title">Card 36</div></div></div></section>
+    <aside class="panel deck-view">
+      <h3>DECK (40 / 40)</h3>
+      <div class="deck-list" id="deckView"><div class="deck-row">Ifrit x1</div><div class="deck-row">Shiva x2</div><div class="deck-row">Cloud x3</div></div>
+      <div class="deck-actions"><button class="ff-button">SAVE DECK</button><button class="ff-button alt">EXIT</button></div>
+    </aside>
+  </main>
+  <footer class="footer">Browsing 3,800+ cards • Use filters to narrow</footer>
+</div>
+<script src="starfield.js"></script>
+</body>
+</html>

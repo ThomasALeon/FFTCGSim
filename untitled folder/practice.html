@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Practice vs AI — FFTCG Mockup</title>
+<link rel="stylesheet" href="ff_style.css">
+</head>
+<body>
+<canvas id="starfield"></canvas>
+<div class="container">
+  <header class="title-block">
+    <h1>FINAL FANTASY<br><span class="subtitle">TRADING CARD GAME</span></h1>
+  </header>
+  <main class="panel-layout">
+    <section class="panel left-panel">
+      <h2>SELECT DECK</h2>
+      <ul class="list" id="deckList">
+        <li class="item selected" tabindex="0"><span class="pointer">▶</span> Firestarter — 40 cards</li>
+        <li class="item" tabindex="0"><span class="pointer">▶</span> Ice Control — 40 cards</li>
+        <li class="item" tabindex="0"><span class="pointer">▶</span> Wind Aggro — 40 cards</li>
+      </ul>
+    </section>
+    <section class="panel right-panel">
+      <h2>AI DIFFICULTY</h2>
+      <ul class="list" id="aiList">
+        <li class="item selected" tabindex="0"><span class="pointer">▶</span> Easy</li>
+        <li class="item" tabindex="0"><span class="pointer">▶</span> Normal</li>
+        <li class="item" tabindex="0"><span class="pointer">▶</span> Hard</li>
+      </ul>
+      <div class="action-row">
+        <button id="startBtn" class="ff-button">START GAME</button>
+        <button id="backBtn" class="ff-button alt">BACK</button>
+      </div>
+    </section>
+  </main>
+  <footer class="footer">Practice vs AI • Simulator v2.0</footer>
+</div>
+<script src="starfield.js"></script>
+<script>
+document.addEventListener('keydown', (e)=>{
+  const deckItems = Array.from(document.querySelectorAll('#deckList .item'));
+  if(e.key === 'ArrowDown' || e.key === 'j'){
+    let sel = document.querySelector('#deckList .item.selected');
+    let idx = deckItems.indexOf(sel);
+    if(idx < deckItems.length-1){ sel.classList.remove('selected'); deckItems[idx+1].classList.add('selected');}
+  }
+  if(e.key === 'ArrowUp' || e.key === 'k'){
+    let sel = document.querySelector('#deckList .item.selected');
+    let idx = deckItems.indexOf(sel);
+    if(idx>0){ sel.classList.remove('selected'); deckItems[idx-1].classList.add('selected');}
+  }
+  if(e.key === 'Enter'){ document.getElementById('startBtn').click(); }
+});
+document.getElementById('startBtn').addEventListener('click', ()=>{ alert('Starting practice match vs selected AI... (mockup)'); });
+</script>
+</body>
+</html>

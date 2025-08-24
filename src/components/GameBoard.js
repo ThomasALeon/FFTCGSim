@@ -102,6 +102,32 @@ export class GameBoard {
         this.setupEventLog();
         
         logger.info('🎮 Game Board initialized');
+        
+        // Clean up any leftover payment mode elements
+        this.cleanupPaymentModeElements();
+    }
+
+    /**
+     * Clean up any leftover payment mode elements from previous sessions
+     */
+    cleanupPaymentModeElements() {
+        // Remove any payment mode modals that might still exist
+        const paymentModal = document.getElementById('paymentModeModal');
+        if (paymentModal) {
+            paymentModal.remove();
+            console.log('🧹 Removed leftover payment mode modal');
+        }
+        
+        // Remove payment-related CSS classes from cards
+        const paymentCards = document.querySelectorAll('.payment-available, .payment-selected');
+        paymentCards.forEach(card => {
+            card.classList.remove('payment-available', 'payment-selected');
+        });
+        
+        // Remove modal-open class from body
+        document.body.classList.remove('modal-open');
+        
+        console.log('🧹 Cleaned up payment mode elements');
     }
 
     /**
@@ -754,8 +780,8 @@ export class GameBoard {
                 </div>
                 ${card.text ? `
                     <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #444;">
-                        <div style="font-size: 0.8rem; line-height: 1.4; color: var(--color-text-primary, #fff);">
-                            ${card.text}
+                        <div class="card-text-content" style="font-size: 0.8rem; line-height: 1.5; color: var(--color-text-primary, #fff);">
+                            ${this.sanitizeCardText(card.text)}
                         </div>
                     </div>
                 ` : ''}
@@ -867,6 +893,39 @@ export class GameBoard {
     capitalizeFirst(str) {
         if (!str) return '';
         return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    /**
+     * Sanitize HTML tags from card text and convert to clean HTML
+     */
+    sanitizeCardText(text) {
+        if (!text) return '';
+        
+        // Convert HTML tags to clean HTML format
+        let cleanText = text
+            .replace(/<br\s*\/?>/gi, '<br>') // Normalize <br> tags
+            .replace(/<\/p>/gi, '<br><br>') // Convert </p> to double line breaks
+            .replace(/<p[^>]*>/gi, '') // Remove <p> tags
+            .replace(/<b[^>]*>(.*?)<\/b>/gi, '<strong>$1</strong>') // Convert <b> to <strong>
+            .replace(/<i[^>]*>(.*?)<\/i>/gi, '<em>$1</em>') // Convert <i> to <em>
+            .replace(/<strong[^>]*>(.*?)<\/strong>/gi, '<strong>$1</strong>') // Normalize <strong>
+            .replace(/<em[^>]*>(.*?)<\/em>/gi, '<em>$1</em>') // Normalize <em>
+            .replace(/<[^>]+>/g, '') // Remove any remaining unwanted HTML tags
+            .replace(/&lt;/g, '<') // Decode HTML entities
+            .replace(/&gt;/g, '>')
+            .replace(/&amp;/g, '&')
+            .replace(/&quot;/g, '"')
+            .replace(/&#39;/g, "'")
+            .replace(/&nbsp;/g, ' ')
+            .trim();
+            
+        // Re-add allowed HTML tags for formatting
+        cleanText = cleanText
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // **text** to <strong>
+            .replace(/\*(.*?)\*/g, '<em>$1</em>') // *text* to <em>
+            .replace(/\n/g, '<br>'); // newlines to <br>
+            
+        return cleanText;
     }
 
     /**
@@ -1107,11 +1166,15 @@ export class GameBoard {
                 break;
                 
             case 'attack':
-                this.initializeAttack(card);
+                logger.info(`${card.name} is attacking`);
+                // TODO: Implement attack initialization
+                window.showNotification(`${card.name} is ready to attack`, 'info');
                 break;
                 
             case 'attackTarget':
-                this.setAttackTarget(card);
+                logger.info(`Setting ${card.name} as attack target`);
+                // TODO: Implement attack targeting
+                window.showNotification(`Targeting ${card.name}`, 'info');
                 break;
                 
             case 'tap':
@@ -1180,86 +1243,6 @@ export class GameBoard {
     }
 
     /**
-     * Play a card as a Forward (DEPRECATED - use playCard instead)
-     */
-    playCardAsForward(card) {
-        logger.info(`Playing ${card.name} as Forward`);
-        
-        // Check and fix phase if needed
-        this.ensurePlayablePhase();
-        
-        try {
-            // Use GameEngine to play the card
-            console.log('🃏 Before playing forward:', this.gameEngine.gameState.players[0].zones);
-            this.gameEngine.playCard(0, card.id, { playType: 'forward' });
-            console.log('🃏 After playing forward:', this.gameEngine.gameState.players[0].zones);
-            window.showNotification(`Played ${card.name} as Forward`, 'success');
-            
-            // Log the card play event
-            this.logCardPlay(card.name, 'Forward', 'You', 'Field');
-            
-            // Update the display with new game state
-            this.setGameState(this.gameEngine.gameState);
-        } catch (error) {
-            logger.error('Error playing card as forward:', error);
-            window.showNotification(`Cannot play ${card.name}: ${error.message}`, 'error');
-            this.logError(`Failed to play ${card.name} as Forward: ${error.message}`, { cardName: card.name, playType: 'forward' });
-        }
-    }
-    
-    /**
-     * Play a card as a Backup
-     */
-    playCardAsBackup(card) {
-        logger.info(`Playing ${card.name} as Backup`);
-        
-        // Check and fix phase if needed
-        this.ensurePlayablePhase();
-        
-        try {
-            // Use GameEngine to play the card
-            console.log('🛡️ Before playing backup:', this.gameEngine.gameState.players[0].zones);
-            this.gameEngine.playCard(0, card.id, { playType: 'backup' });
-            console.log('🛡️ After playing backup:', this.gameEngine.gameState.players[0].zones);
-            window.showNotification(`Played ${card.name} as Backup`, 'success');
-            
-            // Log the card play event
-            this.logCardPlay(card.name, 'Backup', 'You', 'Backup Zone');
-            
-            // Update the display with new game state
-            this.setGameState(this.gameEngine.gameState);
-        } catch (error) {
-            logger.error('Error playing card as backup:', error);
-            window.showNotification(`Cannot play ${card.name}: ${error.message}`, 'error');
-            this.logError(`Failed to play ${card.name} as Backup: ${error.message}`, { cardName: card.name, playType: 'backup' });
-        }
-    }
-    
-    /**
-     * Cast a Summon card
-     */
-    castSummon(card) {
-        logger.info(`Casting ${card.name} summon`);
-        
-        // Check and fix phase if needed
-        this.ensurePlayablePhase();
-        
-        try {
-            // Use GameEngine to cast the summon
-            console.log('🌟 Before casting summon:', this.gameEngine.gameState.players[0].zones);
-            this.gameEngine.playCard(0, card.id, { playType: 'summon' });
-            console.log('🌟 After casting summon:', this.gameEngine.gameState.players[0].zones);
-            window.showNotification(`Cast ${card.name}`, 'success');
-            
-            // Update the display with new game state
-            this.setGameState(this.gameEngine.gameState);
-        } catch (error) {
-            logger.error('Error casting summon:', error);
-            window.showNotification(`Cannot cast ${card.name}: ${error.message}`, 'error');
-        }
-    }
-    
-    /**
      * Log card tap for CP event
      */
     logCardTapForCP(cardName, element, amount, player) {
@@ -1285,23 +1268,6 @@ export class GameBoard {
         window.showNotification(`Activated ${card.name}`, 'info');
     }
     
-    /**
-     * Initialize attack with a Forward
-     */
-    initializeAttack(card) {
-        logger.info(`${card.name} is attacking`);
-        // TODO: Implement attack initialization
-        window.showNotification(`${card.name} is ready to attack`, 'info');
-    }
-    
-    /**
-     * Set attack target
-     */
-    setAttackTarget(card) {
-        logger.info(`Setting ${card.name} as attack target`);
-        // TODO: Implement attack targeting
-        window.showNotification(`Targeting ${card.name}`, 'info');
-    }
     
     /**
      * Tap a card
@@ -1399,28 +1365,13 @@ export class GameBoard {
     }
     
     /**
-     * Check if a card can be played (simplified logic)
+     * Check if a card can be played (uses GameEngine affordability check)
      */
     canPlayCard(card) {
-        if (!this.gameState || !card) return false;
+        if (!this.gameState || !card || !this.gameEngine) return false;
         
-        const player = this.gameState.players[0]; // Player 1
-        if (!player) return false;
-        
-        const cardCost = parseInt(card.cost) || 0;
-        const cardElement = card.element;
-        
-        // Check if we have enough CP of the card's element
-        if (player.cpPool && player.cpPool[cardElement] !== undefined) {
-            return player.cpPool[cardElement] >= cardCost;
-        }
-        
-        // Fallback to local tracking if GameEngine CP not available
-        if (this.playerCP && this.playerCP[cardElement] !== undefined) {
-            return this.playerCP[cardElement] >= cardCost;
-        }
-        
-        return false;
+        // Use GameEngine's affordability check which considers total CP available
+        return this.gameEngine.canAffordCard(0, card); // Player index 0
     }
     
     /**
@@ -2450,39 +2401,6 @@ export class GameBoard {
         logger.info(`Added ${amount} ${element} CP to ${player}. Total: ${cpPool[element]}`);
     }
 
-    /**
-     * Update the visual CP display (LEGACY - redirects to new system)
-     */
-    updateCPDisplayLegacy() {
-        // Use modular display that only shows deck elements
-        this.deckElements.forEach(element => {
-            const amount = this.playerCP[element] || 0;
-            const cpElement = document.getElementById(`cp${element.charAt(0).toUpperCase() + element.slice(1)}`);
-            if (cpElement) {
-                cpElement.textContent = amount;
-                
-                // Add visual feedback for CP changes
-                cpElement.classList.add('cp-updated');
-                setTimeout(() => {
-                    cpElement.classList.remove('cp-updated');
-                }, 1000);
-            }
-        });
-        
-        // Update total CP
-        const totalCP = Array.from(this.deckElements).reduce((sum, element) => {
-            return sum + (this.playerCP[element] || 0);
-        }, 0);
-        
-        const totalElement = document.getElementById('cpTotalValue');
-        if (totalElement) {
-            totalElement.textContent = totalCP;
-        }
-        
-        // Also update new CP display system  
-        this.updateCPDisplay('player', this.playerCP);
-        this.updateCPDisplay('opponent', this.opponentCP);
-    }
 
     /**
      * Sync CP display with GameEngine state
@@ -2511,9 +2429,6 @@ export class GameBoard {
                 console.log('💎 Updated opponent CP:', this.opponentCP);
                 this.updateCPDisplay('opponent', this.opponentCP);
             }
-            
-            // Update legacy display
-            this.updateCPDisplayLegacy();
         } else {
             console.warn('💎 No game state or players found for CP sync');
         }
@@ -3534,37 +3449,6 @@ export class GameBoard {
             window.showNotification(`Game Over! ${winner} wins!`, 'error');
         });
 
-        // Payment Mode Event Listeners
-        gameEngine.on('paymentModeStarted', (event) => {
-            console.log('💰 Payment mode started:', event);
-            this.showPaymentModeUI(event);
-        });
-
-        gameEngine.on('paymentSourceAdded', (event) => {
-            console.log('💰 Payment source added:', event);
-            this.updatePaymentModeUI();
-        });
-
-        gameEngine.on('paymentSourceRemoved', (event) => {
-            console.log('💰 Payment source removed:', event);
-            this.updatePaymentModeUI();
-        });
-
-        gameEngine.on('paymentCompleted', (event) => {
-            console.log('💰 Payment completed:', event);
-            this.hidePaymentModeUI();
-            this.syncFromGameEngine(); // Update display after payment
-        });
-
-        gameEngine.on('paymentCancelled', (event) => {
-            console.log('💰 Payment cancelled:', event);
-            this.hidePaymentModeUI();
-        });
-
-        gameEngine.on('paymentModeEnded', () => {
-            console.log('💰 Payment mode ended');
-            this.hidePaymentModeUI();
-        });
         
         logger.info('Connected GameBoard to GameEngine');
     }
@@ -3890,23 +3774,6 @@ export class GameBoard {
         }
     }
     
-    /**
-     * Get CP display elements for a player (LEGACY - for backward compatibility)
-     */
-    getCPElements(player) {
-        const prefix = player === 'player' ? 'player' : 'opponent';
-        
-        return {
-            fire: document.getElementById(`${prefix}FireCP`),
-            ice: document.getElementById(`${prefix}IceCP`),
-            wind: document.getElementById(`${prefix}WindCP`),
-            lightning: document.getElementById(`${prefix}LightningCP`),
-            water: document.getElementById(`${prefix}WaterCP`),
-            earth: document.getElementById(`${prefix}EarthCP`),
-            light: document.getElementById(`${prefix}LightCP`),
-            dark: document.getElementById(`${prefix}DarkCP`)
-        };
-    }
     
     /**
      * Get emoji for CP type
@@ -4336,314 +4203,17 @@ export class GameBoard {
     }
 
     /**
-     * Show payment mode UI for card casting
-     */
-    showPaymentModeUI(event) {
-        console.log('💰 Showing payment mode UI for:', event.card.name);
-        
-        // Create payment mode modal if it doesn't exist
-        if (!document.getElementById('paymentModeModal')) {
-            this.createPaymentModeModal();
-        }
-        
-        const modal = document.getElementById('paymentModeModal');
-        const cardName = document.getElementById('paymentCardName');
-        const cardCost = document.getElementById('paymentCardCost');
-        const cardElement = document.getElementById('paymentCardElement');
-        
-        // Update modal content
-        if (cardName) cardName.textContent = event.card.name;
-        if (cardCost) cardCost.textContent = event.cost;
-        if (cardElement) cardElement.textContent = event.element.toUpperCase();
-        
-        // Show modal
-        modal.style.display = 'flex';
-        document.body.classList.add('modal-open');
-        
-        // Highlight cards that can be used for payment
-        this.highlightPaymentCards(event.player);
-        
-        // Update payment summary
-        this.updatePaymentModeUI();
-    }
-    
-    /**
-     * Update payment mode UI with current selections
-     */
-    updatePaymentModeUI() {
-        if (!this.gameEngine || !this.gameEngine.gameState.paymentMode.active) return;
-        
-        const paymentMode = this.gameEngine.gameState.paymentMode;
-        const remainingCost = this.gameEngine.getRemainingPaymentCost();
-        
-        // Update payment summary
-        const selectedCount = document.getElementById('selectedPaymentCount');
-        const remainingCostElement = document.getElementById('remainingPaymentCost');
-        const completePaymentBtn = document.getElementById('completePaymentBtn');
-        const elementRequiredWarning = document.getElementById('elementRequiredWarning');
-        
-        if (selectedCount) {
-            selectedCount.textContent = paymentMode.selectedPayments.length;
-        }
-        
-        if (remainingCostElement) {
-            remainingCostElement.textContent = remainingCost.remaining;
-        }
-        
-        if (completePaymentBtn) {
-            const canComplete = remainingCost.remaining === 0 && !remainingCost.needsElement;
-            completePaymentBtn.disabled = !canComplete;
-            completePaymentBtn.className = canComplete ? 'complete-btn' : 'complete-btn disabled';
-        }
-        
-        if (elementRequiredWarning) {
-            elementRequiredWarning.style.display = remainingCost.needsElement ? 'block' : 'none';
-        }
-        
-        // Update selected payment cards display
-        this.updateSelectedPaymentsList();
-    }
-    
-    /**
-     * Hide payment mode UI
-     */
-    hidePaymentModeUI() {
-        console.log('💰 Hiding payment mode UI');
-        
-        const modal = document.getElementById('paymentModeModal');
-        if (modal) {
-            modal.style.display = 'none';
-        }
-        
-        document.body.classList.remove('modal-open');
-        
-        // Remove payment card highlighting
-        this.removePaymentCardHighlighting();
-    }
-    
-    /**
-     * Create payment mode modal HTML
-     */
-    createPaymentModeModal() {
-        const modal = document.createElement('div');
-        modal.id = 'paymentModeModal';
-        modal.className = 'payment-mode-modal';
-        
-        modal.innerHTML = `
-            <div class="payment-mode-overlay"></div>
-            <div class="payment-mode-content">
-                <div class="payment-mode-header">
-                    <h2>💰 Pay Casting Cost</h2>
-                    <button class="payment-mode-close" onclick="gameBoard.cancelPayment()">×</button>
-                </div>
-                
-                <div class="payment-card-info">
-                    <div class="payment-card-details">
-                        <span class="payment-card-name" id="paymentCardName">Card Name</span>
-                        <div class="payment-cost-display">
-                            <span id="paymentCardCost">0</span> 
-                            <span class="payment-element" id="paymentCardElement">FIRE</span> CP
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="payment-instructions">
-                    <p>Select cards to discard from your hand or tap backup cards to generate CP:</p>
-                    <ul>
-                        <li>🃏 Discard matching element: <strong>2 CP</strong></li>
-                        <li>🃏 Discard other elements: <strong>1 CP</strong></li>
-                        <li>⚡ Tap backup (matching): <strong>1 CP</strong></li>
-                        <li>⚡ Tap backup (other): <strong>1 CP</strong></li>
-                    </ul>
-                </div>
-                
-                <div class="payment-summary">
-                    <div class="payment-stats">
-                        <div class="payment-stat">
-                            <span class="payment-stat-label">Selected:</span>
-                            <span class="payment-stat-value" id="selectedPaymentCount">0</span>
-                        </div>
-                        <div class="payment-stat">
-                            <span class="payment-stat-label">Remaining Cost:</span>
-                            <span class="payment-stat-value" id="remainingPaymentCost">0</span>
-                        </div>
-                    </div>
-                    
-                    <div class="payment-warning" id="elementRequiredWarning" style="display: none;">
-                        ⚠️ You must pay at least 1 CP of the card's element
-                    </div>
-                </div>
-                
-                <div class="selected-payments">
-                    <h3>Selected Payment Sources:</h3>
-                    <div class="selected-payments-list" id="selectedPaymentsList">
-                        <div class="no-selections">No payment sources selected</div>
-                    </div>
-                </div>
-                
-                <div class="payment-actions">
-                    <button class="cancel-btn" onclick="gameBoard.cancelPayment()">Cancel</button>
-                    <button class="complete-btn disabled" id="completePaymentBtn" onclick="gameBoard.completePayment()">
-                        Complete Payment
-                    </button>
-                </div>
-            </div>
-        `;
-        
-        document.body.appendChild(modal);
-        
-        // Add overlay click to cancel
-        modal.querySelector('.payment-mode-overlay').addEventListener('click', () => {
-            this.cancelPayment();
-        });
-    }
-    
-    /**
-     * Highlight cards that can be used for payment
-     */
-    highlightPaymentCards(playerId) {
-        const playerZones = playerId === 0 ? 'player' : 'opponent';
-        
-        // Highlight hand cards (can be discarded for CP)
-        const handCards = document.querySelectorAll(`#${playerZones}Hand .game-card`);
-        handCards.forEach(cardElement => {
-            cardElement.classList.add('payment-available');
-            cardElement.addEventListener('click', this.handlePaymentCardClick.bind(this));
-        });
-        
-        // Highlight backup cards (can be tapped for CP)
-        const backupCards = document.querySelectorAll(`#${playerZones}Backups .game-card`);
-        backupCards.forEach(cardElement => {
-            cardElement.classList.add('payment-available');
-            cardElement.addEventListener('click', this.handlePaymentCardClick.bind(this));
-        });
-    }
-    
-    /**
-     * Remove payment card highlighting
-     */
-    removePaymentCardHighlighting() {
-        const paymentCards = document.querySelectorAll('.payment-available, .payment-selected');
-        paymentCards.forEach(cardElement => {
-            cardElement.classList.remove('payment-available', 'payment-selected');
-            cardElement.removeEventListener('click', this.handlePaymentCardClick.bind(this));
-        });
-    }
-    
-    /**
-     * Handle clicking on a card during payment mode
-     */
-    handlePaymentCardClick(event) {
-        event.stopPropagation();
-        
-        const cardElement = event.currentTarget;
-        const cardId = cardElement.dataset.cardId;
-        
-        if (!cardId || !this.gameEngine) return;
-        
-        const card = this.cardDatabase.getCard(cardId);
-        if (!card) return;
-        
-        // Determine payment source type
-        const zone = this.getCardZone(cardElement);
-        let sourceType;
-        if (zone === 'hand') {
-            sourceType = 'discard';
-        } else if (zone === 'backups') {
-            sourceType = 'tap_backup';
-        } else {
-            return; // Invalid zone for payment
-        }
-        
-        const source = {
-            type: sourceType,
-            id: cardId,
-            element: card.element,
-            cardName: card.name
-        };
-        
-        // Toggle selection
-        if (cardElement.classList.contains('payment-selected')) {
-            // Remove from selection
-            this.gameEngine.removePaymentSource(source);
-            cardElement.classList.remove('payment-selected');
-        } else {
-            // Add to selection
-            this.gameEngine.addPaymentSource(source);
-            cardElement.classList.add('payment-selected');
-        }
-    }
-    
-    /**
-     * Update the selected payments list in the UI
-     */
-    updateSelectedPaymentsList() {
-        const listElement = document.getElementById('selectedPaymentsList');
-        if (!listElement || !this.gameEngine) return;
-        
-        const paymentMode = this.gameEngine.gameState.paymentMode;
-        const selectedPayments = paymentMode.selectedPayments;
-        
-        if (selectedPayments.length === 0) {
-            listElement.innerHTML = '<div class="no-selections">No payment sources selected</div>';
-            return;
-        }
-        
-        let html = '';
-        selectedPayments.forEach((source, index) => {
-            const cpValue = source.type === 'discard' ? 
-                (source.element === paymentMode.elementRequired ? 2 : 1) : 1;
-            const actionText = source.type === 'discard' ? 'Discard' : 'Tap';
-            
-            html += `
-                <div class="selected-payment-item">
-                    <span class="payment-action">${actionText}</span>
-                    <span class="payment-card-name">${source.cardName}</span>
-                    <span class="payment-cp-value">+${cpValue} CP</span>
-                    <button class="remove-payment-btn" onclick="gameBoard.removePaymentSelection(${index})">×</button>
-                </div>
-            `;
-        });
-        
-        listElement.innerHTML = html;
-    }
-    
-    /**
-     * Remove a specific payment selection
-     */
-    removePaymentSelection(index) {
-        if (!this.gameEngine) return;
-        
-        const paymentMode = this.gameEngine.gameState.paymentMode;
-        const source = paymentMode.selectedPayments[index];
-        
-        if (source) {
-            this.gameEngine.removePaymentSource(source);
-            
-            // Remove visual selection from card
-            const cardElement = document.querySelector(`[data-card-id="${source.id}"].payment-selected`);
-            if (cardElement) {
-                cardElement.classList.remove('payment-selected');
-            }
-        }
-    }
-    
-    /**
-     * Complete payment (called from UI button)
-     */
-    completePayment() {
-        if (this.gameEngine) {
-            this.gameEngine.completePayment();
-        }
-    }
-    
-    /**
-     * Cancel payment (called from UI button)
+     * Fallback methods for any remaining payment mode references
+     * These prevent errors if old HTML elements try to call these methods
      */
     cancelPayment() {
-        if (this.gameEngine) {
-            this.gameEngine.cancelPayment();
-        }
+        console.warn('⚠️  cancelPayment called but payment mode is disabled. Ignoring.');
+        return false;
+    }
+
+    completePayment() {
+        console.warn('⚠️  completePayment called but payment mode is disabled. Ignoring.');
+        return false;
     }
 }
 

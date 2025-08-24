@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Deck Builder — FFTCG Mockup</title>
+<link rel="stylesheet" href="ff_style.css">
+</head>
+<body>
+<canvas id="starfield"></canvas>
+<div class="container">
+  <header class="title-block">
+    <h1>DECK BUILDER</h1>
+  </header>
+  <main class="single-panel">
+    <section class="panel wide">
+      <h2>Your Decks</h2>
+      <div class="deck-grid" id="decks">
+        <div class="deck-card">
+          <div class="deck-name">Firestarter</div>
+          <div class="deck-meta">40 cards • Last edited 2 days ago</div>
+        </div>
+        <div class="deck-card">
+          <div class="deck-name">Ice Control</div>
+          <div class="deck-meta">40 cards • Last edited 10 days ago</div>
+        </div>
+        <div class="deck-card empty">
+          <div class="deck-name">Create New Deck</div>
+          <button class="ff-button">CREATE DECK</button>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="footer">Edit, duplicate or delete decks • Use ▶ to select</footer>
+</div>
+<script src="starfield.js"></script>
+</body>
+</html>

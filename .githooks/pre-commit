@@ -1,0 +1,141 @@
+#!/bin/bash
+
+# PRE-COMMIT SAFETY HOOK
+# Automatically runs safety checks before any commit
+
+echo "🛡️  Running pre-commit safety checks..."
+
+# Get the project root
+PROJECT_ROOT="$(git rev-parse --show-toplevel)"
+cd "$PROJECT_ROOT"
+
+# Check if this is a code change that needs safety validation
+CHANGED_FILES=$(git diff --cached --name-only)
+JS_FILES=$(echo "$CHANGED_FILES" | grep -E '\.(js|html|css)$' || true)
+
+if [ -z "$JS_FILES" ]; then
+    echo "✅ No code changes detected - skipping safety checks"
+    exit 0
+fi
+
+echo "📁 Code changes detected in:"
+echo "$JS_FILES" | sed 's/^/   • /'
+echo ""
+
+# Check for potentially dangerous patterns in the commit
+DANGEROUS_PATTERNS=(
+    "function.*removed"
+    "deleted.*function"
+    "// TODO.*remove"
+    "// FIXME.*delete"
+    "console.log.*removed"
+)
+
+COMMIT_MSG_FILE=".git/COMMIT_EDITMSG"
+if [ -f "$COMMIT_MSG_FILE" ]; then
+    COMMIT_MSG=$(cat "$COMMIT_MSG_FILE" 2>/dev/null || echo "")
+else
+    COMMIT_MSG=$(git diff --cached --name-only | head -1 || echo "Code changes")
+fi
+
+echo "🔍 Analyzing commit message and changes..."
+
+# Check for removal/deletion keywords in commit message
+REMOVAL_KEYWORDS=("remove" "delete" "drop" "clean" "refactor" "simplify")
+NEEDS_SAFETY_CHECK=false
+
+for keyword in "${REMOVAL_KEYWORDS[@]}"; do
+    if echo "$COMMIT_MSG" | grep -qi "$keyword"; then
+        NEEDS_SAFETY_CHECK=true
+        echo "⚠️  Detected '$keyword' in commit - safety check required"
+        break
+    fi
+done
+
+# Check for function removals in the actual changes
+REMOVED_FUNCTIONS=$(git diff --cached | grep -E '^-.*function\s+\w+' | wc -l || echo "0")
+if [ "$REMOVED_FUNCTIONS" -gt 0 ]; then
+    NEEDS_SAFETY_CHECK=true
+    echo "⚠️  Detected $REMOVED_FUNCTIONS function removal(s) - safety check required"
+fi
+
+# If no risky changes detected, allow commit
+if [ "$NEEDS_SAFETY_CHECK" = false ]; then
+    echo "✅ No risky changes detected - commit approved"
+    exit 0
+fi
+
+# Run basic security validation
+echo ""
+echo "🔒 Running security validation..."
+if node tools/security-validator.js . > /dev/null 2>&1; then
+    echo "✅ Security validation passed"
+else
+    echo "❌ Security validation failed - check output above"
+    echo ""
+    echo "🚨 COMMIT BLOCKED - Security issues detected"
+    echo "Fix security issues before committing"
+    exit 1
+fi
+
+# Check for common dangerous functions that might be accidentally removed
+CRITICAL_FUNCTIONS=(
+    "toggleFilter"
+    "validateCard"
+    "validateDeck"
+    "sanitize"
+    "authenticate"
+    "authorize"
+)
+
+echo ""
+echo "🔍 Checking for critical function removals..."
+BLOCKED_REMOVALS=()
+
+for func in "${CRITICAL_FUNCTIONS[@]}"; do
+    # Check if function is being removed
+    if git diff --cached | grep -E "^-.*$func\s*\(" > /dev/null; then
+        echo "🚨 WARNING: Critical function '$func' appears to be removed"
+        BLOCKED_REMOVALS+=("$func")
+    fi
+done
+
+# Block commit if critical functions are being removed
+if [ ${#BLOCKED_REMOVALS[@]} -gt 0 ]; then
+    echo ""
+    echo "🚨 COMMIT BLOCKED - Critical function removals detected:"
+    for func in "${BLOCKED_REMOVALS[@]}"; do
+        echo "   • $func"
+    done
+    echo ""
+    echo "To proceed:"
+    echo "1. Run: ./tools/safe-refactor.sh ${BLOCKED_REMOVALS[*]}"
+    echo "2. Follow the safety analysis recommendations"
+    echo "3. Only commit after safety approval"
+    echo ""
+    echo "To bypass this check (NOT RECOMMENDED):"
+    echo "   git commit --no-verify"
+    exit 1
+fi
+
+# If we get here, changes are potentially risky but not blocked
+echo ""
+echo "⚠️  COMMIT CONTAINS RISKY CHANGES"
+echo "Strongly recommended before committing:"
+echo "1. Run safety analysis:"
+echo "   ./tools/safe-refactor.sh [function-names]"
+echo "2. Test in browser:"
+echo "   new FFTCGTestSuite().runTests()"
+echo "3. Manual testing of affected features"
+echo ""
+
+# Give user a chance to cancel
+read -p "Continue with commit? (y/N): " -n 1 -r
+echo
+if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+    echo "❌ Commit cancelled by user"
+    exit 1
+fi
+
+echo "✅ Commit approved with warnings"
+exit 0
