@@ -1052,6 +1052,19 @@
     <!-- JavaScript Modules -->
     <script type="module" src="src/main.js"></script>
     
+    <!-- Safety tools for development -->
+    <script>
+        // Load function tester for development
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            import('./tools/function-tester.js').then(module => {
+                window.FunctionTester = module.FunctionTester;
+                window.FFTCGTestSuite = module.FFTCGTestSuite;
+                console.log('🧪 Development mode: Function tester loaded');
+                console.log('💡 Run: new FFTCGTestSuite().runTests() to test critical functions');
+            }).catch(err => console.warn('Could not load function tester:', err));
+        }
+    </script>
+    
     <!-- Sidebar Toggle Functions -->
     <script>
         // Update main content margins based on sidebar states
