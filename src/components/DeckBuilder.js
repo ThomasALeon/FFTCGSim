@@ -128,7 +128,7 @@ export class DeckBuilder {
         
         // Card search panel
         this.cardSearchPanel = document.getElementById('cardSearchPanel');
-        this.cardGrid = document.getElementById('cardDatabase');
+        this.cardGrid = document.getElementById('cardGrid') || document.getElementById('cardDatabase');
         this.searchInput = document.getElementById('cardSearch');
         this.sortSelect = document.getElementById('sortSelect');
         this.elementSelect = document.getElementById('elementFilter');
@@ -267,82 +267,52 @@ export class DeckBuilder {
     }
 
     /**
-     * Generate set filter buttons dynamically based on available sets in database
+     * Generate set filter dropdown dynamically based on available sets in database
      */
     generateSetFilterButtons() {
-        const opusButtonsContainer = document.getElementById('opusButtons');
-        if (!opusButtonsContainer || !this.cardDatabase) {
-            logger.warn('Cannot generate set filter buttons - missing container or card database');
+        const opusSelect = document.getElementById('opusSelect');
+        if (!opusSelect || !this.cardDatabase) {
+            logger.warn('Cannot generate set filter dropdown - missing select element or card database');
             return;
         }
 
         try {
             // Get all available sets from the database
             const availableSets = this.cardDatabase.getAllSets();
-            logger.info(`🎯 Generating filter buttons for ${availableSets.length} sets:`, availableSets);
+            logger.info(`🎯 Generating filter dropdown for ${availableSets.length} sets:`, availableSets);
 
-            // Save the "All" button state before clearing
-            const existingAllButton = opusButtonsContainer.querySelector('[data-opus=""]');
-            const wasAllButtonActive = existingAllButton?.classList.contains('active') || false;
+            // Save current selection
+            const currentValue = opusSelect.value;
             
-            // Clear existing buttons
-            opusButtonsContainer.innerHTML = '';
+            // Clear existing options and rebuild
+            opusSelect.innerHTML = '<option value="">All Sets</option>';
             
-            // Re-create the "All" button first
-            const allButton = document.createElement('button');
-            allButton.className = 'filter-btn' + (wasAllButtonActive ? ' active' : '');
-            allButton.setAttribute('data-opus', '');
-            allButton.textContent = 'All';
-            allButton.onclick = () => window.app?.deckBuilder?.setOpusFilter('');
-            opusButtonsContainer.appendChild(allButton);
-
-            // Generate buttons for each available set
+            // Generate options for each available set
             availableSets.forEach(setName => {
-                const button = document.createElement('button');
-                button.className = 'filter-btn';
-                button.setAttribute('data-opus', setName);
-                button.onclick = () => window.app?.deckBuilder?.setOpusFilter(setName);
-                
-                // Create display name (shorten long names for UI)
-                let displayName = setName;
-                if (setName.length > 12) {
-                    // For long names, try to create a shorter version
-                    if (setName.startsWith('Opus ')) {
-                        displayName = setName; // Keep Opus X format as-is
-                    } else {
-                        // For named sets, abbreviate intelligently
-                        const words = setName.split(' ');
-                        if (words.length > 2) {
-                            displayName = words.map(word => word.charAt(0)).join('') + ' ' + this.getOpusNumber(setName);
-                        }
-                    }
-                }
-                
-                button.textContent = displayName;
-                button.title = setName; // Full name on hover
-                
-                // Add CSS class for styling specific sets
-                const cssClass = this.getSetCSSClass(setName);
-                if (cssClass) {
-                    button.classList.add(cssClass);
-                }
-                
-                opusButtonsContainer.appendChild(button);
+                const option = document.createElement('option');
+                option.value = setName;
+                option.textContent = setName; // Full name in dropdown
+                opusSelect.appendChild(option);
             });
 
-            logger.info(`✅ Generated ${availableSets.length} set filter buttons`);
+            // Restore previous selection if it still exists
+            if (currentValue && availableSets.includes(currentValue)) {
+                opusSelect.value = currentValue;
+            }
+
+            logger.info(`✅ Generated ${availableSets.length} set filter options`);
         } catch (error) {
-            logger.error('Failed to generate set filter buttons:', error);
+            logger.error('Failed to generate set filter dropdown:', error);
         }
     }
 
     /**
-     * Generate category filter buttons dynamically based on available categories in database
+     * Generate category filter dropdown dynamically based on available categories in database
      */
     generateCategoryFilterButtons() {
-        const categoryButtonsContainer = document.getElementById('categoryButtons');
-        if (!categoryButtonsContainer || !this.cardDatabase) {
-            logger.warn('Cannot generate category filter buttons - missing container or card database');
+        const categorySelect = document.getElementById('categorySelect');
+        if (!categorySelect || !this.cardDatabase) {
+            logger.warn('Cannot generate category filter dropdown - missing select element or card database');
             return;
         }
 
@@ -351,22 +321,13 @@ export class DeckBuilder {
             const allCards = this.cardDatabase.getAllCards();
             const consolidatedCategories = this.getConsolidatedCategories(allCards);
 
-            logger.info(`🎯 Generating filter buttons for ${consolidatedCategories.length} consolidated categories`);
+            logger.info(`🎯 Generating filter dropdown for ${consolidatedCategories.length} consolidated categories`);
 
-            // Save the "All" button state before clearing
-            const existingAllButton = categoryButtonsContainer.querySelector('[data-category=""]');
-            const wasAllButtonActive = existingAllButton?.classList.contains('active') || true;
+            // Save current selection
+            const currentValue = categorySelect.value;
             
-            // Clear existing buttons
-            categoryButtonsContainer.innerHTML = '';
-            
-            // Re-create the "All" button first
-            const allButton = document.createElement('button');
-            allButton.className = 'filter-btn' + (wasAllButtonActive ? ' active' : '');
-            allButton.setAttribute('data-category', '');
-            allButton.textContent = 'All';
-            allButton.onclick = () => window.app?.deckBuilder?.setCategoryFilter('');
-            categoryButtonsContainer.appendChild(allButton);
+            // Clear existing options and rebuild
+            categorySelect.innerHTML = '<option value="">All Categories</option>';
 
             // Sort categories by card count (descending) but prioritize FF main series
             const ffMainSeries = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI'];
@@ -379,26 +340,29 @@ export class DeckBuilder {
             
             const prioritizedCategories = [...ffMainCategories, ...otherCategories];
 
-            // Show all categories since we've consolidated to 34
+            // Generate options for all categories
             prioritizedCategories.forEach(categoryInfo => {
                 const category = categoryInfo.category;
-                const button = document.createElement('button');
-                button.className = 'filter-btn';
-                button.setAttribute('data-category', category);
-                button.onclick = () => window.app?.deckBuilder?.setCategoryFilter(category);
+                const option = document.createElement('option');
+                option.value = category;
                 
                 // Create display name with mapping
                 let displayName = this.getCategoryDisplayName(category);
                 
-                button.textContent = displayName;
-                button.title = `${category} - ${categoryInfo.count} cards - Filter by ${displayName}`;
+                option.textContent = `${displayName} (${categoryInfo.count})`;
+                option.title = `${category} - ${categoryInfo.count} cards`;
                 
-                categoryButtonsContainer.appendChild(button);
+                categorySelect.appendChild(option);
             });
 
-            logger.info(`✅ Generated ${prioritizedCategories.length} category filter buttons`);
+            // Restore previous selection if it still exists
+            if (currentValue && prioritizedCategories.some(cat => cat.category === currentValue)) {
+                categorySelect.value = currentValue;
+            }
+
+            logger.info(`✅ Generated ${prioritizedCategories.length} category filter options`);
         } catch (error) {
-            logger.error('Failed to generate category filter buttons:', error);
+            logger.error('Failed to generate category filter dropdown:', error);
         }
     }
 
@@ -1335,18 +1299,19 @@ export class DeckBuilder {
      */
     setCostFilter(cost) {
         if (cost === '') {
-            // "All" button - clear all filters
+            // "All" option - clear filter
             this.costFilter = [];
         } else {
-            // Toggle specific cost
-            const index = this.costFilter.indexOf(cost);
-            if (index > -1) {
-                this.costFilter.splice(index, 1); // Remove if already selected
-            } else {
-                this.costFilter.push(cost); // Add if not selected
-            }
+            // Single selection - replace current filter
+            this.costFilter = [cost];
         }
-        this.updateFilterButtonStates('cost', this.costFilter);
+        
+        // Update the dropdown selection
+        const costSelect = document.getElementById('costSelect');
+        if (costSelect) {
+            costSelect.value = cost;
+        }
+        
         this.refreshCardDisplay();
     }
 
@@ -1371,42 +1336,44 @@ export class DeckBuilder {
     }
 
     /**
-     * Toggle opus filter (for button-based filters with multiple selection)
+     * Set opus filter (for dropdown-based single selection)
      */
     setOpusFilter(opus) {
         if (opus === '') {
-            // "All" button - clear all filters
+            // "All" option - clear filter
             this.opusFilter = [];
         } else {
-            // Toggle specific opus
-            const index = this.opusFilter.indexOf(opus);
-            if (index > -1) {
-                this.opusFilter.splice(index, 1); // Remove if already selected
-            } else {
-                this.opusFilter.push(opus); // Add if not selected
-            }
+            // Single selection - replace current filter
+            this.opusFilter = [opus];
         }
-        this.updateFilterButtonStates('opus', this.opusFilter);
+        
+        // Update the dropdown selection
+        const opusSelect = document.getElementById('opusSelect');
+        if (opusSelect) {
+            opusSelect.value = opus;
+        }
+        
         this.refreshCardDisplay();
     }
 
     /**
-     * Toggle category filter (for button-based filters with multiple selection)
+     * Set category filter (for dropdown-based single selection)
      */
     setCategoryFilter(category) {
         if (category === '') {
-            // "All" button - clear all filters
+            // "All" option - clear filter
             this.categoryFilter = [];
         } else {
-            // Toggle specific category
-            const index = this.categoryFilter.indexOf(category);
-            if (index > -1) {
-                this.categoryFilter.splice(index, 1); // Remove if already selected
-            } else {
-                this.categoryFilter.push(category); // Add if not selected
-            }
+            // Single selection - replace current filter
+            this.categoryFilter = [category];
         }
-        this.updateFilterButtonStates('category', this.categoryFilter);
+        
+        // Update the dropdown selection
+        const categorySelect = document.getElementById('categorySelect');
+        if (categorySelect) {
+            categorySelect.value = category;
+        }
+        
         this.refreshCardDisplay();
     }
 
@@ -1748,6 +1715,62 @@ export class DeckBuilder {
             console.log('⌨️ Hotkey: Focus Search');
         }
     }
+
+    /**
+     * Set search filter (called from HTML input)
+     */
+    setSearchFilter(searchTerm) {
+        this.searchTerm = searchTerm.toLowerCase();
+        this.refreshCardDisplay();
+    }
+
+    /**
+     * Set sort order (called from HTML select)
+     */
+    setSortOrder(sortValue) {
+        this.sortBy = sortValue;
+        this.refreshCardDisplay();
+    }
+
+    /**
+     * Clear all filters (called from HTML button)
+     */
+    clearAllFilters() {
+        // Reset all filters
+        this.elementFilter = [];
+        this.typeFilter = [];
+        this.costFilter = [];
+        this.rarityFilter = [];
+        this.opusFilter = [];
+        this.categoryFilter = [];
+        this.searchTerm = '';
+        this.sortBy = 'name-asc';
+
+        // Clear HTML inputs
+        const searchInput = document.getElementById('cardSearch');
+        if (searchInput) searchInput.value = '';
+        
+        const sortSelect = document.getElementById('sortSelect');
+        if (sortSelect) sortSelect.value = 'name-asc';
+        
+        const opusSelect = document.getElementById('opusSelect');
+        if (opusSelect) opusSelect.value = '';
+        
+        const costSelect = document.getElementById('costSelect');
+        if (costSelect) costSelect.value = '';
+        
+        const categorySelect = document.getElementById('categorySelect');
+        if (categorySelect) categorySelect.value = '';
+
+        // Update UI and refresh cards
+        this.updateFilterButtonStates('element', this.elementFilter);
+        this.updateFilterButtonStates('type', this.typeFilter);
+        this.updateFilterButtonStates('cost', this.costFilter);
+        this.updateFilterButtonStates('rarity', this.rarityFilter);
+        this.updateFilterButtonStates('opus', this.opusFilter);
+        this.updateFilterButtonStates('category', this.categoryFilter);
+        this.refreshCardDisplay();
+    }
     
     resetFilters() {
         // Reset all filters
@@ -1764,7 +1787,12 @@ export class DeckBuilder {
         }
         
         // Update UI and refresh cards
-        this.updateFilterUI();
+        this.updateFilterButtonStates('element', this.elementFilter);
+        this.updateFilterButtonStates('type', this.typeFilter);
+        this.updateFilterButtonStates('cost', this.costFilter);
+        this.updateFilterButtonStates('rarity', this.rarityFilter);
+        this.updateFilterButtonStates('opus', this.opusFilter);
+        this.updateFilterButtonStates('category', this.categoryFilter);
         this.filterAndDisplayCards();
         console.log('⌨️ Hotkey: Reset Filters');
     }

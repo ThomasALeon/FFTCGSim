@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Final Fantasy Trading Card Game Simulator</title>
+    <!-- FFTCG Typography System -->
+    <link rel="stylesheet" href="assets/css/fonts.css">
     <link rel="stylesheet" href="assets/css/main.css">
+    <!-- FFTCG Theme Enhancements -->
+    <link rel="stylesheet" href="assets/css/ff-theme.css">
     <!-- Component CSS files -->
     <link rel="stylesheet" href="assets/css/components/modals.css">
     <link rel="stylesheet" href="assets/css/components/deck-builder.css">
@@ -12,388 +16,349 @@
     <link rel="stylesheet" href="assets/css/components/game-board.css">
     <link rel="stylesheet" href="assets/css/components/hotkey-help.css">
     <link rel="stylesheet" href="assets/css/accessibility.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Application Loading Screen -->
-    <div id="loadingScreen" class="loading-screen">
+    <div id="loadingScreen" class="loading-screen ff-styled">
         <div class="loading-content">
-            <div class="loading-logo">⚡</div>
+            <div class="loading-logo ff-styled">⚡</div>
             <div class="loading-text">Loading Final Fantasy TCG Simulator...</div>
             <div class="loading-bar">
-                <div class="loading-progress" id="loadingProgress"></div>
+                <div class="loading-progress ff-styled" id="loadingProgress"></div>
             </div>
         </div>
     </div>
 
     <!-- Main Application Container -->
     <div id="app" class="app-container hidden">
-        <!-- Navigation Header -->
-        <header class="app-header">
-            <div class="header-content">
-                <h1 class="app-title">
-                    <span class="title-icon">⚡</span>
-                    Final Fantasy TCG Simulator
-                </h1>
-                <nav class="header-nav">
-                    <button class="nav-btn" id="homeBtn" data-view="home">Home</button>
-                    <button class="nav-btn" id="gameBtn" data-view="game" disabled>Game</button>
-                    <button class="nav-btn" id="deckBuilderBtn" data-view="deck-builder">Deck Builder</button>
-                    <button class="nav-btn" id="profileBtn" data-view="profile">Profile</button>
-                </nav>
-            </div>
-        </header>
+        <!-- Header removed to save screen space -->
 
         <!-- Main Content Area -->
         <main class="app-main">
-            <!-- Home View -->
+            <!-- Home View - Classic FF Main Menu -->
             <section id="homeView" class="view active">
-                <!-- User Profile Section -->
-                <div class="profile-section">
-                    <div class="profile-card">
-                        <div class="profile-avatar" id="profileAvatar">⚡</div>
-                        <div class="profile-info">
-                            <h3 class="profile-name" id="profileName">Guest Player</h3>
-                            <p class="profile-stats" id="profileStats">Games: 0 | Wins: 0 | Win Rate: 0%</p>
-                        </div>
-                        <button class="btn btn-primary" onclick="openModal('profileModal')">
-                            Edit Profile
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Main Menu Grid -->
-                <div class="menu-grid">
-                    <!-- Multiplayer Lobby -->
-                    <div class="menu-card" onclick="openModal('lobbyModal')">
-                        <div class="menu-icon">🌐</div>
-                        <h3 class="menu-title">Multiplayer</h3>
-                        <p class="menu-description">
-                            Join or create game rooms to play against other players worldwide.
-                        </p>
-                        <div class="menu-stats">
-                            <span id="onlineCount">0</span> players online
-                        </div>
-                    </div>
-
-                    <!-- Deck Builder -->
-                    <div class="menu-card" onclick="window.app.switchView('deck-builder')">
-                        <div class="menu-icon">📚</div>
-                        <h3 class="menu-title">Deck Builder</h3>
-                        <p class="menu-description">
-                            Create and manage your card decks with our comprehensive database.
-                        </p>
-                        <div class="menu-stats">
-                            <span id="deckCount">0</span> decks saved
-                        </div>
-                    </div>
-
-                    <!-- Practice vs AI -->
-                    <div class="menu-card" onclick="window.app.switchView('practice-lobby')">
-                        <div class="menu-icon">🤖</div>
-                        <h3 class="menu-title">Practice vs AI</h3>
-                        <p class="menu-description">
-                            Test your decks against AI opponents of varying difficulty levels.
-                        </p>
-                        <div class="menu-stats">
-                            Ready to Play
-                        </div>
-                    </div>
-
-                    <!-- Tournament -->
-                    <div class="menu-card" onclick="openModal('tournamentModal')">
-                        <div class="menu-icon">🏆</div>
-                        <h3 class="menu-title">Tournament</h3>
-                        <p class="menu-description">
-                            Participate in structured tournaments and climb the rankings.
-                        </p>
-                        <div class="menu-stats">
-                            No active tournaments
-                        </div>
-                    </div>
-
-                    <!-- Game Rules -->
-                    <div class="menu-card" onclick="openModal('rulesModal')">
-                        <div class="menu-icon">📋</div>
-                        <h3 class="menu-title">Game Rules</h3>
-                        <p class="menu-description">
-                            Learn the comprehensive rules and mechanics of Final Fantasy TCG.
-                        </p>
-                    </div>
-
-                    <!-- Settings -->
-                    <div class="menu-card" onclick="openModal('settingsModal')">
-                        <div class="menu-icon">⚙️</div>
-                        <h3 class="menu-title">Settings</h3>
-                        <p class="menu-description">
-                            Customize your experience with accessibility and preference options.
-                        </p>
-                    </div>
+                <canvas id="starfield"></canvas>
+                
+                <div class="ff-menu-container">
+                    <h1 class="ff-game-title">FINAL FANTASY<br><span class="ff-subtitle">TRADING CARD GAME</span></h1>
+                    
+                    <ul class="ff-menu-list" id="ffMenuList">
+                        <li class="ff-menu-item selected" data-action="multiplayer" tabindex="0">
+                            <span class="ff-pointer">▶</span> MULTIPLAYER 
+                            <span class="ff-status" id="onlineCount">0 players online</span>
+                        </li>
+                        <li class="ff-menu-item" data-action="deck-builder" tabindex="0">
+                            <span class="ff-pointer">▶</span> DECK BUILDER 
+                            <span class="ff-status" id="deckCount">0 decks saved</span>
+                        </li>
+                        <li class="ff-menu-item" data-action="practice" tabindex="0">
+                            <span class="ff-pointer">▶</span> PRACTICE vs AI 
+                            <span class="ff-status">Ready to play</span>
+                        </li>
+                        <li class="ff-menu-item" data-action="tournament" tabindex="0">
+                            <span class="ff-pointer">▶</span> TOURNAMENT 
+                            <span class="ff-status">No active tournaments</span>
+                        </li>
+                        <li class="ff-menu-item" data-action="rules" tabindex="0">
+                            <span class="ff-pointer">▶</span> GAME RULES 
+                            <span class="ff-status">Learn the mechanics</span>
+                        </li>
+                        <li class="ff-menu-item" data-action="profile" tabindex="0">
+                            <span class="ff-pointer">▶</span> CHANGE PROFILE 
+                            <span class="ff-status" id="profileName">Guest Player</span>
+                        </li>
+                        <li class="ff-menu-item" data-action="settings" tabindex="0">
+                            <span class="ff-pointer">▶</span> OPTIONS 
+                            <span class="ff-status">Customize experience</span>
+                        </li>
+                    </ul>
+                    
+                    <p class="ff-footer">Final Fantasy Trading Card Game © Square Enix</p>
                 </div>
             </section>
 
             <!-- Deck Builder View -->
             <section id="deck-builderView" class="view">
-                <div class="deck-builder-container">
+                <canvas id="deckBuilderStarfield" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; background: #000000; opacity: 0.8;"></canvas>
+                
+                <!-- Deck Manager - FF Party Status Style -->
+                <div class="ff-container" id="deckManager">
+                    <header class="ff-title-block">
+                        <h1>DECK BUILDER<br><span class="ff-subtitle">Manage Your Decks</span></h1>
+                    </header>
                     
-                    <!-- Deck Manager - Main Interface -->
-                    <div class="deck-manager" id="deckManager">
-                        <div class="deck-manager-header">
-                            <h2>My Decks</h2>
-                            <div class="deck-manager-actions">
-                                <button class="btn btn-secondary" onclick="window.importDeck()" title="Import deck from text">
-                                    📥 Import Deck
-                                </button>
-                                <button class="btn btn-primary" onclick="
-                                    if (window.app && window.app.deckBuilder) {
-                                        window.app.deckBuilder.showCreateNewDeck();
-                                    } else {
-                                        console.error('App or deck builder not available:', {app: !!window.app, deckBuilder: !!window.app?.deckBuilder});
-                                        alert('Deck builder is still loading. Please wait a moment and try again.');
-                                    }
-                                ">
-                                    + New Deck
+                    <main class="ff-panel-layout single">
+                        <section class="ff-panel wide">
+                            <h2>Your Decks</h2>
+                            <div class="ff-deck-grid" id="deckListContainer">
+                                <!-- Deck list will be populated here -->
+                            </div>
+                            
+                            <!-- No Decks Placeholder -->
+                            <div id="noDecksPlaceholder" style="display: none; text-align: center; padding: 40px;">
+                                <div style="font-size: 4rem; margin-bottom: 16px; opacity: 0.3;">🎴</div>
+                                <h3 style="color: #E8EEF5; margin-bottom: 12px;">No Decks Created</h3>
+                                <p style="color: #9fb6cf; margin-bottom: 24px;">Create your first deck to get started building and playing!</p>
+                                <button class="ff-button large" onclick="createNewDeckFF()">
+                                    CREATE YOUR FIRST DECK
                                 </button>
                             </div>
-                        </div>
+                            
+                            <div class="ff-action-row center" style="margin-top: 24px;">
+                                <button class="ff-button" onclick="testNewDeck()">
+                                    + NEW DECK (TEST)
+                                </button>
+                                <button class="ff-button alt" onclick="window.importDeck()" title="Import deck from text">
+                                    📥 IMPORT DECK
+                                </button>
+                                <button class="ff-button alt" onclick="goBackToMenu()" title="Return to main menu">
+                                    🏠 MAIN MENU
+                                </button>
+                            </div>
+                        </section>
+                    </main>
+                    
+                    <footer class="ff-footer">
+                        Select a deck to edit • Create new decks • Import/Export deck lists
+                    </footer>
+                </div>
+
+                <!-- Deck Editor - FF Modular Panel Design -->
+                <div class="ff-container" id="deckEditor" style="display: none;">
+                    <!-- Navigation Bar -->
+                    <div class="ff-nav-bar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding: 8px 0;">
+                        <button class="ff-button alt" onclick="exitDeckEditor()" style="padding: 8px 16px; font-size: 0.9rem;">
+                            ← Back to Decks
+                        </button>
+                        <button class="ff-button alt" onclick="goBackToMenu()" title="Return to main menu" style="padding: 8px 16px; font-size: 0.9rem;">
+                            🏠 Menu
+                        </button>
+                    </div>
+                    
+                    <!-- Title Block -->
+                    <header class="ff-title-block" style="margin-top: 0;">
+                        <h1 id="deckEditorTitle">DECK BUILDER<br><span class="ff-subtitle" id="deckEditorSubtitle">Create & Edit Your Deck</span></h1>
+                    </header>
+                    
+                    <main class="ff-panel-layout triple">
+                        <!-- Left Panel: Filters -->
+                        <aside class="ff-panel filters">
+                            <h3>FILTERS</h3>
+                            
+                            <!-- Search -->
+                            <div style="margin-bottom: 16px;">
+                                <label style="display: block; color: #c8d6e8; font-size: 0.8rem; margin-bottom: 4px;">Search:</label>
+                                <input type="text" id="cardSearch" placeholder="Card name, text, or ID..." 
+                                       style="width: 100%; padding: 6px 8px; background: rgba(255,255,255,0.1); border: 1px solid rgba(128,207,255,0.2); border-radius: 4px; color: white; font-size: 0.85rem;"
+                                       onkeyup="if(window.app?.deckBuilder?.setSearchFilter) window.app.deckBuilder.setSearchFilter(this.value)">
+                            </div>
+                            
+                            <!-- Sort -->
+                            <div style="margin-bottom: 16px;">
+                                <label style="display: block; color: #c8d6e8; font-size: 0.8rem; margin-bottom: 4px;">Sort By:</label>
+                                <select id="sortSelect" style="width: 100%; padding: 6px; background: rgba(255,255,255,0.1); border: 1px solid rgba(128,207,255,0.2); border-radius: 4px; color: white; font-size: 0.85rem;" onchange="if(window.app?.deckBuilder?.setSortOrder) window.app.deckBuilder.setSortOrder(this.value)">
+                                    <option value="name-asc">Name (A-Z)</option>
+                                    <option value="name-desc">Name (Z-A)</option>
+                                    <option value="cost-asc">Cost (Low→High)</option>
+                                    <option value="cost-desc">Cost (High→Low)</option>
+                                    <option value="id-asc">ID (Ascending)</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Set/Opus Filter -->
+                            <div style="margin-bottom: 10px;">
+                                <label style="display: block; color: #c8d6e8; font-size: 0.8rem; margin-bottom: 4px;">Set/Opus:</label>
+                                <select id="opusSelect" 
+                                        style="width: 100%; padding: 6px; background: rgba(255,255,255,0.1); border: 1px solid rgba(128,207,255,0.2); border-radius: 4px; color: white; font-size: 0.85rem; font-family: 'Spectral', serif;" 
+                                        onchange="handleOpusSelectChange(this)">
+                                    <option value="">All Sets</option>
+                                    <!-- Will be populated by JavaScript -->
+                                </select>
+                            </div>
+                            
+                            <!-- Element Filter -->
+                            <div style="margin-bottom: 10px;">
+                                <label style="display: block; color: #c8d6e8; font-size: 0.8rem; margin-bottom: 4px;">Element:</label>
+                                <div id="elementButtons" style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px; font-size: 0.7rem;">
+                                    <button class="filter-btn active" data-element="" onclick="toggleFilter(this, 'element', '')">All</button>
+                                    <button class="filter-btn" data-element="fire" style="background: rgba(255,68,68,0.2);" onclick="toggleFilter(this, 'element', 'fire')">🔥</button>
+                                    <button class="filter-btn" data-element="ice" style="background: rgba(68,221,255,0.2);" onclick="toggleFilter(this, 'element', 'ice')">❄️</button>
+                                    <button class="filter-btn" data-element="wind" style="background: rgba(68,255,68,0.2);" onclick="toggleFilter(this, 'element', 'wind')">🌪️</button>
+                                    <button class="filter-btn" data-element="lightning" style="background: rgba(170,68,255,0.2);" onclick="toggleFilter(this, 'element', 'lightning')">⚡</button>
+                                    <button class="filter-btn" data-element="water" style="background: rgba(68,136,255,0.2);" onclick="toggleFilter(this, 'element', 'water')">💧</button>
+                                    <button class="filter-btn" data-element="earth" style="background: rgba(255,170,68,0.2);" onclick="toggleFilter(this, 'element', 'earth')">🌍</button>
+                                    <button class="filter-btn" data-element="light" style="background: rgba(255,255,255,0.2);" onclick="toggleFilter(this, 'element', 'light')">☀️</button>
+                                    <button class="filter-btn" data-element="dark" style="background: rgba(68,68,68,0.2);" onclick="toggleFilter(this, 'element', 'dark')">🌑</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Type Filter -->
+                            <div style="margin-bottom: 10px;">
+                                <label style="display: block; color: #c8d6e8; font-size: 0.8rem; margin-bottom: 4px;">Type:</label>
+                                <div id="typeButtons" style="display: flex; flex-direction: column; gap: 2px; font-size: 0.7rem;">
+                                    <button class="filter-btn active" data-type="" onclick="toggleFilter(this, 'type', '')">All</button>
+                                    <button class="filter-btn" data-type="forward" onclick="toggleFilter(this, 'type', 'forward')">⚔️ Forward</button>
+                                    <button class="filter-btn" data-type="backup" onclick="toggleFilter(this, 'type', 'backup')">🛡️ Backup</button>
+                                    <button class="filter-btn" data-type="summon" onclick="toggleFilter(this, 'type', 'summon')">✨ Summon</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Cost Filter -->
+                            <div style="margin-bottom: 10px;">
+                                <label style="display: block; color: #c8d6e8; font-size: 0.8rem; margin-bottom: 4px;">Cost:</label>
+                                <select id="costSelect" 
+                                        style="width: 100%; padding: 6px; background: rgba(255,255,255,0.1); border: 1px solid rgba(128,207,255,0.2); border-radius: 4px; color: white; font-size: 0.85rem; font-family: 'Spectral', serif;" 
+                                        onchange="handleCostSelectChange(this)">
+                                    <option value="">All Costs</option>
+                                    <option value="0">0</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="7+">7+</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Rarity Filter -->
+                            <div style="margin-bottom: 10px;">
+                                <label style="display: block; color: #c8d6e8; font-size: 0.8rem; margin-bottom: 4px;">Rarity:</label>
+                                <div id="rarityButtons" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; font-size: 0.65rem;">
+                                    <button class="filter-btn active" data-rarity="" onclick="toggleFilter(this, 'rarity', '')">All</button>
+                                    <button class="filter-btn" data-rarity="C" onclick="toggleFilter(this, 'rarity', 'C')">C</button>
+                                    <button class="filter-btn" data-rarity="R" onclick="toggleFilter(this, 'rarity', 'R')">R</button>
+                                    <button class="filter-btn" data-rarity="H" onclick="toggleFilter(this, 'rarity', 'H')">H</button>
+                                    <button class="filter-btn" data-rarity="L" onclick="toggleFilter(this, 'rarity', 'L')">L</button>
+                                    <button class="filter-btn" data-rarity="S" onclick="toggleFilter(this, 'rarity', 'S')">S</button>
+                                    <button class="filter-btn" data-rarity="B" onclick="toggleFilter(this, 'rarity', 'B')">B</button>
+                                    <button class="filter-btn" data-rarity="PR" onclick="toggleFilter(this, 'rarity', 'PR')">PR</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Categories Filter -->
+                            <div style="margin-bottom: 10px;">
+                                <label style="display: block; color: #c8d6e8; font-size: 0.8rem; margin-bottom: 4px;">Categories:</label>
+                                <select id="categorySelect" 
+                                        style="width: 100%; padding: 6px; background: rgba(255,255,255,0.1); border: 1px solid rgba(128,207,255,0.2); border-radius: 4px; color: white; font-size: 0.85rem; font-family: 'Spectral', serif;" 
+                                        onchange="handleCategorySelectChange(this)">
+                                    <option value="">All Categories</option>
+                                    <!-- Will be populated by JavaScript -->
+                                </select>
+                            </div>
+                            
+                            <!-- Filter Controls -->
+                            <button class="ff-button alt" onclick="clearAllDeckBuilderFilters()" style="width: 100%; margin-top: 10px; margin-bottom: 6px;">
+                                CLEAR ALL FILTERS
+                            </button>
+                            <div id="filterResults" style="text-align: center; font-size: 0.7rem; color: #9fb6cf;">
+                                Showing all cards
+                            </div>
+                        </aside>
                         
-                        <div class="deck-list-container" id="deckListContainer">
-                            <!-- Deck list will be populated here -->
-                            <div class="no-decks-placeholder" id="noDecksPlaceholder">
-                                <div class="placeholder-content">
-                                    <div class="placeholder-icon">🎴</div>
-                                    <h3>No Decks Created</h3>
-                                    <p>Create your first deck to get started building and playing!</p>
-                                    <button class="btn btn-primary btn-large" onclick="
-                                        if (window.app && window.app.deckBuilder) {
-                                            window.app.deckBuilder.showCreateNewDeck();
-                                        } else {
-                                            console.error('App or deck builder not available:', {app: !!window.app, deckBuilder: !!window.app?.deckBuilder});
-                                            alert('Deck builder is still loading. Please wait a moment and try again.');
-                                        }
-                                    ">
-                                        Create Your First Deck
+                        <!-- Center Panel: Card Grid -->
+                        <section class="ff-panel grid-panel">
+                            <div class="ff-card-grid" id="cardGrid">
+                                <!-- Cards will be populated here -->
+                            </div>
+                        </section>
+                        
+                        <!-- Right Panel: Current Deck -->
+                        <aside class="ff-panel deck-view">
+                            <!-- Enhanced Deck Header with Statistics -->
+                            <div style="margin-bottom: 16px;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                    <h3 style="margin: 0; color: #E8EEF5;">DECK</h3>
+                                    <span id="deckCardCount" style="color: #80CFFF; font-size: 0.9rem; font-weight: 600;">0/50</span>
+                                </div>
+                                
+                                <!-- Deck Statistics -->
+                                <div id="deckStats" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px;">
+                                    <div style="background: rgba(128, 207, 255, 0.05); padding: 6px; border-radius: 4px; text-align: center;">
+                                        <div style="font-size: 0.7rem; color: #9fb6cf; text-transform: uppercase;">Avg Cost</div>
+                                        <div id="avgCost" style="color: #80CFFF; font-weight: 600;">0.0</div>
+                                    </div>
+                                    <div style="background: rgba(128, 207, 255, 0.05); padding: 6px; border-radius: 4px; text-align: center;">
+                                        <div style="font-size: 0.7rem; color: #9fb6cf; text-transform: uppercase;">Elements</div>
+                                        <div id="elementCount" style="color: #80CFFF; font-weight: 600;">0</div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Element Distribution -->
+                                <div id="elementDistribution" style="display: flex; gap: 2px; margin-bottom: 12px; min-height: 20px;">
+                                    <!-- Element bars will be populated here -->
+                                </div>
+                            </div>
+                            
+                            <!-- Enhanced Deck Name Input -->
+                            <input type="text" id="deckName" placeholder="Enter deck name..." 
+                                   style="width: 100%; padding: 8px 12px; margin-bottom: 16px; background: rgba(255,255,255,0.08); border: 1px solid rgba(128,207,255,0.3); border-radius: 6px; color: #E8EEF5; font-family: 'Spectral', serif; font-size: 0.9rem;"
+                                   onkeyup="updateDeckName()">
+                            
+                            <!-- Deck View Controls -->
+                            <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+                                <button class="filter-btn" id="deckSortBtn" onclick="toggleDeckSort()" title="Sort deck contents">
+                                    SORT: NAME
+                                </button>
+                                <button class="filter-btn" id="deckViewBtn" onclick="toggleDeckView()" title="Toggle compact view">
+                                    COMPACT
+                                </button>
+                            </div>
+                            
+                            <!-- Enhanced Deck List -->
+                            <div id="currentDeckList" style="max-height: 280px; overflow-y: auto; margin-bottom: 16px; padding: 8px; background: rgba(0,0,0,0.15); border-radius: 6px; border: 1px solid rgba(128,207,255,0.1); scrollbar-width: thin; scrollbar-color: rgba(128, 207, 255, 0.6) rgba(0, 0, 0, 0.3);">
+                                <div style="color: #9fb6cf; text-align: center; padding: 20px; font-style: italic; font-size: 0.85rem;">
+                                    Add cards to see your deck
+                                </div>
+                            </div>
+                            
+                            <!-- Deck Validation Messages -->
+                            <div id="deckValidation" style="margin-bottom: 12px; min-height: 20px;">
+                                <!-- Validation messages will appear here -->
+                            </div>
+                            
+                            <!-- Enhanced Deck Actions -->
+                            <div style="display: flex; flex-direction: column; gap: 8px;">
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                                    <button class="ff-button" id="saveDeckBtn" onclick="saveDeckFF()" disabled title="Save deck to collection">
+                                        💾 SAVE
+                                    </button>
+                                    <button class="ff-button alt" onclick="window.exportDeck()" title="Export deck as file">
+                                        📤 EXPORT
+                                    </button>
+                                </div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                                    <button class="ff-button alt" onclick="window.importDeck()" title="Import deck from file">
+                                        📁 IMPORT
+                                    </button>
+                                    <button class="ff-button alt" onclick="clearDeckFF()" style="color: #ff8080;" title="Clear all cards from deck">
+                                        🗑️ CLEAR
                                     </button>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- Deck Editor - Hidden by default -->
-                    <div class="deck-editor" id="deckEditor" style="display: none;">
-                        <div class="deck-editor-header">
-                            <button class="btn btn-secondary" onclick="window.app?.deckBuilder?.exitDeckEditor()">
-                                ← Back to Decks
-                            </button>
-                            <div class="deck-info">
-                                <input type="text" id="deckName" placeholder="Deck Name" class="deck-name-input">
-                                <span class="deck-count"><span id="deckCardCount">0</span>/50 cards</span>
-                            </div>
-                            <div class="deck-actions">
-                                <button class="btn btn-secondary" onclick="window.importDeck()" title="Import deck from text">
-                                    📥 Import
-                                </button>
-                                <button class="btn btn-secondary" onclick="window.exportDeck()" title="Export deck as text">
-                                    📤 Export
-                                </button>
-                                <button class="btn btn-primary" onclick="window.app?.deckBuilder?.saveDeck()" id="saveDeckBtn" disabled>Save Deck</button>
-                            </div>
-                        </div>
-                        
-                        <div class="deck-editor-content">
-                            <!-- Persistent Edge Bars -->
-                            <div class="edge-toggle-bar left-edge" id="leftEdgeBar" onclick="toggleSearchSidebar()" style="display: none;">
-                                <div class="edge-handle">
-                                    <span class="edge-icon">🔍</span>
-                                    <span class="edge-text">Search</span>
-                                </div>
-                            </div>
-                            <div class="edge-toggle-bar right-edge" id="rightEdgeBar" onclick="toggleDeckSidebar()" style="display: none;">
-                                <div class="edge-handle">
-                                    <span class="edge-text">Deck</span>
-                                    <span class="edge-icon">📚</span>
-                                </div>
-                            </div>
-
-                            <!-- Search/Filter Sidebar - Left Side -->
-                            <div class="search-filter-sidebar" id="searchFilterSidebar">
-                                <div class="sidebar-toggle-bar left-toggle" onclick="toggleSearchSidebar()">
-                                    <div class="toggle-handle">
-                                        <span class="toggle-icon">🔍</span>
-                                        <span class="toggle-text">Search & Filters</span>
-                                        <span class="toggle-arrow">◀</span>
-                                    </div>
-                                </div>
-                                <div class="sidebar-content">
-                                    <div class="sidebar-header">
-                                        <h3>Search & Filter</h3>
-                                        <button class="sidebar-close-btn" onclick="toggleSearchSidebar()">✕</button>
-                                    </div>
-                                    
-                                    <!-- Search Input -->
-                                    <div class="search-section">
-                                        <div class="search-input-container">
-                                            <input type="text" id="cardSearch" placeholder="Search cards by name..." class="search-input">
-                                            <button class="search-clear-btn" id="clearSearch" style="display: none;" onclick="window.app?.deckBuilder?.clearSearch()">✕</button>
-                                        </div>
-                                    </div>
-
-                                    <!-- Sort Options -->
-                                    <div class="sort-section">
-                                        <label class="sort-label">Sort by:</label>
-                                        <select id="sortSelect" class="sort-select" onchange="window.app?.deckBuilder?.setSortOption(this.value)">
-                                            <option value="name-asc">Name (A-Z)</option>
-                                            <option value="name-desc">Name (Z-A)</option>
-                                            <option value="id-asc">ID (Ascending)</option>
-                                            <option value="id-desc">ID (Descending)</option>
-                                            <option value="cost-asc">Cost (Low to High)</option>
-                                            <option value="cost-desc">Cost (High to Low)</option>
-                                            <option value="category-asc">Category (A-Z)</option>
-                                            <option value="category-desc">Category (Z-A)</option>
-                                        </select>
-                                    </div>
-
-                                    <!-- Filter Controls -->
-                                    <div class="filter-controls">
-                                        <!-- Element Filter Buttons -->
-                                        <div class="filter-group">
-                                            <label class="filter-group-label">Element:</label>
-                                            <div class="filter-buttons" id="elementButtons">
-                                                <button class="filter-btn active" data-element="" onclick="window.app?.deckBuilder?.setElementFilter('')">All</button>
-                                                <button class="filter-btn element-fire" data-element="fire" onclick="window.app?.deckBuilder?.setElementFilter('fire')">
-                                                    <span class="filter-icon">🔥</span><span class="filter-text">Fire</span>
-                                                </button>
-                                                <button class="filter-btn element-ice" data-element="ice" onclick="window.app?.deckBuilder?.setElementFilter('ice')">
-                                                    <span class="filter-icon">❄️</span><span class="filter-text">Ice</span>
-                                                </button>
-                                                <button class="filter-btn element-wind" data-element="wind" onclick="window.app?.deckBuilder?.setElementFilter('wind')">
-                                                    <span class="filter-icon">🌪️</span><span class="filter-text">Wind</span>
-                                                </button>
-                                                <button class="filter-btn element-lightning" data-element="lightning" onclick="window.app?.deckBuilder?.setElementFilter('lightning')">
-                                                    <span class="filter-icon">⚡</span><span class="filter-text">Lightning</span>
-                                                </button>
-                                                <button class="filter-btn element-water" data-element="water" onclick="window.app?.deckBuilder?.setElementFilter('water')">
-                                                    <span class="filter-icon">💧</span><span class="filter-text">Water</span>
-                                                </button>
-                                                <button class="filter-btn element-earth" data-element="earth" onclick="window.app?.deckBuilder?.setElementFilter('earth')">
-                                                    <span class="filter-icon">🌍</span><span class="filter-text">Earth</span>
-                                                </button>
-                                                <button class="filter-btn element-light" data-element="light" onclick="window.app?.deckBuilder?.setElementFilter('light')">
-                                                    <span class="filter-icon">☀️</span><span class="filter-text">Light</span>
-                                                </button>
-                                                <button class="filter-btn element-dark" data-element="dark" onclick="window.app?.deckBuilder?.setElementFilter('dark')">
-                                                    <span class="filter-icon">🌑</span><span class="filter-text">Dark</span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        
-                                        <!-- Type Filter Buttons -->
-                                        <div class="filter-group">
-                                            <label class="filter-group-label">Type:</label>
-                                            <div class="filter-buttons" id="typeButtons">
-                                                <button class="filter-btn active" data-type="" onclick="window.app?.deckBuilder?.setTypeFilter('')">All</button>
-                                                <button class="filter-btn" data-type="forward" onclick="window.app?.deckBuilder?.setTypeFilter('forward')">
-                                                    <span class="filter-icon">⚔️</span><span class="filter-text">Forward</span>
-                                                </button>
-                                                <button class="filter-btn" data-type="backup" onclick="window.app?.deckBuilder?.setTypeFilter('backup')">
-                                                    <span class="filter-icon">🛡️</span><span class="filter-text">Backup</span>
-                                                </button>
-                                                <button class="filter-btn" data-type="summon" onclick="window.app?.deckBuilder?.setTypeFilter('summon')">
-                                                    <span class="filter-icon">✨</span><span class="filter-text">Summon</span>
-                                                </button>
-                                                <button class="filter-btn" data-type="monster" onclick="window.app?.deckBuilder?.setTypeFilter('monster')">
-                                                    <span class="filter-icon">👹</span><span class="filter-text">Monster</span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        
-                                        <!-- Cost Filter Buttons -->
-                                        <div class="filter-group">
-                                            <label class="filter-group-label">Cost:</label>
-                                            <div class="filter-buttons" id="costButtons">
-                                                <button class="filter-btn active" data-cost="" onclick="window.app?.deckBuilder?.setCostFilter('')">All</button>
-                                                <button class="filter-btn" data-cost="1" onclick="window.app?.deckBuilder?.setCostFilter('1')">1</button>
-                                                <button class="filter-btn" data-cost="2" onclick="window.app?.deckBuilder?.setCostFilter('2')">2</button>
-                                                <button class="filter-btn" data-cost="3" onclick="window.app?.deckBuilder?.setCostFilter('3')">3</button>
-                                                <button class="filter-btn" data-cost="4" onclick="window.app?.deckBuilder?.setCostFilter('4')">4</button>
-                                                <button class="filter-btn" data-cost="5" onclick="window.app?.deckBuilder?.setCostFilter('5')">5</button>
-                                                <button class="filter-btn" data-cost="6" onclick="window.app?.deckBuilder?.setCostFilter('6')">6</button>
-                                                <button class="filter-btn" data-cost="7+" onclick="window.app?.deckBuilder?.setCostFilter('7+')">7+</button>
-                                            </div>
-                                        </div>
-                                        
-                                        <!-- Rarity Filter Buttons -->
-                                        <div class="filter-group">
-                                            <label class="filter-group-label">Rarity:</label>
-                                            <div class="filter-buttons" id="rarityButtons">
-                                                <button class="filter-btn active" data-rarity="" onclick="window.app?.deckBuilder?.setRarityFilter('')">All</button>
-                                                <button class="filter-btn rarity-c" data-rarity="C" onclick="window.app?.deckBuilder?.setRarityFilter('C')">C</button>
-                                                <button class="filter-btn rarity-r" data-rarity="R" onclick="window.app?.deckBuilder?.setRarityFilter('R')">R</button>
-                                                <button class="filter-btn rarity-h" data-rarity="H" onclick="window.app?.deckBuilder?.setRarityFilter('H')">H</button>
-                                                <button class="filter-btn rarity-l" data-rarity="L" onclick="window.app?.deckBuilder?.setRarityFilter('L')">L</button>
-                                            </div>
-                                        </div>
-                                        
-                                        <!-- Opus Filter Buttons - Dynamically Generated -->
-                                        <div class="filter-group">
-                                            <label class="filter-group-label">Set:</label>
-                                            <div class="filter-buttons" id="opusButtons">
-                                                <button class="filter-btn active" data-opus="" onclick="window.app?.deckBuilder?.setOpusFilter('')">All</button>
-                                                <!-- Set buttons will be dynamically generated -->
-                                            </div>
-                                        </div>
-                                        
-                                        <!-- Category Filter Buttons - Dynamically Generated -->
-                                        <div class="filter-group">
-                                            <label class="filter-group-label">Category:</label>
-                                            <div class="filter-buttons" id="categoryButtons">
-                                                <button class="filter-btn active" data-category="" onclick="window.app?.deckBuilder?.setCategoryFilter('')">All</button>
-                                                <!-- Category buttons will be dynamically generated -->
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Main Content Area (Card Grid) -->
-                            <div class="main-content-area">
-                                <div class="card-search-panel" id="cardSearchPanel" style="display: none;">
-                                    <div class="card-grid-container">
-                                        <div class="card-grid" id="cardDatabase">
-                                            <!-- Cards will be populated here -->
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Current Deck Sidebar - Right Side -->
-                            <div class="current-deck-sidebar" id="deckSidebar">
-                                <div class="sidebar-toggle-bar right-toggle" onclick="toggleDeckSidebar()">
-                                    <div class="toggle-handle">
-                                        <span class="toggle-arrow">▶</span>
-                                        <span class="toggle-text">Deck Contents</span>
-                                        <span class="toggle-icon">📚</span>
-                                    </div>
-                                </div>
-                                <div class="sidebar-content">
-                                    <div class="current-deck-panel">
-                                        <div class="sidebar-header">
-                                            <h3>Deck Contents</h3>
-                                            <button class="sidebar-close-btn" onclick="toggleDeckSidebar()">✕</button>
-                                        </div>
-                                        <div class="deck-list" id="currentDeck">
-                                            <div class="empty-deck-message">
-                                                <p>Your deck is empty. Browse cards on the left and click to add them!</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                        </aside>
+                    </main>
                 </div>
+                
+                <!-- Compatibility elements - make DeckBuilder.js work with our FF layout -->
+                <div style="display: none;">
+                    <div id="cardSearchPanel" style="display: block !important;">
+                        <div id="cardDatabase"></div>
+                    </div>
+                    <!-- Add missing filter button containers that DeckBuilder.js expects -->
+                    <div id="opusButtons" style="display: none;"></div>
+                    <div id="categoryButtons" style="display: none;"></div>
+                    <div id="costButtons" style="display: none;"></div>
+                    <div id="rarityButtons"></div>
+                    <div id="elementButtons"></div>
+                    <div id="typeButtons"></div>
+                    <!-- Add missing inputs that DeckBuilder expects -->
+                    <input id="elementFilter" type="hidden">
+                    <input id="typeFilter" type="hidden">
+                    <div id="currentDeck"></div>
+                </div>
+                
             </section>
 
             <!-- Game View -->
@@ -688,119 +653,257 @@
 
             <!-- Profile View -->
             <section id="profileView" class="view">
-                <div class="profile-container">
-                    <h2>Player Profile</h2>
+                <div class="profile-container ff-styled">
+                    <h2 class="fftcg-title">Player Profile</h2>
+                    
+                    <!-- Settings Section -->
+                    <div class="ff-card" style="margin-top: 24px;">
+                        <h3 style="color: var(--color-primary); margin-bottom: 16px;">Audio Settings</h3>
+                        <div style="margin-bottom: 12px;">
+                            <label style="display: flex; align-items: center; gap: 12px; color: var(--text-secondary); cursor: pointer;">
+                                <input type="checkbox" id="enableFFSounds" onchange="toggleFFSounds(this.checked)" style="transform: scale(1.2);">
+                                Enable Final Fantasy Sound Effects
+                            </label>
+                            <p style="font-size: 0.85rem; color: var(--text-muted); margin: 8px 0 0 32px;">
+                                Adds authentic FF menu and game sounds (requires page reload)
+                            </p>
+                        </div>
+                        <div style="margin-bottom: 12px;">
+                            <label style="display: block; color: var(--text-secondary); margin-bottom: 4px;">Sound Volume:</label>
+                            <input type="range" id="soundVolume" min="0" max="100" value="30" 
+                                   onchange="setSoundVolume(this.value)" 
+                                   style="width: 100%; margin-bottom: 4px;">
+                            <div style="color: var(--text-muted); font-size: 0.85rem; text-align: center;" id="volumeDisplay">30%</div>
+                        </div>
+                    </div>
+                    
                     <!-- Profile management interface -->
+                </div>
+            </section>
+
+            <!-- Card Browser View -->
+            <section id="card-browserView" class="view">
+                <canvas id="cardBrowserStarfield" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; background: #000000;"></canvas>
+                <div class="ff-container">
+                    <header class="ff-title-block">
+                        <h1>CARD BROWSER<br><span class="ff-subtitle">Browse All Cards</span></h1>
+                    </header>
+                    
+                    <main class="ff-panel-layout triple">
+                        <!-- Left Panel: Filters -->
+                        <aside class="ff-panel filters">
+                            <h3>FILTERS</h3>
+                            
+                            <!-- Element Filter -->
+                            <div style="margin-bottom: 16px;">
+                                <label style="display: block; color: #c8d6e8; font-size: 0.8rem; margin-bottom: 6px;">Element:</label>
+                                <select id="browserElementFilter" style="width: 100%; padding: 6px; background: rgba(255,255,255,0.1); border: 1px solid rgba(128,207,255,0.2); border-radius: 4px; color: white; font-size: 0.85rem;">
+                                    <option value="">All</option>
+                                    <option value="fire">🔥 Fire</option>
+                                    <option value="ice">❄️ Ice</option>
+                                    <option value="wind">🌪️ Wind</option>
+                                    <option value="lightning">⚡ Lightning</option>
+                                    <option value="water">💧 Water</option>
+                                    <option value="earth">🌍 Earth</option>
+                                    <option value="light">☀️ Light</option>
+                                    <option value="dark">🌑 Dark</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Cost Filter -->
+                            <div style="margin-bottom: 16px;">
+                                <label style="display: block; color: #c8d6e8; font-size: 0.8rem; margin-bottom: 6px;">Cost:</label>
+                                <input type="range" id="browserCostFilter" min="0" max="8" value="4" 
+                                       style="width: 100%; margin-bottom: 4px;" 
+                                       oninput="document.getElementById('costValue').textContent = this.value === '0' ? 'All' : this.value">
+                                <div style="color: #80CFFF; font-size: 0.8rem; text-align: center;" id="costValue">All</div>
+                            </div>
+                            
+                            <!-- Type Filter -->
+                            <div style="margin-bottom: 16px;">
+                                <label style="display: block; color: #c8d6e8; font-size: 0.8rem; margin-bottom: 6px;">Type:</label>
+                                <select id="browserTypeFilter" style="width: 100%; padding: 6px; background: rgba(255,255,255,0.1); border: 1px solid rgba(128,207,255,0.2); border-radius: 4px; color: white; font-size: 0.85rem;">
+                                    <option value="">All</option>
+                                    <option value="forward">⚔️ Forward</option>
+                                    <option value="backup">🛡️ Backup</option>
+                                    <option value="summon">✨ Summon</option>
+                                </select>
+                            </div>
+                            
+                            <div style="height: 20px;"></div>
+                            <button class="ff-button alt" onclick="clearBrowserFilters()" style="width: 100%;">
+                                CLEAR FILTERS
+                            </button>
+                        </aside>
+                        
+                        <!-- Center Panel: Card Grid -->
+                        <section class="ff-panel grid-panel">
+                            <div class="ff-card-grid" id="browserCardGrid">
+                                <!-- Sample cards for demonstration -->
+                                <div class="card-thumb">
+                                    <div class="thumb-img">1</div>
+                                    <div class="thumb-title">Card 1</div>
+                                </div>
+                                <div class="card-thumb">
+                                    <div class="thumb-img">2</div>
+                                    <div class="thumb-title">Card 2</div>
+                                </div>
+                                <div class="card-thumb">
+                                    <div class="thumb-img">3</div>
+                                    <div class="thumb-title">Card 3</div>
+                                </div>
+                                <div class="card-thumb">
+                                    <div class="thumb-img">4</div>
+                                    <div class="thumb-title">Card 4</div>
+                                </div>
+                                <div class="card-thumb">
+                                    <div class="thumb-img">5</div>
+                                    <div class="thumb-title">Card 5</div>
+                                </div>
+                                <div class="card-thumb">
+                                    <div class="thumb-img">6</div>
+                                    <div class="thumb-title">Card 6</div>
+                                </div>
+                                <div class="card-thumb">
+                                    <div class="thumb-img">7</div>
+                                    <div class="thumb-title">Card 7</div>
+                                </div>
+                                <div class="card-thumb">
+                                    <div class="thumb-img">8</div>
+                                    <div class="thumb-title">Card 8</div>
+                                </div>
+                                <div class="card-thumb">
+                                    <div class="thumb-img">9</div>
+                                    <div class="thumb-title">Card 9</div>
+                                </div>
+                                <div class="card-thumb">
+                                    <div class="thumb-img">10</div>
+                                    <div class="thumb-title">Card 10</div>
+                                </div>
+                            </div>
+                        </section>
+                        
+                        <!-- Right Panel: Deck View -->
+                        <aside class="ff-panel deck-view">
+                            <h3>QUICK DECK (40 / 50)</h3>
+                            <div class="deck-list" id="browserDeckView">
+                                <div class="deck-row">Ifrit x1</div>
+                                <div class="deck-row">Shiva x2</div>
+                                <div class="deck-row">Cloud x3</div>
+                            </div>
+                            <div class="ff-action-row" style="margin-top: 16px;">
+                                <button class="ff-button">SAVE DECK</button>
+                                <button class="ff-button alt">EXIT</button>
+                            </div>
+                        </aside>
+                    </main>
+                    
+                    <footer class="ff-footer">
+                        Browsing 3,800+ cards • Use filters to narrow search
+                    </footer>
                 </div>
             </section>
 
             <!-- Practice Lobby View -->
             <section id="practice-lobbyView" class="view">
-                <div class="lobby-container">
-                    <!-- Lobby Header -->
-                    <div class="lobby-header">
-                        <button class="btn btn-secondary" onclick="window.app.switchView('home')">
-                            ← Back to Home
-                        </button>
-                        <h2 class="lobby-title">Practice Game Lobby</h2>
-                        <div class="lobby-status">
-                            <span class="status-indicator ready">Ready</span>
-                        </div>
-                    </div>
-
-                    <!-- Main Lobby Content -->
-                    <div class="lobby-content">
-                        <!-- Player Section -->
-                        <div class="lobby-section player-section">
-                            <h3 class="section-title">You</h3>
-                            <div class="player-card player-card-you">
-                                <div class="player-avatar" id="lobbyPlayerAvatar">⚡</div>
-                                <div class="player-info">
-                                    <h4 class="player-name" id="lobbyPlayerName">Your Name</h4>
-                                    <p class="player-stats" id="lobbyPlayerStats">Games: 0 | Wins: 0</p>
-                                </div>
-                                <div class="player-deck-info">
-                                    <div class="deck-selector">
-                                        <label for="playerDeckSelect">Select Deck:</label>
-                                        <select id="playerDeckSelect" class="deck-select">
-                                            <option value="">Choose a deck...</option>
-                                        </select>
-                                        <button class="btn btn-secondary btn-small" onclick="window.app.switchView('deck-builder')">
-                                            Create Deck
-                                        </button>
-                                    </div>
-                                    <div class="selected-deck-preview" id="playerDeckPreview" style="display: none;">
-                                        <div class="deck-preview-header">
-                                            <h5 class="deck-name"></h5>
-                                            <span class="deck-card-count"></span>
-                                        </div>
-                                        <div class="deck-elements"></div>
-                                        <div class="deck-categories"></div>
-                                    </div>
-                                </div>
+                <canvas id="practiceStarfield" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; background: #000000;"></canvas>
+                
+                <div class="ff-container">
+                    <header class="ff-title-block">
+                        <h1>PRACTICE VS AI<br><span class="ff-subtitle">Training Mode</span></h1>
+                    </header>
+                    
+                    <main class="ff-panel-layout">
+                        <!-- Deck Selection Panel -->
+                        <section class="ff-panel left-panel">
+                            <h2>SELECT DECK</h2>
+                            <ul class="ff-list" id="practiceDeckList">
+                                <!-- Populated by JavaScript -->
+                            </ul>
+                            <div class="ff-action-row">
+                                <button class="ff-button alt" onclick="window.app.switchView('deck-builder')">
+                                    CREATE DECK
+                                </button>
                             </div>
-                        </div>
-
-                        <!-- VS Indicator -->
-                        <div class="lobby-vs">
-                            <div class="vs-circle">VS</div>
-                        </div>
-
-                        <!-- AI Opponent Section -->
-                        <div class="lobby-section opponent-section">
-                            <h3 class="section-title">AI Opponent</h3>
-                            <div class="player-card player-card-ai">
-                                <div class="player-avatar ai-avatar" id="aiAvatar">🤖</div>
-                                <div class="player-info">
-                                    <h4 class="player-name" id="aiName">AI Opponent</h4>
-                                    <p class="player-stats ai-difficulty" id="aiDifficulty">Select Difficulty</p>
+                            
+                            <!-- Selected Deck Preview (hidden by default) -->
+                            <div id="selectedDeckPreview" style="display: none; margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(128, 207, 255, 0.2);">
+                                <div class="deck-preview-header">
+                                    <h4 class="deck-name" style="color: #E8EEF5; margin: 0 0 4px 0; font-size: 0.9rem;"></h4>
+                                    <span class="deck-card-count" style="color: #9fb6cf; font-size: 0.8rem;"></span>
                                 </div>
-                                <div class="ai-settings">
-                                    <div class="difficulty-selector">
-                                        <label for="aiDifficultySelect">Difficulty:</label>
-                                        <select id="aiDifficultySelect" class="difficulty-select">
-                                            <option value="">Choose difficulty...</option>
-                                            <option value="easy">Easy - Learning AI</option>
-                                            <option value="medium">Medium - Balanced AI</option>
-                                            <option value="hard">Hard - Competitive AI</option>
-                                        </select>
-                                    </div>
-                                    <div class="ai-deck-info" id="aiDeckInfo" style="display: none;">
-                                        <div class="ai-deck-preview">
-                                            <h5 class="ai-deck-name"></h5>
-                                            <p class="ai-deck-description"></p>
-                                            <div class="ai-deck-stats">
-                                                <span class="ai-deck-element"></span>
-                                                <span class="ai-deck-strategy"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <div class="deck-elements" style="margin-top: 8px; font-size: 0.8rem; color: #c8d6e8;"></div>
                             </div>
-                        </div>
-                    </div>
+                        </section>
 
-                    <!-- Lobby Actions -->
-                    <div class="lobby-actions">
-                        <div class="lobby-settings">
-                            <label>
-                                <input type="checkbox" id="enableTutorial" checked>
-                                Show tutorial hints
-                            </label>
-                            <label>
-                                <input type="checkbox" id="allowUndo">
-                                Allow undo moves
-                            </label>
-                        </div>
-                        <div class="lobby-buttons">
-                            <button class="btn btn-secondary" onclick="window.app.switchView('home')">
-                                Cancel
-                            </button>
-                            <button class="btn btn-primary" id="startPracticeBtn" disabled onclick="startPracticeFromLobby()">
-                                Start Practice Game
-                            </button>
-                        </div>
-                    </div>
+                        <!-- AI Difficulty Panel -->
+                        <section class="ff-panel right-panel">
+                            <h2>AI DIFFICULTY</h2>
+                            <ul class="ff-list" id="aiDifficultyList">
+                                <li class="ff-list-item" data-difficulty="easy" tabindex="0">
+                                    <span class="ff-pointer">▶</span>
+                                    <div>
+                                        <strong>EASY</strong>
+                                        <br><small style="color: #9fb6cf;">Learning AI - Makes basic mistakes</small>
+                                    </div>
+                                </li>
+                                <li class="ff-list-item" data-difficulty="medium" tabindex="0">
+                                    <span class="ff-pointer">▶</span>
+                                    <div>
+                                        <strong>NORMAL</strong>
+                                        <br><small style="color: #9fb6cf;">Balanced AI - Solid gameplay</small>
+                                    </div>
+                                </li>
+                                <li class="ff-list-item" data-difficulty="hard" tabindex="0">
+                                    <span class="ff-pointer">▶</span>
+                                    <div>
+                                        <strong>HARD</strong>
+                                        <br><small style="color: #9fb6cf;">Competitive AI - Advanced tactics</small>
+                                    </div>
+                                </li>
+                            </ul>
+                            
+                            <!-- Game Options -->
+                            <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(128, 207, 255, 0.2);">
+                                <label style="display: block; color: #c8d6e8; font-size: 0.85rem; margin-bottom: 6px; cursor: pointer;">
+                                    <input type="checkbox" id="enableTutorial" checked style="margin-right: 6px;">
+                                    Show tutorial hints
+                                </label>
+                                <label style="display: block; color: #c8d6e8; font-size: 0.85rem; cursor: pointer;">
+                                    <input type="checkbox" id="allowUndo" style="margin-right: 6px;">
+                                    Allow undo moves
+                                </label>
+                            </div>
+                            
+                            <!-- Action Buttons -->
+                            <div class="ff-action-row">
+                                <button class="ff-button large" id="startPracticeBtn" disabled onclick="startPracticeFromLobby()">
+                                    START GAME
+                                </button>
+                                <button class="ff-button alt" onclick="window.app.switchView('home')">
+                                    BACK
+                                </button>
+                            </div>
+                        </section>
+                    </main>
+                    
+                    <footer class="ff-footer">
+                        Practice vs AI • Hone your skills against computer opponents
+                    </footer>
+                </div>
+                
+                <!-- Hidden elements for functionality compatibility -->
+                <div style="display: none;">
+                    <select id="playerDeckSelect"></select>
+                    <select id="aiDifficultySelect"></select>
+                    <div id="lobbyPlayerAvatar">⚡</div>
+                    <div id="lobbyPlayerName">Your Name</div>
+                    <div id="lobbyPlayerStats">Games: 0 | Wins: 0</div>
+                    <div id="aiAvatar">🤖</div>
+                    <div id="aiName">AI Opponent</div>
+                    <div id="aiDifficulty">Select Difficulty</div>
+                    <div id="playerDeckPreview"></div>
+                    <div id="aiDeckInfo"></div>
                 </div>
             </section>
         </main>
@@ -988,70 +1091,79 @@
             }
         }
         
-        // Toggle search/filter sidebar
+        // Toggle sidebar functions with FF styling
         function toggleSearchSidebar() {
-            const sidebar = document.getElementById('searchFilterSidebar');
-            sidebar.classList.toggle('collapsed');
-            
-            // Update UI
-            updateMainContentMargins();
-            updateEdgeBars();
-            
-            // Save state to localStorage
-            localStorage.setItem('searchSidebarCollapsed', sidebar.classList.contains('collapsed'));
+            const filtersSidebar = document.querySelector('.ff-panel.filters');
+            if (filtersSidebar) {
+                const isVisible = filtersSidebar.style.display !== 'none';
+                filtersSidebar.style.display = isVisible ? 'none' : 'block';
+                console.log(`🔧 Search sidebar ${isVisible ? 'hidden' : 'shown'}`);
+                
+                // Adjust grid layout for remaining panels
+                const gridPanel = document.querySelector('.ff-panel.grid-panel');
+                if (gridPanel) {
+                    const deckViewVisible = document.querySelector('.ff-panel.deck-view').style.display !== 'none';
+                    if (isVisible) {
+                        // Filters hidden - expand grid panel
+                        gridPanel.style.width = deckViewVisible ? '74%' : '98%';
+                    } else {
+                        // Filters shown - restore normal width
+                        gridPanel.style.width = deckViewVisible ? '56%' : '80%';
+                    }
+                }
+                
+                // Update card grid columns to fit available space
+                updateCardGridColumns();
+            }
         }
         
-        // Toggle deck contents sidebar
         function toggleDeckSidebar() {
-            const sidebar = document.getElementById('deckSidebar');
-            sidebar.classList.toggle('collapsed');
-            
-            // Update UI
-            updateMainContentMargins();
-            updateEdgeBars();
-            
-            // Save state to localStorage
-            localStorage.setItem('deckSidebarCollapsed', sidebar.classList.contains('collapsed'));
+            const deckViewSidebar = document.querySelector('.ff-panel.deck-view');
+            if (deckViewSidebar) {
+                const isVisible = deckViewSidebar.style.display !== 'none';
+                deckViewSidebar.style.display = isVisible ? 'none' : 'block';
+                console.log(`🔧 Deck sidebar ${isVisible ? 'hidden' : 'shown'}`);
+                
+                // Adjust grid layout for remaining panels
+                const gridPanel = document.querySelector('.ff-panel.grid-panel');
+                if (gridPanel) {
+                    const filtersVisible = document.querySelector('.ff-panel.filters').style.display !== 'none';
+                    if (isVisible) {
+                        // Deck view hidden - expand grid panel significantly
+                        gridPanel.style.width = filtersVisible ? '80%' : '98%';
+                    } else {
+                        // Deck view shown - restore normal width
+                        gridPanel.style.width = filtersVisible ? '56%' : '74%';
+                    }
+                }
+                
+                // Update card grid columns to fit available space
+                updateCardGridColumns();
+            }
         }
         
-        // Restore sidebar states on page load
+        // Sidebar state restoration disabled - using FF layout
         document.addEventListener('DOMContentLoaded', function() {
-            // Restore search sidebar state
-            const searchCollapsed = localStorage.getItem('searchSidebarCollapsed') === 'true';
-            if (searchCollapsed) {
-                document.getElementById('searchFilterSidebar').classList.add('collapsed');
-            }
-            
-            // Restore deck sidebar state
-            const deckCollapsed = localStorage.getItem('deckSidebarCollapsed') === 'true';
-            if (deckCollapsed) {
-                document.getElementById('deckSidebar').classList.add('collapsed');
-            }
-            
-            // Update UI after restoring states
-            setTimeout(() => {
-                updateMainContentMargins();
-                updateEdgeBars();
-            }, 100);
+            console.log('🔧 Old sidebar state restoration disabled');
+            // No-op - FF layout doesn't need sidebar state restoration
         });
         
         // Keyboard shortcuts for sidebar toggling
         document.addEventListener('keydown', function(e) {
             // Only activate when in deck builder view and not typing in inputs
-            if (!document.getElementById('deck-builderView').classList.contains('active') || 
+            const deckBuilderView = document.getElementById('deck-builderView');
+            if (!deckBuilderView || !deckBuilderView.classList.contains('active') || 
                 e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
                 return;
             }
             
-            // Ctrl/Cmd + [ to toggle search sidebar
+            // Sidebar shortcuts for FF layout
             if ((e.ctrlKey || e.metaKey) && e.key === '[') {
                 e.preventDefault();
                 toggleSearchSidebar();
             }
-            
-            // Ctrl/Cmd + ] to toggle deck sidebar
             if ((e.ctrlKey || e.metaKey) && e.key === ']') {
-                e.preventDefault();
+                e.preventDefault(); 
                 toggleDeckSidebar();
             }
         });
@@ -1143,6 +1255,793 @@
                 !menu.contains(e.target) && !menuBtn.contains(e.target)) {
                 toggleGameMenu();
             }
+        });
+
+        // FF Practice Lobby Integration
+        let practiceStarfield = null;
+        let selectedDeck = null;
+        let selectedDifficulty = null;
+        
+        // Initialize FF Practice Lobby when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            initializePracticeFFInterface();
+        });
+        
+        function initializePracticeFFInterface() {
+            // Initialize starfield for practice view
+            const practiceCanvas = document.getElementById('practiceStarfield');
+            if (practiceCanvas && window.Starfield) {
+                practiceStarfield = new window.Starfield('practiceStarfield');
+            }
+            
+            // Set up FF list interactions for deck selection
+            setupPracticeDeckList();
+            setupAIDifficultyList();
+            
+            // Monitor practice view visibility for starfield
+            const practiceView = document.getElementById('practice-lobbyView');
+            if (practiceView) {
+                const observer = new MutationObserver((mutations) => {
+                    mutations.forEach((mutation) => {
+                        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                            const isActive = practiceView.classList.contains('active');
+                            if (practiceStarfield) {
+                                practiceStarfield.setActive(isActive);
+                            }
+                            if (isActive) {
+                                populatePracticeDeckList();
+                            }
+                        }
+                    });
+                });
+                observer.observe(practiceView, { attributes: true });
+            }
+        }
+        
+        function setupPracticeDeckList() {
+            const deckList = document.getElementById('practiceDeckList');
+            if (!deckList) return;
+            
+            deckList.addEventListener('click', function(e) {
+                const item = e.target.closest('.ff-list-item');
+                if (item && item.dataset.deckId) {
+                    selectPracticeDeck(item.dataset.deckId, item);
+                }
+            });
+            
+            // Keyboard navigation
+            deckList.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    const selectedItem = deckList.querySelector('.ff-list-item.selected');
+                    if (selectedItem && selectedItem.dataset.deckId) {
+                        selectPracticeDeck(selectedItem.dataset.deckId, selectedItem);
+                    }
+                }
+            });
+        }
+        
+        function setupAIDifficultyList() {
+            const difficultyList = document.getElementById('aiDifficultyList');
+            if (!difficultyList) return;
+            
+            difficultyList.addEventListener('click', function(e) {
+                const item = e.target.closest('.ff-list-item');
+                if (item && item.dataset.difficulty) {
+                    selectAIDifficulty(item.dataset.difficulty, item);
+                }
+            });
+            
+            // Keyboard navigation  
+            difficultyList.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    const selectedItem = difficultyList.querySelector('.ff-list-item.selected');
+                    if (selectedItem && selectedItem.dataset.difficulty) {
+                        selectAIDifficulty(selectedItem.dataset.difficulty, selectedItem);
+                    }
+                }
+            });
+        }
+        
+        function populatePracticeDeckList() {
+            const deckList = document.getElementById('practiceDeckList');
+            const hiddenSelect = document.getElementById('playerDeckSelect');
+            if (!deckList || !window.app?.deckManager) return;
+            
+            const decks = window.app.deckManager.getDecks();
+            deckList.innerHTML = '';
+            hiddenSelect.innerHTML = '<option value="">Choose a deck...</option>';
+            
+            if (decks.length === 0) {
+                deckList.innerHTML = '<li class="ff-list-item" style="color: #9fb6cf; cursor: default;"><span style="margin-right: 10px;">📝</span>No decks available - Create one first!</li>';
+                return;
+            }
+            
+            decks.forEach((deck, index) => {
+                const item = document.createElement('li');
+                item.className = 'ff-list-item';
+                item.dataset.deckId = deck.id;
+                item.tabIndex = 0;
+                if (index === 0) item.classList.add('selected');
+                
+                item.innerHTML = `
+                    <span class="ff-pointer">▶</span>
+                    <div>
+                        <strong>${deck.name}</strong>
+                        <br><small style="color: #9fb6cf;">${deck.cards?.length || 0} cards</small>
+                    </div>
+                `;
+                deckList.appendChild(item);
+                
+                // Also populate hidden select for compatibility
+                const option = document.createElement('option');
+                option.value = deck.id;
+                option.textContent = `${deck.name} (${deck.cards?.length || 0} cards)`;
+                hiddenSelect.appendChild(option);
+            });
+            
+            // Auto-select first deck
+            if (decks.length > 0) {
+                selectPracticeDeck(decks[0].id, deckList.querySelector('.ff-list-item.selected'));
+            }
+        }
+        
+        function selectPracticeDeck(deckId, listItem) {
+            // Clear previous selections
+            document.querySelectorAll('#practiceDeckList .ff-list-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            
+            // Select new item
+            if (listItem) {
+                listItem.classList.add('selected');
+            }
+            
+            // Update hidden select for compatibility
+            const hiddenSelect = document.getElementById('playerDeckSelect');
+            if (hiddenSelect) {
+                hiddenSelect.value = deckId;
+                hiddenSelect.dispatchEvent(new Event('change'));
+            }
+            
+            selectedDeck = deckId;
+            showDeckPreview(deckId);
+            updateStartButton();
+        }
+        
+        function selectAIDifficulty(difficulty, listItem) {
+            // Clear previous selections
+            document.querySelectorAll('#aiDifficultyList .ff-list-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            
+            // Select new item
+            if (listItem) {
+                listItem.classList.add('selected');
+            }
+            
+            // Update hidden select for compatibility
+            const hiddenSelect = document.getElementById('aiDifficultySelect');
+            if (hiddenSelect) {
+                hiddenSelect.value = difficulty;
+                hiddenSelect.dispatchEvent(new Event('change'));
+            }
+            
+            selectedDifficulty = difficulty;
+            updateStartButton();
+        }
+        
+        function showDeckPreview(deckId) {
+            if (!window.app?.deckManager) return;
+            
+            const deck = window.app.deckManager.getDeck(deckId);
+            const preview = document.getElementById('selectedDeckPreview');
+            
+            if (deck && preview) {
+                preview.querySelector('.deck-name').textContent = deck.name;
+                preview.querySelector('.deck-card-count').textContent = `${deck.cards?.length || 0} cards`;
+                
+                // Show elements
+                const elements = {};
+                deck.cards?.forEach(card => {
+                    if (card.element) {
+                        elements[card.element] = (elements[card.element] || 0) + 1;
+                    }
+                });
+                
+                const elementsText = Object.entries(elements)
+                    .map(([element, count]) => `${element}: ${count}`)
+                    .join(', ');
+                preview.querySelector('.deck-elements').textContent = elementsText || 'No elements';
+                
+                preview.style.display = 'block';
+            }
+        }
+        
+        function updateStartButton() {
+            const startBtn = document.getElementById('startPracticeBtn');
+            if (startBtn) {
+                startBtn.disabled = !selectedDeck || !selectedDifficulty;
+            }
+        }
+
+        // Filter system now handled by DeckBuilder.js only
+
+
+        function updateFilterButtonStates(filterType) {
+            const container = document.querySelector(`#${filterType}Buttons`);
+            if (!container) return;
+            
+            const buttons = container.querySelectorAll('.filter-btn[data-' + filterType + ']:not([data-' + filterType + '=""])');
+            buttons.forEach(btn => {
+                const hasActive = btn.classList.contains('active');
+                const hasMultiple = activeFilters[filterType].length > 1;
+                
+                if (hasActive && hasMultiple) {
+                    btn.classList.add('multiple-active');
+                    btn.classList.remove('active');
+                } else if (hasActive) {
+                    btn.classList.add('active');
+                    btn.classList.remove('multiple-active');
+                }
+            });
+        }
+
+        function applyDeckBuilderFilters() {
+            const searchInput = document.getElementById('cardSearch');
+            const sortSelect = document.getElementById('sortSelect');
+            const cardGrid = document.getElementById('cardGrid');
+            const resultsDiv = document.getElementById('filterResults');
+            
+            if (searchInput) activeFilters.search = searchInput.value.toLowerCase();
+            if (sortSelect) activeFilters.sort = sortSelect.value;
+            
+            console.log('🔍 Applying deck builder filters:', activeFilters);
+            
+            if (!window.app?.cardDatabase) {
+                console.error('❌ Card database not available');
+                return;
+            }
+            
+            if (!cardGrid) {
+                console.error('❌ Card grid element not found');
+                return;
+            }
+            
+            const allCards = window.app.cardDatabase.getAllCards();
+            let filteredCards = allCards.filter(card => {
+                // Text search
+                if (activeFilters.search) {
+                    const searchTerm = activeFilters.search;
+                    const searchableText = [
+                        card.name,
+                        card.text || '',
+                        card.id,
+                        card.abilities || ''
+                    ].join(' ').toLowerCase();
+                    
+                    if (!searchableText.includes(searchTerm)) return false;
+                }
+                
+                // Element filter
+                if (activeFilters.element.length > 0) {
+                    if (!activeFilters.element.includes(card.element)) return false;
+                }
+                
+                // Type filter
+                if (activeFilters.type.length > 0) {
+                    if (!activeFilters.type.includes(card.type)) return false;
+                }
+                
+                // Cost filter
+                if (activeFilters.cost.length > 0) {
+                    const cardCost = parseInt(card.cost) || 0;
+                    const matches = activeFilters.cost.some(filterCost => {
+                        if (filterCost === '7+') return cardCost >= 7;
+                        return cardCost === parseInt(filterCost);
+                    });
+                    if (!matches) return false;
+                }
+                
+                // Rarity filter
+                if (activeFilters.rarity.length > 0) {
+                    if (!activeFilters.rarity.includes(card.rarity)) return false;
+                }
+                
+                // Category filter (smart matching for cards with multiple categories)
+                if (activeFilters.category.length > 0) {
+                    const cardCategories = getCardCategories(card.category);
+                    const hasMatchingCategory = cardCategories.some(cat => activeFilters.category.includes(cat));
+                    if (!hasMatchingCategory) return false;
+                }
+                
+                // Opus filter
+                if (activeFilters.opus.length > 0) {
+                    if (!activeFilters.opus.includes(card.opus || card.set)) return false;
+                }
+                
+                return true;
+            });
+            
+            // Sort filtered cards
+            filteredCards = sortCards(filteredCards, activeFilters.sort);
+            
+            // Update display
+            renderFilteredCards(filteredCards);
+            
+            // Update results counter
+            if (resultsDiv) {
+                resultsDiv.textContent = `Showing ${filteredCards.length} of ${allCards.length} cards`;
+            }
+        }
+
+        function sortCards(cards, sortType) {
+            return cards.sort((a, b) => {
+                switch (sortType) {
+                    case 'name-desc':
+                        return b.name.localeCompare(a.name);
+                    case 'cost-asc':
+                        return (parseInt(a.cost) || 0) - (parseInt(b.cost) || 0);
+                    case 'cost-desc':
+                        return (parseInt(b.cost) || 0) - (parseInt(a.cost) || 0);
+                    case 'id-asc':
+                        return a.id.localeCompare(b.id);
+                    case 'name-asc':
+                    default:
+                        return a.name.localeCompare(b.name);
+                }
+            });
+        }
+
+        // Helper function for smart category filtering
+        function getCardCategories(categoryString) {
+            if (!categoryString) return ['Special'];
+            
+            // Split dual categories on &middot; separator or other common separators
+            const separators = ['&middot;', '•', '·', ' / ', '/'];
+            let categories = [categoryString.trim()];
+            
+            for (const sep of separators) {
+                if (categoryString.includes(sep)) {
+                    categories = categoryString.split(sep).map(cat => cat.trim());
+                    break;
+                }
+            }
+            
+            // Clean up and normalize category names
+            return categories.filter(cat => cat && cat.length > 0).map(cat => {
+                // Remove HTML entities and normalize
+                return cat.replace(/&middot;/g, '').replace(/&nbsp;/g, ' ').trim();
+            });
+        }
+
+        // New dropdown handler functions
+        function handleOpusSelectChange(select) {
+            const value = select.value;
+            
+            // Update both our filter system and the DeckBuilder.js system
+            activeFilters.opus = value ? [value] : [];
+            
+            // Always apply our filter system first
+            console.log(`🎯 Opus filter changed to: ${value || 'All'}`);
+            applyDeckBuilderFilters();
+            
+            // Also sync with DeckBuilder.js if it exists
+            if (window.app?.deckBuilder) {
+                window.app.deckBuilder.opusFilter = value ? [value] : [];
+            }
+        }
+
+        function handleCostSelectChange(select) {
+            const value = select.value;
+            
+            // Update both our filter system and the DeckBuilder.js system
+            activeFilters.cost = value ? [value] : [];
+            
+            // Always apply our filter system first
+            console.log(`💰 Cost filter changed to: ${value || 'All'}`);
+            applyDeckBuilderFilters();
+            
+            // Also sync with DeckBuilder.js if it exists
+            if (window.app?.deckBuilder) {
+                window.app.deckBuilder.costFilter = value ? [value] : [];
+            }
+        }
+
+        function handleCategorySelectChange(select) {
+            const value = select.value;
+            console.log(`🏷️ Category filter changed to: "${value || 'All'}"`);            
+            if (window.app?.deckBuilder?.setCategoryFilter) {
+                window.app.deckBuilder.setCategoryFilter(value);
+            }
+        }
+
+
+
+        function clearAllDeckBuilderFilters() {
+            console.log('🔧 Clearing all deck builder filters');
+            
+            // Clear HTML inputs
+            const searchInput = document.getElementById('cardSearch');
+            if (searchInput) searchInput.value = '';
+            
+            const sortSelect = document.getElementById('sortSelect');
+            if (sortSelect) sortSelect.value = 'name-asc';
+            
+            const opusSelect = document.getElementById('opusSelect');
+            if (opusSelect) opusSelect.value = '';
+            
+            const costSelect = document.getElementById('costSelect');
+            if (costSelect) costSelect.value = '';
+            
+            const categorySelect = document.getElementById('categorySelect');
+            if (categorySelect) categorySelect.value = '';
+            
+            // Clear DeckBuilder.js filters
+            if (window.app?.deckBuilder) {
+                window.app.deckBuilder.clearAllFilters();
+                window.app.deckBuilder.refreshCardDisplay();
+            }
+        }
+
+
+        // Card Browser Functions (Keep existing for browser view)
+        function clearBrowserFilters() {
+            const elementFilter = document.getElementById('browserElementFilter');
+            const costFilter = document.getElementById('browserCostFilter');
+            const typeFilter = document.getElementById('browserTypeFilter');
+            const costValue = document.getElementById('costValue');
+            
+            if (elementFilter) elementFilter.value = '';
+            if (costFilter) {
+                costFilter.value = '4';
+                if (costValue) costValue.textContent = 'All';
+            }
+            if (typeFilter) typeFilter.value = '';
+            
+            console.log('🃏 Card Browser filters cleared');
+        }
+        
+        function previewCard(cardId) {
+            console.log('🔍 Previewing card:', cardId);
+            // This would show card details - for now just log
+            if (window.app && window.app.cardDatabase) {
+                const card = window.app.cardDatabase.getCard(cardId);
+                if (card) {
+                    console.log('📄 Card details:', card.name, card);
+                    // Could open a modal or update a preview panel here
+                } else {
+                    console.warn('Card not found:', cardId);
+                }
+            }
+        }
+
+        // FF Sound Settings Functions
+        function toggleFFSounds(enabled) {
+            console.log('🔊 FF Sounds', enabled ? 'enabled' : 'disabled');
+            
+            if (window.ffSounds || window.app?.soundEffects) {
+                const soundSystem = window.ffSounds || window.app.soundEffects;
+                if (enabled) {
+                    soundSystem.enable();
+                    soundSystem.attachToExistingUI(); // Add sounds to current UI elements
+                } else {
+                    soundSystem.disable();
+                }
+            }
+            
+            // Save preference to localStorage
+            localStorage.setItem('ffSoundsEnabled', enabled.toString());
+        }
+        
+        function setSoundVolume(volume) {
+            const volumeDisplay = document.getElementById('volumeDisplay');
+            if (volumeDisplay) {
+                volumeDisplay.textContent = volume + '%';
+            }
+            
+            if (window.ffSounds || window.app?.soundEffects) {
+                const soundSystem = window.ffSounds || window.app.soundEffects;
+                soundSystem.setVolume(volume / 100);
+            }
+            
+            // Save preference to localStorage
+            localStorage.setItem('ffSoundVolume', volume.toString());
+            
+            console.log('🔊 FF Sound volume set to', volume + '%');
+        }
+        
+        // Navigation Functions
+        function goBackToMenu() {
+            if (window.app) {
+                window.app.switchView('home');
+                console.log('🏠 Returned to main menu');
+            }
+        }
+
+        // Working deck creation with proper card rendering
+        function testNewDeck() {
+            console.log('🧪 Creating new deck with full card features...');
+            
+            // Step 1: Show deck editor
+            const deckManager = document.getElementById('deckManager');
+            const deckEditor = document.getElementById('deckEditor');
+            
+            if (deckManager && deckEditor) {
+                deckManager.style.display = 'none';
+                deckEditor.style.display = 'block';
+                
+                // Step 1.5: Start debugging
+                debugCardGrid();
+                
+                // Step 2: Load cards with full features
+                loadCardsWithFeatures();
+                
+                console.log('✅ Deck editor opened with full card features');
+            } else {
+                alert('Could not find deck elements');
+            }
+        }
+        
+        // Load cards with all the proper features
+        function loadCardsWithFeatures() {
+            console.log('🔍 DEBUG: loadCardsWithFeatures() called');
+            
+            const ffCardGrid = document.getElementById('cardGrid');
+            console.log('🔍 DEBUG: cardGrid element:', ffCardGrid);
+            console.log('🔍 DEBUG: cardGrid current innerHTML length:', ffCardGrid?.innerHTML?.length);
+            console.log('🔍 DEBUG: cardGrid current children count:', ffCardGrid?.children?.length);
+            console.log('🔍 DEBUG: cardGrid current classes:', ffCardGrid?.className);
+            
+            if (!ffCardGrid || !window.app?.cardDatabase) {
+                console.warn('⚠️ Card grid or database not available');
+                return;
+            }
+            
+            console.log('🃏 Loading cards with full features...');
+            
+            // Initialize filters first
+            initializeDeckBuilderFilters();
+            
+            // Apply initial filter (show all cards)
+            applyDeckBuilderFilters();
+            
+            console.log(`✅ Loaded cards with full features and filters`);
+        }
+        
+        // Removed populateCardGridManually() - cards populated by loadCardsWithFeatures() only
+        
+        // Card preview functions
+        function showCardPreview(element, cardId) {
+            if (!window.app?.cardDatabase) return;
+            
+            const card = window.app.cardDatabase.getCard(cardId);
+            if (!card) return;
+            
+            // Create or get preview element
+            let preview = document.getElementById('cardPreviewPopup');
+            if (!preview) {
+                preview = document.createElement('div');
+                preview.id = 'cardPreviewPopup';
+                preview.className = 'card-preview-popup';
+                document.body.appendChild(preview);
+            }
+            
+            const imageUrl = window.app.cardDatabase.getCardImageUrl ? 
+                window.app.cardDatabase.getCardImageUrl(card.id) : 
+                (card.image || `/assets/images/cards/${card.id}.jpg`);
+            
+            preview.innerHTML = `
+                <div class="preview-image">
+                    <img src="${imageUrl}" alt="${card.name}" onerror="this.src='/assets/images/card-back.jpg';">
+                </div>
+                <div class="preview-info">
+                    <h3>${card.name}</h3>
+                    <div class="preview-details">
+                        ${card.cost ? `<span>Cost: ${card.cost}</span>` : ''}
+                        ${card.element ? `<span>Element: ${card.element}</span>` : ''}
+                        ${card.type ? `<span>Type: ${card.type}</span>` : ''}
+                        ${card.power ? `<span>Power: ${card.power}</span>` : ''}
+                    </div>
+                    ${card.text ? `<div class="preview-text">${card.text}</div>` : ''}
+                </div>
+            `;
+            
+            // Position preview near the hovered card
+            const rect = element.getBoundingClientRect();
+            preview.style.left = (rect.right + 10) + 'px';
+            preview.style.top = rect.top + 'px';
+            preview.style.display = 'block';
+        }
+        
+        function hideCardPreview() {
+            const preview = document.getElementById('cardPreviewPopup');
+            if (preview) {
+                preview.style.display = 'none';
+            }
+        }
+        
+        // Function to add card to deck
+        function addCardToDeck(cardId) {
+            console.log('🃏 Adding card to deck:', cardId);
+            
+            if (!window.app?.cardDatabase) return;
+            const card = window.app.cardDatabase.getCard(cardId);
+            if (!card) return;
+            
+            // Get current deck list
+            const currentDeckList = document.getElementById('currentDeckList');
+            const deckCardCount = document.getElementById('deckCardCount');
+            
+            if (currentDeckList && deckCardCount) {
+                // Simple implementation - just add to visual list
+                const existingCard = currentDeckList.querySelector(`[data-card-id="${cardId}"]`);
+                if (existingCard) {
+                    // Increment count if card already exists
+                    const countSpan = existingCard.querySelector('.card-count');
+                    const currentCount = parseInt(countSpan.textContent.replace('x', '')) || 1;
+                    if (currentCount < 3) { // Max 3 copies
+                        countSpan.textContent = `x${currentCount + 1}`;
+                    }
+                } else {
+                    // Add new card
+                    const cardElement = document.createElement('div');
+                    cardElement.className = 'deck-card-item';
+                    cardElement.setAttribute('data-card-id', cardId);
+                    cardElement.innerHTML = `
+                        <span class="card-name">${card.name}</span>
+                        <span class="card-count">x1</span>
+                    `;
+                    currentDeckList.appendChild(cardElement);
+                }
+                
+                // Update deck count
+                const totalCards = Array.from(currentDeckList.querySelectorAll('.card-count'))
+                    .reduce((total, countElement) => {
+                        return total + (parseInt(countElement.textContent.replace('x', '')) || 0);
+                    }, 0);
+                
+                deckCardCount.textContent = `${totalCards}/50`;
+                
+                console.log(`✅ Added ${card.name} to deck. Total cards: ${totalCards}`);
+            }
+        }
+
+        // Deck Builder Functions - Minimal approach to avoid freezing
+        function createNewDeckFF() {
+            console.log('🎴 Creating new deck...');
+            
+            // Super simple approach - just show/hide elements
+            const deckManager = document.getElementById('deckManager');
+            const deckEditor = document.getElementById('deckEditor');
+            
+            if (deckManager && deckEditor) {
+                deckManager.style.display = 'none';
+                deckEditor.style.display = 'block';
+                
+                // Set deck name
+                const deckNameInput = document.getElementById('deckName');
+                if (deckNameInput) {
+                    deckNameInput.value = 'New Deck';
+                }
+                
+                console.log('✅ Deck editor shown');
+            } else {
+                alert('Deck editor not found. Please refresh the page.');
+            }
+        }
+
+        function exitDeckEditor() {
+            console.log('🔙 Exiting deck editor...');
+            
+            // Safe approach - directly hide/show elements
+            try {
+                const deckManager = document.getElementById('deckManager');
+                const deckEditor = document.getElementById('deckEditor');
+                
+                if (deckManager && deckEditor) {
+                    // Show deck manager, hide deck editor
+                    deckManager.style.display = 'block';
+                    deckEditor.style.display = 'none';
+                    
+                    console.log('✅ Returned to deck manager');
+                } else {
+                    throw new Error('Deck manager elements not found');
+                }
+            } catch (error) {
+                console.error('❌ Error exiting deck editor:', error);
+                // Fallback - try the original method
+                if (window.app && window.app.deckBuilder) {
+                    window.app.deckBuilder.exitDeckEditor();
+                }
+            }
+        }
+
+        function saveDeckFF() {
+            console.log('💾 Saving deck...');
+            if (window.app && window.app.deckBuilder) {
+                window.app.deckBuilder.saveDeck();
+            } else {
+                alert('Unable to save deck. Please try again.');
+            }
+        }
+
+        function clearDeckFF() {
+            console.log('🗑️ Clearing deck...');
+            if (confirm('Are you sure you want to clear the current deck? This cannot be undone.')) {
+                if (window.app && window.app.deckBuilder) {
+                    window.app.deckBuilder.clearDeck();
+                    console.log('✅ Deck cleared successfully');
+                } else {
+                    alert('Unable to clear deck. Please try again.');
+                }
+            }
+        }
+
+        // DeckBuilder FF Integration - Simplified approach to avoid freezing
+        function setupDeckBuilderIntegration() {
+            console.log('🔗 DeckBuilder FF integration disabled temporarily to prevent freezing');
+            
+            // Card population handled by loadCardsWithFeatures() only
+        }
+
+        // DEBUG: Monitor any changes to the cardGrid
+        function debugCardGrid() {
+            const cardGrid = document.getElementById('cardGrid');
+            if (!cardGrid) {
+                console.log('🔍 DEBUG: No cardGrid found to monitor');
+                return;
+            }
+            
+            console.log('🔍 DEBUG: Setting up cardGrid monitoring...');
+            
+            // Monitor DOM mutations
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    console.log('🔍 DEBUG: CardGrid MUTATION detected:', mutation.type);
+                    console.log('🔍 DEBUG: Added nodes:', mutation.addedNodes.length);
+                    console.log('🔍 DEBUG: Removed nodes:', mutation.removedNodes.length);
+                    console.log('🔍 DEBUG: Current children count:', cardGrid.children.length);
+                    
+                    if (mutation.addedNodes.length > 0) {
+                        Array.from(mutation.addedNodes).forEach((node, i) => {
+                            if (node.nodeType === 1) { // Element node
+                                console.log(`🔍 DEBUG: Added element ${i}:`, node.className, node.tagName);
+                            }
+                        });
+                    }
+                });
+            });
+            
+            observer.observe(cardGrid, {
+                childList: true,
+                subtree: true,
+                attributes: false
+            });
+            
+            console.log('🔍 DEBUG: CardGrid monitoring active');
+        }
+
+        // Load sound settings and setup keyboard shortcuts on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Restore sound settings
+            const soundsEnabled = localStorage.getItem('ffSoundsEnabled') === 'true';
+            const soundVolume = localStorage.getItem('ffSoundVolume') || '30';
+            
+            const enableCheckbox = document.getElementById('enableFFSounds');
+            const volumeSlider = document.getElementById('soundVolume');
+            const volumeDisplay = document.getElementById('volumeDisplay');
+            
+            if (enableCheckbox) enableCheckbox.checked = soundsEnabled;
+            if (volumeSlider) volumeSlider.value = soundVolume;
+            if (volumeDisplay) volumeDisplay.textContent = soundVolume + '%';
+            
+            console.log('🔊 Sound settings loaded:', {enabled: soundsEnabled, volume: soundVolume + '%'});
+            
+            // DeckBuilder integration temporarily disabled for troubleshooting
+            // setupDeckBuilderIntegration();
+            
+            // Keyboard shortcuts temporarily disabled to troubleshoot freezing
+            console.log('⌨️  Keyboard shortcuts disabled for troubleshooting');
         });
 
         // Simplified Practice Lobby Functions - Main logic now in PracticeLobby.js component
@@ -2050,13 +2949,219 @@
             }
         }
 
+        // Dynamic Card Grid Column Management
+        function updateCardGridColumns() {
+            const cardGrid = document.getElementById('cardGrid');
+            if (!cardGrid) return;
+            
+            // Get the actual width of the card grid container
+            const containerWidth = cardGrid.offsetWidth;
+            
+            // Card dimensions: 140px width + 16px gap = 156px per card
+            const cardWidth = 140;
+            const cardGap = 16;
+            const cardTotalWidth = cardWidth + cardGap;
+            
+            // Calculate how many columns can fit
+            const maxColumns = Math.floor((containerWidth + cardGap) / cardTotalWidth);
+            
+            // Ensure minimum of 1 column, maximum of 10 for performance
+            const columns = Math.max(1, Math.min(maxColumns, 10));
+            
+            // Update the grid template columns
+            cardGrid.style.gridTemplateColumns = `repeat(${columns}, ${cardWidth}px)`;
+            
+            console.log(`📊 Card grid updated: ${containerWidth}px container → ${columns} columns (${cardWidth}px each)`);
+        }
+        
+        // Call updateCardGridColumns on window resize
+        window.addEventListener('resize', updateCardGridColumns);
+
+        // Enhanced Deck View Functions
+        let deckSortMode = 'name';
+        let deckViewCompact = false;
+        
+        function updateDeckName() {
+            const deckNameInput = document.getElementById('deckName');
+            if (deckNameInput && deckNameInput.value.trim()) {
+                document.getElementById('saveDeckBtn').disabled = false;
+                console.log(`📝 Deck name updated: ${deckNameInput.value}`);
+            } else {
+                document.getElementById('saveDeckBtn').disabled = true;
+            }
+        }
+        
+        function toggleDeckSort() {
+            const sortBtn = document.getElementById('deckSortBtn');
+            const modes = ['name', 'cost', 'element', 'type'];
+            const currentIndex = modes.indexOf(deckSortMode);
+            deckSortMode = modes[(currentIndex + 1) % modes.length];
+            
+            sortBtn.textContent = `SORT: ${deckSortMode.toUpperCase()}`;
+            updateDeckDisplay();
+            console.log(`🔀 Deck sort changed to: ${deckSortMode}`);
+        }
+        
+        function toggleDeckView() {
+            const viewBtn = document.getElementById('deckViewBtn');
+            deckViewCompact = !deckViewCompact;
+            
+            viewBtn.textContent = deckViewCompact ? 'DETAILED' : 'COMPACT';
+            viewBtn.classList.toggle('active', deckViewCompact);
+            updateDeckDisplay();
+            console.log(`👁️ Deck view toggled: ${deckViewCompact ? 'compact' : 'detailed'}`);
+        }
+        
+        function updateDeckStats() {
+            if (!window.app?.deckManager) return;
+            
+            const deck = window.app.deckManager.getCurrentDeck();
+            const cards = deck || [];
+            
+            // Update card count
+            const countElement = document.getElementById('deckCardCount');
+            if (countElement) {
+                countElement.textContent = `${cards.length}/50`;
+                countElement.style.color = cards.length > 50 ? '#ff6b6b' : '#80CFFF';
+            }
+            
+            // Calculate average cost
+            const totalCost = cards.reduce((sum, card) => sum + (card.cost || 0), 0);
+            const avgCost = cards.length > 0 ? (totalCost / cards.length).toFixed(1) : '0.0';
+            const avgCostElement = document.getElementById('avgCost');
+            if (avgCostElement) avgCostElement.textContent = avgCost;
+            
+            // Count unique elements
+            const elements = new Set(cards.map(card => card.element).filter(Boolean));
+            const elementCountElement = document.getElementById('elementCount');
+            if (elementCountElement) elementCountElement.textContent = elements.size;
+            
+            // Update element distribution
+            updateElementDistribution(cards);
+            
+            // Update validation messages
+            updateDeckValidation(cards);
+            
+            console.log(`📊 Deck stats updated: ${cards.length} cards, ${avgCost} avg cost, ${elements.size} elements`);
+        }
+        
+        function updateElementDistribution(cards) {
+            const distributionElement = document.getElementById('elementDistribution');
+            if (!distributionElement) return;
+            
+            const elementColors = {
+                fire: '#ff4444', ice: '#44ddff', wind: '#44ff44', lightning: '#aa44ff',
+                water: '#4488ff', earth: '#ffaa44', light: '#ffffff', dark: '#888888'
+            };
+            
+            const elementCounts = {};
+            cards.forEach(card => {
+                if (card.element) {
+                    elementCounts[card.element] = (elementCounts[card.element] || 0) + 1;
+                }
+            });
+            
+            const totalCards = cards.length;
+            let barsHtml = '';
+            
+            Object.entries(elementCounts).forEach(([element, count]) => {
+                const percentage = totalCards > 0 ? (count / totalCards) * 100 : 0;
+                const color = elementColors[element.toLowerCase()] || '#80CFFF';
+                
+                barsHtml += `
+                    <div style="flex: ${percentage}; background: ${color}; height: 20px; border-radius: 2px; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; font-weight: 600; color: white; text-shadow: 0 1px 2px rgba(0,0,0,0.8);" 
+                         title="${element}: ${count} cards (${percentage.toFixed(1)}%)">
+                        ${count > 2 ? count : ''}
+                    </div>
+                `;
+            });
+            
+            distributionElement.innerHTML = barsHtml || '<div style="color: #9fb6cf; text-align: center; font-size: 0.7rem; padding: 6px;">No cards in deck</div>';
+        }
+        
+        function updateDeckValidation(cards) {
+            const validationElement = document.getElementById('deckValidation');
+            if (!validationElement) return;
+            
+            let messages = [];
+            
+            if (cards.length > 50) {
+                messages.push('<span style="color: #ff6b6b;">⚠️ Deck exceeds 50 cards</span>');
+            } else if (cards.length < 40) {
+                messages.push('<span style="color: #ffaa44;">⚠️ Deck needs at least 40 cards</span>');
+            }
+            
+            // Check for 3-copy limit violations
+            const cardCounts = {};
+            cards.forEach(card => {
+                const name = card.name || card.id;
+                cardCounts[name] = (cardCounts[name] || 0) + 1;
+            });
+            
+            const violations = Object.entries(cardCounts).filter(([name, count]) => count > 3);
+            if (violations.length > 0) {
+                violations.forEach(([name, count]) => {
+                    messages.push(`<span style="color: #ff6b6b;">⚠️ ${name}: ${count} copies (max 3)</span>`);
+                });
+            }
+            
+            if (messages.length === 0 && cards.length >= 40 && cards.length <= 50) {
+                messages.push('<span style="color: #44ff44;">✅ Deck is tournament legal</span>');
+            }
+            
+            validationElement.innerHTML = messages.join('<br>') || '';
+        }
+        
+        function updateDeckDisplay() {
+            // This function would update the deck list display based on sort and view settings
+            // Integration with existing deck display logic would happen here
+            console.log(`🔄 Updating deck display (sort: ${deckSortMode}, compact: ${deckViewCompact})`);
+        }
+
         // Initialize card hover tracking when DOM is ready
         document.addEventListener('DOMContentLoaded', function() {
             setupCardHoverTracking();
             setupZoneClickHandlers();
             
+            // Initialize enhanced deck view
+            updateDeckStats();
+            
+            // Initialize card grid columns after DOM is loaded
+            setTimeout(() => {
+                updateCardGridColumns();
+            }, 100); // Small delay to ensure layout is complete
+            
+            // Listen for deck builder view activation - Simplified approach
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                        const target = mutation.target;
+                        if (target.id === 'deck-builderView' && target.classList.contains('active')) {
+                            console.log('🎯 Deck builder view activated - using DeckBuilder.js system');
+                            
+                            // Use DeckBuilder.js system since it's working
+                            setTimeout(() => {
+                                if (window.app?.deckBuilder) {
+                                    // Just refresh the existing DeckBuilder.js display
+                                    window.app.deckBuilder.refreshCardDisplay();
+                                    console.log('✅ DeckBuilder.js refreshed successfully');
+                                }
+                            }, 100); // Much shorter delay since we're just refreshing
+                        }
+                    }
+                });
+            });
+            
+            const deckBuilderView = document.getElementById('deck-builderView');
+            if (deckBuilderView) {
+                observer.observe(deckBuilderView, { attributes: true });
+            }
+            
             // Event log positioning has been fixed - no automatic testing needed
         });
     </script>
+    
+    <!-- Import Starfield Animation for Classic FF Menu -->
+    <script type="module" src="src/components/Starfield.js"></script>
 </body>
 </html>

@@ -31,6 +31,7 @@ import { DeckBuilder } from './components/DeckBuilder.js';
 import { GameBoard } from './components/GameBoard.js';
 import { PracticeSetup } from './components/PracticeSetup.js';
 import { PracticeLobby } from './components/PracticeLobby.js';
+import classicFFMenu from './components/ClassicFFMenu.js';
 // import { Lobby } from './components/Lobby.js';
 // import { SocketClient } from './network/SocketClient.js';
 
@@ -43,6 +44,10 @@ class AppController {
         // Initialize logging first
         logger.info('🚀 Initializing FFTCG Simulator...');
         logger.time('app-initialization');
+        
+        // Initialize FF Sound Effects (disabled by default, non-invasive)
+        this.soundEffects = null;
+        this.initializeSoundEffects();
         
         // Core managers
         this.deckManager = new DeckManager();
@@ -61,6 +66,7 @@ class AppController {
         this.gameBoard = null; // Will be initialized after card database loads
         this.practiceSetup = null; // Will be initialized after deck manager loads
         this.practiceLobby = null; // Will be initialized after dependencies load
+        this.classicFFMenu = classicFFMenu; // Classic FF-style main menu controller
         // this.lobby = new Lobby();
         // this.socketClient = new SocketClient();
         
@@ -171,6 +177,7 @@ class AppController {
             logger.info(`🔍 Pre-init state: CardDB loaded=${this.cardDatabase.isLoaded}, DeckManager=${!!this.deckManager}, CardCount=${this.cardDatabase.getAllCards().length}`);
             try {
                 this.deckBuilder = new DeckBuilder(this.cardDatabase, this.deckManager);
+                await this.deckBuilder.initialize(); // Initialize filter buttons and UI
                 logger.info('✅ Deck Builder initialized successfully');
             } catch (builderError) {
                 logger.error('❌ Failed to initialize Deck Builder:', builderError.message, builderError);
@@ -536,6 +543,9 @@ class AppController {
             case 'profile':
                 this.showProfileView();
                 break;
+            case 'card-browser':
+                this.initializeCardBrowser();
+                break;
         }
     }
 
@@ -598,6 +608,11 @@ class AppController {
             statsElement.textContent = 
                 `Games: ${stats.gamesPlayed} | Wins: ${stats.wins} | Win Rate: ${winRate}%`;
         }
+        
+        // Update Classic FF menu
+        if (this.classicFFMenu) {
+            this.classicFFMenu.updateStats({ profileName: profile.name });
+        }
     }
 
     /**
@@ -608,7 +623,12 @@ class AppController {
         const deckCountElement = document.getElementById('deckCount');
         
         if (deckCountElement) {
-            deckCountElement.textContent = deckCount;
+            deckCountElement.textContent = `${deckCount} decks saved`;
+        }
+        
+        // Update Classic FF menu
+        if (this.classicFFMenu) {
+            this.classicFFMenu.updateStats({ deckCount });
         }
     }
 
@@ -617,15 +637,19 @@ class AppController {
      */
     updateOnlineStatus(isOnline) {
         const onlineCountElement = document.getElementById('onlineCount');
+        const onlineCount = isOnline ? 0 : 0; // TODO: Get real count when SocketClient is implemented
         
         if (onlineCountElement) {
             if (isOnline) {
-                // TODO: Get online count when SocketClient is implemented
-                // onlineCountElement.textContent = this.socketClient.getOnlineCount() || '?';
-                onlineCountElement.textContent = 'Online';
+                onlineCountElement.textContent = `${onlineCount} players online`;
             } else {
                 onlineCountElement.textContent = 'Offline';
             }
+        }
+        
+        // Update Classic FF menu
+        if (this.classicFFMenu) {
+            this.classicFFMenu.updateStats({ onlineCount: isOnline ? onlineCount : 0 });
         }
     }
 
@@ -646,6 +670,73 @@ class AppController {
     showProfileView() {
         // This would be implemented when the profile view is created
         console.log('Profile view activated');
+    }
+
+    /**
+     * Initialize card browser view with starfield animation
+     */
+    initializeCardBrowser() {
+        console.log('🃏 Card Browser view activated');
+        
+        // Initialize starfield for card browser if Starfield is available
+        const canvas = document.getElementById('cardBrowserStarfield');
+        if (canvas && window.Starfield && !canvas.starfield) {
+            try {
+                canvas.starfield = new window.Starfield(canvas);
+                console.log('✨ Card Browser starfield initialized');
+            } catch (error) {
+                console.error('Failed to initialize Card Browser starfield:', error);
+            }
+        }
+        
+        // Initialize card grid with sample data if CardDatabase is available
+        if (this.cardDatabase && this.cardDatabase.isLoaded) {
+            this.populateCardBrowserGrid();
+        }
+    }
+
+    /**
+     * Populate the card browser grid with cards
+     */
+    populateCardBrowserGrid() {
+        const cardGrid = document.getElementById('browserCardGrid');
+        if (!cardGrid || !this.cardDatabase) return;
+        
+        const cards = this.cardDatabase.getAllCards().slice(0, 36); // Show first 36 cards
+        
+        if (cards.length === 0) {
+            cardGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #9fb6cf; padding: 40px;">No cards available</div>';
+            return;
+        }
+        
+        cardGrid.innerHTML = cards.map(card => `
+            <div class="card-thumb" onclick="previewCard('${card.id}')">
+                <div class="thumb-img">${card.id.split('-')[0] || card.id.substring(0, 3).toUpperCase()}</div>
+                <div class="thumb-title">${card.name || 'Unknown Card'}</div>
+            </div>
+        `).join('');
+        
+        console.log(`🃏 Card Browser populated with ${cards.length} cards`);
+    }
+
+    /**
+     * Initialize FF Sound Effects system (non-invasive)
+     */
+    async initializeSoundEffects() {
+        try {
+            const FFSoundEffectsModule = await import('./components/FFSoundEffects.js');
+            const FFSoundEffects = FFSoundEffectsModule.default;
+            
+            this.soundEffects = new FFSoundEffects();
+            logger.info('🔊 FF Sound Effects system loaded (disabled by default)');
+            
+            // Add to global scope for easy access (optional)
+            window.ffSounds = this.soundEffects;
+            
+        } catch (error) {
+            logger.warn('Could not load FF Sound Effects system:', error);
+            this.soundEffects = null;
+        }
     }
 
     /**
