@@ -1465,185 +1465,50 @@
         }
 
         // Filter system now handled by DeckBuilder.js only
-
-
-        function updateFilterButtonStates(filterType) {
-            const container = document.querySelector(`#${filterType}Buttons`);
-            if (!container) return;
-            
-            const buttons = container.querySelectorAll('.filter-btn[data-' + filterType + ']:not([data-' + filterType + '=""])');
-            buttons.forEach(btn => {
-                const hasActive = btn.classList.contains('active');
-                const hasMultiple = activeFilters[filterType].length > 1;
-                
-                if (hasActive && hasMultiple) {
-                    btn.classList.add('multiple-active');
-                    btn.classList.remove('active');
-                } else if (hasActive) {
-                    btn.classList.add('active');
-                    btn.classList.remove('multiple-active');
-                }
-            });
-        }
-
-        function applyDeckBuilderFilters() {
-            const searchInput = document.getElementById('cardSearch');
-            const sortSelect = document.getElementById('sortSelect');
-            const cardGrid = document.getElementById('cardGrid');
-            const resultsDiv = document.getElementById('filterResults');
-            
-            if (searchInput) activeFilters.search = searchInput.value.toLowerCase();
-            if (sortSelect) activeFilters.sort = sortSelect.value;
-            
-            console.log('🔍 Applying deck builder filters:', activeFilters);
-            
-            if (!window.app?.cardDatabase) {
-                console.error('❌ Card database not available');
+        
+        // Wrapper function for button-based filters to maintain HTML compatibility
+        function toggleFilter(button, filterType, value) {
+            if (!window.app?.deckBuilder) {
+                console.warn('DeckBuilder not available');
                 return;
             }
             
-            if (!cardGrid) {
-                console.error('❌ Card grid element not found');
-                return;
-            }
-            
-            const allCards = window.app.cardDatabase.getAllCards();
-            let filteredCards = allCards.filter(card => {
-                // Text search
-                if (activeFilters.search) {
-                    const searchTerm = activeFilters.search;
-                    const searchableText = [
-                        card.name,
-                        card.text || '',
-                        card.id,
-                        card.abilities || ''
-                    ].join(' ').toLowerCase();
-                    
-                    if (!searchableText.includes(searchTerm)) return false;
-                }
-                
-                // Element filter
-                if (activeFilters.element.length > 0) {
-                    if (!activeFilters.element.includes(card.element)) return false;
-                }
-                
-                // Type filter
-                if (activeFilters.type.length > 0) {
-                    if (!activeFilters.type.includes(card.type)) return false;
-                }
-                
-                // Cost filter
-                if (activeFilters.cost.length > 0) {
-                    const cardCost = parseInt(card.cost) || 0;
-                    const matches = activeFilters.cost.some(filterCost => {
-                        if (filterCost === '7+') return cardCost >= 7;
-                        return cardCost === parseInt(filterCost);
-                    });
-                    if (!matches) return false;
-                }
-                
-                // Rarity filter
-                if (activeFilters.rarity.length > 0) {
-                    if (!activeFilters.rarity.includes(card.rarity)) return false;
-                }
-                
-                // Category filter (smart matching for cards with multiple categories)
-                if (activeFilters.category.length > 0) {
-                    const cardCategories = getCardCategories(card.category);
-                    const hasMatchingCategory = cardCategories.some(cat => activeFilters.category.includes(cat));
-                    if (!hasMatchingCategory) return false;
-                }
-                
-                // Opus filter
-                if (activeFilters.opus.length > 0) {
-                    if (!activeFilters.opus.includes(card.opus || card.set)) return false;
-                }
-                
-                return true;
-            });
-            
-            // Sort filtered cards
-            filteredCards = sortCards(filteredCards, activeFilters.sort);
-            
-            // Update display
-            renderFilteredCards(filteredCards);
-            
-            // Update results counter
-            if (resultsDiv) {
-                resultsDiv.textContent = `Showing ${filteredCards.length} of ${allCards.length} cards`;
-            }
-        }
-
-        function sortCards(cards, sortType) {
-            return cards.sort((a, b) => {
-                switch (sortType) {
-                    case 'name-desc':
-                        return b.name.localeCompare(a.name);
-                    case 'cost-asc':
-                        return (parseInt(a.cost) || 0) - (parseInt(b.cost) || 0);
-                    case 'cost-desc':
-                        return (parseInt(b.cost) || 0) - (parseInt(a.cost) || 0);
-                    case 'id-asc':
-                        return a.id.localeCompare(b.id);
-                    case 'name-asc':
-                    default:
-                        return a.name.localeCompare(b.name);
-                }
-            });
-        }
-
-        // Helper function for smart category filtering
-        function getCardCategories(categoryString) {
-            if (!categoryString) return ['Special'];
-            
-            // Split dual categories on &middot; separator or other common separators
-            const separators = ['&middot;', '•', '·', ' / ', '/'];
-            let categories = [categoryString.trim()];
-            
-            for (const sep of separators) {
-                if (categoryString.includes(sep)) {
-                    categories = categoryString.split(sep).map(cat => cat.trim());
+            // Call the appropriate DeckBuilder.js method
+            switch(filterType) {
+                case 'element':
+                    window.app.deckBuilder.setElementFilter(value);
                     break;
-                }
+                case 'type':
+                    window.app.deckBuilder.setTypeFilter(value);
+                    break;
+                case 'rarity':
+                    window.app.deckBuilder.setRarityFilter(value);
+                    break;
+                default:
+                    console.warn('Unknown filter type:', filterType);
             }
-            
-            // Clean up and normalize category names
-            return categories.filter(cat => cat && cat.length > 0).map(cat => {
-                // Remove HTML entities and normalize
-                return cat.replace(/&middot;/g, '').replace(/&nbsp;/g, ' ').trim();
-            });
         }
 
-        // New dropdown handler functions
+
+
+
+
+
         function handleOpusSelectChange(select) {
             const value = select.value;
-            
-            // Update both our filter system and the DeckBuilder.js system
-            activeFilters.opus = value ? [value] : [];
-            
-            // Always apply our filter system first
             console.log(`🎯 Opus filter changed to: ${value || 'All'}`);
-            applyDeckBuilderFilters();
             
-            // Also sync with DeckBuilder.js if it exists
-            if (window.app?.deckBuilder) {
-                window.app.deckBuilder.opusFilter = value ? [value] : [];
+            if (window.app?.deckBuilder?.setOpusFilter) {
+                window.app.deckBuilder.setOpusFilter(value);
             }
         }
 
         function handleCostSelectChange(select) {
             const value = select.value;
-            
-            // Update both our filter system and the DeckBuilder.js system
-            activeFilters.cost = value ? [value] : [];
-            
-            // Always apply our filter system first
             console.log(`💰 Cost filter changed to: ${value || 'All'}`);
-            applyDeckBuilderFilters();
             
-            // Also sync with DeckBuilder.js if it exists
-            if (window.app?.deckBuilder) {
-                window.app.deckBuilder.costFilter = value ? [value] : [];
+            if (window.app?.deckBuilder?.setCostFilter) {
+                window.app.deckBuilder.setCostFilter(value);
             }
         }
 
